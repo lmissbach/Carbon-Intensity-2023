@@ -199,7 +199,96 @@ for(i in Country.Set){
   if(!i %in% c("Chile", "Marocco", "Kenya", "Europe")){rm(appliances_0_1)}
 }
 
-# 1.1   Shape Collated Data ####
+# 1.1  Homogenize Codes ####
+
+Cooking.Codes.All   <- data.frame()
+Lighting.Codes.All  <- data.frame()
+Heating.Codes.All   <- data.frame()
+Education.Codes.All <- data.frame()
+
+for (i in Country.Set){
+  path_0                     <- list.files("../0_Data/1_Household Data/")[grep(i, list.files("../0_Data/1_Household Data/"), ignore.case = T)][1]
+  
+  codes_0                    <- list.files(paste0("../0_Data/1_Household Data/", path_0, "/2_Codes"))
+  
+  # Cooking fuel
+  
+  if("Cooking.Code.csv" %in% codes_0){
+    Cooking.Code <- read_csv(sprintf("../0_Data/1_Household Data/%s/2_Codes/Cooking.Code.csv", path_0), show_col_types = FALSE)%>%
+      mutate(cooking_fuel = as.character(cooking_fuel))%>%
+      mutate(Country = i)
+    
+    Cooking.Codes.All <- bind_rows(Cooking.Codes.All, Cooking.Code)
+  }
+  
+  # Lighting fuel
+  
+  if("Lighting.Code.csv" %in% codes_0){
+    Lighting.Code <- read_csv(sprintf("../0_Data/1_Household Data/%s/2_Codes/Lighting.Code.csv", path_0), show_col_types = FALSE)%>%
+      mutate(lighting_fuel = as.character(lighting_fuel))%>%
+      mutate(Country = i)
+    
+    Lighting.Codes.All <- bind_rows(Lighting.Codes.All, Lighting.Code)
+  }
+  
+  # Heating fuel
+  
+  if("Heating.Code.csv" %in% codes_0){
+    Heating.Code <- read_csv(sprintf("../0_Data/1_Household Data/%s/2_Codes/Heating.Code.csv", path_0), show_col_types = FALSE)%>%
+      mutate(heating_fuel = as.character(heating_fuel))%>%
+      mutate(Country = i)
+    
+    Heating.Codes.All <- bind_rows(Heating.Codes.All, Heating.Code)
+  }
+  
+  # Education
+  
+  if("Education.Code.csv" %in% codes_0){
+    Education.Code <- read_csv(sprintf("../0_Data/1_Household Data/%s/2_Codes/Education.Code.csv", path_0), show_col_types = FALSE)%>%
+      mutate(edu_hhh = as.character(edu_hhh))%>%
+      mutate(Country = i)
+    
+    Education.Codes.All <- bind_rows(Education.Codes.All, Education.Code)
+  }
+  
+}
+
+Cooking.Codes.All.1 <- Cooking.Codes.All %>%
+  select(Country, cooking_fuel, Cooking_Fuel, CF)%>%
+  mutate(Cooking_Fuel = iconv(Cooking_Fuel, "UTF-8", "UTF-8", sub = ''))%>%
+  mutate(CF = ifelse(is.na(CF) & Cooking_Fuel %in% c("Charcoal", "3. Charcoal"), "Charcoal", CF))
+# TBA Marlene
+  #write.xlsx(., "0_Data/9_Supplementary Information/Cooking.Codes.All.xlsx")
+
+Lighting.Codes.All.1 <- Lighting.Codes.All %>%
+  select(Country, lighting_fuel, Lighting_Fuel, LF)%>%
+  mutate(Lighting_Fuel = iconv(Lighting_Fuel, "UTF-8", "UTF-8", sub = ''))#%>%
+# TBA Marlene
+  #write.xlsx(., "0_Data/9_Supplementary Information/Lighting.Codes.All.xlsx")
+
+Heating.Codes.All.1 <- Heating.Codes.All %>%
+  select(Country, heating_fuel, Heating_Fuel, HF)# %>%
+# TBA Marlene
+  #write.xlsx(., "0_Data/9_Supplementary Information/Heating.Codes.All.xlsx")
+
+Education.Codes.All.1 <- Education.Codes.All %>%
+  select(Country, edu_hhh, Education, ISCED)%>%
+  mutate(Education = iconv(Education, "UTF-8", "UTF-8", sub = ''))#%>%
+# TBA Marlene
+  #write.xlsx(., "0_Data/9_Supplementary Information/Education.Codes.All.xlsx")
+
+
+# 1.2   Shape Collated Data ####
+
+data_joint_1 <- data_joint_0 %>%
+  select(- truck1.01, -pump.01, -solar.heater.01, -video.01, -cooker.01, -air.cooler.01, -cooler.01, -sewing.machine.01, -sewing_machine.01,
+         - region, -ocu_hhh, -vacuum.01, -internet.access, -municipality, -clust, -printer.01, -density, -alphabetism, -freezer.01, -heater.01,
+         - inc_capital_rents, -inc_deleted, -inc_other_income, -inc_labour, - language.b, - "inc_other income", -income_year, -iron.01,
+         - gas_subsidy, -ely_subsidy, -ind_hhh_b, - lat_cen, -long_cen, -country_of_birth)%>%
+  select(-lighting_fuel, -cooking_fuel, -heating_fuel, -water,-toilet,-edu_hhh, -ethnicity)
+  # eventually add updated fuel codes
+
+# write_rds(data_joint_1, "../1_Carbon_Pricing_Incidence/1_Data_Incidence_Analysis/3_Collated_Database/Collated_Database.rds")  
 
 carbon_pricing_incidence_1 <- left_join(carbon_pricing_incidence_1, burden_decomposition_0)%>%
   mutate(burden_s_cooking_fuels   = exp_s_cooking_fuels  /hh_expenditures_USD_2014,
