@@ -14,7 +14,7 @@ options(scipen=999)
 
 Country.Set <- c("Argentina", "Armenia", "Bangladesh", "Barbados", "Benin","Bolivia", "Brazil", "Burkina Faso", "Cambodia", "Chile",
                  "Colombia", "Costa Rica", "Cote dIvoire", "Dominican Republic", "Ecuador", "El Salvador", "Ethiopia", 
-                 #"Europe", 
+                 "Europe", 
                  "Ghana","Guatemala", 
                  "Guinea-Bissau", "India", "Indonesia", "Iraq", "Israel", "Kenya", "Liberia", "Malawi", "Maldives", "Mali", 
                  "Mexico", "Mongolia", "Morocco", "Myanmar", "Nicaragua", "Niger", "Nigeria", "Norway", "Pakistan", "Paraguay", 
@@ -30,9 +30,21 @@ for(i in Country.Set){
   
   path_0                     <- list.files("../0_Data/1_Household Data/")[grep(i, list.files("../0_Data/1_Household Data/"), ignore.case = T)][1]
   
-  carbon_pricing_incidence_0 <- read_csv(sprintf("../1_Carbon_Pricing_Incidence/1_Data_Incidence_Analysis/1_Transformed_and_Modeled/Carbon_Pricing_Incidence_%s.csv", i), show_col_types = FALSE)
+  if(i != "Europe"){
   
-  household_information_0    <- read_csv(sprintf("../1_Carbon_Pricing_Incidence/1_Data_Incidence_Analysis/1_Transformed_and_Modeled/household_information_%s_new.csv", i), show_col_types = FALSE)
+    carbon_pricing_incidence_0 <- read_csv(sprintf("../1_Carbon_Pricing_Incidence/1_Data_Incidence_Analysis/1_Transformed_and_Modeled/Carbon_Pricing_Incidence_%s.csv", i), show_col_types = FALSE)
+  
+    household_information_0    <- read_csv(sprintf("../1_Carbon_Pricing_Incidence/1_Data_Incidence_Analysis/1_Transformed_and_Modeled/household_information_%s_new.csv", i), show_col_types = FALSE)
+  
+  }
+  
+  if(i == "Europe"){
+    
+    carbon_pricing_incidence_0 <- read_csv("K:/WorkInProgress/2021_Carbon_Footprint_Analysis/Data_Transformed/Carbon_Pricing_Incidence_Europe.csv", show_col_types = FALSE)
+    
+    household_information_0    <- read_csv("K:/WorkInProgress/2021_Carbon_Footprint_Analysis/Data_Transformed/household_information_Europe_new.csv", show_col_types = FALSE)
+    
+  }
   
   burden_decomposition_0     <- read_csv(sprintf("../1_Carbon_Pricing_Incidence/1_Data_Incidence_Analysis/1_Transformed_and_Modeled/Sectoral_Burden_%s.csv", i), show_col_types = FALSE)
   
@@ -44,6 +56,8 @@ for(i in Country.Set){
     left_join(burden_decomposition_0, by = "hh_id")
   
   if(!i %in% c("Chile", "Morocco", "Kenya", "Europe")) {carbon_pricing_incidence_1 <- left_join(carbon_pricing_incidence_1, appliances_0_1, by = "hh_id")}
+  
+  if(!"Country" %in% colnames(carbon_pricing_incidence_1)){print("Country name missing")}
   
   # Ad codes
   
@@ -79,6 +93,13 @@ for(i in Country.Set){
   if("ind_hhh" %in% colnames(carbon_pricing_incidence_1)){
     carbon_pricing_incidence_1 <- carbon_pricing_incidence_1 %>%
       mutate(ind_hhh = as.character(ind_hhh))
+    
+    # Load codes ?
+  }
+  
+  if("ocu_hhh" %in% colnames(carbon_pricing_incidence_1)){
+    carbon_pricing_incidence_1 <- carbon_pricing_incidence_1 %>%
+      mutate(ocu_hhh = as.character(ocu_hhh))
     
     # Load codes ?
   }
@@ -199,7 +220,7 @@ for(i in Country.Set){
   if(!i %in% c("Chile", "Marocco", "Kenya", "Europe")){rm(appliances_0_1)}
 }
 
-# 1.1  Homogenize Codes ####
+# 1.1   Homogenize Codes ####
 
 Cooking.Codes.All   <- data.frame()
 Lighting.Codes.All  <- data.frame()
@@ -288,6 +309,8 @@ data_joint_1 <- data_joint_0 %>%
   select(-lighting_fuel, -cooking_fuel, -heating_fuel, -water,-toilet,-edu_hhh, -ethnicity)
   # eventually add updated fuel codes
 
+# Some expenditure data are missing
+
 # write_rds(data_joint_1, "../1_Carbon_Pricing_Incidence/1_Data_Incidence_Analysis/3_Collated_Database/Collated_Database.rds")  
 
 carbon_pricing_incidence_1 <- left_join(carbon_pricing_incidence_1, burden_decomposition_0)%>%
@@ -340,7 +363,7 @@ if(!"exp_s_other_energy" %in% colnames(burden_decomposition_0)){
     mutate(exp_s_other_energy = 0)
 }
 
-# 1.1   Screen Data ####
+# 1.3   Screen Data ####
 
 # Ethnicity    <- count(data_joint_0, Country, Ethnicity)       # Okay
 # Refrigerator <- count(data_joint_0, Country, refrigerator.01) # Okay
@@ -348,7 +371,7 @@ if(!"exp_s_other_energy" %in% colnames(burden_decomposition_0)){
 # Urban        <- count(data_joint_0, Country, urban_01)        # Okay
 # Cooking      <- count(data_joint_0, Country, CF)              # Okay
 
-# 1.2   Several Summary Statistics ####
+# 1.4   Several Summary Statistics ####
 
 # General Summary Statistics
 
@@ -522,3 +545,16 @@ Summary_1.5 <- data_joint_0 %>%
   summarise(mean_share_Firewood    = mean(share_Firewood),
             mean_share_Electricity = mean(share_Electricity))%>%
   ungroup()
+
+# 1.4.1 Average footprints per Country ####
+
+data_1.4.1 <- data_joint_1 %>%
+  filter(!is.na(CO2_t_national))%>%
+  group_by(Country)%>%
+  summarise(
+    mean_CO2_t_national = mean(CO2_t_national),
+    mean_CO2_t_global   = mean(CO2_t_global)
+    )%>%
+  ungroup()
+
+# 2.    Overview GTAP-CO2-Intensities ####
