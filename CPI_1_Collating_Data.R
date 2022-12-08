@@ -217,7 +217,7 @@ for(i in Country.Set){
   
   rm(list = ls(pattern = ".Code"))
   rm(household_information_0, burden_decomposition_0, carbon_pricing_incidence_0, carbon_pricing_incidence_1)
-  if(!i %in% c("Chile", "Marocco", "Kenya", "Europe")){rm(appliances_0_1)}
+  if(!i %in% c("Chile", "Morocco", "Kenya", "Europe")){rm(appliances_0_1)}
 }
 
 # 1.1   Homogenize Codes ####
@@ -303,33 +303,60 @@ Education.Codes.All.1 <- Education.Codes.All %>%
 
 data_joint_1 <- data_joint_0 %>%
   # For Guatemala and Nicaragua
-  mutate(Religion = ifelse(is.na(Religion)& !is.na(Ethnicity_0), Ethnicity_0, Religion))%>%
+  mutate(Religion            = ifelse(is.na(Religion)& !is.na(Ethnicity_0), Ethnicity_0, Religion))%>%
+  mutate(share_other_binning = ifelse(is.na(share_other_binning),0,share_other_binning))%>%
+  # Ethiopia has no transport fuels
+  mutate(exp_s_transport_fuels = ifelse(is.na(exp_s_transport_fuels),0, exp_s_transport_fuels))%>%
   # Remove 13 households from Nigeria without information on hh_weights
   filter(!is.na(hh_weights))%>%
+  filter(!is.na(hh_expenditures_USD_2014))%>%
   select(- truck1.01, -pump.01, -solar.heater.01, -video.01, -cooker.01, -air.cooler.01, -cooler.01, -sewing.machine.01, -sewing_machine.01,
          - region, -ocu_hhh, -vacuum.01, -internet.access, -municipality, -clust, -printer.01, -density, -alphabetism, -freezer.01, -heater.01,
-         - inc_capital_rents, -inc_deleted, -inc_other_income, -inc_labour, - language.b, - "inc_other income", -income_year, -iron.01, -bicycle.01,
-         - gas_subsidy, -ely_subsidy, -ind_hhh_b, - lat_cen, -long_cen, -country_of_birth)%>%
+         - inc_capital_rents, -inc_deleted, -inc_other_income, -inc_labour, - "inc_other income", -income_year, -iron.01, -bicycle.01,
+         - gas_subsidy, -ely_subsidy, -ind_hhh_b, - lat_cen, -long_cen, -country_of_birth, - year, - month, - day)%>%
   select(-lighting_fuel, -cooking_fuel, -heating_fuel, -water, -toilet, -edu_hhh, -ethnicity, -nationality, -language, -religion,
          -Toilet, -Water, -Lighting_Fuel, -Heating_Fuel, -Cooking_Fuel, -Education, -Ethnicity_0)%>%
   select(hh_id, Country, hh_weights, hh_size, adults, children,
          province, district, village, urban_01, Province, District,
          age_hhh, sex_hhh, ind_hhh, ISCED, Nationality, Ethnicity, Language, Religion, religiosity,
-         CF, HF, LF, WTR, TLT, electricity.access,
+         # eventually add updated fuel codes
+         CF, LF, WTR, TLT, electricity.access,
+         # HF,
          hh_expenditures_USD_2014, hh_expenditures, hh_expenditures_pc,
          inc_gov_cash, inc_gov_monetary, Income_Group_5, Income_Group_10,
          starts_with("share_"), starts_with("exp_USD_"),
          starts_with("CO2_"), starts_with("exp_CO2"), starts_with("burden_CO2"), starts_with("exp_s"),
          ends_with(".01"),
          everything())
-  
+
+# NAs_over_obs <- data_joint_1 %>%
+#  select(everything())%>%
+#  group_by(Country)%>%
+#  summarise_all(list(NAs = ~ sum(is.na(.)),
+#                     Obs = ~ n()))%>%
+#  ungroup()%>%
+#  pivot_longer(-Country, names_to = "Var", values_to = "Val")%>%
+#  mutate(Type_A = str_sub(Var,-3,-1),
+#         Type_B = str_sub(Var,1,-5))%>%
+#  select(-Var)%>%
+#  pivot_wider(names_from = "Type_A", values_from = "Val")%>%
+#  mutate(share = NAs/Obs)%>%
+#  arrange(Type_B, share, Country)%>%
+#  filter(NAs != 0)
+# 
+# write.xlsx(NAs_over_obs, "0_Data/9_Supplementary Information/NAs_over_Observations_0.xlsx")
 
 colnames(data_joint_1)
 
-  filter(!is.na(hh_weights))
-  # eventually add updated fuel codes
-
 # Some expenditure data are missing
+
+#t <- filter(data_joint_1, is.na(electricity.access))%>%
+#  mutate(exp_USD_Electricity = ifelse(exp_USD_Electricity == 0, NA, exp_USD_Electricity))%>%
+#  group_by(Country)%>%
+#  summarise_all(list(NAs = ~ sum(is.na(.)),
+#                     Obs = ~ n()))%>%
+#  select(Country, starts_with("exp_USD_Electricity"))%>%
+#  mutate(electrification_rate = 1 - (exp_USD_Electricity_NAs/exp_USD_Electricity_Obs))
 
 # write_rds(data_joint_1, "../1_Carbon_Pricing_Incidence/1_Data_Incidence_Analysis/3_Collated_Database/Collated_Database.rds")  
 
@@ -351,17 +378,15 @@ data_joint_0 <- data_joint_0 %>%
          log_hh_expenditures_USD_2014_pc = log(hh_expenditures_USD_2014_pc))%>%
   mutate(electricity.access = ifelse(Country == "Chile" & exp_USD_Electricity == 0,0,
                                      ifelse(Country == "Chile" & exp_USD_Electricity > 0,1,electricity.access)))%>%
-
-  mutate(share_other_binning = ifelse(is.na(share_other_binning),0, share_other_binning))%>%
   mutate(car.01          = ifelse(Country != "Chile" & is.na(car.01),0,car.01),
          refrigerator.01 = ifelse(Country != "Chile" & is.na(refrigerator.01),0,refrigerator.01),
          CF = ifelse(is.na(CF), "Unknown", CF),
          LF = ifelse(is.na(LF), "Unknown", LF),
          ISCED = ifelse(is.na(ISCED), 9, ISCED),
-         Ethnicity = ifelse(is.na(ethnicity) & Country == "Guatemala","No Indica",Ethnicity),
-         Ethnicity = ifelse(is.na(ethnicity) & Country == "Barbados", "Other",Ethnicity),
-         Ethnicity = ifelse(is.na(ethnicity) & Country == "Costa Rica", "Otro(a)", Ethnicity),
-         Ethnicity = ifelse(is.na(ethnicity) & Country == "Peru", "no sabe/no responde", Ethnicity))
+         Ethnicity = ifelse(is.na(ethnicity) & Country == "Guatemala",  "No Indica",           Ethnicity),
+         Ethnicity = ifelse(is.na(ethnicity) & Country == "Barbados",   "Other",               Ethnicity),
+         Ethnicity = ifelse(is.na(ethnicity) & Country == "Costa Rica", "Otro(a)",             Ethnicity),
+         Ethnicity = ifelse(is.na(ethnicity) & Country == "Peru",       "no sabe/no responde", Ethnicity))
 
 if(!"exp_s_other_energy" %in% colnames(burden_decomposition_0)){
   burden_decomposition_0 <- burden_decomposition_0 %>%
@@ -585,4 +610,204 @@ P.1 <- ggplot()+
   guides(colour = "none")+
   ggtitle("Average carbon footprint in t")
 
+jpeg("C:/Users/misl/OwnCloud/Papiere und Stuff/PhD-Seminar 07.12.2022/Figure_0.jpg", width = 15.5, height = 15, unit = "cm", res = 400)
+print(P.1)
+dev.off()
+
+# 1.4.2 Boxplots for all countries with 40 USD carbon tax ####
+
+data_1.4.2 <- data_joint_1 %>%
+  group_by(Country)%>%
+  summarise(
+    y5  = wtd.quantile(burden_CO2_national, weights = hh_weights, probs = 0.05),
+    y25 = wtd.quantile(burden_CO2_national, weights = hh_weights, probs = 0.25),
+    y50 = wtd.quantile(burden_CO2_national, weights = hh_weights, probs = 0.5),
+    y75 = wtd.quantile(burden_CO2_national, weights = hh_weights, probs = 0.75),
+    y95 = wtd.quantile(burden_CO2_national, weights = hh_weights, probs = 0.95),
+    mean = wtd.mean(   burden_CO2_national, weights = hh_weights))%>%
+  ungroup()
+
+P_2 <- ggplot(data_1.4.2, aes(x = reorder(Country, mean)))+
+  geom_boxplot(aes(ymin = y5, lower = y25, middle = y50, upper = y75, ymax = y95), stat = "identity", position = position_dodge(0.5), outlier.shape = NA, width = 0.5, size = 0.3) +
+  theme_bw()+
+  xlab("Country")+ ylab("Carbon Pricing Incidence")+
+  geom_point(aes(y = mean), shape = 23, size = 1.1, stroke = 0.4, fill = "white")+
+  scale_y_continuous(labels = scales::percent_format(accuracy = 1), expand = c(0,0))+
+  coord_cartesian(ylim = c(0,0.2))+
+  ggtitle("Additional costs for 40 USD/tCO2 carbon price")+
+  theme(axis.text.y = element_text(size = 7), 
+        axis.text.x = element_text(size = 5, angle = 90),
+        axis.title  = element_text(size = 7),
+        plot.title = element_text(size = 11),
+        legend.position = "bottom",
+        strip.text = element_text(size = 7),
+        strip.text.y = element_text(angle = 180),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        axis.ticks = element_line(size = 0.2),
+        legend.text = element_text(size = 7),
+        legend.title = element_text(size = 7),
+        plot.margin = unit(c(0.3,0.3,0.3,0.3), "cm"),
+        panel.border = element_rect(size = 0.3))
+
+jpeg("C:/Users/misl/OwnCloud/Papiere und Stuff/PhD-Seminar 07.12.2022/Figure_1.jpg", width = 15.5, height = 15, unit = "cm", res = 400)
+print(P_2)
+dev.off()
+
 # 2.    Overview GTAP-CO2-Intensities ####
+
+Country.Set.B <- c(Country.Set, "Belgium", "Bulgaria", "Cyprus", "Czech Republic", "Germany", "Denmark", "Estonia", "Greece", "Spain", "Finland",
+                                  "France", "Croatia", "Hungary" ,"Ireland", "Italy", "Lithuania", "Luxembourg", "Latvia", "Netherlands", "Poland",
+                                  "Portugal", "Romania", "Sweden", "Slovak Republic", "Vietnam")
+Country.Set.B <- Country.Set.B[Country.Set.B!="Europe"]
+
+carbon_intensities_0 <- data.frame()
+
+GTAP.Code <- read_delim("../0_Data/2_IO Data/GTAP_10_MRIO/GTAP10.csv", ";", escape_double = FALSE, trim_ws = TRUE, show_col_types = FALSE)
+
+for (i in Country.Set.B){
+  
+  if(!i %in% c("Barbados", "Liberia", "Suriname", "Mali", "Niger", "Myanmar", "Maldives", "Iraq")){
+    carbon_intensities_1 <- read.xlsx("../0_Data/2_IO Data/GTAP_10_MRIO/Carbon_Intensities_Full_0.xlsx", sheet = i)
+  }
+  if(i == "Barbados"){
+    carbon_intensities_1 <- read.xlsx("../0_Data/2_IO Data/GTAP_10_MRIO/Carbon_Intensities_Full_0.xlsx", sheet = "Rest_of_the_Caribbean")}
+  if(i == "Suriname"){
+    carbon_intensities_1 <- read.xlsx("../0_Data/2_IO Data/GTAP_10_MRIO/Carbon_Intensities_Full_0.xlsx", sheet = "Rest of South America")}
+  if(i %in% c("Liberia","Mali", "Niger")){
+    carbon_intensities_1 <- read.xlsx("../0_Data/2_IO Data/GTAP_10_MRIO/Carbon_Intensities_Full_0.xlsx", sheet = "Rest of Western Africa")}
+  if(i == "Myanmar"){
+    carbon_intensities_1 <- read.xlsx("../0_Data/2_IO Data/GTAP_10_MRIO/Carbon_Intensities_Full_0.xlsx", sheet = "Rest of Southeast Asia")}
+  if(i == "Maldives"){
+    carbon_intensities_1 <- read.xlsx("../0_Data/2_IO Data/GTAP_10_MRIO/Carbon_Intensities_Full_0.xlsx", sheet = "Rest of South Asia")}
+  if(i == "Iraq"){
+    carbon_intensities_1 <- read.xlsx("../0_Data/2_IO Data/GTAP_10_MRIO/Carbon_Intensities_Full_0.xlsx", sheet = "Rest of Western Asia")}
+
+  carbon_intensities   <- left_join(GTAP.Code, carbon_intensities_1, by = c("Number"="GTAP"))%>%
+    select(-Explanation, - Number)%>%
+    mutate(GTAP = ifelse(GTAP == "gas" | GTAP == "gdt", "gasgdt", GTAP))%>%
+    group_by(GTAP)%>%
+    summarise(across(CO2_Mt:Total_HH_Consumption_MUSD, ~ sum(.)))%>%
+    ungroup()%>%
+    mutate(CO2_t_per_dollar_global      = CO2_Mt/            Total_HH_Consumption_MUSD,
+           CO2_t_per_dollar_national    = CO2_Mt_within/     Total_HH_Consumption_MUSD,
+           CO2_t_per_dollar_electricity = CO2_Mt_Electricity/Total_HH_Consumption_MUSD,
+           CO2_t_per_dollar_transport   = CO2_Mt_Transport/  Total_HH_Consumption_MUSD)%>%
+    select(GTAP, starts_with("CO2_t"))%>%
+    mutate(Country = i)
+  
+  path_0   <-list.files("../0_Data/1_Household Data/")[grep(i, list.files("../0_Data/1_Household Data/"), ignore.case = T)][1]
+  
+  if(!i %in% c("Belgium", "Bulgaria", "Cyprus", "Czech Republic", "Germany", "Denmark", "Estonia", "Greece", "Spain", "Finland",
+               "France", "Croatia", "Hungary" ,"Ireland", "Italy", "Lithuania", "Luxembourg", "Latvia", "Netherlands", "Poland",
+               "Portugal", "Romania", "Sweden", "Slovak Republic")){
+    matching <- read.xlsx(sprintf("../0_Data/1_Household Data/%s/3_Matching_Tables/Item_GTAP_Concordance_%s.xlsx", path_0, i))
+  }
+ 
+  if(i %in% c("Belgium", "Bulgaria", "Cyprus", "Czech Republic", "Germany", "Denmark", "Estonia", "Greece", "Spain", "Finland",
+              "France", "Croatia", "Hungary" ,"Ireland", "Italy", "Lithuania", "Luxembourg", "Latvia", "Netherlands", "Poland",
+              "Portugal", "Romania", "Sweden", "Slovak Republic")){
+    matching <- read.xlsx("../0_Data/1_Household Data/4_Europe_EU27/3_Matching_Tables/Item_GTAP_Concordance_EU_incl_Artificial.xlsx")
+  }
+  
+  matching <- matching %>%
+    select(1,3)%>%
+    mutate(included = ifelse(!is.na(X3),1,0),
+           GTAP     = ifelse(GTAP == "gas" | GTAP == "gdt", "gasgdt",GTAP))%>%
+    group_by(GTAP)%>%
+    summarise(first_item = first(X3),
+              included   = max(included))%>%
+    ungroup()%>%
+    mutate(first_item = as.character(first_item))
+  
+  carbon_intensities <- carbon_intensities %>%
+    left_join(matching, by = "GTAP")
+  
+  carbon_intensities_0 <- bind_rows(carbon_intensities_0, carbon_intensities)
+}
+
+# 2.1   Analyse and systematically compare carbon intensities ####
+
+carbon_intensities_2.1 <- carbon_intensities_0 %>%
+  select(everything())%>%
+  filter(CO2_t_per_dollar_national != "Inf")%>%
+  group_by(GTAP)%>%
+  mutate(cutoff_90 = quantile(CO2_t_per_dollar_national, probs = 0.9),
+         max_value = max(CO2_t_per_dollar_national))%>%
+  ungroup()%>%
+  mutate(top_10 = ifelse(CO2_t_per_dollar_national > cutoff_90, 1,0))%>%
+  mutate(code = countrycode(Country, origin = "country.name", destination = "iso3c"))%>%
+  mutate(label  = ifelse(top_10 == 1, code, ""))%>%
+  arrange(max_value)%>%
+  mutate(GTAP = factor(GTAP, levels = unique(GTAP[order(max_value, decreasing = TRUE)]), ordered = TRUE))
+
+carbon_intensities_2.1.1 <- carbon_intensities_0 %>%
+  select(everything())%>%
+  filter(CO2_t_per_dollar_national != "Inf")%>%
+  filter(included == 1)%>%
+  group_by(GTAP)%>%
+  mutate(cutoff_90 = quantile(CO2_t_per_dollar_national, probs = 0.9),
+         max_value = max(CO2_t_per_dollar_national))%>%
+  ungroup()%>%
+  mutate(top_10 = ifelse(CO2_t_per_dollar_national > cutoff_90, 1,0))%>%
+  mutate(code = countrycode(Country, origin = "country.name", destination = "iso3c"))%>%
+  mutate(label  = ifelse(top_10 == 1, code, ""))%>%
+  arrange(max_value)%>%
+  mutate(GTAP = factor(GTAP, levels = unique(GTAP[order(max_value, decreasing = TRUE)]), ordered = TRUE))
+  
+P_2.1 <- ggplot(carbon_intensities_2.1)+
+  geom_point(aes(y = CO2_t_per_dollar_national, x = 1), position = position_jitter(width = 0.4, seed = 2022), size = 1)+
+  geom_text_repel(aes(x = 1, label = label, y = CO2_t_per_dollar_national), 
+                  size = 2.5, segment.size = 0.3, max.overlaps = Inf, position = position_jitter(width = 0.4, seed = 2022))+
+  facet_wrap(. ~ GTAP, scales = "free_y")+
+  theme_bw()+
+  ylab(expression(paste("Carbon intensity in t", CO[2], sep = " per USD")))+
+  ggtitle("Sectoral carbon intensity")+
+  theme(axis.text.y = element_text(size = 6), 
+        axis.text.x = element_blank(),
+        axis.ticks.y = element_blank(),
+        axis.title  = element_text(size = 6),
+        plot.title  = element_text(size = 10),
+        legend.position = "bottom",
+        strip.text = element_text(size = 7),
+        #strip.text.y = element_text(angle = 180),
+        panel.grid.major = element_line(size = 0.3),
+        panel.grid.minor = element_blank(),
+        axis.ticks = element_line(size = 0.2),
+        legend.text = element_text(size = 7),
+        legend.title = element_text(size = 7),
+        plot.margin = unit(c(0.1,0.1,0,0), "cm"),
+        panel.border = element_rect(size = 0.3))
+
+P_2.1.1 <- ggplot(carbon_intensities_2.1.1)+
+  geom_point(aes(y = CO2_t_per_dollar_national, x = 1), position = position_jitter(width = 0.4, seed = 2022), size = 1)+
+  geom_text_repel(aes(x = 1, label = label, y = CO2_t_per_dollar_national), 
+                  size = 2.5, segment.size = 0.3, max.overlaps = Inf, position = position_jitter(width = 0.4, seed = 2022))+
+  facet_wrap(. ~ GTAP, scales = "free_y")+
+  theme_bw()+
+  ylab(expression(paste("Carbon intensity in t", CO[2], sep = " per USD")))+
+  ggtitle("Sectoral carbon intensity - included items")+
+  theme(axis.text.y = element_text(size = 6), 
+        axis.text.x = element_blank(),
+        axis.ticks.y = element_blank(),
+        axis.title  = element_text(size = 6),
+        plot.title  = element_text(size = 10),
+        legend.position = "bottom",
+        strip.text = element_text(size = 7),
+        #strip.text.y = element_text(angle = 180),
+        panel.grid.major = element_line(size = 0.3),
+        panel.grid.minor = element_blank(),
+        axis.ticks = element_line(size = 0.2),
+        legend.text = element_text(size = 7),
+        legend.title = element_text(size = 7),
+        plot.margin = unit(c(0.1,0.1,0,0), "cm"),
+        panel.border = element_rect(size = 0.3))
+
+jpeg("1_Figures/Figure_2.1.jpg", width = 40, height = 40, unit = "cm", res = 400)
+print(P_2.1)
+dev.off()
+
+jpeg("1_Figures/Figure_2.1.1.jpg", width = 40, height = 40, unit = "cm", res = 400)
+print(P_2.1.1)
+dev.off()
+
