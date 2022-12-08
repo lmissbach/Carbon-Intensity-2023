@@ -5,7 +5,7 @@
 
 if(!require("pacman")) install.packages("pacman")
 
-p_load("boot", "broom", "fixest", "ggpubr", "ggrepel",
+p_load("boot", "broom", "countrycode","fixest", "ggpubr", "ggrepel",
        "ggsci", "Hmisc", "knitr", "kableExtra", "openxlsx", "rattle", "scales", "tidyverse", "VennDiagram","xtable")
 
 options(scipen=999)
@@ -302,11 +302,31 @@ Education.Codes.All.1 <- Education.Codes.All %>%
 # 1.2   Shape Collated Data ####
 
 data_joint_1 <- data_joint_0 %>%
+  # For Guatemala and Nicaragua
+  mutate(Religion = ifelse(is.na(Religion)& !is.na(Ethnicity_0), Ethnicity_0, Religion))%>%
+  # Remove 13 households from Nigeria without information on hh_weights
+  filter(!is.na(hh_weights))%>%
   select(- truck1.01, -pump.01, -solar.heater.01, -video.01, -cooker.01, -air.cooler.01, -cooler.01, -sewing.machine.01, -sewing_machine.01,
          - region, -ocu_hhh, -vacuum.01, -internet.access, -municipality, -clust, -printer.01, -density, -alphabetism, -freezer.01, -heater.01,
-         - inc_capital_rents, -inc_deleted, -inc_other_income, -inc_labour, - language.b, - "inc_other income", -income_year, -iron.01,
+         - inc_capital_rents, -inc_deleted, -inc_other_income, -inc_labour, - language.b, - "inc_other income", -income_year, -iron.01, -bicycle.01,
          - gas_subsidy, -ely_subsidy, -ind_hhh_b, - lat_cen, -long_cen, -country_of_birth)%>%
-  select(-lighting_fuel, -cooking_fuel, -heating_fuel, -water,-toilet,-edu_hhh, -ethnicity)
+  select(-lighting_fuel, -cooking_fuel, -heating_fuel, -water, -toilet, -edu_hhh, -ethnicity, -nationality, -language, -religion,
+         -Toilet, -Water, -Lighting_Fuel, -Heating_Fuel, -Cooking_Fuel, -Education, -Ethnicity_0)%>%
+  select(hh_id, Country, hh_weights, hh_size, adults, children,
+         province, district, village, urban_01, Province, District,
+         age_hhh, sex_hhh, ind_hhh, ISCED, Nationality, Ethnicity, Language, Religion, religiosity,
+         CF, HF, LF, WTR, TLT, electricity.access,
+         hh_expenditures_USD_2014, hh_expenditures, hh_expenditures_pc,
+         inc_gov_cash, inc_gov_monetary, Income_Group_5, Income_Group_10,
+         starts_with("share_"), starts_with("exp_USD_"),
+         starts_with("CO2_"), starts_with("exp_CO2"), starts_with("burden_CO2"), starts_with("exp_s"),
+         ends_with(".01"),
+         everything())
+  
+
+colnames(data_joint_1)
+
+  filter(!is.na(hh_weights))
   # eventually add updated fuel codes
 
 # Some expenditure data are missing
@@ -324,10 +344,6 @@ carbon_pricing_incidence_1 <- left_join(carbon_pricing_incidence_1, burden_decom
   )%>%
   select(-starts_with("exp_s_"))
   
-
-  
-
-  
 data_joint_0 <- data_joint_0 %>%
   select(hh_id, hh_weights, hh_size, Country, hh_expenditures_USD_2014, everything())%>%
   mutate(hh_expenditures_USD_2014_pc     = hh_expenditures_USD_2014/hh_size,
@@ -335,18 +351,7 @@ data_joint_0 <- data_joint_0 %>%
          log_hh_expenditures_USD_2014_pc = log(hh_expenditures_USD_2014_pc))%>%
   mutate(electricity.access = ifelse(Country == "Chile" & exp_USD_Electricity == 0,0,
                                      ifelse(Country == "Chile" & exp_USD_Electricity > 0,1,electricity.access)))%>%
-  select(hh_id, hh_weights, hh_size, Country, hh_expenditures_USD_2014,
-         urban_01, province, district, village, municipality,
-         adults, children, age_hhh, sex_hhh, ind_hhh, ISCED,
-         ethnicity, religion, language, 
-         # cooking_fuel, lighting_fuel, heating_fuel, water, toilet, edu_hhh
-         CF, LF, HF, WTR, TLT, electricity.access,
-         starts_with("CO2"), starts_with("exp_"), starts_with("burden_"),
-         starts_with("hh_exp"), starts_with("log_hh"), starts_with("Income_Group"), starts_with("share_"),
-         starts_with("exp_USD_"), starts_with("inc_"), ends_with(".01"), everything())%>%
-  select(-boiler.01, -iron.01, -pump.01, -solar.heater.01, -radio.01, -cooker.01, -vacuum.01, -video.01, -bicycle.01,-sewing.machine.01,
-         -sewing_machine.01, -printer.01, -vaccum.01, - mobile.01, -stove.01a,
-         -lighting_fuel, -heating_fuel, -cooking_fuel, -water, -toilet, edu_hhh)%>%
+
   mutate(share_other_binning = ifelse(is.na(share_other_binning),0, share_other_binning))%>%
   mutate(car.01          = ifelse(Country != "Chile" & is.na(car.01),0,car.01),
          refrigerator.01 = ifelse(Country != "Chile" & is.na(refrigerator.01),0,refrigerator.01),
@@ -548,7 +553,7 @@ Summary_1.5 <- data_joint_0 %>%
 
 # 1.4.1 Average footprints per Country ####
 
-data_1.4.1 <- data_joint_1 %>%
+data_1.4.1 <- data_joint_0 %>%
   filter(!is.na(CO2_t_national))%>%
   group_by(Country)%>%
   summarise(
@@ -556,5 +561,28 @@ data_1.4.1 <- data_joint_1 %>%
     mean_CO2_t_global   = mean(CO2_t_global)
     )%>%
   ungroup()
+
+world <- map_data("world")%>%
+  mutate(Country = countrycode(region, origin = "country.name", destination = "iso3c"))%>%
+  left_join(data_1.4.1)%>%
+  filter(region != "Antarctica")
+
+P.1 <- ggplot()+
+  #geom_map(data = world, map = world, aes(map_id = region), fill = "lightgrey")+
+  geom_map(data = world, map = world,
+           aes(long, lat, map_id = region, fill = mean_CO2_t_national), colour = "black", size = 0.1)+
+  theme_bw()+
+  theme(axis.text = element_blank(),
+        axis.title = element_blank(),
+        legend.position = "bottom",
+        legend.text = element_text(size = 7),
+        plot.title = element_text(size = 9),
+        axis.ticks = element_blank(),
+        panel.grid = element_blank())+
+  scale_fill_gradient(low = "yellow", high = "red", na.value = NA)+
+  #scale_fill_manual(values = c("#6F99ADFF", "#0072B5FF", "lightgrey"), na.translate = FALSE, na.value = "lightgrey")+
+  labs(fill = "")+
+  guides(colour = "none")+
+  ggtitle("Average carbon footprint in t")
 
 # 2.    Overview GTAP-CO2-Intensities ####
