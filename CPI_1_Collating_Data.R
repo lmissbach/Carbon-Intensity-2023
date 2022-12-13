@@ -353,6 +353,7 @@ data_joint_1 <- data_joint_0 %>%
   left_join(Cooking.Codes.All.1,  by = c("cooking_fuel",  "Country_long"))%>%
   left_join(Lighting.Codes.All.1, by = c("lighting_fuel", "Country_long"))%>%
   left_join(Heating.Codes.All.1,  by = c("heating_fuel",  "Country_long"))%>%
+  # Add education
   select(-lighting_fuel, -cooking_fuel, -heating_fuel, -water, -toilet, -edu_hhh, -ethnicity, -nationality, -language, -religion,
          -Toilet, -Water, -Education, -Ethnicity_0, 
          - Cooking_Fuel.x, -Cooking_Fuel.y, -Lighting_Fuel.y, -Lighting_Fuel.x, - Heating_Fuel.y, -Heating_Fuel.x, -CF, -LF, -Country_long)%>%
@@ -366,28 +367,14 @@ data_joint_1 <- data_joint_0 %>%
          starts_with("CO2_"), starts_with("exp_CO2"), starts_with("burden_CO2"), ends_with("_national"), starts_with("exp_s"),
          ends_with(".01"),
          everything())%>%
-  rename(CF = CF_new, HF = HF_new, LF = LF_new)
+  rename(CF = CF_new, HF = HF_new, LF = LF_new)%>%
+  # Confirmed for ARG, BGD, BRA, DOM, GHA, GTM, IND, MNG, NGA, NIC, PAK, PER, PRY, RWA, URY, ZAF
+  mutate(exp_s_other_energy = ifelse(is.na(exp_s_other_energy), 0, exp_s_other_energy))%>%
+  mutate_at(vars(starts_with("exp_USD_")), list(~ ifelse(is.na(.),0,.)))
 
-NAs_over_obs <- data_joint_1 %>%
- select(everything())%>%
- group_by(Country)%>%
- summarise_all(list(NAs = ~ sum(is.na(.)),
-                    Obs = ~ n()))%>%
- ungroup()%>%
- pivot_longer(-Country, names_to = "Var", values_to = "Val")%>%
- mutate(Type_A = str_sub(Var,-3,-1),
-        Type_B = str_sub(Var,1,-5))%>%
- select(-Var)%>%
- pivot_wider(names_from = "Type_A", values_from = "Val")%>%
- mutate(share = NAs/Obs)%>%
- arrange(Type_B, share, Country)%>%
- filter(NAs != 0)
+# rm(Cooking.Codes.All.1, Lighting.Codes.All.1, Heating.Codes.All.1, Cooking.Codes.All, Lighting.Codes.All, Heating.Codes.All, Heating.Code, Lighting.Code, Cooking.Code, Education.Code, Education.Codes.All, Education.Codes.All.1)
 
-write.xlsx(NAs_over_obs, "0_Data/9_Supplementary Information/NAs_over_Observations_0.xlsx")
-
-colnames(data_joint_1)
-
-# Some expenditure data are missing
+# Electrification rate TBD
 
 #t <- filter(data_joint_1, is.na(electricity.access))%>%
 #  mutate(exp_USD_Electricity = ifelse(exp_USD_Electricity == 0, NA, exp_USD_Electricity))%>%
@@ -414,23 +401,7 @@ data_joint_0 <- data_joint_0 %>%
   select(hh_id, hh_weights, hh_size, Country, hh_expenditures_USD_2014, everything())%>%
   mutate(hh_expenditures_USD_2014_pc     = hh_expenditures_USD_2014/hh_size,
          log_hh_expenditures_USD_2014    = log(hh_expenditures_USD_2014),
-         log_hh_expenditures_USD_2014_pc = log(hh_expenditures_USD_2014_pc))%>%
-  mutate(electricity.access = ifelse(Country == "Chile" & exp_USD_Electricity == 0,0,
-                                     ifelse(Country == "Chile" & exp_USD_Electricity > 0,1,electricity.access)))%>%
-  mutate(car.01          = ifelse(Country != "Chile" & is.na(car.01),0,car.01),
-         refrigerator.01 = ifelse(Country != "Chile" & is.na(refrigerator.01),0,refrigerator.01),
-         CF = ifelse(is.na(CF), "Unknown", CF),
-         LF = ifelse(is.na(LF), "Unknown", LF),
-         ISCED = ifelse(is.na(ISCED), 9, ISCED),
-         Ethnicity = ifelse(is.na(ethnicity) & Country == "Guatemala",  "No Indica",           Ethnicity),
-         Ethnicity = ifelse(is.na(ethnicity) & Country == "Barbados",   "Other",               Ethnicity),
-         Ethnicity = ifelse(is.na(ethnicity) & Country == "Costa Rica", "Otro(a)",             Ethnicity),
-         Ethnicity = ifelse(is.na(ethnicity) & Country == "Peru",       "no sabe/no responde", Ethnicity))
-
-if(!"exp_s_other_energy" %in% colnames(burden_decomposition_0)){
-  burden_decomposition_0 <- burden_decomposition_0 %>%
-    mutate(exp_s_other_energy = 0)
-}
+         log_hh_expenditures_USD_2014_pc = log(hh_expenditures_USD_2014_pc))
 
 # 1.3   Screen Data ####
 
@@ -926,7 +897,9 @@ print(P_2.1.2)
 dev.off()
 
 
-# Fixing Charcoal bug ####
+# 3     Miscellaneous ####
+
+# 3.1   Checking fuel assignment ####
 
 Country.Set <- c("Argentina", "Armenia", "Bangladesh", "Barbados", "Benin","Bolivia", "Brazil", "Burkina Faso", "Cambodia", "Chile",
                  "Colombia", "Costa Rica", "Cote dIvoire", "Dominican Republic", "Ecuador", "El Salvador", "Ethiopia", 
@@ -987,11 +960,32 @@ for(i in Country.Set){
     select(fuel, item_code)%>%
     mutate(item_code = as.character(item_code))
   
+  categories <- read.xlsx(sprintf("../0_Data/1_Household Data/%s/3_Matching_Tables/Item_Categories_Concordance_%s.xlsx", path_0, i), colNames = FALSE)
+  
+  if(i == "Thailand" | i == "Maldives" | i == "Iraq"){
+    categories <- categories %>%
+      mutate_at(vars(-X1),~ as.numeric(.))
+  }
+  
+  if(i == "Bolivia" | i == "Armenia" | i == "Bangladesh"){
+    categories <- categories %>%
+      mutate_at(.vars = vars(-X1), .funs = list(~ as.character(.)))
+  }
+  
+  categories <- categories %>%
+    pivot_longer(-X1, names_to = "drop", values_to = "item_code")%>%
+    filter(!is.na(item_code))%>%
+    select(X1, item_code)%>%
+    rename(category = X1)%>%
+    distinct(category, item_code)%>%
+    mutate(item_code = as.character(item_code))
+  
   item_codes <- Item_Codes %>%
     select(item_code, item_name)%>%
     mutate(item_code = as.character(item_code))%>%
     left_join(matching, by = "item_code")%>%
     left_join(fuels, by = "item_code")%>%
+    left_join(categories, by = "item_code")%>%
     mutate(Country = i)
   
   Item.Codes.All <- Item.Codes.All %>%
@@ -1000,4 +994,33 @@ for(i in Country.Set){
 }
 
 Item.Codes.All.1 <- Item.Codes.All %>%
-  filter(fuel == "Biomass" | fuel == "Coal")
+  filter(category == "energy" | is.na(category))
+
+
+
+# 3.2   Track NAs over observations ####
+
+NAs_over_obs <- data_joint_1 %>%
+  select(everything())%>%
+  group_by(Country)%>%
+  summarise_all(list(NAs = ~ sum(is.na(.)),
+                     Obs = ~ n()))%>%
+  ungroup()%>%
+  pivot_longer(-Country, names_to = "Var", values_to = "Val")%>%
+  mutate(Type_A = str_sub(Var,-3,-1),
+         Type_B = str_sub(Var,1,-5))%>%
+  select(-Var)%>%
+  pivot_wider(names_from = "Type_A", values_from = "Val")%>%
+  mutate(share = NAs/Obs)%>%
+  arrange(Type_B, share, Country)%>%
+  filter(NAs != 0)
+
+write.xlsx(NAs_over_obs, "0_Data/9_Supplementary Information/NAs_over_Observations_0.xlsx")
+
+# 4     Output ####
+
+# 4.1   Split data and codes ####
+
+# 4.2   Save data ####
+
+# 4.3   Save codes ####
