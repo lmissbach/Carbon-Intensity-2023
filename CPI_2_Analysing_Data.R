@@ -311,7 +311,7 @@ for(i in Country.Set$Country){
     filter(Country == i)
   
   upper_bound   <- round(max(data_4.2.1$burden_CO2_national)+0.01,2)
-  righter_bound <- round(max(data_4.2.1$hh_expenditures_USD_2014),-5)
+  righter_bound <- round(max(data_4.2.1$hh_expenditures_USD_2014),-4)
   
   P_1 <- ggplot(data = filter(data_4.2.1, Country == i), aes(x = hh_expenditures_USD_2014, y = burden_CO2_national))+
     geom_point(data = data_4.2.2, aes(fill = factor(cluster_kmeans_10)), alpha = 0.05, shape = 21, colour = "black")+
@@ -336,7 +336,7 @@ for(i in Country.Set$Country){
           axis.ticks = element_line(size = 0.2),
           legend.text = element_text(size = 7),
           legend.title = element_text(size = 7),
-          plot.margin = unit(c(0.3,0.3,0.3,0.3), "cm"),
+          plot.margin = unit(c(0.3,0.5,0.3,0.3), "cm"),
           panel.border = element_rect(size = 0.3))
   
   jpeg(sprintf("1_Figures/Analysis_k_means/Exp_CPI_%s.jpg", i), width = 15.5, height = 15, unit = "cm", res = 200)
