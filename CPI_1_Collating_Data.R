@@ -46,6 +46,8 @@ for(i in Country.Set){
     
   }
   
+  
+  
   burden_decomposition_0     <- read_csv(sprintf("../1_Carbon_Pricing_Incidence/1_Data_Incidence_Analysis/1_Transformed_and_Modeled/Sectoral_Burden_%s.csv", i), show_col_types = FALSE)
   
   # fuel_expenditures          <- read_csv(sprintf("../1_Carbon_Pricing_Incidence/1_Data_Incidence_Analysis/2_Fuel_Expenditure_Data/fuel_expenditures_%s.csv", i))
@@ -58,9 +60,7 @@ for(i in Country.Set){
   
   if(!i %in% c("Chile", "Morocco", "Kenya", "Europe")) {carbon_pricing_incidence_1 <- left_join(carbon_pricing_incidence_1, appliances_0_1, by = "hh_id")}
   
-  if(!"Country" %in% colnames(carbon_pricing_incidence_1)){print("Country name missing")}
-  
-  # Ad codes
+  # Add codes
   
   if("province" %in% colnames(carbon_pricing_incidence_1)){
     Province.Code <- read_csv(sprintf("../0_Data/1_Household Data/%s/2_Codes/Province.Code.csv", path_0), show_col_types = FALSE)%>%
@@ -202,7 +202,7 @@ for(i in Country.Set){
       mutate(language = as.character(language))%>%
       left_join(Language.Code, by = "language")
   }
-  
+
   # Collate data
   
   test_0 <- ncol(data_joint_0)
@@ -334,7 +334,6 @@ Education.Codes.All.1 <- Education.Codes.All %>%
 # TBA Marlene
   #write.xlsx(., "0_Data/9_Supplementary Information/Education.Codes.All.xlsx")
 
-
 # 1.2   Shape Collated Data ####
 
 data_joint_1 <- data_joint_0 %>%
@@ -343,6 +342,9 @@ data_joint_1 <- data_joint_0 %>%
   mutate(share_other_binning = ifelse(is.na(share_other_binning),0,share_other_binning))%>%
   # Ethiopia has no transport fuels
   mutate(exp_s_transport_fuels = ifelse(is.na(exp_s_transport_fuels),0, exp_s_transport_fuels))%>%
+  # Confirmed for ARG, BGD, BRA, DOM, GHA, GTM, IND, MNG, NGA, NIC, PAK, PER, PRY, RWA, URY, ZAF
+  mutate(exp_s_other_energy = ifelse(is.na(exp_s_other_energy), 0, exp_s_other_energy))%>%
+  mutate_at(vars(starts_with("exp_USD_")), list(~ ifelse(is.na(.),0,.)))%>%
   # Remove 13 households from Nigeria without information on hh_weights
   filter(!is.na(hh_weights))%>%
   filter(!is.na(hh_expenditures_USD_2014))%>%
@@ -354,12 +356,13 @@ data_joint_1 <- data_joint_0 %>%
   left_join(Lighting.Codes.All.1, by = c("lighting_fuel", "Country_long"))%>%
   left_join(Heating.Codes.All.1,  by = c("heating_fuel",  "Country_long"))%>%
   # Add education
-  select(-lighting_fuel, -cooking_fuel, -heating_fuel, -water, -toilet, -edu_hhh, -ethnicity, -nationality, -language, -religion,
-         -Toilet, -Water, -Education, -Ethnicity_0, 
+  #select(-lighting_fuel, -cooking_fuel, -heating_fuel, -water, -toilet, -edu_hhh, -ethnicity, -nationality, -language, -religion) %>%
+  select(-Toilet, -Water, -Education, -Ethnicity_0, -edu_hhh, 
          - Cooking_Fuel.x, -Cooking_Fuel.y, -Lighting_Fuel.y, -Lighting_Fuel.x, - Heating_Fuel.y, -Heating_Fuel.x, -CF, -LF, -Country_long)%>%
   select(hh_id, Country, hh_weights, hh_size, adults, children,
          province, district, village, urban_01, Province, District,
          age_hhh, sex_hhh, ind_hhh, ISCED, Nationality, Ethnicity, Language, Religion, religiosity,
+         nationality, ethnicity, language, religion, cooking_fuel, heating_fuel, lighting_fuel, water, toilet, heating_fuel,
          CF_new, LF_new, WTR, TLT, electricity.access, HF_new,
          hh_expenditures_USD_2014, hh_expenditures, hh_expenditures_pc,
          inc_gov_cash, inc_gov_monetary, Income_Group_5, Income_Group_10,
@@ -367,12 +370,9 @@ data_joint_1 <- data_joint_0 %>%
          starts_with("CO2_"), starts_with("exp_CO2"), starts_with("burden_CO2"), ends_with("_national"), starts_with("exp_s"),
          ends_with(".01"),
          everything())%>%
-  rename(CF = CF_new, HF = HF_new, LF = LF_new)%>%
-  # Confirmed for ARG, BGD, BRA, DOM, GHA, GTM, IND, MNG, NGA, NIC, PAK, PER, PRY, RWA, URY, ZAF
-  mutate(exp_s_other_energy = ifelse(is.na(exp_s_other_energy), 0, exp_s_other_energy))%>%
-  mutate_at(vars(starts_with("exp_USD_")), list(~ ifelse(is.na(.),0,.)))
+  rename(CF = CF_new, HF = HF_new, LF = LF_new)
 
-# rm(Cooking.Codes.All.1, Lighting.Codes.All.1, Heating.Codes.All.1, Cooking.Codes.All, Lighting.Codes.All, Heating.Codes.All, Heating.Code, Lighting.Code, Cooking.Code, Education.Code, Education.Codes.All, Education.Codes.All.1)
+rm(data_joint_0, Cooking.Codes.All.1, Lighting.Codes.All.1, Heating.Codes.All.1, Cooking.Codes.All, Lighting.Codes.All, Heating.Codes.All, Heating.Code, Lighting.Code, Cooking.Code, Education.Code, Education.Codes.All, Education.Codes.All.1)
 
 # Electrification rate TBD
 
@@ -383,286 +383,6 @@ data_joint_1 <- data_joint_0 %>%
 #                     Obs = ~ n()))%>%
 #  select(Country, starts_with("exp_USD_Electricity"))%>%
 #  mutate(electrification_rate = 1 - (exp_USD_Electricity_NAs/exp_USD_Electricity_Obs))
-
-# write_rds(data_joint_1, "../1_Carbon_Pricing_Incidence/1_Data_Incidence_Analysis/3_Collated_Database/Collated_Database.rds")  
-
-carbon_pricing_incidence_1 <- left_join(carbon_pricing_incidence_1, burden_decomposition_0)%>%
-  mutate(burden_s_cooking_fuels   = exp_s_cooking_fuels  /hh_expenditures_USD_2014,
-         burden_s_transport_fuels = exp_s_transport_fuels/hh_expenditures_USD_2014,
-         burden_s_Goods           = exp_s_Goods          /hh_expenditures_USD_2014,
-         burden_s_Services        = exp_s_Services       /hh_expenditures_USD_2014,
-         burden_s_Food            = exp_s_Food           /hh_expenditures_USD_2014,
-         burden_s_Electricity     = exp_s_Electricity    /hh_expenditures_USD_2014,
-         burden_s_other_energy    = exp_s_other_energy   /hh_expenditures_USD_2014
-  )%>%
-  select(-starts_with("exp_s_"))
-  
-data_joint_0 <- data_joint_0 %>%
-  select(hh_id, hh_weights, hh_size, Country, hh_expenditures_USD_2014, everything())%>%
-  mutate(hh_expenditures_USD_2014_pc     = hh_expenditures_USD_2014/hh_size,
-         log_hh_expenditures_USD_2014    = log(hh_expenditures_USD_2014),
-         log_hh_expenditures_USD_2014_pc = log(hh_expenditures_USD_2014_pc))
-
-# 1.3   Screen Data ####
-
-# Ethnicity    <- count(data_joint_0, Country, Ethnicity)       # Okay
-# Refrigerator <- count(data_joint_0, Country, refrigerator.01) # Okay
-# Car          <- count(data_joint_0, Country, car.01)          # Okay
-# Urban        <- count(data_joint_0, Country, urban_01)        # Okay
-# Cooking      <- count(data_joint_0, Country, CF)              # Okay
-
-# 1.4   Several Summary Statistics ####
-
-# General Summary Statistics
-
-Summary_1.2 <- data.frame()
-
-for(i in Country.Set){
-  
-  sum_1.2 <- data_joint_0 %>%
-    filter(Country == i)%>%
-    summarise(number                   = n(),
-              weights                  = sum(hh_weights),
-              hh_size                  = wtd.mean(hh_size, weights = hh_weights),
-              urban_01                 = wtd.mean(urban_01, weights = hh_weights),
-              electricity.access       = wtd.mean(electricity.access, weights = hh_weights),
-              hh_expenditures_USD_2014 = wtd.mean(hh_expenditures_USD_2014, weights = hh_weights),
-              car.01                   = wtd.mean(car.01, weights = hh_weights))%>%
-    mutate(urban_01                    = ifelse(i == "Argentina",1,urban_01))%>%
-    mutate(Country = i)%>%
-    select(Country, number, hh_size, urban_01, electricity.access, hh_expenditures_USD_2014, car.01)%>%
-    mutate(hh_expenditures_USD_2014 = round(hh_expenditures_USD_2014,0),
-           electricity.access = paste0(round(electricity.access*100,1),"%"),
-           car.01   = ifelse(!is.na(car.01), paste0(round(car.01*100,0),"%"),""),
-           urban_01 = ifelse(!is.na(urban_01), paste0(round(urban_01*100,0),"%"), ""),
-           hh_size = round(hh_size,2))
-  
-  sum_1.2.1 <- data_joint_0 %>%
-    filter(Country == i)%>%
-    mutate(Firewood_Biomass_Consumption = ifelse((!is.na(exp_USD_Firewood) & exp_USD_Firewood > 0 ) | (!is.na(exp_USD_Biomass) & exp_USD_Biomass > 0) | 
-                                                   CF == "Biomass" | CF == "Charcoal" | CF == "Firewood" | CF == "Firewood Charcoal" | CF == "Firewood Kerosene" |
-                                                   CF == "Firewood LPG" | CF == "Firewood LPG Charcoal" | CF == "Other Biomass",hh_weights,0))%>%
-    mutate(sum_hh_weights = sum(hh_weights))%>%
-    summarise(Firewood_Biomass_Consumption = sum(Firewood_Biomass_Consumption),
-              sum_hh_weights               = sum(hh_weights))%>%
-    mutate(share_Firewood = paste0(round((Firewood_Biomass_Consumption/sum_hh_weights)*100,0),"%"))%>%
-    select(share_Firewood)
-  
-  sum_1.2 <- bind_cols(sum_1.2, sum_1.2.1)
-  
-  
-  Summary_1.2 <- Summary_1.2 %>%
-    bind_rows(sum_1.2)
-}
-
-colnames(Summary_1.2) <- c("Country", "Observations", "Average \nHousehold Size", "Urban \nPopulation", "Electricity \nAccess", "Average \nHousehold \nExpenditures [USD]", "Car \nOwnership", "Share of \nFirewood Cons.")
-
-kbl(mutate_all(Summary_1.2,linebreak), format = "latex", linesep = "", booktabs = T,
-    caption = "Summary Statistics", format.args = list(big.mark = ",", scientific = FALSE), align = "lrcccrcc")%>%
-  kable_styling(position = "center", latex_options = c("HOLD_position", "scale_down"))%>%
-  footnote(general = "This table provides summary statistics for households in our sample. All values (except observations) are household-weighted averages. The Argentinian sample comprises urban households only.", threeparttable = T)%>%
-  column_spec(column = 1,    width = "3.5 cm", border_right = T)%>%
-  column_spec(column =  2:8, width = "2.3 cm")%>%
-  save_kable(., "../1_Carbon_Pricing_Incidence/3_Analyses/1_LAC_2021/6_App/Latin-America-Paper/Tables/Table_Summary_A1/Table_Summary_A1.tex")
-
-# Average Expenditure und Energy Expenditure Share Income Groups
-
-Summary_1.3 <- data.frame()
-
-for(i in Country.Set){
-  
-  sum_1.3.1 <- data_joint_0 %>%
-    filter(Country == i)%>%
-    summarise(hh_expenditures_USD_2014 = wtd.mean(hh_expenditures_USD_2014, weights = hh_weights),
-              share_energy             = wtd.mean(share_energy, weights = hh_weights))
-  
-  sum_1.3.2 <- data_joint_0 %>%
-    filter(Country == i)%>%
-    group_by(Income_Group_5)%>%
-    summarise(hh_expenditures_USD_2014 = wtd.mean(hh_expenditures_USD_2014, weights = hh_weights),
-              share_energy             = wtd.mean(share_energy, weights = hh_weights))%>%
-    ungroup()%>%
-    pivot_wider(names_from = "Income_Group_5", values_from = c("share_energy", "hh_expenditures_USD_2014"))
-  
-  sum_1.3.3 <- bind_cols(sum_1.3.1, sum_1.3.2)%>%
-    mutate(Country = i)%>%
-    select(Country, starts_with("hh_expenditures_USD_2014"), starts_with("share_energy"))
-  
-  Summary_1.3 <- Summary_1.3 %>%
-    bind_rows(sum_1.3.3)
-  
-}
-
-Summary_1.3 <- Summary_1.3 %>%
-  mutate_at(vars(starts_with("hh_expenditures_USD_2014")), list(~ round(.,0)))%>%
-  mutate_at(vars(starts_with("share_energy")), list(~ paste0(round(.*100,1), "%")))
-
-colnames(Summary_1.3) <- c("Country", rep(c("All","EQ1","EQ2","EQ3","EQ4","EQ5"),2))
-
-kbl(Summary_1.3, format = "latex", caption = "Average Expenditures and Average Expenditure Shares per Expenditure Quintile", booktabs = T, align = "l|rrrrrr|rrrrrr", vline = "", format.args = list(big.mark = ",", scientific = FALSE), linesep = "")%>%
-  kable_styling(position = "center", latex_options = c("HOLD_position", "scale_down"))%>%
-  column_spec(1, width = "3.15 cm")%>%
-  column_spec(2:7, width = "1.13 cm")%>%
-  column_spec(8:13, width = "1.04 cm")%>%
-  add_header_above(c(" " = 2, "Expenditure quintile" = 5, " " = 1, "Expenditure quintile" = 5))%>%
-  add_header_above(c(" " = 1, "Average household expenditures [USD]" = 6, "Average energy expenditure shares" = 6))%>%
-  footnote(general = "This table shows average household expenditures and average energy expenditure shares for households in 16 countries of Latin America and the Caribbean. We estimate household-weighted averages for the whole population and per expenditure quintile.", threeparttable = T)%>%
-  save_kable(., "../1_Carbon_Pricing_Incidence/3_Analyses/1_LAC_2021/6_App/Latin-America-Paper/Tables/Table_Summary_A2/Table_Summary_A2.tex")
-
-# Footprint und Burden National
-
-Summary_1.4 <- data.frame()
-
-for(i in Country.Set){
-  
-  sum_1.4.1 <- data_joint_0 %>%
-    filter(Country == i)%>%
-    summarise(CO2_t_national      = wtd.mean(CO2_t_national,      weights = hh_weights),
-              burden_CO2_national = wtd.mean(burden_CO2_national, weights = hh_weights))
-  
-  sum_1.4.2 <- data_joint_0 %>%
-    filter(Country == i)%>%
-    group_by(Income_Group_5)%>%
-    summarise(CO2_t_national      = wtd.mean(CO2_t_national,      weights = hh_weights),
-              burden_CO2_national = wtd.mean(burden_CO2_national, weights = hh_weights))%>%
-    ungroup()%>%
-    pivot_wider(names_from = "Income_Group_5", values_from = c("CO2_t_national", "burden_CO2_national"))
-  
-  sum_1.4.3 <- bind_cols(sum_1.4.1, sum_1.4.2)%>%
-    mutate(Country = i)%>%
-    select(Country, starts_with("CO2_t_national"), starts_with("burden_CO2_national"))
-  
-  Summary_1.4 <- Summary_1.4 %>%
-    bind_rows(sum_1.4.3)
-  
-}
-
-Summary_1.4 <- Summary_1.4 %>%
-  mutate_at(vars(starts_with("CO2_t_national")), list(~ round(.,1)))%>%
-  mutate_at(vars(starts_with("burden_CO2_national")), list(~ paste0(round(.*100,2), "%")))
-
-colnames(Summary_1.4) <- c("Country", rep(c("All","EQ1","EQG2","EQ3","EQ4","EQ5"),2))
-
-kbl(Summary_1.4, format = "latex", caption = "Average Carbon Footprint and Average USD/tCO$_{2}$ Carbon Price Incidence per Expenditure Quintile", booktabs = T, align = "l|rrrrrr|rrrrrr", vline = "", linesep = "")%>%
-  kable_styling(position = "center", latex_options = c("HOLD_position", "scale_down"))%>%
-  column_spec(1, width = "3.15 cm")%>%
-  column_spec(2:7, width = "1.05 cm")%>%
-  column_spec(8:13, width = "1.15 cm")%>%
-  add_header_above(c(" " = 2, "Expenditure quintile" = 5, " " = 1, "Expenditure quintile" = 5))%>%
-  add_header_above(c(" " = 1, "Average carbon footprint [tCO$_{2}$]" = 6, "Average incidence from USD 40/tCO$_{2}$ carbon price" = 6), escape = FALSE)%>%
-  footnote(general = "This table shows average carbon footprints in tCO$_{2}$ and average levels of carbon price incidence for households in 16 countries of Latin America and the Caribbean. We estimate household-weighted averages for the whole population and per expenditure quintile.", threeparttable = T, escape = FALSE)%>%
-  save_kable(., "../1_Carbon_Pricing_Incidence/3_Analyses/1_LAC_2021/6_App/Latin-America-Paper/Tables/Table_Summary_A3/Table_Summary_A3.tex")
-
-# Electricity-Table
-
-LAC_Electricity <- read_excel("../0_Data/9_Supplementary Data/LAC_Electricity.xlsx")
-
-LAC_Electricity_2 <- LAC_Electricity %>%
-  mutate_at(vars("Coal":"Other"),list(~ paste0(round(.*100,1), "\\%")))%>%
-  rename("Cons. [TWh]" = "total Electricity Consumption in TWh (2020)", "Cons. pc. [MWh]" = "Electricity Consumption MWh / per capita (2020)")%>%
-  rename_at(vars("Coal":"Cons. pc. [MWh]"), funs(str_replace(.,"^", "\\\\rotatebox{90}{")))%>%
-  rename_at(vars(2:13), funs(str_replace(., "$","}")))
-
-kbl(mutate_all(LAC_Electricity_2, linebreak), format = "latex", caption = "Electricity Generation in 16 Countries of Latin America and the Caribbean", 
-    booktabs = T, align = "l|rrrrrrrrrr|r|r", vline = "", format.args = list(big.mark = ",", scientific = FALSE), linesep = "", escape = FALSE)%>%
-  kable_styling(position = "center", latex_options = c("HOLD_position", "scale_down"))%>%
-  column_spec(1,     width = "3.15 cm")%>%
-  column_spec(2:10,  width = "1.3 cm")%>%
-  column_spec(11:12, width = "1.4 cm")%>%
-  add_header_above(c(" " = 1, "Share of Electricity Generation by Source in Percent (2020)" = 10, " " = 1, " " = 1))%>%
-  footnote(general = "This table provides summary statistics for electricity generation in 16 different countries of Latin America and the Caribbean. It reports the share of electricity generated by each source in each country in 2020 [\\\\%] as well as the total annual electricity consumption [TWh] and per capita [Mwh]. Source: \\\\textcite{IEA.2021} and Our World in Data \\\\autocite{HannahRitchie.2020} for Barbados. Annual electricity consumption for Peru refers to 2019. ", threeparttable = T, escape = FALSE)%>%
-  save_kable(., "../1_Carbon_Pricing_Incidence/3_Analyses/1_LAC_2021/6_App/Latin-America-Paper/Tables/Table_A7/Table_A7.tex")
-
-# Supplement for Uruguay, Paraguay, Nicaragua and Guatemala
-
-Summary_1.5 <- data_joint_0 %>%
-  filter(Country == "Uruguay" | Country == "Paraguay" | Country == "Nicaragua" | Country == "Guatemala")%>%
-  mutate(exp_USD_energy = hh_expenditures_USD_2014*share_energy)%>%
-  filter(exp_USD_energy > 0)%>%
-  mutate(share_Firewood = exp_USD_Firewood/exp_USD_energy,
-         share_Electricity = exp_USD_Electricity/exp_USD_energy)%>%
-  group_by(Country)%>%
-  summarise(mean_share_Firewood    = mean(share_Firewood),
-            mean_share_Electricity = mean(share_Electricity))%>%
-  ungroup()
-
-# 1.4.1 Average footprints per Country ####
-
-data_1.4.1 <- data_joint_0 %>%
-  filter(!is.na(CO2_t_national))%>%
-  group_by(Country)%>%
-  summarise(
-    mean_CO2_t_national = mean(CO2_t_national),
-    mean_CO2_t_global   = mean(CO2_t_global)
-    )%>%
-  ungroup()
-
-world <- map_data("world")%>%
-  mutate(Country = countrycode(region, origin = "country.name", destination = "iso3c"))%>%
-  left_join(data_1.4.1)%>%
-  filter(region != "Antarctica")
-
-P.1 <- ggplot()+
-  #geom_map(data = world, map = world, aes(map_id = region), fill = "lightgrey")+
-  geom_map(data = world, map = world,
-           aes(long, lat, map_id = region, fill = mean_CO2_t_national), colour = "black", size = 0.1)+
-  theme_bw()+
-  theme(axis.text = element_blank(),
-        axis.title = element_blank(),
-        legend.position = "bottom",
-        legend.text = element_text(size = 7),
-        plot.title = element_text(size = 9),
-        axis.ticks = element_blank(),
-        panel.grid = element_blank())+
-  scale_fill_gradient(low = "yellow", high = "red", na.value = NA)+
-  #scale_fill_manual(values = c("#6F99ADFF", "#0072B5FF", "lightgrey"), na.translate = FALSE, na.value = "lightgrey")+
-  labs(fill = "")+
-  guides(colour = "none")+
-  ggtitle("Average carbon footprint in t")
-
-jpeg("C:/Users/misl/OwnCloud/Papiere und Stuff/PhD-Seminar 07.12.2022/Figure_0.jpg", width = 15.5, height = 15, unit = "cm", res = 400)
-print(P.1)
-dev.off()
-
-# 1.4.2 Boxplots for all countries with 40 USD carbon tax ####
-
-data_1.4.2 <- data_joint_1 %>%
-  group_by(Country)%>%
-  summarise(
-    y5  = wtd.quantile(burden_CO2_national, weights = hh_weights, probs = 0.05),
-    y25 = wtd.quantile(burden_CO2_national, weights = hh_weights, probs = 0.25),
-    y50 = wtd.quantile(burden_CO2_national, weights = hh_weights, probs = 0.5),
-    y75 = wtd.quantile(burden_CO2_national, weights = hh_weights, probs = 0.75),
-    y95 = wtd.quantile(burden_CO2_national, weights = hh_weights, probs = 0.95),
-    mean = wtd.mean(   burden_CO2_national, weights = hh_weights))%>%
-  ungroup()
-
-P_2 <- ggplot(data_1.4.2, aes(x = reorder(Country, mean)))+
-  geom_boxplot(aes(ymin = y5, lower = y25, middle = y50, upper = y75, ymax = y95), stat = "identity", position = position_dodge(0.5), outlier.shape = NA, width = 0.5, size = 0.3) +
-  theme_bw()+
-  xlab("Country")+ ylab("Carbon Pricing Incidence")+
-  geom_point(aes(y = mean), shape = 23, size = 1.1, stroke = 0.4, fill = "white")+
-  scale_y_continuous(labels = scales::percent_format(accuracy = 1), expand = c(0,0))+
-  coord_cartesian(ylim = c(0,0.2))+
-  ggtitle("Additional costs for 40 USD/tCO2 carbon price")+
-  theme(axis.text.y = element_text(size = 7), 
-        axis.text.x = element_text(size = 5, angle = 90),
-        axis.title  = element_text(size = 7),
-        plot.title = element_text(size = 11),
-        legend.position = "bottom",
-        strip.text = element_text(size = 7),
-        strip.text.y = element_text(angle = 180),
-        panel.grid.major = element_blank(),
-        panel.grid.minor = element_blank(),
-        axis.ticks = element_line(size = 0.2),
-        legend.text = element_text(size = 7),
-        legend.title = element_text(size = 7),
-        plot.margin = unit(c(0.3,0.3,0.3,0.3), "cm"),
-        panel.border = element_rect(size = 0.3))
-
-jpeg("C:/Users/misl/OwnCloud/Papiere und Stuff/PhD-Seminar 07.12.2022/Figure_1.jpg", width = 15.5, height = 15, unit = "cm", res = 400)
-print(P_2)
-dev.off()
 
 # 2.    Overview GTAP-CO2-Intensities ####
 
@@ -896,6 +616,8 @@ jpeg("1_Figures/Figure_2.1.2.jpg", width = 20, height = 20, unit = "cm", res = 4
 print(P_2.1.2)
 dev.off()
 
+rm(carbon_intensities, carbon_intensities_0, carbon_intensities_1, carbon_intensities_2.1, carbon_intensities_2.1.1, carbon_intensities_2.1.2, GTAP.Code,
+   P_2.1, P_2.1.1, P_2.1.2)
 
 # 3     Miscellaneous ####
 
@@ -994,9 +716,9 @@ for(i in Country.Set){
 }
 
 Item.Codes.All.1 <- Item.Codes.All %>%
-  filter(category == "energy" | is.na(category))
+  filter(category == "energy" | is.na(category) | !is.na(fuel) | GTAP == "p_c" | GTAP == "ely" | GTAP == "gasgdt" | GTAP == "coa")
 
-
+rm(Item.Codes.All, Item_Codes, item_codes, matching, fuels, categories)
 
 # 3.2   Track NAs over observations ####
 
@@ -1019,8 +741,107 @@ write.xlsx(NAs_over_obs, "0_Data/9_Supplementary Information/NAs_over_Observatio
 
 # 4     Output ####
 
-# 4.1   Split data and codes ####
+# 4.1   Create and save codes ####
 
-# 4.2   Save data ####
+dir.create("0_Data/9_Supplementary Information/2_Codes", showWarnings = FALSE)
 
-# 4.3   Save codes ####
+# Define Codes
+
+Cooking.Codes.Aggregate <- distinct(data_joint_1, CF)%>%
+  arrange(CF)%>%
+  mutate(CF_code = 1:n())%>%
+  write_csv(., "0_Data/9_Supplementary Information/2_Codes/Cooking.Code.All.csv")
+
+Lighting.Codes.Aggregate <- distinct(data_joint_1, LF)%>%
+  arrange(LF)%>%
+  mutate(LF_code = 1:n())%>%
+  write_csv(., "0_Data/9_Supplementary Information/2_Codes/Lighting.Code.All.csv")
+
+Heating.Codes.Aggregate <- distinct(data_joint_1, HF)%>%
+  arrange(HF)%>%
+  mutate(HF_code = 1:n())%>%
+  write_csv(., "0_Data/9_Supplementary Information/2_Codes/Heating.Code.All.csv")
+
+# To be updates: Water and Toilet codes
+Water.Codes.Aggregate <- distinct(data_joint_1, WTR)%>%
+  arrange(WTR)%>%
+  mutate(WTR_code = 1:n())%>%
+  write_csv(., "0_Data/9_Supplementary Information/2_Codes/Water.Code.All.csv")
+
+Toilet.Codes.Aggregate <- distinct(data_joint_1, TLT)%>%
+  arrange(TLT)%>%
+  mutate(TLT_code = 1:n())%>%
+  write_csv(., "0_Data/9_Supplementary Information/2_Codes/Toilet.Code.All.csv")
+
+# Country-specific codes
+
+Province.Codes.Aggregate <- distinct(data_joint_1, province, Province, Country)%>%
+  arrange(Country, Province)%>%
+  mutate(Province_code = 1:n())%>%
+  write_csv(., "0_Data/9_Supplementary Information/2_Codes/Province.Code.All.csv")
+
+District.Codes.Aggregate <- distinct(data_joint_1, district, District, Country)%>%
+  arrange(Country, District)%>%
+  mutate(District_code = 1:n())%>%
+  write_csv(., "0_Data/9_Supplementary Information/2_Codes/District.Code.All.csv")
+
+Nationality.Codes.Aggregate <- distinct(data_joint_1, Country, Nationality, nationality)%>%
+  arrange(Country, nationality)%>%
+  mutate(Nationality_code = 1:n())%>%
+  write_csv(., "0_Data/9_Supplementary Information/2_Codes/Nationality.Code.All.csv")
+
+Ethnicity.Codes.Aggregate <- distinct(data_joint_1, Country, Ethnicity, ethnicity)%>%
+  arrange(Country, ethnicity)%>%
+  mutate(Ethnicity_code = 1:n())%>%
+  write_csv(., "0_Data/9_Supplementary Information/2_Codes/Ethnicity.Code.All.csv")
+
+Language.Codes.Aggregate <- distinct(data_joint_1, Country, Language, language)%>%
+  arrange(Country, language)%>%
+  mutate(Language_code = 1:n())%>%
+  write_csv(., "0_Data/9_Supplementary Information/2_Codes/Language.Code.All.csv")
+
+Religion.Codes.Aggregate <- distinct(data_joint_1, Country, Religion, religion)%>%
+  arrange(Country, religion)%>%
+  mutate(Religion_code = 1:n())%>%
+  write_csv(., "0_Data/9_Supplementary Information/2_Codes/Religion.Code.All.csv")
+
+# 4.2   Split and save data ####
+
+data_joint_split <- data_joint_1 %>%
+  left_join(Cooking.Codes.Aggregate,     by = "CF")%>%
+  left_join(Lighting.Codes.Aggregate,    by = "LF")%>%
+  left_join(Heating.Codes.Aggregate,     by = "HF")%>%
+  left_join(Water.Codes.Aggregate,       by = "WTR")%>%
+  left_join(Toilet.Codes.Aggregate,      by = "TLT")%>%
+  # Country-specific
+  left_join(Province.Codes.Aggregate,    by = c("Country", "province", "Province"))%>%
+  left_join(District.Codes.Aggregate,    by = c("Country", "district", "District"))%>%
+  left_join(Nationality.Codes.Aggregate, by = c("Country", "nationality", "Nationality"))%>%
+  left_join(Ethnicity.Codes.Aggregate,   by = c("Country", "ethnicity", "Ethnicity"))%>%
+  left_join(Language.Codes.Aggregate,    by = c("Country", "language", "Language"))%>%
+  left_join(Religion.Codes.Aggregate,    by = c("Country", "religion", "Religion"))%>%
+  select(-CF,-LF,-HF,-WTR,-TLT,-province,-Province,-district,-District,-nationality,-Nationality,
+         -ethnicity,-Ethnicity,-language,-Language,-religion,-Religion,
+         -cooking_fuel,-heating_fuel,-lighting_fuel,-water,-toilet)%>%
+  select(hh_id, Country, hh_weights, hh_size, adults, children,
+         Province_code, District_code, village, urban_01,
+         age_hhh, sex_hhh, ind_hhh, ISCED, Nationality_code, Ethnicity_code, Language_code, Religion_code, religiosity,
+         CF_code, LF_code, HF_code, WTR_code, TLT_code, electricity.access,
+         hh_expenditures_USD_2014, hh_expenditures, hh_expenditures_pc,
+         inc_gov_cash, inc_gov_monetary, Income_Group_5, Income_Group_10,
+         starts_with("share_"), starts_with("exp_USD_"),
+         starts_with("CO2_"), starts_with("exp_CO2"), starts_with("burden_CO2"), ends_with("_national"), starts_with("exp_s"),
+         ends_with(".01"),
+         everything())%>%
+  # delete derived values 
+  select(-exp_CO2_global,-exp_CO2_national,-exp_CO2_electricity,-exp_CO2_transport,
+         -burden_CO2_global,-burden_CO2_national,-burden_CO2_electricity,-burden_CO2_transport)%>%
+  mutate_at(vars(hh_size,adults,children,hh_id,urban_01,age_hhh,sex_hhh,
+                 Income_Group_5, Income_Group_10, electricity.access, ISCED, ends_with(".01")), list(~ as.integer(.)))
+
+rm(Cooking.Codes.Aggregate,Lighting.Codes.Aggregate,Heating.Codes.Aggregate,Water.Codes.Aggregate,Toilet.Codes.Aggregate,
+   Province.Codes.Aggregate,District.Codes.Aggregate,Nationality.Codes.Aggregate,Ethnicity.Codes.Aggregate,Language.Codes.Aggregate,Religion.Codes.Aggregate)
+
+dir.create("../1_Carbon_Pricing_Incidence/1_Data_Incidence_Analysis/3_Collated_Database", showWarnings = FALSE)
+
+write_rds(data_joint_split, "../1_Carbon_Pricing_Incidence/1_Data_Incidence_Analysis/3_Collated_Database/Collated_Database.rds")  

@@ -1,0 +1,501 @@
+WTR,WTR_code
+1. PIPED INTO DWELLING,1
+10. RAIN WATER COLLECTION,2
+11. TANKER TRUCK,3
+12. WITH SMALL TANK/DRUM,4
+"13. SURFACE WATER (RIVER,STREAM, POND, DAMN,CANAL)",5
+14. BOTTLED WATER,6
+15. SACHET WATER,7
+16. WATER KIOSK,8
+17. OTHER(SPECIFY),9
+2. PIPED INTO YARD/PLOT,10
+3. PIPED TO NEIGHBOR,11
+4. PUBLIC TAP/STANDPIPE,12
+5. TUBE WELL/BOREHOLE,13
+6. PROTECTED DUG WELL,14
+7. UNPROTECTED DUG WELL,15
+8. PROTECTED SPRING,16
+9. UNPROTECTED SPRING,17
+"Água engarrafada (Dry Season), Água engarrafada (Wet Season)",18
+"Águas pluviais (Dry Season), Águas pluviais (Wet Season)",19
+"Águas pluviais (Dry Season), Na habitação (Wet Season)",20
+"Autre ( (Dry Season), Autre ( (Wet Season)",21
+"Autre ( (Dry Season), Eau de pluie (Wet Season)",22
+"Autre ( (Dry Season), Forage ailleurs (Wet Season)",23
+"Autre ( (Dry Season), Puits couvert ailleurs (Wet Season)",24
+"Autre ( (Dry Season), Puits ouvert ailleurs (Wet Season)",25
+"Autre (à préciser) (Dry Season), Autre (à préciser) (Wet Season)",26
+"Autre (à préciser) (Dry Season), Borne fontaine/Robinet public (Wet Season)",27
+"Autre (à préciser) (Dry Season), Dans le logement (Wet Season)",28
+"Autre (à préciser) (Dry Season), Eau de pluie (Wet Season)",29
+"Autre (à préciser) (Dry Season), Eau en bouteille (Wet Season)",30
+"Autre (à préciser) (Dry Season), Forage ailleurs (Wet Season)",31
+"Autre (à préciser) (Dry Season), Puits couvert ailleurs (Wet Season)",32
+"Autre (à préciser) (Dry Season), Puits ouvert ailleurs (Wet Season)",33
+"Autre (à préciser) (Dry Season), Robinet du voisin (Wet Season)",34
+"Autre (à préciser) (Dry Season), Vendeur ambulant (Wet Season)",35
+"Autre (Dry Season), Autre (Wet Season)",36
+"Autre (Dry Season), Borne fontaine/Robinet public (Wet Season)",37
+"Autre (Dry Season), Eau de pluie (Wet Season)",38
+"Autre (Dry Season), Fleuve/Rivière/Lac/Barrage (Wet Season)",39
+"Autre (Dry Season), Puits couvert ailleurs (Wet Season)",40
+"Autre (Dry Season), Puits couvert dans la cour/Concession (Wet Season)",41
+"Autre (Dry Season), Puits ouvert ailleurs (Wet Season)",42
+"Autre (Dry Season), Puits ouvert dans la cour/Concession (Wet Season)",43
+"Autre (Dry Season), Robinet dans la cour/Concession (Wet Season)",44
+"Autre (Dry Season), Robinet dans le logement (Wet Season)",45
+"Autre (Dry Season), Robinet du voisin (Wet Season)",46
+"Autre (Dry Season), Source aménagée (Wet Season)",47
+"Autre (Dry Season), Source non aménagée (Wet Season)",48
+Basic,49
+"Borne fontaine/Robinet public (Dry Season), Autre ( (Wet Season)",50
+"Borne fontaine/Robinet public (Dry Season), Autre (à préciser) (Wet Season)",51
+"Borne fontaine/Robinet public (Dry Season), Borne fontaine/Robinet public (Wet Season)",52
+"Borne fontaine/Robinet public (Dry Season), Dans la cour/Concession (Wet Season)",53
+"Borne fontaine/Robinet public (Dry Season), Dans le logement (Wet Season)",54
+"Borne fontaine/Robinet public (Dry Season), Eau de pluie (Wet Season)",55
+"Borne fontaine/Robinet public (Dry Season), Eau en bouteille (Wet Season)",56
+"Borne fontaine/Robinet public (Dry Season), Fleuve/Rivi (Wet Season)",57
+"Borne fontaine/Robinet public (Dry Season), Fleuve/Rivière/Lac/Barrage (Wet Season)",58
+"Borne fontaine/Robinet public (Dry Season), Forage ailleurs (Wet Season)",59
+"Borne fontaine/Robinet public (Dry Season), Forage dans la concession (Wet Season)",60
+"Borne fontaine/Robinet public (Dry Season), Puits couvert ailleurs (Wet Season)",61
+"Borne fontaine/Robinet public (Dry Season), Puits couvert dans la cour/Concession (Wet Season)",62
+"Borne fontaine/Robinet public (Dry Season), Puits ouvert ailleurs (Wet Season)",63
+"Borne fontaine/Robinet public (Dry Season), Puits ouvert dans la cour/Concession (Wet Season)",64
+"Borne fontaine/Robinet public (Dry Season), Robinet dans la cour/Concession (Wet Season)",65
+"Borne fontaine/Robinet public (Dry Season), Robinet dans le logement (Wet Season)",66
+"Borne fontaine/Robinet public (Dry Season), Robinet du voisin (Wet Season)",67
+"Borne fontaine/Robinet public (Dry Season), Source aménagé (Wet Season)",68
+"Borne fontaine/Robinet public (Dry Season), Source aménagée (Wet Season)",69
+"Borne fontaine/Robinet public (Dry Season), Source non aménagée (Wet Season)",70
+"Borne fontaine/Robinet public (Dry Season), Vendeur ambulant (Wet Season)",71
+Bottled water,72
+"Dans la cour/Concession (Dry Season), Autre (à préciser) (Wet Season)",73
+"Dans la cour/Concession (Dry Season), Borne fontaine/Robinet public (Wet Season)",74
+"Dans la cour/Concession (Dry Season), Dans la cour/Concession (Wet Season)",75
+"Dans la cour/Concession (Dry Season), Dans le logement (Wet Season)",76
+"Dans la cour/Concession (Dry Season), Eau de pluie (Wet Season)",77
+"Dans la cour/Concession (Dry Season), Forage dans la concession (Wet Season)",78
+"Dans la cour/Concession (Dry Season), Puits couvert dans la cour/Concession (Wet Season)",79
+"Dans la cour/Concession (Dry Season), Puits ouvert ailleurs (Wet Season)",80
+"Dans la cour/Concession (Dry Season), Puits ouvert dans la cour/Concession (Wet Season)",81
+"Dans la cour/Concession (Dry Season), Robinet du voisin (Wet Season)",82
+"Dans le logement (Dry Season), Autre (à préciser) (Wet Season)",83
+"Dans le logement (Dry Season), Borne fontaine/Robinet public (Wet Season)",84
+"Dans le logement (Dry Season), Dans la cour/Concession (Wet Season)",85
+"Dans le logement (Dry Season), Dans le logement (Wet Season)",86
+"Dans le logement (Dry Season), Eau de pluie (Wet Season)",87
+"Dans le logement (Dry Season), Eau en bouteille (Wet Season)",88
+"Dans le logement (Dry Season), Forage ailleurs (Wet Season)",89
+"Dans le logement (Dry Season), Forage dans la concession (Wet Season)",90
+"Dans le logement (Dry Season), Puits couvert dans la cour/Concession (Wet Season)",91
+"Dans le logement (Dry Season), Puits ouvert dans la cour/Concession (Wet Season)",92
+"Dans le logement (Dry Season), Robinet du voisin (Wet Season)",93
+Desalinated water - piped into dwelling,94
+Desalinated water - public tap/standpipe,95
+"Eau de pluie (Dry Season), Borne fontaine/Robinet public (Wet Season)",96
+"Eau de pluie (Dry Season), Dans le logement (Wet Season)",97
+"Eau de pluie (Dry Season), Eau de pluie (Wet Season)",98
+"Eau de pluie (Dry Season), Eau en bouteille (Wet Season)",99
+"Eau de pluie (Dry Season), Fleuve/Rivière/Lac/Barrage (Wet Season)",100
+"Eau de pluie (Dry Season), Forage ailleurs (Wet Season)",101
+"Eau de pluie (Dry Season), Puits ouvert ailleurs (Wet Season)",102
+"Eau de pluie (Dry Season), Puits ouvert dans la cour/Concession (Wet Season)",103
+"Eau en bouteille (Dry Season), Autre (à préciser) (Wet Season)",104
+"Eau en bouteille (Dry Season), Dans le logement (Wet Season)",105
+"Eau en bouteille (Dry Season), Eau de pluie (Wet Season)",106
+"Eau en bouteille (Dry Season), Eau en bouteille (Wet Season)",107
+"Eau en bouteille (Dry Season), Puits ouvert dans la cour/Concession (Wet Season)",108
+"Eau en bouteille (Dry Season), Robinet dans la cour/Concession (Wet Season)",109
+"Eau en bouteille (Dry Season), Robinet dans le logement (Wet Season)",110
+"Fleuve/Rivi (Dry Season), Autre ( (Wet Season)",111
+"Fleuve/Rivi (Dry Season), Eau de pluie (Wet Season)",112
+"Fleuve/Rivi (Dry Season), Fleuve/Rivi (Wet Season)",113
+"Fleuve/Rivi (Dry Season), Puits couvert ailleurs (Wet Season)",114
+"Fleuve/Rivi (Dry Season), Puits couvert dans la cour/Concession (Wet Season)",115
+"Fleuve/Rivière/Lac/Barrage (Dry Season), Autre (à préciser) (Wet Season)",116
+"Fleuve/Rivière/Lac/Barrage (Dry Season), Autre (Wet Season)",117
+"Fleuve/Rivière/Lac/Barrage (Dry Season), Borne fontaine/Robinet public (Wet Season)",118
+"Fleuve/Rivière/Lac/Barrage (Dry Season), Dans la cour/Concession (Wet Season)",119
+"Fleuve/Rivière/Lac/Barrage (Dry Season), Dans le logement (Wet Season)",120
+"Fleuve/Rivière/Lac/Barrage (Dry Season), Eau de pluie (Wet Season)",121
+"Fleuve/Rivière/Lac/Barrage (Dry Season), Fleuve/Rivière/Lac/Barrage (Wet Season)",122
+"Fleuve/Rivière/Lac/Barrage (Dry Season), Forage ailleurs (Wet Season)",123
+"Fleuve/Rivière/Lac/Barrage (Dry Season), Forage dans la concession (Wet Season)",124
+"Fleuve/Rivière/Lac/Barrage (Dry Season), Puits couvert ailleurs (Wet Season)",125
+"Fleuve/Rivière/Lac/Barrage (Dry Season), Puits couvert dans la cour/Concession (Wet Season)",126
+"Fleuve/Rivière/Lac/Barrage (Dry Season), Puits ouvert ailleurs (Wet Season)",127
+"Fleuve/Rivière/Lac/Barrage (Dry Season), Puits ouvert dans la cour/Concession (Wet Season)",128
+"Fleuve/Rivière/Lac/Barrage (Dry Season), Robinet dans la cour/Concession (Wet Season)",129
+"Fleuve/Rivière/Lac/Barrage (Dry Season), Robinet dans le logement (Wet Season)",130
+"Fleuve/Rivière/Lac/Barrage (Dry Season), Robinet du voisin (Wet Season)",131
+"Fleuve/Rivière/Lac/Barrage (Dry Season), Source aménagé (Wet Season)",132
+"Fleuve/Rivière/Lac/Barrage (Dry Season), Source aménagée (Wet Season)",133
+"Fleuve/Rivière/Lac/Barrage (Dry Season), Source non aménagée (Wet Season)",134
+"Fontanário/torneira pública (Dry Season), Águas pluviais (Wet Season)",135
+"Fontanário/torneira pública (Dry Season), Fontanário/torneira pública (Wet Season)",136
+"Fontanário/torneira pública (Dry Season), Fonte melhorada (Wet Season)",137
+"Fontanário/torneira pública (Dry Season), Fonte não melhorada (Wet Season)",138
+"Fontanário/torneira pública (Dry Season), Na habitação (Wet Season)",139
+"Fontanário/torneira pública (Dry Season), No pátio/concessão (Wet Season)",140
+"Fontanário/torneira pública (Dry Season), Poço aberto no pátio/concessão (Wet Season)",141
+"Fontanário/torneira pública (Dry Season), Poço aberto noutro local (Wet Season)",142
+"Fontanário/torneira pública (Dry Season), Poço coberto no pátio/concessão (Wet Season)",143
+"Fontanário/torneira pública (Dry Season), Poço coberto noutro local (Wet Season)",144
+"Fontanário/torneira pública (Dry Season), Poço perfurado noutro local (Wet Season)",145
+"Fontanário/torneira pública (Dry Season), Torneira do vizinho (Wet Season)",146
+"Fonte melhorada (Dry Season), Águas pluviais (Wet Season)",147
+"Fonte melhorada (Dry Season), Fontanário/torneira pública (Wet Season)",148
+"Fonte melhorada (Dry Season), Fonte melhorada (Wet Season)",149
+"Fonte melhorada (Dry Season), Fonte não melhorada (Wet Season)",150
+"Fonte melhorada (Dry Season), Na habitação (Wet Season)",151
+"Fonte melhorada (Dry Season), No pátio/concessão (Wet Season)",152
+"Fonte melhorada (Dry Season), Poço aberto no pátio/concessão (Wet Season)",153
+"Fonte melhorada (Dry Season), Poço aberto noutro local (Wet Season)",154
+"Fonte melhorada (Dry Season), Poço coberto no pátio/concessão (Wet Season)",155
+"Fonte melhorada (Dry Season), Poço coberto noutro local (Wet Season)",156
+"Fonte melhorada (Dry Season), Poço perfurado noutro local (Wet Season)",157
+"Fonte melhorada (Dry Season), Rio/regato/lago/represa (Wet Season)",158
+"Fonte não melhorada (Dry Season), Águas pluviais (Wet Season)",159
+"Fonte não melhorada (Dry Season), Fontanário/torneira pública (Wet Season)",160
+"Fonte não melhorada (Dry Season), Fonte melhorada (Wet Season)",161
+"Fonte não melhorada (Dry Season), Fonte não melhorada (Wet Season)",162
+"Fonte não melhorada (Dry Season), Na habitação (Wet Season)",163
+"Fonte não melhorada (Dry Season), Outro (especificar) (Wet Season)",164
+"Fonte não melhorada (Dry Season), Poço aberto no pátio/concessão (Wet Season)",165
+"Fonte não melhorada (Dry Season), Poço aberto noutro local (Wet Season)",166
+"Fonte não melhorada (Dry Season), Poço coberto noutro local (Wet Season)",167
+"Fonte não melhorada (Dry Season), Poço perfurado na concessão (Wet Season)",168
+"Fonte não melhorada (Dry Season), Poço perfurado noutro local (Wet Season)",169
+"Fonte não melhorada (Dry Season), Rio/regato/lago/represa (Wet Season)",170
+"Forage ailleurs (Dry Season), Autre ( (Wet Season)",171
+"Forage ailleurs (Dry Season), Autre (à préciser) (Wet Season)",172
+"Forage ailleurs (Dry Season), Autre (Wet Season)",173
+"Forage ailleurs (Dry Season), Borne fontaine/Robinet public (Wet Season)",174
+"Forage ailleurs (Dry Season), Dans la cour/Concession (Wet Season)",175
+"Forage ailleurs (Dry Season), Dans le logement (Wet Season)",176
+"Forage ailleurs (Dry Season), Eau de pluie (Wet Season)",177
+"Forage ailleurs (Dry Season), Eau en bouteille (Wet Season)",178
+"Forage ailleurs (Dry Season), Fleuve/Rivi (Wet Season)",179
+"Forage ailleurs (Dry Season), Fleuve/Rivière/Lac/Barrage (Wet Season)",180
+"Forage ailleurs (Dry Season), Forage ailleurs (Wet Season)",181
+"Forage ailleurs (Dry Season), Forage dans la concession (Wet Season)",182
+"Forage ailleurs (Dry Season), Puits couvert ailleurs (Wet Season)",183
+"Forage ailleurs (Dry Season), Puits couvert dans la cour/Concession (Wet Season)",184
+"Forage ailleurs (Dry Season), Puits ouvert ailleurs (Wet Season)",185
+"Forage ailleurs (Dry Season), Puits ouvert dans la cour/Concession (Wet Season)",186
+"Forage ailleurs (Dry Season), Robinet dans la cour/Concession (Wet Season)",187
+"Forage ailleurs (Dry Season), Robinet dans le logement (Wet Season)",188
+"Forage ailleurs (Dry Season), Robinet du voisin (Wet Season)",189
+"Forage ailleurs (Dry Season), Source aménagé (Wet Season)",190
+"Forage ailleurs (Dry Season), Source aménagée (Wet Season)",191
+"Forage ailleurs (Dry Season), Source non aménagée (Wet Season)",192
+"Forage dans la concession (Dry Season), Autre (à préciser) (Wet Season)",193
+"Forage dans la concession (Dry Season), Dans la cour/Concession (Wet Season)",194
+"Forage dans la concession (Dry Season), Dans le logement (Wet Season)",195
+"Forage dans la concession (Dry Season), Eau de pluie (Wet Season)",196
+"Forage dans la concession (Dry Season), Eau en bouteille (Wet Season)",197
+"Forage dans la concession (Dry Season), Forage ailleurs (Wet Season)",198
+"Forage dans la concession (Dry Season), Forage dans la concession (Wet Season)",199
+"Forage dans la concession (Dry Season), Puits couvert dans la cour/Concession (Wet Season)",200
+"Forage dans la concession (Dry Season), Puits ouvert ailleurs (Wet Season)",201
+"Forage dans la concession (Dry Season), Robinet dans la cour/Concession (Wet Season)",202
+Limited,203
+"Na habitação (Dry Season), Águas pluviais (Wet Season)",204
+"Na habitação (Dry Season), Fontanário/torneira pública (Wet Season)",205
+"Na habitação (Dry Season), Fonte melhorada (Wet Season)",206
+"Na habitação (Dry Season), Fonte não melhorada (Wet Season)",207
+"Na habitação (Dry Season), Na habitação (Wet Season)",208
+"Na habitação (Dry Season), No pátio/concessão (Wet Season)",209
+"Na habitação (Dry Season), Poço aberto no pátio/concessão (Wet Season)",210
+"Na habitação (Dry Season), Torneira do vizinho (Wet Season)",211
+"No pátio/concessão (Dry Season), Fontanário/torneira pública (Wet Season)",212
+"No pátio/concessão (Dry Season), No pátio/concessão (Wet Season)",213
+"No pátio/concessão (Dry Season), Poço coberto noutro local (Wet Season)",214
+"No pátio/concessão (Dry Season), Torneira do vizinho (Wet Season)",215
+No Service,216
+Other _specify_,217
+"Outro (especificar) (Dry Season), Águas pluviais (Wet Season)",218
+Piped into dwelling,219
+Piped to Yard/Plot,220
+"Poço aberto no pátio/concessão (Dry Season), Águas pluviais (Wet Season)",221
+"Poço aberto no pátio/concessão (Dry Season), Na habitação (Wet Season)",222
+"Poço aberto no pátio/concessão (Dry Season), No pátio/concessão (Wet Season)",223
+"Poço aberto no pátio/concessão (Dry Season), Poço aberto no pátio/concessão (Wet Season)",224
+"Poço aberto no pátio/concessão (Dry Season), Poço aberto noutro local (Wet Season)",225
+"Poço aberto no pátio/concessão (Dry Season), Poço coberto no pátio/concessão (Wet Season)",226
+"Poço aberto no pátio/concessão (Dry Season), Poço coberto noutro local (Wet Season)",227
+"Poço aberto no pátio/concessão (Dry Season), Poço perfurado na concessão (Wet Season)",228
+"Poço aberto no pátio/concessão (Dry Season), Torneira do vizinho (Wet Season)",229
+"Poço aberto noutro local (Dry Season), Águas pluviais (Wet Season)",230
+"Poço aberto noutro local (Dry Season), Fontanário/torneira pública (Wet Season)",231
+"Poço aberto noutro local (Dry Season), Fonte não melhorada (Wet Season)",232
+"Poço aberto noutro local (Dry Season), Na habitação (Wet Season)",233
+"Poço aberto noutro local (Dry Season), No pátio/concessão (Wet Season)",234
+"Poço aberto noutro local (Dry Season), Poço aberto no pátio/concessão (Wet Season)",235
+"Poço aberto noutro local (Dry Season), Poço aberto noutro local (Wet Season)",236
+"Poço aberto noutro local (Dry Season), Poço coberto no pátio/concessão (Wet Season)",237
+"Poço aberto noutro local (Dry Season), Poço coberto noutro local (Wet Season)",238
+"Poço aberto noutro local (Dry Season), Poço perfurado na concessão (Wet Season)",239
+"Poço aberto noutro local (Dry Season), Poço perfurado noutro local (Wet Season)",240
+"Poço aberto noutro local (Dry Season), Rio/regato/lago/represa (Wet Season)",241
+"Poço aberto noutro local (Dry Season), Torneira do vizinho (Wet Season)",242
+"Poço coberto no pátio/concessão (Dry Season), Fontanário/torneira pública (Wet Season)",243
+"Poço coberto no pátio/concessão (Dry Season), Fonte melhorada (Wet Season)",244
+"Poço coberto no pátio/concessão (Dry Season), Na habitação (Wet Season)",245
+"Poço coberto no pátio/concessão (Dry Season), Poço aberto no pátio/concessão (Wet Season)",246
+"Poço coberto no pátio/concessão (Dry Season), Poço coberto no pátio/concessão (Wet Season)",247
+"Poço coberto no pátio/concessão (Dry Season), Poço coberto noutro local (Wet Season)",248
+"Poço coberto no pátio/concessão (Dry Season), Poço perfurado na concessão (Wet Season)",249
+"Poço coberto noutro local (Dry Season), Águas pluviais (Wet Season)",250
+"Poço coberto noutro local (Dry Season), Fontanário/torneira pública (Wet Season)",251
+"Poço coberto noutro local (Dry Season), Fonte melhorada (Wet Season)",252
+"Poço coberto noutro local (Dry Season), Fonte não melhorada (Wet Season)",253
+"Poço coberto noutro local (Dry Season), Na habitação (Wet Season)",254
+"Poço coberto noutro local (Dry Season), No pátio/concessão (Wet Season)",255
+"Poço coberto noutro local (Dry Season), Poço aberto no pátio/concessão (Wet Season)",256
+"Poço coberto noutro local (Dry Season), Poço aberto noutro local (Wet Season)",257
+"Poço coberto noutro local (Dry Season), Poço coberto no pátio/concessão (Wet Season)",258
+"Poço coberto noutro local (Dry Season), Poço coberto noutro local (Wet Season)",259
+"Poço coberto noutro local (Dry Season), Poço perfurado noutro local (Wet Season)",260
+"Poço coberto noutro local (Dry Season), Rio/regato/lago/represa (Wet Season)",261
+"Poço coberto noutro local (Dry Season), Torneira do vizinho (Wet Season)",262
+"Poço perfurado na concessão (Dry Season), Na habitação (Wet Season)",263
+"Poço perfurado na concessão (Dry Season), Poço aberto no pátio/concessão (Wet Season)",264
+"Poço perfurado na concessão (Dry Season), Poço aberto noutro local (Wet Season)",265
+"Poço perfurado na concessão (Dry Season), Poço coberto no pátio/concessão (Wet Season)",266
+"Poço perfurado na concessão (Dry Season), Poço coberto noutro local (Wet Season)",267
+"Poço perfurado na concessão (Dry Season), Poço perfurado na concessão (Wet Season)",268
+"Poço perfurado noutro local (Dry Season), Águas pluviais (Wet Season)",269
+"Poço perfurado noutro local (Dry Season), Fontanário/torneira pública (Wet Season)",270
+"Poço perfurado noutro local (Dry Season), Fonte melhorada (Wet Season)",271
+"Poço perfurado noutro local (Dry Season), Fonte não melhorada (Wet Season)",272
+"Poço perfurado noutro local (Dry Season), Na habitação (Wet Season)",273
+"Poço perfurado noutro local (Dry Season), No pátio/concessão (Wet Season)",274
+"Poço perfurado noutro local (Dry Season), Poço aberto no pátio/concessão (Wet Season)",275
+"Poço perfurado noutro local (Dry Season), Poço aberto noutro local (Wet Season)",276
+"Poço perfurado noutro local (Dry Season), Poço coberto noutro local (Wet Season)",277
+"Poço perfurado noutro local (Dry Season), Poço perfurado na concessão (Wet Season)",278
+"Poço perfurado noutro local (Dry Season), Poço perfurado noutro local (Wet Season)",279
+"Poço perfurado noutro local (Dry Season), Rio/regato/lago/represa (Wet Season)",280
+Pool/pond/lake/dam/ stagnant water,281
+Protected spring,282
+Protected well,283
+Protected well/spring,284
+Public stand/pipe,285
+Public tap,286
+Public water system.into dwelling or plot,287
+"Puits couvert ailleurs (Dry Season), Autre ( (Wet Season)",288
+"Puits couvert ailleurs (Dry Season), Autre (à préciser) (Wet Season)",289
+"Puits couvert ailleurs (Dry Season), Borne fontaine/Robinet public (Wet Season)",290
+"Puits couvert ailleurs (Dry Season), Dans la cour/Concession (Wet Season)",291
+"Puits couvert ailleurs (Dry Season), Dans le logement (Wet Season)",292
+"Puits couvert ailleurs (Dry Season), Eau de pluie (Wet Season)",293
+"Puits couvert ailleurs (Dry Season), Fleuve/Rivi (Wet Season)",294
+"Puits couvert ailleurs (Dry Season), Fleuve/Rivière/Lac/Barrage (Wet Season)",295
+"Puits couvert ailleurs (Dry Season), Forage ailleurs (Wet Season)",296
+"Puits couvert ailleurs (Dry Season), Forage dans la concession (Wet Season)",297
+"Puits couvert ailleurs (Dry Season), Puits couvert ailleurs (Wet Season)",298
+"Puits couvert ailleurs (Dry Season), Puits couvert dans la cour/Concession (Wet Season)",299
+"Puits couvert ailleurs (Dry Season), Puits ouvert ailleurs (Wet Season)",300
+"Puits couvert ailleurs (Dry Season), Puits ouvert dans la cour/Concession (Wet Season)",301
+"Puits couvert ailleurs (Dry Season), Robinet dans la cour/Concession (Wet Season)",302
+"Puits couvert ailleurs (Dry Season), Robinet dans le logement (Wet Season)",303
+"Puits couvert ailleurs (Dry Season), Robinet du voisin (Wet Season)",304
+"Puits couvert ailleurs (Dry Season), Source am (Wet Season)",305
+"Puits couvert ailleurs (Dry Season), Source aménagée (Wet Season)",306
+"Puits couvert ailleurs (Dry Season), Source non am (Wet Season)",307
+"Puits couvert ailleurs (Dry Season), Source non aménagée (Wet Season)",308
+"Puits couvert dans la cour/Concession (Dry Season), Borne fontaine/Robinet public (Wet Season)",309
+"Puits couvert dans la cour/Concession (Dry Season), Dans la cour/Concession (Wet Season)",310
+"Puits couvert dans la cour/Concession (Dry Season), Dans le logement (Wet Season)",311
+"Puits couvert dans la cour/Concession (Dry Season), Eau de pluie (Wet Season)",312
+"Puits couvert dans la cour/Concession (Dry Season), Eau en bouteille (Wet Season)",313
+"Puits couvert dans la cour/Concession (Dry Season), Forage ailleurs (Wet Season)",314
+"Puits couvert dans la cour/Concession (Dry Season), Puits couvert ailleurs (Wet Season)",315
+"Puits couvert dans la cour/Concession (Dry Season), Puits couvert dans la cour/Concession (Wet Season)",316
+"Puits couvert dans la cour/Concession (Dry Season), Puits ouvert ailleurs (Wet Season)",317
+"Puits couvert dans la cour/Concession (Dry Season), Puits ouvert dans la cour/Concession (Wet Season)",318
+"Puits couvert dans la cour/Concession (Dry Season), Robinet dans la cour/Concession (Wet Season)",319
+"Puits couvert dans la cour/Concession (Dry Season), Robinet dans le logement (Wet Season)",320
+"Puits couvert dans la cour/Concession (Dry Season), Robinet du voisin (Wet Season)",321
+"Puits couvert dans la cour/Concession (Dry Season), Source aménagée (Wet Season)",322
+"Puits couvert dans la cour/Concession (Dry Season), Source non aménagée (Wet Season)",323
+"Puits ouvert ailleurs (Dry Season), Autre ( (Wet Season)",324
+"Puits ouvert ailleurs (Dry Season), Autre (à préciser) (Wet Season)",325
+"Puits ouvert ailleurs (Dry Season), Autre (Wet Season)",326
+"Puits ouvert ailleurs (Dry Season), Borne fontaine/Robinet public (Wet Season)",327
+"Puits ouvert ailleurs (Dry Season), Dans la cour/Concession (Wet Season)",328
+"Puits ouvert ailleurs (Dry Season), Dans le logement (Wet Season)",329
+"Puits ouvert ailleurs (Dry Season), Eau de pluie (Wet Season)",330
+"Puits ouvert ailleurs (Dry Season), Eau en bouteille (Wet Season)",331
+"Puits ouvert ailleurs (Dry Season), Fleuve/Rivi (Wet Season)",332
+"Puits ouvert ailleurs (Dry Season), Fleuve/Rivière/Lac/Barrage (Wet Season)",333
+"Puits ouvert ailleurs (Dry Season), Forage ailleurs (Wet Season)",334
+"Puits ouvert ailleurs (Dry Season), Puits couvert ailleurs (Wet Season)",335
+"Puits ouvert ailleurs (Dry Season), Puits couvert dans la cour/Concession (Wet Season)",336
+"Puits ouvert ailleurs (Dry Season), Puits ouvert ailleurs (Wet Season)",337
+"Puits ouvert ailleurs (Dry Season), Puits ouvert dans la cour/Concession (Wet Season)",338
+"Puits ouvert ailleurs (Dry Season), Robinet dans la cour/Concession (Wet Season)",339
+"Puits ouvert ailleurs (Dry Season), Robinet dans le logement (Wet Season)",340
+"Puits ouvert ailleurs (Dry Season), Robinet du voisin (Wet Season)",341
+"Puits ouvert ailleurs (Dry Season), Source aménagé (Wet Season)",342
+"Puits ouvert ailleurs (Dry Season), Source aménagée (Wet Season)",343
+"Puits ouvert ailleurs (Dry Season), Source non am (Wet Season)",344
+"Puits ouvert ailleurs (Dry Season), Source non aménagée (Wet Season)",345
+"Puits ouvert dans la cour/Concession (Dry Season), Borne fontaine/Robinet public (Wet Season)",346
+"Puits ouvert dans la cour/Concession (Dry Season), Dans la cour/Concession (Wet Season)",347
+"Puits ouvert dans la cour/Concession (Dry Season), Dans le logement (Wet Season)",348
+"Puits ouvert dans la cour/Concession (Dry Season), Eau de pluie (Wet Season)",349
+"Puits ouvert dans la cour/Concession (Dry Season), Eau en bouteille (Wet Season)",350
+"Puits ouvert dans la cour/Concession (Dry Season), Forage ailleurs (Wet Season)",351
+"Puits ouvert dans la cour/Concession (Dry Season), Forage dans la concession (Wet Season)",352
+"Puits ouvert dans la cour/Concession (Dry Season), Puits couvert ailleurs (Wet Season)",353
+"Puits ouvert dans la cour/Concession (Dry Season), Puits couvert dans la cour/Concession (Wet Season)",354
+"Puits ouvert dans la cour/Concession (Dry Season), Puits ouvert ailleurs (Wet Season)",355
+"Puits ouvert dans la cour/Concession (Dry Season), Puits ouvert dans la cour/Concession (Wet Season)",356
+"Puits ouvert dans la cour/Concession (Dry Season), Robinet dans la cour/Concession (Wet Season)",357
+"Puits ouvert dans la cour/Concession (Dry Season), Robinet dans le logement (Wet Season)",358
+"Puits ouvert dans la cour/Concession (Dry Season), Robinet du voisin (Wet Season)",359
+"Puits ouvert dans la cour/Concession (Dry Season), Source aménagé (Wet Season)",360
+Rain water,361
+Rainwater - public or community tank,362
+Rainwater - tank in compound,363
+Rainwater collection/tank,364
+"Rio/regato/lago/represa (Dry Season), Águas pluviais (Wet Season)",365
+"Rio/regato/lago/represa (Dry Season), Fontanário/torneira pública (Wet Season)",366
+"Rio/regato/lago/represa (Dry Season), Fonte melhorada (Wet Season)",367
+"Rio/regato/lago/represa (Dry Season), Fonte não melhorada (Wet Season)",368
+"Rio/regato/lago/represa (Dry Season), Na habitação (Wet Season)",369
+"Rio/regato/lago/represa (Dry Season), No pátio/concessão (Wet Season)",370
+"Rio/regato/lago/represa (Dry Season), Poço aberto no pátio/concessão (Wet Season)",371
+"Rio/regato/lago/represa (Dry Season), Poço aberto noutro local (Wet Season)",372
+"Rio/regato/lago/represa (Dry Season), Poço coberto no pátio/concessão (Wet Season)",373
+"Rio/regato/lago/represa (Dry Season), Poço coberto noutro local (Wet Season)",374
+"Rio/regato/lago/represa (Dry Season), Poço perfurado noutro local (Wet Season)",375
+"Rio/regato/lago/represa (Dry Season), Rio/regato/lago/represa (Wet Season)",376
+River/stream/canal,377
+"Robinet dans la cour/Concession (Dry Season), Borne fontaine/Robinet public (Wet Season)",378
+"Robinet dans la cour/Concession (Dry Season), Eau de pluie (Wet Season)",379
+"Robinet dans la cour/Concession (Dry Season), Puits couvert ailleurs (Wet Season)",380
+"Robinet dans la cour/Concession (Dry Season), Puits couvert dans la cour/Concession (Wet Season)",381
+"Robinet dans la cour/Concession (Dry Season), Puits ouvert ailleurs (Wet Season)",382
+"Robinet dans la cour/Concession (Dry Season), Puits ouvert dans la cour/Concession (Wet Season)",383
+"Robinet dans la cour/Concession (Dry Season), Robinet dans la cour/Concession (Wet Season)",384
+"Robinet dans la cour/Concession (Dry Season), Robinet dans le logement (Wet Season)",385
+"Robinet dans la cour/Concession (Dry Season), Robinet du voisin (Wet Season)",386
+"Robinet dans le logement (Dry Season), Autre (à préciser) (Wet Season)",387
+"Robinet dans le logement (Dry Season), Eau de pluie (Wet Season)",388
+"Robinet dans le logement (Dry Season), Eau en bouteille (Wet Season)",389
+"Robinet dans le logement (Dry Season), Forage dans la concession (Wet Season)",390
+"Robinet dans le logement (Dry Season), Puits couvert ailleurs (Wet Season)",391
+"Robinet dans le logement (Dry Season), Puits couvert dans la cour/Concession (Wet Season)",392
+"Robinet dans le logement (Dry Season), Puits ouvert ailleurs (Wet Season)",393
+"Robinet dans le logement (Dry Season), Puits ouvert dans la cour/Concession (Wet Season)",394
+"Robinet dans le logement (Dry Season), Robinet dans la cour/Concession (Wet Season)",395
+"Robinet dans le logement (Dry Season), Robinet dans le logement (Wet Season)",396
+"Robinet dans le logement (Dry Season), Robinet du voisin (Wet Season)",397
+"Robinet du voisin (Dry Season), Autre ( (Wet Season)",398
+"Robinet du voisin (Dry Season), Autre (à préciser) (Wet Season)",399
+"Robinet du voisin (Dry Season), Borne fontaine/Robinet public (Wet Season)",400
+"Robinet du voisin (Dry Season), Dans la cour/Concession (Wet Season)",401
+"Robinet du voisin (Dry Season), Dans le logement (Wet Season)",402
+"Robinet du voisin (Dry Season), Eau de pluie (Wet Season)",403
+"Robinet du voisin (Dry Season), Fleuve/Rivière/Lac/Barrage (Wet Season)",404
+"Robinet du voisin (Dry Season), Forage ailleurs (Wet Season)",405
+"Robinet du voisin (Dry Season), Forage dans la concession (Wet Season)",406
+"Robinet du voisin (Dry Season), Puits couvert ailleurs (Wet Season)",407
+"Robinet du voisin (Dry Season), Puits couvert dans la cour/Concession (Wet Season)",408
+"Robinet du voisin (Dry Season), Puits ouvert ailleurs (Wet Season)",409
+"Robinet du voisin (Dry Season), Puits ouvert dans la cour/Concession (Wet Season)",410
+"Robinet du voisin (Dry Season), Robinet dans la cour/Concession (Wet Season)",411
+"Robinet du voisin (Dry Season), Robinet dans le logement (Wet Season)",412
+"Robinet du voisin (Dry Season), Robinet du voisin (Wet Season)",413
+"Robinet du voisin (Dry Season), Source aménagé (Wet Season)",414
+"Robinet du voisin (Dry Season), Source non aménagée (Wet Season)",415
+"Robinet du voisin (Dry Season), Vendeur ambulant (Wet Season)",416
+"Source am (Dry Season), Dans le logement (Wet Season)",417
+"Source am (Dry Season), Puits couvert dans la cour/Concession (Wet Season)",418
+"Source am (Dry Season), Source am (Wet Season)",419
+"Source aménagé (Dry Season), Borne fontaine/Robinet public (Wet Season)",420
+"Source aménagé (Dry Season), Eau de pluie (Wet Season)",421
+"Source aménagé (Dry Season), Fleuve/Rivière/Lac/Barrage (Wet Season)",422
+"Source aménagé (Dry Season), Forage ailleurs (Wet Season)",423
+"Source aménagé (Dry Season), Puits couvert ailleurs (Wet Season)",424
+"Source aménagé (Dry Season), Puits ouvert ailleurs (Wet Season)",425
+"Source aménagé (Dry Season), Robinet du voisin (Wet Season)",426
+"Source aménagé (Dry Season), Source aménagé (Wet Season)",427
+"Source aménagé (Dry Season), Source non aménagée (Wet Season)",428
+"Source aménagée (Dry Season), Autre (Wet Season)",429
+"Source aménagée (Dry Season), Borne fontaine/Robinet public (Wet Season)",430
+"Source aménagée (Dry Season), Eau de pluie (Wet Season)",431
+"Source aménagée (Dry Season), Fleuve/Rivière/Lac/Barrage (Wet Season)",432
+"Source aménagée (Dry Season), Forage ailleurs (Wet Season)",433
+"Source aménagée (Dry Season), Puits couvert dans la cour/Concession (Wet Season)",434
+"Source aménagée (Dry Season), Puits ouvert ailleurs (Wet Season)",435
+"Source aménagée (Dry Season), Puits ouvert dans la cour/Concession (Wet Season)",436
+"Source aménagée (Dry Season), Robinet dans le logement (Wet Season)",437
+"Source aménagée (Dry Season), Source aménagée (Wet Season)",438
+"Source aménagée (Dry Season), Source non aménagée (Wet Season)",439
+"Source non am (Dry Season), Eau de pluie (Wet Season)",440
+"Source non am (Dry Season), Source non am (Wet Season)",441
+"Source non aménagée (Dry Season), Autre (Wet Season)",442
+"Source non aménagée (Dry Season), Borne fontaine/Robinet public (Wet Season)",443
+"Source non aménagée (Dry Season), Eau de pluie (Wet Season)",444
+"Source non aménagée (Dry Season), Fleuve/Rivière/Lac/Barrage (Wet Season)",445
+"Source non aménagée (Dry Season), Forage ailleurs (Wet Season)",446
+"Source non aménagée (Dry Season), Forage dans la concession (Wet Season)",447
+"Source non aménagée (Dry Season), Puits couvert ailleurs (Wet Season)",448
+"Source non aménagée (Dry Season), Puits couvert dans la cour/Concession (Wet Season)",449
+"Source non aménagée (Dry Season), Puits ouvert ailleurs (Wet Season)",450
+"Source non aménagée (Dry Season), Puits ouvert dans la cour/Concession (Wet Season)",451
+"Source non aménagée (Dry Season), Robinet dans la cour/Concession (Wet Season)",452
+"Source non aménagée (Dry Season), Robinet dans le logement (Wet Season)",453
+"Source non aménagée (Dry Season), Robinet du voisin (Wet Season)",454
+"Source non aménagée (Dry Season), Source aménagé (Wet Season)",455
+"Source non aménagée (Dry Season), Source aménagée (Wet Season)",456
+"Source non aménagée (Dry Season), Source non aménagée (Wet Season)",457
+Surface water _river or lake_,458
+Tanker truck,459
+Tanker/truck,460
+"Torneira do vizinho (Dry Season), Águas pluviais (Wet Season)",461
+"Torneira do vizinho (Dry Season), Fontanário/torneira pública (Wet Season)",462
+"Torneira do vizinho (Dry Season), Fonte melhorada (Wet Season)",463
+"Torneira do vizinho (Dry Season), Fonte não melhorada (Wet Season)",464
+"Torneira do vizinho (Dry Season), Na habitação (Wet Season)",465
+"Torneira do vizinho (Dry Season), No pátio/concessão (Wet Season)",466
+"Torneira do vizinho (Dry Season), Poço aberto no pátio/concessão (Wet Season)",467
+"Torneira do vizinho (Dry Season), Poço aberto noutro local (Wet Season)",468
+"Torneira do vizinho (Dry Season), Poço coberto no pátio/concessão (Wet Season)",469
+"Torneira do vizinho (Dry Season), Poço coberto noutro local (Wet Season)",470
+"Torneira do vizinho (Dry Season), Rio/regato/lago/represa (Wet Season)",471
+"Torneira do vizinho (Dry Season), Torneira do vizinho (Wet Season)",472
+Tube Well /Borehole,473
+"Tube well, borehole",474
+Unprotected spring,475
+Unprotected well,476
+Unprotected well/spring,477
+"Vendedores ambulantes (Dry Season), Vendedores ambulantes (Wet Season)",478
+"Vendeur ambulant (Dry Season), Autre ( (Wet Season)",479
+"Vendeur ambulant (Dry Season), Autre (à préciser) (Wet Season)",480
+"Vendeur ambulant (Dry Season), Autre (Wet Season)",481
+"Vendeur ambulant (Dry Season), Borne fontaine/Robinet public (Wet Season)",482
+"Vendeur ambulant (Dry Season), Dans la cour/Concession (Wet Season)",483
+"Vendeur ambulant (Dry Season), Dans le logement (Wet Season)",484
+"Vendeur ambulant (Dry Season), Eau de pluie (Wet Season)",485
+"Vendeur ambulant (Dry Season), Eau en bouteille (Wet Season)",486
+"Vendeur ambulant (Dry Season), Fleuve/Rivière/Lac/Barrage (Wet Season)",487
+"Vendeur ambulant (Dry Season), Forage ailleurs (Wet Season)",488
+"Vendeur ambulant (Dry Season), Puits couvert ailleurs (Wet Season)",489
+"Vendeur ambulant (Dry Season), Puits couvert dans la cour/Concession (Wet Season)",490
+"Vendeur ambulant (Dry Season), Puits ouvert ailleurs (Wet Season)",491
+"Vendeur ambulant (Dry Season), Puits ouvert dans la cour/Concession (Wet Season)",492
+"Vendeur ambulant (Dry Season), Robinet dans la cour/Concession (Wet Season)",493
+"Vendeur ambulant (Dry Season), Robinet dans le logement (Wet Season)",494
+"Vendeur ambulant (Dry Season), Robinet du voisin (Wet Season)",495
+"Vendeur ambulant (Dry Season), Source am (Wet Season)",496
+"Vendeur ambulant (Dry Season), Vendeur ambulant (Wet Season)",497
+Well water - protected well (Covered with lid),498
+Well water - unprotected well,499
+NA,500

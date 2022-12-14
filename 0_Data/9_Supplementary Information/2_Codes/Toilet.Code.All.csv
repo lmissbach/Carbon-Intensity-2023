@@ -1,0 +1,88 @@
+TLT,TLT_code
+1. FLUSH TO PIPED SEWAGE SYSTEM,1
+10. BUCKET,2
+11. HANGING TOILET/HANGING LATRINE,3
+"12. NO FACILITIES,BUSH, OR FIELD",4
+13. OTHER (SPECIFY),5
+2. FLUSH TO SEPTIC TANK,6
+3. FLUSH TO PIT LATRINE,7
+4. FLUSH TO OPEN DRAIN,8
+5. FLUSH TO SOMEWHERE ELSE,9
+6. VENTILIATED IMPROVED LATRINE,10
+7. PIT LATRINE WITH SLAB,11
+8. PIT LATRINE W/O SLAB/OPEN PIT,12
+9. COMPOSTING TOILET,13
+Aucune toilette (dans la nature),14
+Autre,15
+Autre (,16
+Autre (à préciser),17
+Basic,18
+Bucket,19
+Casas de banho públicas,20
+Composting toilet,21
+Flush toilet,22
+"Flush, to elsewhere",23
+"Flush, to piped sewer system",24
+"Flush, to pit latrine",25
+"Flush, to septic tank",26
+Fossa rudimentar/buraco a céu aberto,27
+Fosse rudimentaire/trou ouvert,28
+Gifili (without toilet bowl),29
+Hanging toilet,30
+Latrinas de laje simples,31
+"Latrinas ECOSAN (de laje, cobertas)",32
+"Latrinas SANPLAT (de laje, não cobertas)",33
+"Latrinas VIP (de laje, ventiladas)",34
+"Latrine overhanging field or water (drop in the field, pond, lake, river, sea)",35
+Latrines dall,36
+Latrines dallées simplement,37
+Latrines ECOSAN (dall,38
+"Latrines ECOSAN (dallées, couvertes)",39
+Latrines SANPLAT (dall,40
+"Latrines SANPLAT (dallées, non couvertes)",41
+Latrines VIP (dall,42
+"Latrines VIP (dallées, ventillées)",43
+Limited,44
+Nenhuma sanita (na natureza),45
+"No facilities, or bush or field",46
+No Service,47
+No Toilet,48
+No toilet whatsever,49
+"No, does not have sanitation facilities inside -  -",50
+None,51
+Other,52
+"Other, specify",53
+Pit latrine with slab,54
+Pit latrine with solid slab,55
+Pit latrine without slab,56
+Pit latrine without slab or open pit,57
+Pit latrine without slab/open pit,58
+Pit latrine wtih slab,59
+Pour flush (or flush connected to sewerage,60
+Pour flush (or flush) to elsewhere (i.e. not a sewer or pit/tank),61
+Pour flush (or flush) to septic tank or pit,62
+Sanita exterior com descarga de água,63
+Sanita exterior com descarga de água manual,64
+Sanita interior com descarga de água,65
+Sanita interior com descarga de água manual,66
+Toilet,67
+Toilet connected to sea,68
+Toilet connected to septic tank,69
+Toilet connected to sewerage system,70
+Toilettes publiques,71
+Ventilated improved pit latrine,72
+W.C. ext. avec chasse d'eau,73
+W.C. ext. chasse d'eau manuelle,74
+W.C. extérieur avec chasse d'eau,75
+W.C. extérieur chasse d'eau manuelle,76
+W.C. int. avec chasse d'eau,77
+W.C. int. chasse d'eau manuelle,78
+W.C. intérieur avec chasse d'eau,79
+W.C. intérieur chasse d'eau manuelle,80
+"Yes, has sanitation facilities inside - Private - Direct Discharge",81
+"Yes, has sanitation facilities inside - Private - No Water Discharge",82
+"Yes, has sanitation facilities inside - Private - Water Discharge from Bucket",83
+"Yes, has sanitation facilities inside - Shared with other household - Direct Discharge",84
+"Yes, has sanitation facilities inside - Shared with other household - No Water Discharge",85
+"Yes, has sanitation facilities inside - Shared with other household - Water Discharge from Bucket",86
+NA,87
