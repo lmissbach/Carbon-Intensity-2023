@@ -174,7 +174,7 @@ sum_3.3.3 <- left_join(sum_3.3.1, sum_3.3.2, by = "Country")%>%
   mutate_at(vars(starts_with("CO2_t_national")), list(~ round(.,1)))%>%
   mutate_at(vars(starts_with("burden_CO2_national")), list(~ paste0(round(.*100,2), "%")))
 
-colnames(sum_3.3.3) <- c("Country", rep(c("All","EQ1","EQG2","EQ3","EQ4","EQ5"),2))
+colnames(sum_3.3.3) <- c("Country", rep(c("All","EQ1","EQ2","EQ3","EQ4","EQ5"),2))
 
 kbl(sum_3.3.3, format = "latex", caption = "Average carbon footprint and average USD/tCO$_{2}$ carbon price incidence per expenditure quintile", booktabs = T, align = "l|rrrrrr|rrrrrr", vline = "", linesep = "")%>%
   kable_styling(position = "center", latex_options = c("HOLD_position", "scale_down"))%>%
@@ -188,7 +188,117 @@ kbl(sum_3.3.3, format = "latex", caption = "Average carbon footprint and average
 
 rm(sum_3.3.1, sum_3.3.2, sum_3.3.3)
 
-# 3.4   Electricity-table (TBA) ####
+# 3.4   Cooking and lighting fuels ####
+
+sum_3.4.1 <- data_2 %>%
+  mutate(CF_agg = ifelse(CF == "Charcoal" | CF == "Coal" | CF == "Firewood" | CF == "Other biomass", "Solid fuels",
+                         ifelse(CF == "LPG" | CF == "Gas" | CF == "Kerosene" | CF == "Liquid fuel", "Liquid and gaseous fuels",
+                                ifelse(CF == "Electricity", "Electricity", "Unknown"))))%>%
+  mutate(CF_agg = ifelse(is.na(CF_agg), "Unknown", CF_agg))%>%
+  group_by(Country, Income_Group_5)%>%
+  mutate(hhs = sum(hh_weights))%>%
+  ungroup()%>%
+  group_by(Country, Income_Group_5, CF_agg)%>%
+  summarise(CF_agg_hhs = sum(hh_weights),
+            hhs        = first(hhs))%>%
+  ungroup()%>%
+  mutate(share = CF_agg_hhs/hhs)%>%
+  select(Country, Income_Group_5, CF_agg, share)%>%
+  filter(CF_agg != "Unknown")%>%
+  unite(IG_CF_agg, c(CF_agg, Income_Group_5))%>%
+  pivot_wider(names_from = "IG_CF_agg", values_from = "share")%>%
+  select(Country, starts_with("Solid"), starts_with("Liquid"), starts_with("Electricity"))%>%
+  mutate_at(vars(-Country), list(~ paste0(round(.*100,0), "%")))%>%
+  mutate_at(vars(-Country), list(~ ifelse(. == "NA%","-",.)))
+
+colnames(sum_3.4.1) <- c("Country", rep(c("EQ1","EQG2","EQ3","EQ4","EQ5"),3))
+
+kbl(sum_3.4.1, format = "latex", caption = "Share of households using cooking fuels", booktabs = T, align = "l|rrrrr|rrrrr|rrrrr", vline = "", linesep = "")%>%
+  kable_styling(position = "center", latex_options = c("HOLD_position", "scale_down"))%>%
+  column_spec(1, width = "3.15 cm")%>%
+  column_spec(2:16, width = "1.00 cm")%>%
+  add_header_above(c(" " = 1, "Expenditure quintile" = 5,"Expenditure quintile" = 5, "Expenditure quintile" = 5))%>%
+  add_header_above(c(" " = 1, "Solid fuels" = 5, "Liquid or gaseous fuels" = 5, "Electricity" = 5), escape = FALSE)%>%
+  footnote(general = "This table shows the share of households using different cooking fuels, such as solid fuels (e.g., firewood, charcoal, coal, biomass), liquid fuels (e.g., LPG, natural gas, kerosene), or electricity over expenditure quintiles.", threeparttable = T, escape = FALSE)%>%
+  save_kable(., "2_Tables/Table_Summary_A4_Cooking_Fuels.tex")  
+
+sum_3.4.2 <- data_2 %>%
+  mutate(LF_agg = ifelse(LF == "Electricity", "Electricity", 
+                         ifelse(LF == "Kerosene", "Kerosene",
+                                ifelse(LF %in% c("Firewood", "Gas", "Liquid fuel", "LPG", "Other biomass", "Other lighting"), "Other lighting", "Unknown"))))%>%
+  mutate(LF_agg = ifelse(is.na(LF_agg), "Unknown", LF_agg))%>%
+  group_by(Country, Income_Group_5)%>%
+  mutate(hhs = sum(hh_weights))%>%
+  ungroup()%>%
+  group_by(Country, Income_Group_5, LF_agg)%>%
+  summarise(LF_agg_hhs = sum(hh_weights),
+            hhs        = first(hhs))%>%
+  ungroup()%>%
+  mutate(share = LF_agg_hhs/hhs)%>%
+  select(Country, Income_Group_5, LF_agg, share)%>%
+  filter(LF_agg != "Unknown")%>%
+  unite(IG_LF_agg, c(LF_agg, Income_Group_5))%>%
+  pivot_wider(names_from = "IG_LF_agg", values_from = "share")%>%
+  select(Country, starts_with("Kerosene"), starts_with("Electricity"), starts_with("Other lighting"))%>%
+  mutate_at(vars(-Country), list(~ paste0(round(.*100,0), "%")))%>%
+  mutate_at(vars(-Country), list(~ ifelse(. == "NA%","-",.)))
+
+colnames(sum_3.4.2) <- c("Country", rep(c("EQ1","EQ2","EQ3","EQ4","EQ5"),3))
+
+kbl(sum_3.4.2, format = "latex", caption = "Share of households using lighting fuels", booktabs = T, align = "l|rrrrr|rrrrr|rrrrr", vline = "", linesep = "")%>%
+  kable_styling(position = "center", latex_options = c("HOLD_position", "scale_down"))%>%
+  column_spec(1, width = "3.15 cm")%>%
+  column_spec(2:16, width = "1.00 cm")%>%
+  add_header_above(c(" " = 1, "Expenditure quintile" = 5,"Expenditure quintile" = 5, "Expenditure quintile" = 5))%>%
+  add_header_above(c(" " = 1, "Kerosene" = 5, "Electricity" = 5, "Other lighting fuels" = 5), escape = FALSE)%>%
+  footnote(general = "This table shows the share of households using different lighting fuels over expenditure quintiles.", threeparttable = T, escape = FALSE)%>%
+  save_kable(., "2_Tables/Table_Summary_A4_Lighting_Fuels.tex")  
+
+rm(sum_3.4.1, sum_3.4.2)
+
+# 3.5   Appliances ####
+
+sum_3.5.1 <- data_2 %>%
+  select(hh_id, Country, hh_weights, tv.01, ac.01, car.01, washing_machine.01, refrigerator.01, Income_Group_5)
+
+sum_3.5.2 <- sum_3.5.1 %>%
+  mutate(Income_Group_5 = "All")%>%
+  bind_rows(filter(mutate(sum_3.5.1, Income_Group_5 = as.character(Income_Group_5)), Income_Group_5 == "1" | Income_Group_5 == "5"))%>%
+  mutate_at(vars(ends_with(".01")), list(~ ifelse(. == 1, hh_weights,0)))%>%
+  group_by(Country, Income_Group_5)%>%
+  mutate(hhs = sum(hh_weights))%>%
+  ungroup()%>%
+  filter(!is.na(tv.01) | !is.na(car.01))%>%
+  group_by(Country, Income_Group_5)%>%
+  summarise(tv.01              = sum(tv.01),
+            refrigerator.01    = sum(refrigerator.01),
+            washing_machine.01 = sum(washing_machine.01),
+            car.01             = sum(car.01),
+            ac.01              = sum(ac.01),
+            hhs                = first(hhs))%>%
+  ungroup()%>%
+  mutate_at(vars(ends_with(".01")), list(~ ./hhs))%>%
+  select(-hhs)%>%
+  pivot_longer(ends_with(".01"), names_to = "appliance", values_to = "share")%>%
+  unite(appliance_IG, c("appliance", "Income_Group_5"))%>%
+  pivot_wider(names_from = "appliance_IG", values_from = "share")%>%
+  select(Country, starts_with("car.01"), starts_with("tv.01"), starts_with("refrigerator.01"), starts_with("ac.01"), starts_with("washing"))%>%
+  mutate_at(vars(-Country), list(~ paste0(round(.*100,0), "%")))%>%
+  mutate_at(vars(-Country), list(~ ifelse(. == "NA%","-",.)))
+
+colnames(sum_3.5.2) <- c("Country", rep(c("All","EQ1","EQ5"),5))
+
+kbl(sum_3.5.2, format = "latex", caption = "Share of households possessing different assets", booktabs = T, align = "l|rrr|rrr|rrr|rrr|rrr", vline = "", linesep = "")%>%
+  kable_styling(position = "center", latex_options = c("HOLD_position", "scale_down"))%>%
+  column_spec(1, width = "3.15 cm")%>%
+  column_spec(2:16, width = "1.00 cm")%>%
+  add_header_above(c(" " = 1,  "Car" = 3, "TV" = 3, "Refrigerator" = 3, "AC" = 3, "Washing machine" = 3), escape = FALSE)%>%
+  footnote(general = "This table shows the share of households possessing differents assets for all households (first and fifth expenditure quintile, respectively) in different countries.", threeparttable = T, escape = FALSE)%>%
+  save_kable(., "2_Tables/Table_Summary_A5_Appliances.tex")  
+
+rm(sum_3.5.1, sum_3.5.2)
+
+# 3.6   Electricity-table (TBA) ####
 
 LAC_Electricity <- read_excel("../0_Data/9_Supplementary Data/LAC_Electricity.xlsx")
 
@@ -208,7 +318,7 @@ kbl(mutate_all(LAC_Electricity_2, linebreak), format = "latex", caption = "Elect
   footnote(general = "This table provides summary statistics for electricity generation in 16 different countries of Latin America and the Caribbean. It reports the share of electricity generated by each source in each country in 2020 [\\\\%] as well as the total annual electricity consumption [TWh] and per capita [Mwh]. Source: \\\\textcite{IEA.2021} and Our World in Data \\\\autocite{HannahRitchie.2020} for Barbados. Annual electricity consumption for Peru refers to 2019. ", threeparttable = T, escape = FALSE)%>%
   save_kable(., "../1_Carbon_Pricing_Incidence/3_Analyses/1_LAC_2021/6_App/Latin-America-Paper/Tables/Table_A7/Table_A7.tex")
 
-# 3.5   Missing information ####
+# 3.7   Missing information ####
 
 Obs_1 <- data_2 %>%
   select(everything())%>%
@@ -347,6 +457,35 @@ for(i in Country.Set$Country){
   
   rm(data_4.2.1, data_4.2.2)
 }
+
+P_4.2.1 <- ggplot(data = data_4.2.0, aes(x = hh_expenditures_USD_2014, y = burden_CO2_national))+
+  geom_point(aes(fill = factor(kmeans_cluster), size = pop), shape = 22, colour = "black")+
+  #scale_size_continuous(range = c(1,5))+
+  theme_bw()+
+  xlab("Total household expenditures")+ ylab("Carbon pricing incidence")+
+  scale_y_continuous(labels = scales::percent_format(accuracy = 1), limits = c(0,0.1), expand = c(0,0))+
+  scale_x_continuous(limits = c(0, 50000), labels = scales::dollar_format(accuracy = 1), expand = c(0,0))+
+  scale_size_continuous(range = c(1,5), guide = "none")+
+  scale_fill_discrete(guide = "none")+
+  #ggtitle(i)+
+  theme(axis.text.y = element_text(size = 7), 
+        axis.text.x = element_text(size = 7),
+        axis.title  = element_text(size = 7),
+        plot.title = element_text(size = 11),
+        legend.position = "bottom",
+        strip.text = element_text(size = 7),
+        strip.text.y = element_text(angle = 180),
+        #panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        axis.ticks = element_line(size = 0.2),
+        legend.text = element_text(size = 7),
+        legend.title = element_text(size = 7),
+        plot.margin = unit(c(0.3,0.5,0.3,0.3), "cm"),
+        panel.border = element_rect(size = 0.3))
+
+jpeg("1_Figures/Analysis_k_means/Exp_CPI_All.jpg", width = 15.5, height = 15, unit = "cm", res = 200)
+print(P_4.2.1)
+dev.off()
 
 # 5.    Econometric analysis ####
 
