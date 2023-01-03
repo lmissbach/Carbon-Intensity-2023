@@ -666,3 +666,81 @@ P.4.1.3 <- ggplot(carbon_pricing_4.1.3, aes(x = factor(Income_Group_5)))+
 jpeg("C:/Users/misl/ownCloud/Distributional Paper/00000_GFPN_Report/Figures/Figure_4.jpeg", width = 15.5, height = 9, unit = "cm", res = 400)
 print(P.4.1.3)
 dev.off()
+
+# 1.4.1 Average footprints per Country ####
+
+data_1.4.1 <- data_2 %>%
+  filter(!is.na(CO2_t_national))%>%
+  group_by(Country)%>%
+  summarise(
+    mean_CO2_t_national = mean(CO2_t_national),
+    mean_CO2_t_global   = mean(CO2_t_global)
+  )%>%
+  ungroup()
+
+world <- map_data("world")%>%
+  mutate(Country = countrycode(region, origin = "country.name", destination = "iso3c"))%>%
+  left_join(data_1.4.1)%>%
+  filter(region != "Antarctica")
+
+P.1 <- ggplot()+
+  #geom_map(data = world, map = world, aes(map_id = region), fill = "lightgrey")+
+  geom_map(data = world, map = world,
+           aes(long, lat, map_id = region, fill = mean_CO2_t_national), colour = "black", size = 0.1)+
+  theme_bw()+
+  theme(axis.text = element_blank(),
+        axis.title = element_blank(),
+        legend.position = "bottom",
+        legend.text = element_text(size = 7),
+        plot.title = element_text(size = 9),
+        axis.ticks = element_blank(),
+        panel.grid = element_blank())+
+  scale_fill_gradient(low = "yellow", high = "red", na.value = NA)+
+  #scale_fill_manual(values = c("#6F99ADFF", "#0072B5FF", "lightgrey"), na.translate = FALSE, na.value = "lightgrey")+
+  labs(fill = "")+
+  guides(colour = "none")+
+  ggtitle("Average carbon footprint in t")
+
+jpeg("C:/Users/misl/OwnCloud/Papiere und Stuff/PhD-Seminar 07.12.2022/Figure_0.jpg", width = 15.5, height = 15, unit = "cm", res = 400)
+print(P.1)
+dev.off()
+
+# 1.4.2 Boxplots for all countries with 40 USD carbon tax ####
+
+data_1.4.2 <- data_joint_1 %>%
+  group_by(Country)%>%
+  summarise(
+    y5  = wtd.quantile(burden_CO2_national, weights = hh_weights, probs = 0.05),
+    y25 = wtd.quantile(burden_CO2_national, weights = hh_weights, probs = 0.25),
+    y50 = wtd.quantile(burden_CO2_national, weights = hh_weights, probs = 0.5),
+    y75 = wtd.quantile(burden_CO2_national, weights = hh_weights, probs = 0.75),
+    y95 = wtd.quantile(burden_CO2_national, weights = hh_weights, probs = 0.95),
+    mean = wtd.mean(   burden_CO2_national, weights = hh_weights))%>%
+  ungroup()
+
+P_2 <- ggplot(data_1.4.2, aes(x = reorder(Country, mean)))+
+  geom_boxplot(aes(ymin = y5, lower = y25, middle = y50, upper = y75, ymax = y95), stat = "identity", position = position_dodge(0.5), outlier.shape = NA, width = 0.5, size = 0.3) +
+  theme_bw()+
+  xlab("Country")+ ylab("Carbon Pricing Incidence")+
+  geom_point(aes(y = mean), shape = 23, size = 1.1, stroke = 0.4, fill = "white")+
+  scale_y_continuous(labels = scales::percent_format(accuracy = 1), expand = c(0,0))+
+  coord_cartesian(ylim = c(0,0.2))+
+  ggtitle("Additional costs for 40 USD/tCO2 carbon price")+
+  theme(axis.text.y = element_text(size = 7), 
+        axis.text.x = element_text(size = 5, angle = 90),
+        axis.title  = element_text(size = 7),
+        plot.title = element_text(size = 11),
+        legend.position = "bottom",
+        strip.text = element_text(size = 7),
+        strip.text.y = element_text(angle = 180),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        axis.ticks = element_line(size = 0.2),
+        legend.text = element_text(size = 7),
+        legend.title = element_text(size = 7),
+        plot.margin = unit(c(0.3,0.3,0.3,0.3), "cm"),
+        panel.border = element_rect(size = 0.3))
+
+jpeg("C:/Users/misl/OwnCloud/Papiere und Stuff/PhD-Seminar 07.12.2022/Figure_1.jpg", width = 15.5, height = 15, unit = "cm", res = 400)
+print(P_2)
+dev.off()
