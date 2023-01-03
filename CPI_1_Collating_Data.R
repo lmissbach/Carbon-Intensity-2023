@@ -227,6 +227,8 @@ Cooking.Codes.All   <- data.frame()
 Lighting.Codes.All  <- data.frame()
 Heating.Codes.All   <- data.frame()
 Education.Codes.All <- data.frame()
+Toilet.Codes.All    <- data.frame()
+Water.Codes.All     <- data.frame()
 
 for (i in Country.Set){
   path_0                     <- list.files("../0_Data/1_Household Data/")[grep(i, list.files("../0_Data/1_Household Data/"), ignore.case = T)][1]
@@ -273,25 +275,45 @@ for (i in Country.Set){
     Education.Codes.All <- bind_rows(Education.Codes.All, Education.Code)
   }
   
+  # Toilet
+  
+  if("Toilet.Code.csv" %in% codes_0){
+    Toilet.Code <- read_csv(sprintf("../0_Data/1_Household Data/%s/2_Codes/Toilet.Code.csv", path_0), show_col_types = FALSE)%>%
+      mutate(toilet = as.character(toilet))%>%
+      mutate(Country_long = i)
+    
+    Toilet.Codes.All <- bind_rows(Toilet.Codes.All, Toilet.Code)
+  }
+  
+  # Water
+  
+  if("Water.Code.csv" %in% codes_0){
+    Water.Code <- read_csv(sprintf("../0_Data/1_Household Data/%s/2_Codes/Water.Code.csv", path_0), show_col_types = FALSE)%>%
+      mutate(water = as.character(water))%>%
+      mutate(Country_long = i)
+    
+    Water.Codes.All <- bind_rows(Water.Codes.All, Water.Code)
+  }
+  
 }
 
 Cooking.Codes.All.1 <- Cooking.Codes.All %>%
   select(Country_long, cooking_fuel, Cooking_Fuel, CF)%>%
   mutate(Cooking_Fuel = iconv(Cooking_Fuel, "UTF-8", "UTF-8", sub = ''))%>%
-  mutate(CF = ifelse(is.na(CF) & Cooking_Fuel %in% c("Charcoal", "3. Charcoal", "charcoal", "CHARCOAL", "3. CHARCOAL"), "Charcoal", CF))%>%
-  mutate(CF = ifelse(is.na(CF) & Cooking_Fuel %in% c("Electricity", "electricity", "electricity?", "Publicly-provided electricity/City Power", "Household generator", "9. Electricity", "10. Solar energy", "Electricity form public network", "Electricity from shared generator", "Electricity from private generator", "ELECTRICITY", "16. ELECTRIC", "Electricity from EUCL", "Other electricity distributors", "Solar panel", "Batteries+ Bulb", "Torch/Phone", "Rechargeable battery", "Other source of electricity", "Solar energy system", "Electricity-National grid", "Electricity- Solar", "Electricity- Personal Generator", "Electricity Community/ thermal plant", "Energía eléctrica", "Generator", "5. SOLAR", "Solar energy", "Electric", "Electricity  Community/ thermal plant", "Solar"), "Electricity", CF))%>%
-  mutate(CF = ifelse(is.na(CF) & Cooking_Fuel %in% c("Mains gas?", "Bulk gas (zeppelin)?", "Gas in tube?", "Gas", "11. Bio gas", "Gobar gas", "Gas por cañería", "Bio Gas", "GAS", "City gas", "biogas", "15. PIPED NATURAL GAS", "13. BIOGAS", "Biogas", "Natural Gas", "Natural gas", "Biogas"), "Gas", CF))%>%
+  mutate(CF = ifelse(is.na(CF) & Cooking_Fuel %in% c("Charcoal", "3. Charcoal", "charcoal", "CHARCOAL", "3. CHARCOAL", "CarbÃ³n"), "Charcoal", CF))%>%
+  mutate(CF = ifelse(is.na(CF) & Cooking_Fuel %in% c("Electricity", "electricity", "electricity?", "Publicly-provided electricity/City Power", "Household generator", "9. Electricity", "10. Solar energy", "Electricity form public network", "Electricity from shared generator", "Electricity from private generator", "ELECTRICITY", "16. ELECTRIC", "Electricity from EUCL", "Other electricity distributors", "Solar panel", "Batteries+ Bulb", "Torch/Phone", "Rechargeable battery", "Other source of electricity", "Solar energy system", "Electricity-National grid", "Electricity- Solar", "Electricity- Personal Generator", "Electricity Community/ thermal plant", "Energía eléctrica", "Generator", "5. SOLAR", "Solar energy", "Electric", "Electricity  Community/ thermal plant", "Solar", "Electricidad"), "Electricity", CF))%>%
+  mutate(CF = ifelse(is.na(CF) & Cooking_Fuel %in% c("Mains gas?", "Bulk gas (zeppelin)?", "Gas in tube?", "Gas", "Gas propano","11. Bio gas", "Gobar gas", "Gas por cañería", "Bio Gas", "GAS", "City gas", "biogas", "15. PIPED NATURAL GAS", "13. BIOGAS", "Biogas", "Natural Gas", "Natural gas", "Biogas"), "Gas", CF))%>%
   mutate(CF = ifelse(is.na(CF) & Cooking_Fuel %in% c("Gas in a carafe?", "Liquefied petroleum gas LPG", "LPG", "8. Butane / gas", "Supergás", "Gasl", "LIQUIFIED PETROLUM", "Liquid gas cylinders", "LPG 3 kg", "LPG 12 kg", "Elpiji 5.5 kg / blue gaz", "14. LPG/ COOKING GAS", "Liquified  petroleum  gas (LPG)", "LPG (bottled gas)", "LPG & Coal"), "LPG", CF))%>%
-  mutate(CF = ifelse(is.na(CF) & Cooking_Fuel %in% c("kerosene / firewood / charcoal ?", "Kerosene", "7. Kerosene", "Paraffin-Stove", "Queroseno", "Paraffin", "kerosene", "Kerosine", "PARAFFIN", "1. KEROSENE", "Kerosene / firewood / charcoal?"), "Kerosene", CF))%>%
-  mutate(CF = ifelse(is.na(CF) & Cooking_Fuel %in% c("other ?", "Other", "Unknown", "None/donâ€™t cook", "Other (Specify)", "", "Does not cook", "Ninguno", "12. None", "13. Other specify", "Others","No cooking arrangement", "Don't cook at home", "OTHER (SPECIFY)", "Not stated", "OTHER(specify)", "Otro Cuál?","No cocinan","N/S","Ignorado", "18. OTHER (SPECIFY)", "ninguno no cocina", "nr", "No Cooking", "Lantern _Agatadowa_", "Other _specify_", "Ninguna", "Candle", "17. GARBAGE/PLASTIC", "Candles", "Oil Lamp", "other?", "None,No Cooking", "Other (specify)", "Other Fuel", "Other, specify", "None", "Unspecified", "No cooking", "No Fuel"), "Unknown", CF))%>%
-  mutate(CF = ifelse(is.na(CF) & Cooking_Fuel %in% c("Firewood", "1. Collecting fire wood", "2. Purchase fire wood", "Wood", "Firewood and chips", "Leña", "firewood", "COLLECTED FIREWOOD", "PURCHASED FIREWOOD", "4. WOOD", "Wood/Charcoal", "Firewood of Coal", "Firewood, LPG, Coal", "Firewood & LPG", "Firewood & Coal", "Firewood & Kerosene", "Firewood or Coal"), "Firewood", CF))%>%
+  mutate(CF = ifelse(is.na(CF) & Cooking_Fuel %in% c("kerosene / firewood / charcoal ?", "Kerosene", "Kerosene (gas)","7. Kerosene", "Paraffin-Stove", "Queroseno", "Paraffin", "kerosene", "Kerosine", "PARAFFIN", "1. KEROSENE", "Kerosene / firewood / charcoal?"), "Kerosene", CF))%>%
+  mutate(CF = ifelse(is.na(CF) & Cooking_Fuel %in% c("other ?", "Other", "Unknown", "None/donâ€™t cook", "Other (Specify)", "", "Does not cook", "Ninguno", "12. None", "13. Other specify", "Others","No cooking arrangement", "Don't cook at home", "OTHER (SPECIFY)", "Not stated", "OTHER(specify)", "Otro Cuál?","No cocinan","N/S","Ignorado", "18. OTHER (SPECIFY)", "ninguno no cocina", "nr", "No Cooking", "Lantern _Agatadowa_", "Other _specify_", "Ninguna", "Candle", "17. GARBAGE/PLASTIC", "Candles", "Oil Lamp", "other?", "None,No Cooking", "Other (specify)", "Other Fuel", "Other, specify", "None", "Unspecified", "No cooking", "No Fuel", "Otro"), "Unknown", CF))%>%
+  mutate(CF = ifelse(is.na(CF) & Cooking_Fuel %in% c("Firewood", "1. Collecting fire wood", "LeÃ±a","2. Purchase fire wood", "Wood", "Firewood and chips", "Leña", "firewood", "COLLECTED FIREWOOD", "PURCHASED FIREWOOD", "4. WOOD", "Wood/Charcoal", "Firewood of Coal", "Firewood, LPG, Coal", "Firewood & LPG", "Firewood & Coal", "Firewood & Kerosene", "Firewood or Coal"), "Firewood", CF))%>%
   mutate(CF = ifelse(is.na(CF) & Cooking_Fuel %in% c("Animal waste", "4. Crop residue / leaves", "5. Dung / manure", "6. Sawdust", "Crop residue","Sawdust", "Dung cake", "1Grass (reeds)", "Dried cow dung", "6. ANIMAL WASTE/DUNG","7. CROP RESIDUE/PLANT BIOMASS","8. SAW DUST", "STRAW/GRASS", "CROP RESIDUE","SAW DUST","ANIMAL WASTE", "Straw/shrubs/grass","Animal dung","Agricultural crop residue", "Dung of animals", "Wood, coal, plant-sources", "10. BIOMASS BRIQUETTE", "11. PROCESSED BIOMASS(PELLETS)/ WOODCHIPS", "Aninmal Waste", "Cow Dung"), "Other biomass", CF))%>%
   mutate(CF = ifelse(is.na(CF) & Cooking_Fuel %in% c("Petrol", "12. ETHANOL", "Petroleum", "Other (Oil, Kerosene)"), "Liquid fuel", CF))%>%
   mutate(CF = ifelse(is.na(CF) & Cooking_Fuel %in% c("Coke, Coal", "briquette", "coal", "Briquettes", "9. COAL BRIQUETTE", "2. COAL/LIGNITE", "Coal"), "Coal", CF))%>%
   mutate(CF = ifelse(CF == "Biomass" | CF == "Other Biomass", "Other biomass", CF))%>%
   mutate(CF = ifelse(CF == "No Fuel" | CF == "Other" | CF == "No cooking" | CF == "No Cooking" | CF == "No cocinan", "Unknown", CF))%>%
   mutate(CF = ifelse(CF == "Firewood Charcoal", "Firewood", CF))%>%
-  mutate(CF = ifelse(is.na(CF) & (Country_long == "Togo" | Country_long == "Cote dIvoire"), "Unknown",CF))%>%
+  mutate(CF = ifelse(is.na(CF) & (Country_long == "Togo" | Country_long == "Cote dIvoire" | Country_long == "Maldives" | Country_long == "Ecuador" | Country_long == "Colombia"), "Unknown",CF))%>%
   rename(CF_new = CF)
 
 Lighting.Codes.All.1 <- Lighting.Codes.All %>%
@@ -328,11 +350,33 @@ Heating.Codes.All.1 <- Heating.Codes.All %>%
                                                                ifelse(Heating_Fuel %in% c("Coal"), "Coal","Unknown")))))))))%>%
   rename(HF_new = HF)
 
-Education.Codes.All.1 <- Education.Codes.All %>%
-  select(Country_long, edu_hhh, Education, ISCED)%>%
-  mutate(Education = iconv(Education, "UTF-8", "UTF-8", sub = ''))#%>%
-# TBA Marlene
-  #write.xlsx(., "0_Data/9_Supplementary Information/Education.Codes.All.xlsx")
+# Education.Codes.All.1 <- Education.Codes.All %>%
+#   select(Country_long, edu_hhh, Education, ISCED)%>%
+#   mutate(Education = iconv(Education, "UTF-8", "UTF-8", sub = ''))%>%
+#   write.xlsx(., "0_Data/9_Supplementary Information/Education.Codes.All.xlsx")
+
+Education.Codes.All.1 <- read.xlsx("0_Data/9_Supplementary Information/Education.Codes.All_mapped.xlsx")%>%
+  rename(ISCED_new = ISCED)
+
+# Toilet.Codes.All.1 <- Toilet.Codes.All %>%
+#   select(Country_long, toilet, Toilet, TLT)%>%
+#   mutate(Toilet = ifelse(is.na(Toilet) & !is.na(TLT),TLT,Toilet))%>%
+#   mutate(TLT = ifelse(TLT != "Basic" & TLT != "No Service" & TLT != "Limited", NA, TLT))%>%
+#   mutate(Toilet = iconv(Toilet, "UTF-8", "UTF-8", sub = ''))%>%
+#   write.xlsx(., "0_Data/9_Supplementary Information/Toilet.Codes.All.xlsx")
+
+Toilet.Codes.All.1 <- read.xlsx("0_Data/9_Supplementary Information/Toilet.Codes.All_mapped.xlsx")%>%
+  rename(TLT_new = TLT)
+
+# Water.Codes.All.1 <- Water.Codes.All %>%
+#   select(Country_long, water, Water, WTR)%>%
+#   mutate(Water = ifelse(is.na(Water) & !is.na(WTR),WTR,Water))%>%
+#   mutate(WTR = ifelse(WTR != "Basic" & WTR != "No Service" & WTR != "Limited", NA, WTR))%>%
+#   mutate(Water = iconv(Water, "UTF-8", "UTF-8", sub = ''))%>%
+#   write.xlsx(., "0_Data/9_Supplementary Information/Water.Codes.All.xlsx")
+
+Water.Codes.All.1 <- read.xlsx("0_Data/9_Supplementary Information/Water.Codes.All_mapped.xlsx")%>%
+  rename(WTR_new = WTR)
 
 # 1.2   Shape Collated Data ####
 
@@ -351,28 +395,35 @@ data_joint_1 <- data_joint_0 %>%
   select(- truck1.01, -pump.01, -solar.heater.01, -video.01, -cooker.01, -air.cooler.01, -cooler.01, -sewing.machine.01, -sewing_machine.01,
          - region, -ocu_hhh, -vacuum.01, -internet.access, -municipality, -clust, -printer.01, -density, -alphabetism, -freezer.01, -heater.01,
          - inc_capital_rents, -inc_deleted, -inc_other_income, -inc_labour, - "inc_other income", -income_year, -iron.01, -bicycle.01,
-         - gas_subsidy, -ely_subsidy, -ind_hhh_b, - lat_cen, -long_cen, -country_of_birth, - year, - month, - day)%>%
-  left_join(Cooking.Codes.All.1,  by = c("cooking_fuel",  "Country_long"))%>%
-  left_join(Lighting.Codes.All.1, by = c("lighting_fuel", "Country_long"))%>%
-  left_join(Heating.Codes.All.1,  by = c("heating_fuel",  "Country_long"))%>%
-  # Add education
+         - gas_subsidy, -ely_subsidy, -ind_hhh_b, - lat_cen, -long_cen, -country_of_birth, - year, - month, - day, - hh_type)%>%
+  left_join(Cooking.Codes.All.1,   by = c("cooking_fuel",  "Country_long"))%>%
+  left_join(Lighting.Codes.All.1,  by = c("lighting_fuel", "Country_long"))%>%
+  left_join(Heating.Codes.All.1,   by = c("heating_fuel",  "Country_long"))%>%
+  left_join(Education.Codes.All.1, by = c("edu_hhh",       "Country_long"))%>%
+  left_join(Water.Codes.All.1,     by = c("water",         "Country_long"))%>%
+  left_join(Toilet.Codes.All.1,    by = c("toilet",        "Country_long"))%>%
   #select(-lighting_fuel, -cooking_fuel, -heating_fuel, -water, -toilet, -edu_hhh, -ethnicity, -nationality, -language, -religion) %>%
-  select(-Toilet, -Water, -Education, -Ethnicity_0, -edu_hhh, 
-         - Cooking_Fuel.x, -Cooking_Fuel.y, -Lighting_Fuel.y, -Lighting_Fuel.x, - Heating_Fuel.y, -Heating_Fuel.x, -CF, -LF, -Country_long)%>%
+  select(-Education.x,-edu_hhh, -Education.y, - ISCED,
+         -Ethnicity_0, 
+         -Cooking_Fuel.x, -Cooking_Fuel.y, -CF,
+         -Lighting_Fuel.y, -Lighting_Fuel.x, -LF,
+         -Heating_Fuel.y, -Heating_Fuel.x, -Country_long,
+         -Toilet.y, - Toilet.x, -Water.x, -Water.y, -TLT,-WTR)%>%
   select(hh_id, Country, hh_weights, hh_size, adults, children,
          province, district, village, urban_01, Province, District,
-         age_hhh, sex_hhh, ind_hhh, ISCED, Nationality, Ethnicity, Language, Religion, religiosity,
-         nationality, ethnicity, language, religion, cooking_fuel, heating_fuel, lighting_fuel, water, toilet, heating_fuel,
-         CF_new, LF_new, WTR, TLT, electricity.access, HF_new,
+         age_hhh, sex_hhh, ind_hhh, ISCED_new, Nationality, Ethnicity, Language, Religion, religiosity,
+         nationality, ethnicity, language, religion, cooking_fuel, heating_fuel, lighting_fuel, heating_fuel,
+         water, toilet, # check
+         CF_new, HF_new, LF_new, WTR_new, TLT_new, electricity.access,
          hh_expenditures_USD_2014, hh_expenditures, hh_expenditures_pc,
          inc_gov_cash, inc_gov_monetary, Income_Group_5, Income_Group_10,
          starts_with("share_"), starts_with("exp_USD_"),
          starts_with("CO2_"), starts_with("exp_CO2"), starts_with("burden_CO2"), ends_with("_national"), starts_with("exp_s"),
          ends_with(".01"),
          everything())%>%
-  rename(CF = CF_new, HF = HF_new, LF = LF_new)
+  rename(CF = CF_new, HF = HF_new, LF = LF_new, ISCED = ISCED_new, WTR = WTR_new, TLT = TLT_new)
 
-rm(data_joint_0, Cooking.Codes.All.1, Lighting.Codes.All.1, Heating.Codes.All.1, Cooking.Codes.All, Lighting.Codes.All, Heating.Codes.All, Heating.Code, Lighting.Code, Cooking.Code, Education.Code, Education.Codes.All, Education.Codes.All.1)
+rm(data_joint_0, Cooking.Codes.All.1, Lighting.Codes.All.1, Heating.Codes.All.1, Cooking.Codes.All, Lighting.Codes.All, Heating.Codes.All, Heating.Code, Lighting.Code, Cooking.Code, Education.Code, Education.Codes.All, Education.Codes.All.1, Toilet.Code, Toilet.Codes.All, Toilet.Codes.All.1, Water.Code, Water.Codes.All, Water.Codes.All.1)
 
 # Electrification rate TBD
 
@@ -762,7 +813,6 @@ Heating.Codes.Aggregate <- distinct(data_joint_1, HF)%>%
   mutate(HF_code = 1:n())%>%
   write_csv(., "0_Data/9_Supplementary Information/2_Codes/Heating.Code.All.csv")
 
-# To be updates: Water and Toilet codes
 Water.Codes.Aggregate <- distinct(data_joint_1, WTR)%>%
   arrange(WTR)%>%
   mutate(WTR_code = 1:n())%>%
@@ -772,6 +822,10 @@ Toilet.Codes.Aggregate <- distinct(data_joint_1, TLT)%>%
   arrange(TLT)%>%
   mutate(TLT_code = 1:n())%>%
   write_csv(., "0_Data/9_Supplementary Information/2_Codes/Toilet.Code.All.csv")
+
+Education.Codes.Aggregate <- distinct(data_joint_1, ISCED)%>%
+  arrange(ISCED)%>%
+  write_csv(., "0_Data/9_Supplementary Information/2_Codes/Education.Code.All.csv")
 
 # Country-specific codes
 
@@ -813,6 +867,7 @@ data_joint_split <- data_joint_1 %>%
   left_join(Heating.Codes.Aggregate,     by = "HF")%>%
   left_join(Water.Codes.Aggregate,       by = "WTR")%>%
   left_join(Toilet.Codes.Aggregate,      by = "TLT")%>%
+  left_join(Education.Codes.Aggregate,   by = "ISCED")%>%
   # Country-specific
   left_join(Province.Codes.Aggregate,    by = c("Country", "province", "Province"))%>%
   left_join(District.Codes.Aggregate,    by = c("Country", "district", "District"))%>%
