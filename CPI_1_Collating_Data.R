@@ -64,7 +64,8 @@ for(i in Country.Set){
   
   if("province" %in% colnames(carbon_pricing_incidence_1)){
     Province.Code <- read_csv(sprintf("../0_Data/1_Household Data/%s/2_Codes/Province.Code.csv", path_0), show_col_types = FALSE)%>%
-      mutate(province = as.character(province))
+      mutate(province = as.character(province),
+             Province = as.character(Province))
     
     carbon_pricing_incidence_1 <- carbon_pricing_incidence_1 %>%
       mutate(province = as.character(province))%>%
@@ -73,7 +74,8 @@ for(i in Country.Set){
   
   if("district" %in% colnames(carbon_pricing_incidence_1)){
     District.Code <- read_csv(sprintf("../0_Data/1_Household Data/%s/2_Codes/District.Code.csv", path_0), show_col_types = FALSE)%>%
-      mutate(district = as.character(district))
+      mutate(district = as.character(district),
+             District = as.character(District))
     
     carbon_pricing_incidence_1 <- carbon_pricing_incidence_1 %>%
       mutate(district = as.character(district))%>%
@@ -320,19 +322,19 @@ Lighting.Codes.All.1 <- Lighting.Codes.All %>%
   select(Country_long, lighting_fuel, Lighting_Fuel, LF)%>%
   mutate(Lighting_Fuel = iconv(Lighting_Fuel, "UTF-8", "UTF-8", sub = ''))%>%
   mutate(LF = ifelse(is.na(LF) & Lighting_Fuel %in% c("Charcoal", "3. Charcoal", "charcoal", "CHARCOAL", "3. CHARCOAL"), "Charcoal", LF))%>%
-  mutate(LF = ifelse(is.na(LF) & Lighting_Fuel %in% c("Electricity", "electricity", "electricity?", "Publicly-provided electricity/City Power", "Household generator", "9. Electricity", "10. Solar energy", "Electricity form public network", "Electricity from shared generator", "Electricity from private generator", "ELECTRICITY", "16. ELECTRIC", "Electricity from EUCL", "Other electricity distributors", "Solar panel", "Batteries+ Bulb", "Torch/Phone", "Rechargeable battery", "Other source of electricity", "Solar energy system", "Electricity-National grid", "Electricity- Solar", "Electricity- Personal Generator", "Electricity Community/ thermal plant", "Energía eléctrica", "Generator", "5. SOLAR", "Solar energy", "Electric", "Electricity  Community/ thermal plant", "Solar",
-                                                      "Electricité (générateur)", "Electricité réseau", "Plaque solaire", "Publicly-provided electricity/City power", "Electricity (public)", "Electricity (private)", "Solar Panel", "1. Electricity meter - private", "2. Electricity meter - shared", "3. Electricity from generator", "4. Solar energy", "Eletricidade da rede", "Electricidade (gerador)", "PLN electricity with meter", "PLN electricity without meter", "Non PLN electricity", "Electricity connection from Mains", "Solar Energy", "Electricit", "Electricity directle from EBS", "Electricity directly from the government (NH/RO)", "Electricity through the neighbor's dwelling", "Other Source of Electricitcy", "Solar system energy", "Placa solar", "Power Plant"), "Electricity", LF))%>%
+  mutate(LF = ifelse(is.na(LF) & Lighting_Fuel %in% c("Electricity","Electricidad", "electricity", "electricity?", "Publicly-provided electricity/City Power", "Household generator", "9. Electricity", "10. Solar energy", "Electricity form public network", "Electricity from shared generator", "Electricity from private generator", "ELECTRICITY", "16. ELECTRIC", "Electricity from EUCL", "Other electricity distributors", "Solar panel", "Batteries+ Bulb", "Torch/Phone", "Rechargeable battery", "Other source of electricity", "Solar energy system", "Electricity-National grid", "Electricity- Solar", "Electricity- Personal Generator", "Electricity Community/ thermal plant", "Energía eléctrica", "Generator", "5. SOLAR", "Solar energy", "Electric", "Electricity  Community/ thermal plant", "Solar",
+                                                      "Electricité (générateur)","ConexiÃ³n elÃ©ctrica del vecino(a)", "Electricité réseau", "Plaque solaire", "Publicly-provided electricity/City power", "Electricity (public)", "Electricity (private)", "Solar Panel", "1. Electricity meter - private", "2. Electricity meter - shared", "3. Electricity from generator", "4. Solar energy", "Panel solar","Generador elÃ©ctrico","Eletricidade da rede", "Electricidade (gerador)", "PLN electricity with meter", "PLN electricity without meter", "Non PLN electricity", "Electricity connection from Mains", "Solar Energy", "Electricit", "Electricity directle from EBS", "Electricity directly from the government (NH/RO)", "Electricity through the neighbor's dwelling", "Other Source of Electricitcy", "Solar system energy", "Placa solar", "Power Plant"), "Electricity", LF))%>%
   mutate(LF = ifelse(is.na(LF) & Lighting_Fuel %in% c("Mains gas?", "Bulk gas (zeppelin)?", "Gas in tube?", "Gas", "11. Bio gas", "Gobar gas", "Gas por cañería", "Bio Gas", "GAS", "City gas", "biogas", "15. PIPED NATURAL GAS", "13. BIOGAS", "Biogas", "Natural Gas", "Natural gas", "Biogas", "5. Bio gas", "Gas Lamp", "Gas lamp"), "Gas", LF))%>%
   mutate(LF = ifelse(is.na(LF) & Lighting_Fuel %in% c("Gas in a carafe?", "Liquefied petroleum gas LPG", "LPG", "8. Butane / gas", "Supergás", "Gasl", "LIQUIFIED PETROLUM", "Liquid gas cylinders", "LPG 3 kg", "LPG 12 kg", "Elpiji 5.5 kg / blue gaz", "14. LPG/ COOKING GAS", "Liquified  petroleum  gas (LPG)", "LPG (bottled gas)", "LPG & Coal", "Gas (Propan)"), "LPG", LF))%>%
   mutate(LF = ifelse(is.na(LF) & Lighting_Fuel %in% c("kerosene / firewood / charcoal ?", "Kerosene", "7. Kerosene", "Paraffin-Stove", "Queroseno", "Paraffin", "kerosene", "Kerosine", "PARAFFIN", "1. KEROSENE", "Kerosene / firewood / charcoal?", "Paraffine/Bois/Planche",
-                                                      "Kerosene lamp", "9. Kerosene light lamp (imported)", "10. Kerosene lamp (local kuraz)", "Kerosene Lamp", "Parafina/Lenha/Madeira", "Paraffin Lantern", "ParaffinTin lamp", "Paraffin Pressure Lamp", "Paraffin lantern", "Paraffin Tadooba", "Supergás o queroseno"), "Kerosene", LF))%>%
+                                                      "Kerosene lamp", "Kerosene (gas)", "9. Kerosene light lamp (imported)", "10. Kerosene lamp (local kuraz)", "Kerosene Lamp", "Parafina/Lenha/Madeira", "Paraffin Lantern", "ParaffinTin lamp", "Paraffin Pressure Lamp", "Paraffin lantern", "Paraffin Tadooba", "Supergás o queroseno"), "Kerosene", LF))%>%
   mutate(LF = ifelse(is.na(LF) & Lighting_Fuel %in% c("other ?", "Other", "Unknown", "None/donâ€™t cook", "Other (Specify)", "", "Does not cook", "Ninguno", "12. None", "13. Other specify", "Others","No cooking arrangement", "Don't cook at home", "OTHER (SPECIFY)", "Not stated", "OTHER(specify)", "Otro Cuál?","No cocinan","N/S","Ignorado", "18. OTHER (SPECIFY)", "ninguno no cocina", "nr", "No Cooking", "Other _specify_", "Ninguna", "17. GARBAGE/PLASTIC", "other?", "None,No Cooking", "Other (specify)", "Other Fuel", "Other, specify", "None", "Unspecified", "No cooking", "No Fuel",
                                                       "Autre", "OTHER(SPECIFY)", "Outros", "missing", "No lighting", "Not electricity", "No type of lighting"), "Unknown", LF))%>%
   mutate(LF = ifelse(is.na(LF) & Lighting_Fuel %in% c("Firewood", "1. Collecting fire wood", "2. Purchase fire wood", "Wood", "Firewood and chips", "Leña", "firewood", "COLLECTED FIREWOOD", "PURCHASED FIREWOOD", "4. WOOD", "Wood/Charcoal", "Firewood of Coal", "Firewood, LPG, Coal", "Firewood & LPG", "Firewood & Coal", "Firewood & Kerosene", "Firewood or Coal", "12. Fire wood", "Fuel wood"), "Firewood", LF))%>%
   mutate(LF = ifelse(is.na(LF) & Lighting_Fuel %in% c("Animal waste", "4. Crop residue / leaves", "5. Dung / manure", "6. Sawdust", "Crop residue","Sawdust", "Dung cake", "1Grass (reeds)", "Dried cow dung", "6. ANIMAL WASTE/DUNG","7. CROP RESIDUE/PLANT BIOMASS","8. SAW DUST", "STRAW/GRASS", "CROP RESIDUE","SAW DUST","ANIMAL WASTE", "Straw/shrubs/grass","Animal dung","Agricultural crop residue", "Dung of animals", "Wood, coal, plant-sources", "10. BIOMASS BRIQUETTE", "11. PROCESSED BIOMASS(PELLETS)/ WOODCHIPS", "Aninmal Waste", "Cow Dung", "Cow dung", "Grass (reeds)", "GRASS", "Crop Residue"), "Other biomass", LF))%>%
   mutate(LF = ifelse(is.na(LF) & Lighting_Fuel %in% c("Petrol", "12. ETHANOL", "Petroleum", "Other (Oil, Kerosene)", "Lampe à pétrole", "Candeeiro a petróleo", "Other oil", "Oil Lamp", "Palm Oil"), "Liquid fuel", LF))%>%
   mutate(LF = ifelse(is.na(LF) & Lighting_Fuel %in% c("Coke, Coal", "briquette", "coal", "Briquettes", "9. COAL BRIQUETTE", "2. COAL/LIGNITE", "Coal"), "Coal", LF))%>%
-  mutate(LF = ifelse(is.na(LF) & Lighting_Fuel %in% c("Lampe", "Lampe à pile", "Lampe à pile, grosse torche", "Candle", "7. Lantern", "6. Electrical battery", "8. Light from dry cell with switch", "11. Candle/wax", "Flash Light", "Candles", "Battery", "Vela", "Battery Lamp/ Torch", "Chinese Lamp", "Torchlight", "CANDLES", "BATTERY/DRY CELL(TORCH)", "CANDLES", "Velas", "Batteries", "Lantern _Agatadowa_", "Cargador de batería", "Candeeiro a pilhas", "Petroleum light/candle/dia", "Private light engine", "Water mill"), "Other lighting", LF))%>%
+  mutate(LF = ifelse(is.na(LF) & Lighting_Fuel %in% c("Lampe", "Lampe à pile", "Lampe à pile, grosse torche","Candela", "Candle", "7. Lantern", "6. Electrical battery", "8. Light from dry cell with switch", "11. Candle/wax", "Flash Light", "Candles", "Battery", "Vela", "Battery Lamp/ Torch", "Chinese Lamp", "Torchlight", "CANDLES", "BATTERY/DRY CELL(TORCH)", "CANDLES", "Velas", "Batteries", "Lantern _Agatadowa_", "Cargador de batería", "Candeeiro a pilhas", "Petroleum light/candle/dia", "Private light engine", "Water mill", "Otro"), "Other lighting", LF))%>%
   mutate(LF = ifelse(is.na(LF) & Country_long == "Guatemala", "Unknown", LF))%>%
   mutate(LF = ifelse(LF == "No Lighting" | LF == "Other" | LF == "No lighting", "Unknown", LF))%>%
   rename(LF_new = LF)
@@ -895,7 +897,7 @@ data_joint_split <- data_joint_1 %>%
                  Income_Group_5, Income_Group_10, electricity.access, ISCED, ends_with(".01")), list(~ as.integer(.)))
 
 rm(Cooking.Codes.Aggregate,Lighting.Codes.Aggregate,Heating.Codes.Aggregate,Water.Codes.Aggregate,Toilet.Codes.Aggregate,
-   Province.Codes.Aggregate,District.Codes.Aggregate,Nationality.Codes.Aggregate,Ethnicity.Codes.Aggregate,Language.Codes.Aggregate,Religion.Codes.Aggregate)
+   Province.Codes.Aggregate,District.Codes.Aggregate,Nationality.Codes.Aggregate,Ethnicity.Codes.Aggregate,Language.Codes.Aggregate,Religion.Codes.Aggregate,Education.Codes.Aggregate)
 
 dir.create("../1_Carbon_Pricing_Incidence/1_Data_Incidence_Analysis/3_Collated_Database", showWarnings = FALSE)
 
