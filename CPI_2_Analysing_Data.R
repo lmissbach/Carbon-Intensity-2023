@@ -355,6 +355,7 @@ write.xlsx(NAs_over_obs_1, "0_Data/9_Supplementary Information/NAs_final_dataset
 dir.create("1_Figures/Analysis_k_means", showWarnings = FALSE)
 
 data_4.2.0 <- data.frame()
+data_4.2.00 <- data.frame()
 
 for(i in Country.Set$Country){
   
@@ -371,6 +372,12 @@ for(i in Country.Set$Country){
            scaled_hh_expenditures_USD_2014 = (hh_expenditures_USD_2014 - mean_hh_expenditures_USD_2014)/sd_hh_expenditures_USD_2014)%>%
     select(hh_id, scaled_burden_CO2_national, scaled_hh_expenditures_USD_2014, everything())
 
+  # removing few severe outliers
+  if(i  %in% c("ARM", "BGR", "ETH","PRY", "IRQ", "ROU")){
+    data_4.2 <- data_4.2 %>%
+      filter(scaled_burden_CO2_national < 10)
+  }
+  
   model <- kmeans(select(data_4.2, scaled_burden_CO2_national, scaled_hh_expenditures_USD_2014), centers = 10)
 
   gc()
@@ -391,7 +398,10 @@ for(i in Country.Set$Country){
 # hc_test     <- hclust(dist_matrix, method = "complete")
 # assign      <- cutree(hc_test, k = 100)
 
-  data_2$cluster_kmeans_10[data_2$Country == i] <- model$cluster
+  data_4.2$cluster_kmeans_10 <- model$cluster
+  
+  data_4.2.001 <- select(data_4.2, hh_id, cluster_kmeans_10)%>%
+    mutate(Country = i)
   
   data_4.2.1 <- data_4.2 %>%
     # mutate(cluster = assign)%>%
@@ -403,7 +413,8 @@ for(i in Country.Set$Country){
     ungroup()%>%
     mutate(Country = i)
 
-  data_4.2.0 <- bind_rows(data_4.2.0, data_4.2.1)
+  data_4.2.0  <- bind_rows(data_4.2.0, data_4.2.1)
+  data_4.2.00 <- bind_rows(data_4.2.00, data_4.2.001)
   
   print(i)
   
@@ -412,16 +423,21 @@ for(i in Country.Set$Country){
   print(end-start)
 }
 
+data_2 <- data_2 %>%
+  left_join(data_4.2.00)
 
 for(i in Country.Set$Country){
   data_4.2.1 <- data_4.2.0 %>%
     filter(Country == i)
   
   data_4.2.2 <- data_2 %>%
-    filter(Country == i)
+    filter(Country == i)%>%
+    filter(!is.na(cluster_kmeans_10))
   
-  upper_bound   <- round(max(data_4.2.1$burden_CO2_national)+0.01,2)
-  righter_bound <- round(max(data_4.2.1$hh_expenditures_USD_2014),-4)
+  upper_bound   <- plyr::round_any(max(data_4.2.1$burden_CO2_national), 0.05, f = ceiling)
+  righter_bound <- plyr::round_any(max(data_4.2.1$hh_expenditures_USD_2014), 5000, f = ceiling)
+  
+  if(righter_bound == 0) righter_bound <- 10000
   
   P_1 <- ggplot(data = filter(data_4.2.1, Country == i), aes(x = hh_expenditures_USD_2014, y = burden_CO2_national))+
     geom_point(data = data_4.2.2, aes(fill = factor(cluster_kmeans_10)), alpha = 0.05, shape = 21, colour = "black")+
@@ -463,8 +479,8 @@ P_4.2.1 <- ggplot(data = data_4.2.0, aes(x = hh_expenditures_USD_2014, y = burde
   #scale_size_continuous(range = c(1,5))+
   theme_bw()+
   xlab("Total household expenditures")+ ylab("Carbon pricing incidence")+
-  scale_y_continuous(labels = scales::percent_format(accuracy = 1), limits = c(0,0.1), expand = c(0,0))+
-  scale_x_continuous(limits = c(0, 50000), labels = scales::dollar_format(accuracy = 1), expand = c(0,0))+
+  scale_y_continuous(labels = scales::percent_format(accuracy = 1), limits = c(0,0.15), expand = c(0,0))+
+  scale_x_continuous(limits = c(0, 80000), labels = scales::dollar_format(accuracy = 1), expand = c(0,0))+
   scale_size_continuous(range = c(1,5), guide = "none")+
   scale_fill_discrete(guide = "none")+
   #ggtitle(i)+
