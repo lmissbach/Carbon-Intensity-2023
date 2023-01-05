@@ -3,3 +3,6 @@
 .RData
 .Ruserdata
 **/*.jpg
+1_Figures/**
+*.jpg
+*.jpg
