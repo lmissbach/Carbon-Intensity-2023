@@ -8,7 +8,8 @@ if(!require("pacman")) install.packages("pacman")
 p_load("boot", "broom", "countrycode","fixest", "ggpubr", "ggrepel",
        "ggsci", "Hmisc", "knitr", "kableExtra", "openxlsx", "rattle", "scales", "tidyverse", "xtable")
 
-options(scipen=999)
+options(scipen=999,
+        dplyr.summarise.inform = FALSE)
 
 # 1     Loading data ####
 
@@ -518,7 +519,7 @@ dict_latex <- c(hh_expenditures_USD_2014 = "HH Exp.", "log(hh_size)" = "HH size 
 
 # 4.3.1 Expenditure shares ####
 
-# 4.3.1.1 Parametric Engel Curves #### 
+# 4.3.1.1 Parametric Engel Curves - Tables #### 
 
 dir.create("2_Tables/1_Parametric_Engel_Curves", showWarnings = FALSE)
 
@@ -542,10 +543,144 @@ for (i in Country.Set$Country){
 
 rm(data_4.3.1.1, model_1)
 
-# 4.3.1.2 Non-Parametric Engel Curves ####
+# 4.3.1.2 Parametric Engel Curves - Figures ####
+
+dir.create("1_Figures/Analysis_Parametric_Engel_Curves", showWarnings = FALSE)
 
 for(i in Country.Set$Country){
-  data_4.3.1.2
+  data_4.3.1.2 <- data_2 %>%
+    filter(Country == i)%>%
+    select(hh_id, hh_weights, Country, starts_with("share_"), hh_expenditures_USD_2014_pc)%>%
+    select(-share_other_binning)%>%
+    rename(share_Energy = share_energy, share_Food = share_food, share_Services = share_services, share_Goods = share_goods)%>%
+    pivot_longer(starts_with("share"), names_to = "Type", values_to = "Share", names_prefix = "share_")
+  
+  data_4.3.1.2.1 <- data_2 %>%
+    filter(Country == i)%>%
+    group_by(Income_Group_5)%>%
+    summarise(mean_hh_expenditures_USD_2014_pc = wtd.mean(hh_expenditures_USD_2014, hh_weights))%>%
+    ungroup()
+  
+  upper_bound   <- plyr::round_any(max(data_4.3.1.2.1$mean_hh_expenditures_USD_2014_pc), 10000, f = ceiling)
+  
+  P_4.3.1.2 <- ggplot()+
+    geom_vline(xintercept = data_4.3.1.2.1$mean_hh_expenditures_USD_2014_pc[1])+
+    geom_vline(xintercept = data_4.3.1.2.1$mean_hh_expenditures_USD_2014_pc[2])+
+    geom_vline(xintercept = data_4.3.1.2.1$mean_hh_expenditures_USD_2014_pc[3])+
+    geom_vline(xintercept = data_4.3.1.2.1$mean_hh_expenditures_USD_2014_pc[4])+
+    geom_vline(xintercept = data_4.3.1.2.1$mean_hh_expenditures_USD_2014_pc[5])+
+    stat_smooth(data = data_4.3.1.2, 
+                aes(x = hh_expenditures_USD_2014_pc, weight = hh_weights, 
+                    y = Share, fill = Type, colour = Type),
+                    level = 0.99, method = "lm", formula = y ~ x + I(x^2) + I(x^3), fullrange = TRUE)+
+    theme_bw()+
+    xlab("Household expenditures per capita in US-$ (2014)") + ylab("Share of total expenditures")+
+    scale_fill_npg()+
+    scale_colour_npg()+
+    labs(colour = "", fill = "")+
+    coord_cartesian(xlim = c(0, upper_bound), ylim = c(0,0.65))+
+    scale_y_continuous(labels = scales::percent_format(accuracy = 1), expand = c(0,0))+
+    scale_x_continuous(labels = scales::dollar_format(accuracy = 1),  expand = c(0,0))+
+    ggtitle(Country.Set$Country_long[Country.Set$Country == i])+
+    theme(axis.text.y = element_text(size = 7), 
+          axis.text.x = element_text(size = 7),
+          axis.title  = element_text(size = 7),
+          plot.title = element_text(size = 11),
+          legend.position = "bottom",
+          strip.text = element_text(size = 7),
+          strip.text.y = element_text(angle = 180),
+          #panel.grid.major = element_blank(),
+          panel.grid.minor = element_blank(),
+          axis.ticks = element_line(size = 0.2),
+          legend.text = element_text(size = 7),
+          legend.title = element_text(size = 7),
+          plot.margin = unit(c(0.3,0.5,0.3,0.3), "cm"),
+          panel.border = element_rect(size = 0.3))
+  
+  jpeg(sprintf("1_Figures/Analysis_Parametric_Engel_Curves/Parametric_EC_%s.jpg", i), width = 15.5, height = 15, unit = "cm", res = 200)
+  print(P_4.3.1.2)
+  dev.off()
+  
+  print(i)
+  
+  rm(data_4.3.1.2, data_4.3.1.2.1, P_4.3.1.2)
+  
+}
+
+# 4.3.1.3 Non-Parametric Engel Curves - Figures ####
+
+dir.create("1_Figures/Analysis_Non_Parametric_Engel_Curves", showWarnings = FALSE)
+
+for(i in Country.Set$Country){
+  
+  start <- Sys.time()
+  
+  data_4.3.1.3 <- data_2 %>%
+    filter(Country == i)%>%
+    select(hh_id, hh_weights, Country, starts_with("share_"), hh_expenditures_USD_2014_pc)%>%
+    mutate(Income_Group_250 = as.numeric(binning(hh_expenditures_USD_2014_pc, 
+                                                 bins = 250, method = c("wtd.quantile"), labels = seq(1,250,length.out=250), weights = hh_weights)))%>%
+    select(-share_other_binning)%>%
+    rename(share_Energy = share_energy, share_Food = share_food, share_Services = share_services, share_Goods = share_goods)%>%
+    pivot_longer(starts_with("share"), names_to = "Type", values_to = "Share", names_prefix = "share_")%>%
+    group_by(Income_Group_250, Type)%>%
+    summarise(Share = wtd.mean(Share, hh_weights),
+              hh_expenditures_USD_2014_pc = wtd.mean(hh_expenditures_USD_2014_pc, hh_weights),
+              hh_weights = sum(hh_weights))%>%
+    ungroup()
+  
+  data_4.3.1.3.1 <- data_2 %>%
+    filter(Country == i)%>%
+    group_by(Income_Group_5)%>%
+    summarise(mean_hh_expenditures_USD_2014_pc = wtd.mean(hh_expenditures_USD_2014_pc, hh_weights))%>%
+    ungroup()
+  
+  upper_bound   <- plyr::round_any(max(data_4.3.1.3.1$mean_hh_expenditures_USD_2014_pc), 10000, f = ceiling)
+  
+  P_4.3.1.3 <- ggplot()+
+    geom_vline(xintercept = data_4.3.1.3.1$mean_hh_expenditures_USD_2014_pc[1])+
+    geom_vline(xintercept = data_4.3.1.3.1$mean_hh_expenditures_USD_2014_pc[2])+
+    geom_vline(xintercept = data_4.3.1.3.1$mean_hh_expenditures_USD_2014_pc[3])+
+    geom_vline(xintercept = data_4.3.1.3.1$mean_hh_expenditures_USD_2014_pc[4])+
+    geom_vline(xintercept = data_4.3.1.3.1$mean_hh_expenditures_USD_2014_pc[5])+
+    geom_smooth(data = data_4.3.1.3, 
+                aes(x = hh_expenditures_USD_2014_pc, weight = hh_weights, 
+                    y = Share, fill = Type, colour = Type), method = "loess", formula = y ~ x, span = 0.75)+
+    theme_bw()+
+    xlab("Household expenditures per capita in US-$ (2014)") + ylab("Share of total expenditures")+
+    scale_fill_npg()+
+    scale_colour_npg()+
+    labs(colour = "", fill = "")+
+    coord_cartesian(xlim = c(0, upper_bound), ylim = c(0,0.65))+
+    scale_y_continuous(labels = scales::percent_format(accuracy = 1), expand = c(0,0))+
+    scale_x_continuous(labels = scales::dollar_format(accuracy = 1),  expand = c(0,0))+
+    ggtitle(Country.Set$Country_long[Country.Set$Country == i])+
+    theme(axis.text.y = element_text(size = 7), 
+          axis.text.x = element_text(size = 7),
+          axis.title  = element_text(size = 7),
+          plot.title = element_text(size = 11),
+          legend.position = "bottom",
+          strip.text = element_text(size = 7),
+          strip.text.y = element_text(angle = 180),
+          #panel.grid.major = element_blank(),
+          panel.grid.minor = element_blank(),
+          axis.ticks = element_line(size = 0.2),
+          legend.text = element_text(size = 7),
+          legend.title = element_text(size = 7),
+          plot.margin = unit(c(0.3,0.5,0.3,0.3), "cm"),
+          panel.border = element_rect(size = 0.3))
+  
+  jpeg(sprintf("1_Figures/Analysis_Non_Parametric_Engel_Curves/Nonparametric_EC_%s.jpg", i), width = 15.5, height = 15, unit = "cm", res = 200)
+  print(P_4.3.1.3)
+  dev.off()
+  
+  end <- Sys.time()
+  print(end-start)
+  
+  print(i)
+  
+  rm(data_4.3.1.2, data_4.3.1.2.1, P_4.3.1.2)
+  
 }
 
 # 4.3.2 Carbon intensity of consumption ####
