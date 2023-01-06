@@ -437,7 +437,118 @@ rm(data_joint_0, Cooking.Codes.All.1, Lighting.Codes.All.1, Heating.Codes.All.1,
 #  select(Country, starts_with("exp_USD_Electricity"))%>%
 #  mutate(electrification_rate = 1 - (exp_USD_Electricity_NAs/exp_USD_Electricity_Obs))
 
-# 2.    Overview GTAP-CO2-Intensities ####
+# 2     Output ####
+
+# 2.1   Create and save codes ####
+
+dir.create("0_Data/9_Supplementary Information/2_Codes", showWarnings = FALSE)
+
+# Define Codes
+
+Cooking.Codes.Aggregate <- distinct(data_joint_1, CF)%>%
+  arrange(CF)%>%
+  mutate(CF_code = 1:n())%>%
+  write_csv(., "0_Data/9_Supplementary Information/2_Codes/Cooking.Code.All.csv")
+
+Lighting.Codes.Aggregate <- distinct(data_joint_1, LF)%>%
+  arrange(LF)%>%
+  mutate(LF_code = 1:n())%>%
+  write_csv(., "0_Data/9_Supplementary Information/2_Codes/Lighting.Code.All.csv")
+
+Heating.Codes.Aggregate <- distinct(data_joint_1, HF)%>%
+  arrange(HF)%>%
+  mutate(HF_code = 1:n())%>%
+  write_csv(., "0_Data/9_Supplementary Information/2_Codes/Heating.Code.All.csv")
+
+Water.Codes.Aggregate <- distinct(data_joint_1, WTR)%>%
+  arrange(WTR)%>%
+  mutate(WTR_code = 1:n())%>%
+  write_csv(., "0_Data/9_Supplementary Information/2_Codes/Water.Code.All.csv")
+
+Toilet.Codes.Aggregate <- distinct(data_joint_1, TLT)%>%
+  arrange(TLT)%>%
+  mutate(TLT_code = 1:n())%>%
+  write_csv(., "0_Data/9_Supplementary Information/2_Codes/Toilet.Code.All.csv")
+
+Education.Codes.Aggregate <- distinct(data_joint_1, ISCED)%>%
+  arrange(ISCED)%>%
+  write_csv(., "0_Data/9_Supplementary Information/2_Codes/Education.Code.All.csv")
+
+# Country-specific codes
+
+Province.Codes.Aggregate <- distinct(data_joint_1, province, Province, Country)%>%
+  arrange(Country, Province)%>%
+  mutate(Province_code = 1:n())%>%
+  write_csv(., "0_Data/9_Supplementary Information/2_Codes/Province.Code.All.csv")
+
+District.Codes.Aggregate <- distinct(data_joint_1, district, District, Country)%>%
+  arrange(Country, District)%>%
+  mutate(District_code = 1:n())%>%
+  write_csv(., "0_Data/9_Supplementary Information/2_Codes/District.Code.All.csv")
+
+Nationality.Codes.Aggregate <- distinct(data_joint_1, Country, Nationality, nationality)%>%
+  arrange(Country, nationality)%>%
+  mutate(Nationality_code = 1:n())%>%
+  write_csv(., "0_Data/9_Supplementary Information/2_Codes/Nationality.Code.All.csv")
+
+Ethnicity.Codes.Aggregate <- distinct(data_joint_1, Country, Ethnicity, ethnicity)%>%
+  arrange(Country, ethnicity)%>%
+  mutate(Ethnicity_code = 1:n())%>%
+  write_csv(., "0_Data/9_Supplementary Information/2_Codes/Ethnicity.Code.All.csv")
+
+Language.Codes.Aggregate <- distinct(data_joint_1, Country, Language, language)%>%
+  arrange(Country, language)%>%
+  mutate(Language_code = 1:n())%>%
+  write_csv(., "0_Data/9_Supplementary Information/2_Codes/Language.Code.All.csv")
+
+Religion.Codes.Aggregate <- distinct(data_joint_1, Country, Religion, religion)%>%
+  arrange(Country, religion)%>%
+  mutate(Religion_code = 1:n())%>%
+  write_csv(., "0_Data/9_Supplementary Information/2_Codes/Religion.Code.All.csv")
+
+# 2.2   Split and save data ####
+
+data_joint_split <- data_joint_1 %>%
+  left_join(Cooking.Codes.Aggregate,     by = "CF")%>%
+  left_join(Lighting.Codes.Aggregate,    by = "LF")%>%
+  left_join(Heating.Codes.Aggregate,     by = "HF")%>%
+  left_join(Water.Codes.Aggregate,       by = "WTR")%>%
+  left_join(Toilet.Codes.Aggregate,      by = "TLT")%>%
+  left_join(Education.Codes.Aggregate,   by = "ISCED")%>%
+  # Country-specific
+  left_join(Province.Codes.Aggregate,    by = c("Country", "province", "Province"))%>%
+  left_join(District.Codes.Aggregate,    by = c("Country", "district", "District"))%>%
+  left_join(Nationality.Codes.Aggregate, by = c("Country", "nationality", "Nationality"))%>%
+  left_join(Ethnicity.Codes.Aggregate,   by = c("Country", "ethnicity", "Ethnicity"))%>%
+  left_join(Language.Codes.Aggregate,    by = c("Country", "language", "Language"))%>%
+  left_join(Religion.Codes.Aggregate,    by = c("Country", "religion", "Religion"))%>%
+  select(-CF,-LF,-HF,-WTR,-TLT,-province,-Province,-district,-District,-nationality,-Nationality,
+         -ethnicity,-Ethnicity,-language,-Language,-religion,-Religion,
+         -cooking_fuel,-heating_fuel,-lighting_fuel,-water,-toilet)%>%
+  select(hh_id, Country, hh_weights, hh_size, adults, children,
+         Province_code, District_code, village, urban_01,
+         age_hhh, sex_hhh, ind_hhh, ISCED, Nationality_code, Ethnicity_code, Language_code, Religion_code, religiosity,
+         CF_code, LF_code, HF_code, WTR_code, TLT_code, electricity.access,
+         hh_expenditures_USD_2014, hh_expenditures, hh_expenditures_pc,
+         inc_gov_cash, inc_gov_monetary, Income_Group_5, Income_Group_10,
+         starts_with("share_"), starts_with("exp_USD_"),
+         starts_with("CO2_"), starts_with("exp_CO2"), starts_with("burden_CO2"), ends_with("_national"), starts_with("exp_s"),
+         ends_with(".01"),
+         everything())%>%
+  # delete derived values 
+  select(-exp_CO2_global,-exp_CO2_national,-exp_CO2_electricity,-exp_CO2_transport,
+         -burden_CO2_global,-burden_CO2_national,-burden_CO2_electricity,-burden_CO2_transport)%>%
+  mutate_at(vars(hh_size,adults,children,hh_id,urban_01,age_hhh,sex_hhh,
+                 Income_Group_5, Income_Group_10, electricity.access, ISCED, ends_with(".01")), list(~ as.integer(.)))
+
+rm(Cooking.Codes.Aggregate,Lighting.Codes.Aggregate,Heating.Codes.Aggregate,Water.Codes.Aggregate,Toilet.Codes.Aggregate,
+   Province.Codes.Aggregate,District.Codes.Aggregate,Nationality.Codes.Aggregate,Ethnicity.Codes.Aggregate,Language.Codes.Aggregate,Religion.Codes.Aggregate,Education.Codes.Aggregate)
+
+dir.create("../1_Carbon_Pricing_Incidence/1_Data_Incidence_Analysis/3_Collated_Database", showWarnings = FALSE)
+
+write_rds(data_joint_split, "../1_Carbon_Pricing_Incidence/1_Data_Incidence_Analysis/3_Collated_Database/Collated_Database.rds")  
+
+# 3.    Overview GTAP-CO2-Intensities ####
 
 Country.Set.B <- c(Country.Set, "Belgium", "Bulgaria", "Cyprus", "Czech Republic", "Germany", "Denmark", "Estonia", "Greece", "Spain", "Finland",
                                   "France", "Croatia", "Hungary" ,"Ireland", "Italy", "Lithuania", "Luxembourg", "Latvia", "Netherlands", "Poland",
@@ -513,7 +624,7 @@ for (i in Country.Set.B){
   carbon_intensities_0 <- bind_rows(carbon_intensities_0, carbon_intensities)
 }
 
-# 2.1   Analyse and systematically compare carbon intensities ####
+# 3.1   Analyse and systematically compare carbon intensities ####
 
 carbon_intensities_2.1 <- carbon_intensities_0 %>%
   select(everything())%>%
@@ -672,9 +783,9 @@ dev.off()
 rm(carbon_intensities, carbon_intensities_0, carbon_intensities_1, carbon_intensities_2.1, carbon_intensities_2.1.1, carbon_intensities_2.1.2, GTAP.Code,
    P_2.1, P_2.1.1, P_2.1.2)
 
-# 3     Miscellaneous ####
+# 4     Miscellaneous ####
 
-# 3.1   Checking fuel assignment ####
+# 4.1   Checking fuel assignment ####
 
 Country.Set <- c("Argentina", "Armenia", "Bangladesh", "Barbados", "Benin","Bolivia", "Brazil", "Burkina Faso", "Cambodia", "Chile",
                  "Colombia", "Costa Rica", "Cote dIvoire", "Dominican Republic", "Ecuador", "El Salvador", "Ethiopia", 
@@ -773,7 +884,7 @@ Item.Codes.All.1 <- Item.Codes.All %>%
 
 rm(Item.Codes.All, Item_Codes, item_codes, matching, fuels, categories)
 
-# 3.2   Track NAs over observations ####
+# 4.2   Track NAs over observations ####
 
 NAs_over_obs <- data_joint_1 %>%
   select(everything())%>%
@@ -792,113 +903,3 @@ NAs_over_obs <- data_joint_1 %>%
 
 write.xlsx(NAs_over_obs, "0_Data/9_Supplementary Information/NAs_over_Observations_0.xlsx")
 
-# 4     Output ####
-
-# 4.1   Create and save codes ####
-
-dir.create("0_Data/9_Supplementary Information/2_Codes", showWarnings = FALSE)
-
-# Define Codes
-
-Cooking.Codes.Aggregate <- distinct(data_joint_1, CF)%>%
-  arrange(CF)%>%
-  mutate(CF_code = 1:n())%>%
-  write_csv(., "0_Data/9_Supplementary Information/2_Codes/Cooking.Code.All.csv")
-
-Lighting.Codes.Aggregate <- distinct(data_joint_1, LF)%>%
-  arrange(LF)%>%
-  mutate(LF_code = 1:n())%>%
-  write_csv(., "0_Data/9_Supplementary Information/2_Codes/Lighting.Code.All.csv")
-
-Heating.Codes.Aggregate <- distinct(data_joint_1, HF)%>%
-  arrange(HF)%>%
-  mutate(HF_code = 1:n())%>%
-  write_csv(., "0_Data/9_Supplementary Information/2_Codes/Heating.Code.All.csv")
-
-Water.Codes.Aggregate <- distinct(data_joint_1, WTR)%>%
-  arrange(WTR)%>%
-  mutate(WTR_code = 1:n())%>%
-  write_csv(., "0_Data/9_Supplementary Information/2_Codes/Water.Code.All.csv")
-
-Toilet.Codes.Aggregate <- distinct(data_joint_1, TLT)%>%
-  arrange(TLT)%>%
-  mutate(TLT_code = 1:n())%>%
-  write_csv(., "0_Data/9_Supplementary Information/2_Codes/Toilet.Code.All.csv")
-
-Education.Codes.Aggregate <- distinct(data_joint_1, ISCED)%>%
-  arrange(ISCED)%>%
-  write_csv(., "0_Data/9_Supplementary Information/2_Codes/Education.Code.All.csv")
-
-# Country-specific codes
-
-Province.Codes.Aggregate <- distinct(data_joint_1, province, Province, Country)%>%
-  arrange(Country, Province)%>%
-  mutate(Province_code = 1:n())%>%
-  write_csv(., "0_Data/9_Supplementary Information/2_Codes/Province.Code.All.csv")
-
-District.Codes.Aggregate <- distinct(data_joint_1, district, District, Country)%>%
-  arrange(Country, District)%>%
-  mutate(District_code = 1:n())%>%
-  write_csv(., "0_Data/9_Supplementary Information/2_Codes/District.Code.All.csv")
-
-Nationality.Codes.Aggregate <- distinct(data_joint_1, Country, Nationality, nationality)%>%
-  arrange(Country, nationality)%>%
-  mutate(Nationality_code = 1:n())%>%
-  write_csv(., "0_Data/9_Supplementary Information/2_Codes/Nationality.Code.All.csv")
-
-Ethnicity.Codes.Aggregate <- distinct(data_joint_1, Country, Ethnicity, ethnicity)%>%
-  arrange(Country, ethnicity)%>%
-  mutate(Ethnicity_code = 1:n())%>%
-  write_csv(., "0_Data/9_Supplementary Information/2_Codes/Ethnicity.Code.All.csv")
-
-Language.Codes.Aggregate <- distinct(data_joint_1, Country, Language, language)%>%
-  arrange(Country, language)%>%
-  mutate(Language_code = 1:n())%>%
-  write_csv(., "0_Data/9_Supplementary Information/2_Codes/Language.Code.All.csv")
-
-Religion.Codes.Aggregate <- distinct(data_joint_1, Country, Religion, religion)%>%
-  arrange(Country, religion)%>%
-  mutate(Religion_code = 1:n())%>%
-  write_csv(., "0_Data/9_Supplementary Information/2_Codes/Religion.Code.All.csv")
-
-# 4.2   Split and save data ####
-
-data_joint_split <- data_joint_1 %>%
-  left_join(Cooking.Codes.Aggregate,     by = "CF")%>%
-  left_join(Lighting.Codes.Aggregate,    by = "LF")%>%
-  left_join(Heating.Codes.Aggregate,     by = "HF")%>%
-  left_join(Water.Codes.Aggregate,       by = "WTR")%>%
-  left_join(Toilet.Codes.Aggregate,      by = "TLT")%>%
-  left_join(Education.Codes.Aggregate,   by = "ISCED")%>%
-  # Country-specific
-  left_join(Province.Codes.Aggregate,    by = c("Country", "province", "Province"))%>%
-  left_join(District.Codes.Aggregate,    by = c("Country", "district", "District"))%>%
-  left_join(Nationality.Codes.Aggregate, by = c("Country", "nationality", "Nationality"))%>%
-  left_join(Ethnicity.Codes.Aggregate,   by = c("Country", "ethnicity", "Ethnicity"))%>%
-  left_join(Language.Codes.Aggregate,    by = c("Country", "language", "Language"))%>%
-  left_join(Religion.Codes.Aggregate,    by = c("Country", "religion", "Religion"))%>%
-  select(-CF,-LF,-HF,-WTR,-TLT,-province,-Province,-district,-District,-nationality,-Nationality,
-         -ethnicity,-Ethnicity,-language,-Language,-religion,-Religion,
-         -cooking_fuel,-heating_fuel,-lighting_fuel,-water,-toilet)%>%
-  select(hh_id, Country, hh_weights, hh_size, adults, children,
-         Province_code, District_code, village, urban_01,
-         age_hhh, sex_hhh, ind_hhh, ISCED, Nationality_code, Ethnicity_code, Language_code, Religion_code, religiosity,
-         CF_code, LF_code, HF_code, WTR_code, TLT_code, electricity.access,
-         hh_expenditures_USD_2014, hh_expenditures, hh_expenditures_pc,
-         inc_gov_cash, inc_gov_monetary, Income_Group_5, Income_Group_10,
-         starts_with("share_"), starts_with("exp_USD_"),
-         starts_with("CO2_"), starts_with("exp_CO2"), starts_with("burden_CO2"), ends_with("_national"), starts_with("exp_s"),
-         ends_with(".01"),
-         everything())%>%
-  # delete derived values 
-  select(-exp_CO2_global,-exp_CO2_national,-exp_CO2_electricity,-exp_CO2_transport,
-         -burden_CO2_global,-burden_CO2_national,-burden_CO2_electricity,-burden_CO2_transport)%>%
-  mutate_at(vars(hh_size,adults,children,hh_id,urban_01,age_hhh,sex_hhh,
-                 Income_Group_5, Income_Group_10, electricity.access, ISCED, ends_with(".01")), list(~ as.integer(.)))
-
-rm(Cooking.Codes.Aggregate,Lighting.Codes.Aggregate,Heating.Codes.Aggregate,Water.Codes.Aggregate,Toilet.Codes.Aggregate,
-   Province.Codes.Aggregate,District.Codes.Aggregate,Nationality.Codes.Aggregate,Ethnicity.Codes.Aggregate,Language.Codes.Aggregate,Religion.Codes.Aggregate,Education.Codes.Aggregate)
-
-dir.create("../1_Carbon_Pricing_Incidence/1_Data_Incidence_Analysis/3_Collated_Database", showWarnings = FALSE)
-
-write_rds(data_joint_split, "../1_Carbon_Pricing_Incidence/1_Data_Incidence_Analysis/3_Collated_Database/Collated_Database.rds")  
