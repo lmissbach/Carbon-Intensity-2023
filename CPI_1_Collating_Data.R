@@ -25,6 +25,7 @@ Country.Set <- c("Argentina", "Armenia", "Bangladesh", "Barbados", "Benin","Boli
                  )
 
 data_joint_0 <- data.frame()
+data_joint_pre <- data.frame()
 
 for(i in Country.Set){
   
@@ -58,6 +59,11 @@ for(i in Country.Set){
     left_join(burden_decomposition_0, by = "hh_id")%>%
     mutate(Country_long = i)
   
+  data_joint_pre <- bind_rows(data_joint_pre, 
+                              data.frame(Country = i, 
+                                 Households = nrow(count(carbon_pricing_incidence_1, hh_id)),
+                                 Observations = nrow(carbon_pricing_incidence_1)))
+  
   if(!i %in% c("Chile", "Morocco", "Kenya", "Europe")) {carbon_pricing_incidence_1 <- left_join(carbon_pricing_incidence_1, appliances_0_1, by = "hh_id")}
   
   # Add codes
@@ -65,7 +71,8 @@ for(i in Country.Set){
   if("province" %in% colnames(carbon_pricing_incidence_1)){
     Province.Code <- read_csv(sprintf("../0_Data/1_Household Data/%s/2_Codes/Province.Code.csv", path_0), show_col_types = FALSE)%>%
       mutate(province = as.character(province),
-             Province = as.character(Province))
+             Province = as.character(Province))%>%
+      distinct()
     
     carbon_pricing_incidence_1 <- carbon_pricing_incidence_1 %>%
       mutate(province = as.character(province))%>%
@@ -75,7 +82,8 @@ for(i in Country.Set){
   if("district" %in% colnames(carbon_pricing_incidence_1)){
     District.Code <- read_csv(sprintf("../0_Data/1_Household Data/%s/2_Codes/District.Code.csv", path_0), show_col_types = FALSE)%>%
       mutate(district = as.character(district),
-             District = as.character(District))
+             District = as.character(District))%>%
+      distinct()
     
     carbon_pricing_incidence_1 <- carbon_pricing_incidence_1 %>%
       mutate(district = as.character(district))%>%
@@ -222,6 +230,9 @@ for(i in Country.Set){
   rm(household_information_0, burden_decomposition_0, carbon_pricing_incidence_0, carbon_pricing_incidence_1)
   if(!i %in% c("Chile", "Morocco", "Kenya", "Europe")){rm(appliances_0_1)}
 }
+
+data_joint_pre_1 <- data_joint_pre %>%
+  left_join(count(data_joint_0, Country))
 
 # 1.1   Homogenize Codes ####
 
@@ -547,6 +558,8 @@ rm(Cooking.Codes.Aggregate,Lighting.Codes.Aggregate,Heating.Codes.Aggregate,Wate
 dir.create("../1_Carbon_Pricing_Incidence/1_Data_Incidence_Analysis/3_Collated_Database", showWarnings = FALSE)
 
 write_rds(data_joint_split, "../1_Carbon_Pricing_Incidence/1_Data_Incidence_Analysis/3_Collated_Database/Collated_Database.rds")  
+
+rm(data_joint_split)
 
 # 3.    Overview GTAP-CO2-Intensities ####
 
