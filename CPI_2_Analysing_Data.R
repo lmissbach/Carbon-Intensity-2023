@@ -95,7 +95,7 @@ sum_3.1.1 <- data_2 %>%
   ungroup()%>%
   select(Country, number, hh_size, urban_01, electricity.access, hh_expenditures_USD_2014, car.01)%>%
   mutate(hh_expenditures_USD_2014 = round(hh_expenditures_USD_2014,0),
-         electricity.access       = paste0(round(electricity.access*100,1),"%"),
+         electricity.access       = ifelse(!is.na(electricity.access), paste0(round(electricity.access*100,1),"%"), ""),
          car.01                   = ifelse(!is.na(car.01), paste0(round(car.01*100,0),"%"),""),
          urban_01                 = ifelse(!is.na(urban_01), paste0(round(urban_01*100,0),"%"), ""),
          hh_size                  = round(hh_size,2))
@@ -114,12 +114,12 @@ sum_3.1.3 <- left_join(sum_3.1.1, sum_3.1.2, by = "Country")
   
 colnames(sum_3.1.3) <- c("Country", "Observations", "Average \nHousehold Size", "Urban \nPopulation", "Electricity \nAccess", "Average \nHousehold \nExpenditures [USD]", "Car \nOwnership", "Share of \nFirewood or \n Charcoal Cons.")
 
-kbl(mutate_all(sum_3.1.3,linebreak), format = "latex", linesep = "", booktabs = T,
-    caption = "Summary statistics", format.args = list(big.mark = ",", scientific = FALSE), align = "lrcccrcc")%>%
-  kable_styling(position = "center", latex_options = c("HOLD_position", "scale_down"))%>%
+kbl(mutate_all(sum_3.1.3,linebreak), format = "latex", linesep = "", booktabs = T, longtable = T,
+    caption = "Summary statistics", format.args = list(big.mark = ",", scientific = FALSE), align = "lrcccccc")%>%
+  kable_styling(position = "center", latex_options = c("HOLD_position", "repeat_header"), font_size = 9)%>%
   footnote(general = "This table provides summary statistics for households in our sample. All values (except observations) are household-weighted averages.", threeparttable = T)%>%
-  column_spec(column = 1,    width = "3.5 cm", border_right = T)%>%
-  column_spec(column =  2:8, width = "2.3 cm")%>%
+  column_spec(column = 1,    width = "1.5 cm", border_right = T)%>%
+  column_spec(column =  2:8, width = "1.5 cm")%>%
   save_kable(., "2_Tables/Table_Summary_A1.tex")
 
 rm(sum_3.1.1, sum_3.1.2, sum_3.1.3)
@@ -146,8 +146,9 @@ sum_3.2.3 <- left_join(sum_3.2.1, sum_3.2.2, by = "Country")%>%
 
 colnames(sum_3.2.3) <- c("Country", rep(c("All","EQ1","EQ2","EQ3","EQ4","EQ5"),2))
 
-kbl(sum_3.2.3, format = "latex", caption = "Average expenditures and average energy expenditure shares per expenditure quintile", booktabs = T, align = "l|rrrrrr|rrrrrr", vline = "", format.args = list(big.mark = ",", scientific = FALSE), linesep = "")%>%
-  kable_styling(position = "center", latex_options = c("HOLD_position", "scale_down"))%>%
+kbl(sum_3.2.3, format = "latex", caption = "Average household expenditures and average energy expenditure shares per expenditure quintile", booktabs = T, align = "l|rrrrrr|rrrrrr", vline = "", format.args = list(big.mark = ",", scientific = FALSE), linesep = "",
+    longtable = T)%>%
+  kable_styling(position = "center", latex_options = c("HOLD_position", "repeat_header"), font_size = 8)%>%
   column_spec(1, width = "3.15 cm")%>%
   column_spec(2:7, width = "1.13 cm")%>%
   column_spec(8:13, width = "1.04 cm")%>%
@@ -180,8 +181,9 @@ sum_3.3.3 <- left_join(sum_3.3.1, sum_3.3.2, by = "Country")%>%
 
 colnames(sum_3.3.3) <- c("Country", rep(c("All","EQ1","EQ2","EQ3","EQ4","EQ5"),2))
 
-kbl(sum_3.3.3, format = "latex", caption = "Average carbon footprint and average USD/tCO$_{2}$ carbon price incidence per expenditure quintile", booktabs = T, align = "l|rrrrrr|rrrrrr", vline = "", linesep = "")%>%
-  kable_styling(position = "center", latex_options = c("HOLD_position", "scale_down"))%>%
+kbl(sum_3.3.3, format = "latex", caption = "Average carbon footprint and average USD/tCO$_{2}$ carbon price incidence per expenditure quintile", booktabs = T, align = "l|rrrrrr|rrrrrr", vline = "", linesep = "",
+    longtable = T)%>%
+  kable_styling(position = "center", latex_options = c("HOLD_position", "repeat_header"), font_size = 9)%>%
   column_spec(1, width = "3.15 cm")%>%
   column_spec(2:7, width = "1.05 cm")%>%
   column_spec(8:13, width = "1.15 cm")%>%
@@ -286,6 +288,7 @@ sum_3.5.2 <- sum_3.5.1 %>%
   pivot_longer(ends_with(".01"), names_to = "appliance", values_to = "share")%>%
   unite(appliance_IG, c("appliance", "Income_Group_5"))%>%
   pivot_wider(names_from = "appliance_IG", values_from = "share")%>%
+  select(Country, ends_with("_All"), everything())%>%
   select(Country, starts_with("car.01"), starts_with("tv.01"), starts_with("refrigerator.01"), starts_with("ac.01"), starts_with("washing"))%>%
   mutate_at(vars(-Country), list(~ paste0(round(.*100,0), "%")))%>%
   mutate_at(vars(-Country), list(~ ifelse(. == "NA%","-",.)))
