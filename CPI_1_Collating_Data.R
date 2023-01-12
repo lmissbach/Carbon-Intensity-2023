@@ -232,7 +232,8 @@ for(i in Country.Set){
 }
 
 data_joint_pre_1 <- data_joint_pre %>%
-  left_join(count(data_joint_0, Country))
+  left_join(count(data_joint_0, Country_long), by = c("Country" = "Country_long"))%>%
+  mutate(Test = ifelse(Households != Observations | Observations != n, "Attention", NA))
 
 # 1.1   Homogenize Codes ####
 
