@@ -4,32 +4,22 @@
 \usepackage[a4paper,top=3cm,bottom=2cm,left=2.5cm,right=2.5cm,marginparwidth=1.75cm]{geometry}
 %\usepackage[utf8]{inputenc}
 %\usepackage[T1]{fontenc}
-\usepackage{booktabs}
-\usepackage{graphicx}
-\usepackage{xcolor}
-\usepackage{lscape}
-\usepackage{xtab}
-\usepackage{amssymb}
-\usepackage{amsmath}
-\usepackage{hyperref}
-\usepackage{tabularx}
 \usepackage{adjustbox}
+\usepackage{amsmath}
+\usepackage{amssymb}
 \usepackage[ngerman, english]{babel}
+\usepackage{booktabs}
+\usepackage{csquotes}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{hyperref}
 \usepackage{longtable}
 \usepackage{lscape}
-\usepackage{threeparttablex}
-
-
-\usepackage{float}
 \usepackage{subfig,caption}
-
-\newenvironment{subcaption}
-{\strut
-\vspace{-5pt}
-\begin{minipage}[b]{0.9\textwidth}
-  \hspace*{-\parindent}
-  \footnotesize}
- {\end{minipage}}
+\usepackage{tabularx}
+\usepackage{threeparttablex}
+\usepackage{xcolor}
+\usepackage{xtab}
 
 % everything concerning biblatex
 
@@ -44,23 +34,87 @@
             date=year,
             uniquename=false]{biblatex}
 
-\addbibresource{References_Appendix.bib} % TBD
+\addbibresource{References.bib} % TBD
+
+% Setup
+\graphicspath{{../1_Figures/}}
+
+% new environment
+
+\newenvironment{subcaption}
+{\strut
+\vspace{-5pt}
+\begin{minipage}[b]{0.9\textwidth}
+  \hspace*{-\parindent}
+  \footnotesize}
+ {\end{minipage}}
+
+ % Title
 
 \title{Global inequality in carbon-intensive consumption}
-\author{Leonard Missbach}
-\date{November 2022}
+\author{Leonard Missbach\thanks{Mercator Research Institute on Global Commons and Climate Change, Berlin, Germany; Department Economics of Climate Chagne, Technische Universität Berlin, Berlin, Germany}}
+\date{January 2023}
 
 \begin{document}
 
 \maketitle
+\begin{abstract}
+  In this study ...
+\end{abstract}
+
+\smallskip
+
+\noindent \small \textit{Keywords:} Climate mitigation, inequality, poverty
+
+\noindent \small \textit{JEL Codes:}
+
 \thispagestyle{empty}
 \clearpage
 \setcounter{page}{1}
+
+\section{Main} \label{sec:main}
+
+\clearpage
+
+\section{Data and Methods} \label{sec:data_and_methods}
 
 \clearpage
 
 \printbibliography
 
 \clearpage
+
+\appendix
+
+\section{Appendix} \label{sec:appendix}
+
+\renewcommand\thefigure{\thesection.\arabic{figure}}
+\renewcommand\thetable{\thesection.\arabic{table}}
+\setcounter{figure}{0}
+\setcounter{table}{0}
+
+\subsection{Supplementary figures} \label{sec:figures}
+
+\clearpage
+
+\subsection{Supplementary tables} \label{sec:tables}
+
+\input{../2_Tables/Table_Summary_A1} \label{tab:A_1}
+
+\clearpage
+
+\input{../2_Tables/Table_Summary_A2} \label{tab:A_2}
+
+\clearpage
+
+\input{../2_Tables/Table_Summary_A3} \label{tab:A3}
+
+\clearpage
+
+\input{../2_Tables/Table_Summary_A4_Cooking_Fuels} \label{tab:A4_CF}
+
+\input{../2_Tables/Table_Summary_A4_Lighting_Fuels} \label{tab:A4_LF}
+
+\input{../2_Tables/Table_Summary_A5_Appliances} \label{tab:A5}
 
 \end{document}
