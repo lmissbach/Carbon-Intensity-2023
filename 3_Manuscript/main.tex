@@ -1,0 +1,66 @@
+\documentclass[12pt, a4paper]{article}
+\usepackage[utf8]{inputenc}
+
+\usepackage[a4paper,top=3cm,bottom=2cm,left=2.5cm,right=2.5cm,marginparwidth=1.75cm]{geometry}
+%\usepackage[utf8]{inputenc}
+%\usepackage[T1]{fontenc}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{lscape}
+\usepackage{xtab}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{hyperref}
+\usepackage{tabularx}
+\usepackage{adjustbox}
+\usepackage[ngerman, english]{babel}
+\usepackage{longtable}
+\usepackage{lscape}
+\usepackage{threeparttablex}
+
+
+\usepackage{float}
+\usepackage{subfig,caption}
+
+\newenvironment{subcaption}
+{\strut
+\vspace{-5pt}
+\begin{minipage}[b]{0.9\textwidth}
+  \hspace*{-\parindent}
+  \footnotesize}
+ {\end{minipage}}
+
+% everything concerning biblatex
+
+\usepackage[backend = biber,
+            style=authoryear-icomp,
+            citestyle=authoryear-comp,
+            url=false,
+            isbn=false,
+            doi=false,
+            maxcitenames=2,
+            uniquelist=false,
+            date=year,
+            uniquename=false]{biblatex}
+
+\addbibresource{References_Appendix.bib} % TBD
+
+\title{}
+\author{Leonard Missbach}
+\date{November 2022}
+
+\begin{document}
+
+\maketitle
+\thispagestyle{empty}
+\clearpage
+\setcounter{page}{1}
+
+\clearpage
+
+\printbibliography
+
+\clearpage
+
+\end{document}
