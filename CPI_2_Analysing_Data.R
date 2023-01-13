@@ -623,6 +623,120 @@ for(i in Country.Set$Country){
   
 }
 
+# For Publication
+
+data_4.3.1.2.2 <- data_2 %>%
+  left_join(Country.Set)%>%
+  mutate(Country_long = fct_reorder(Country_long,hh_expenditures_USD_2014_mean, min))%>%
+  select(hh_id, hh_weights, Country, starts_with("share_"), hh_expenditures_USD_2014_pc, Group_Income, Country_long)%>%
+  select(-share_other_binning)%>%
+  rename(share_Energy = share_energy, share_Food = share_food, share_Services = share_services, share_Goods = share_goods)%>%
+  pivot_longer(starts_with("share"), names_to = "Type", values_to = "Share", names_prefix = "share_")
+
+data_4.3.1.2.3 <- data_2 %>%
+  left_join(Country.Set)%>%
+  mutate(Country_long = fct_reorder(Country_long,hh_expenditures_USD_2014_mean, min))%>%
+  group_by(Country_long, Income_Group_5, Group_Income)%>%
+  summarise(mean_hh_expenditures_USD_2014_pc = wtd.mean(hh_expenditures_USD_2014_pc, hh_weights))%>%
+  ungroup()
+
+for(Group_0 in c("A", "B", "C", "D")){
+  
+  if(Group_0 == "A") upper_bound <- 7000 else if(Group_0 == "B") upper_bound <- 12000 else if(Group_0 == "C") upper_bound <- 27000 else upper_bound <- 74000
+  
+  breaks <- plyr::round_any(seq(0,upper_bound, length.out = 3), 5000, f = floor)
+  
+  data_4.3.1.2.4 <- data_4.3.1.2.2 %>%
+    filter(Group_Income == Group_0)
+  
+  data_4.3.1.2.5 <- data_4.3.1.2.3 %>%
+    filter(Group_Income == Group_0)
+  
+  P_4.3.1.3 <- ggplot()+
+    #geom_point(data = filter(data_4.3.1.2.4, Type == "Energy"), aes(x = hh_expenditures_USD_2014_pc,
+    #                                    y = Share), 
+    #           alpha = 0.01, shape = 21, colour = "black", fill = "#E64B35FF", size = 0.3)+
+    geom_vline(data = data_4.3.1.2.5, aes(xintercept = mean_hh_expenditures_USD_2014_pc), size = 0.5)+
+    stat_smooth(data = data_4.3.1.2.4, 
+                aes(x = hh_expenditures_USD_2014_pc, weight = hh_weights, 
+                    y = Share, fill = Type, colour = Type),
+                level = 0.95, method = "lm", formula = y ~ x + I(x^2), fullrange = TRUE, size = 0.5)+
+    theme_bw()+
+    facet_wrap(. ~ Country_long, ncol = 4)+
+    xlab("Household expenditures per capita in US-$ (2014)") + ylab("Share of total expenditures")+
+    scale_fill_npg()+
+    scale_colour_npg()+
+    labs(colour = "", fill = "")+
+    coord_cartesian(xlim = c(0, upper_bound), ylim = c(0,0.8))+
+    scale_y_continuous(labels = scales::percent_format(accuracy = 1), expand = c(0,0))+
+    scale_x_continuous(labels = scales::dollar_format(accuracy = 1),  expand = c(0,0),
+                       breaks = breaks)+
+    ggtitle("")+
+    theme(axis.text.y = element_text(size = 7), 
+          axis.text.x = element_text(size = 7),
+          axis.title  = element_text(size = 7),
+          plot.title = element_text(size = 11),
+          legend.position = "bottom",
+          strip.text = element_text(size = 7),
+          strip.text.y = element_text(angle = 180),
+          #panel.grid.major = element_blank(),
+          panel.grid.minor = element_blank(),
+          axis.ticks = element_line(size = 0.2),
+          legend.text = element_text(size = 7),
+          legend.title = element_text(size = 7),
+          plot.margin = unit(c(0.3,0.5,0.3,0.3), "cm"),
+          panel.border = element_rect(size = 0.3))
+  
+ #P_4.3.1.4 <- ggplot()+
+ #  geom_vline(data = data_4.3.1.2.5, aes(xintercept = mean_hh_expenditures_USD_2014_pc))+
+ #  #geom_vline(xintercept = data_4.3.1.2.3$mean_hh_expenditures_USD_2014_pc[1])+
+ #  # geom_vline(xintercept = data_4.3.1.2.3$mean_hh_expenditures_USD_2014_pc[2])+
+ #  # geom_vline(xintercept = data_4.3.1.2.3$mean_hh_expenditures_USD_2014_pc[3])+
+ #  # geom_vline(xintercept = data_4.3.1.2.3$mean_hh_expenditures_USD_2014_pc[4])+
+ #  # geom_vline(xintercept = data_4.3.1.2.3$mean_hh_expenditures_USD_2014_pc[5])+
+ #  stat_smooth(data = data_4.3.1.2.4, 
+ #              aes(x = hh_expenditures_USD_2014_pc, weight = hh_weights, 
+ #                  y = Share, fill = Type, colour = Type),
+ #              level = 0.95, method = "loess", formula = y ~ x, fullrange = TRUE)+
+ #  theme_bw()+
+ #  facet_wrap(. ~ Country_long, ncol = 4)+
+ #  xlab("Household expenditures per capita in US-$ (2014)") + ylab("Share of total expenditures")+
+ #  scale_fill_npg()+
+ #  scale_colour_npg()+
+ #  labs(colour = "", fill = "")+
+ #  coord_cartesian(xlim = c(0, upper_bound), ylim = c(0,0.8))+
+ #  scale_y_continuous(labels = scales::percent_format(accuracy = 1), expand = c(0,0))+
+ #  scale_x_continuous(labels = scales::dollar_format(accuracy = 1),  expand = c(0,0),
+ #                     breaks = breaks)+
+ #  ggtitle("")+
+ #  theme(axis.text.y = element_text(size = 7), 
+ #        axis.text.x = element_text(size = 7),
+ #        axis.title  = element_text(size = 7),
+ #        plot.title = element_text(size = 11),
+ #        legend.position = "bottom",
+ #        strip.text = element_text(size = 7),
+ #        strip.text.y = element_text(angle = 180),
+ #        #panel.grid.major = element_blank(),
+ #        panel.grid.minor = element_blank(),
+ #        axis.ticks = element_line(size = 0.2),
+ #        legend.text = element_text(size = 7),
+ #        legend.title = element_text(size = 7),
+ #        plot.margin = unit(c(0.3,0.5,0.3,0.3), "cm"),
+ #         panel.border = element_rect(size = 0.3))
+  
+  jpeg(sprintf("1_Figures/Analysis_Parametric_Engel_Curves/Parametric_EC_0_%s.jpg", Group_0), width = 15.5, height = 19.375, unit = "cm", res = 600)
+  print(P_4.3.1.3)
+  dev.off()
+  
+  # peg(sprintf("1_Figures/Analysis_Parametric_Engel_Curves/Parametric_EC_0_NP_%s.jpg", Group_0), width = 15.5, height = 19.375, unit = "cm", res = 200)
+  # rint(P_4.3.1.4)
+  # ev.off()
+  
+  rm(data_4.3.1.2.4, data_4.3.1.2.5, P_4.3.1.3)
+  
+}
+
+
 # 4.3.1.3 Non-Parametric Engel Curves - Figures ####
 
 dir.create("1_Figures/Analysis_Non_Parametric_Engel_Curves", showWarnings = FALSE)
@@ -783,7 +897,7 @@ for(Group_0 in c("A", "B", "C", "D")){
     facet_wrap(. ~ Country_long, ncol = 4)+
     xlab("Household expenditures per capita in US-$ (2014)") + ylab("Carbon intensity of consumption per capita [kgCO2/USD]")+
     labs(colour = "", fill = "")+
-    coord_cartesian(xlim = c(0, upper_bound), ylim = c(0,3))+
+    coord_cartesian(xlim = c(0, upper_bound), ylim = c(0,1.5))+
     scale_y_continuous(expand = c(0,0))+
     scale_x_continuous(labels = scales::dollar_format(accuracy = 1),  expand = c(0,0),
                        breaks = breaks)+
