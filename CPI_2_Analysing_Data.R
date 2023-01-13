@@ -706,43 +706,110 @@ for(i in Country.Set$Country){
 dir.create("1_Figures/Analysis_Carbon_Intensity_Curve", showWarnings = FALSE)
 
 data_4.3.2.1 <- data_2 %>%
-  select(hh_id, hh_weights, Country, hh_expenditures_USD_2014_pc, carbon_intensity_kg_per_USD_national)
+  select(hh_id, hh_weights, Country, hh_size, 
+         hh_expenditures_USD_2014_pc, hh_expenditures_USD_2014,
+         carbon_intensity_kg_per_USD_national)%>%
+  left_join(Country.Set)%>%
+  mutate(Country_long = fct_reorder(Country_long,hh_expenditures_USD_2014_mean, min))%>%
+  mutate(carbon_intensity_kg_per_USD_national_per_capita = carbon_intensity_kg_per_USD_national/hh_size)
 
-P_4.3.2.1 <- ggplot()+
-  geom_smooth(data = data_4.3.2.1, 
-              aes(x = hh_expenditures_USD_2014_pc, weight = hh_weights, 
-                  y = carbon_intensity_kg_per_USD_national, group = Country),
-              level = 0.99, method = "lm", formula = y ~ x + I(x^2))+
-  theme_bw()+
-  facet_wrap(. ~ Country)+
-  xlab("Household expenditures per capita in US-$ (2014)") + ylab("Carbon intensity [kgCO2/USD]")+
-  labs(colour = "", fill = "")+
-  coord_cartesian(xlim = c(0, 15000), ylim = c(0,3))+
-  scale_y_continuous(expand = c(0,0))+
-  scale_x_continuous(labels = scales::dollar_format(accuracy = 1),  expand = c(0,0))+
-  ggtitle("")+
-  theme(axis.text.y = element_text(size = 7), 
-        axis.text.x = element_text(size = 7),
-        axis.title  = element_text(size = 7),
-        plot.title = element_text(size = 11),
-        legend.position = "bottom",
-        strip.text = element_text(size = 7),
-        strip.text.y = element_text(angle = 180),
-        #panel.grid.major = element_blank(),
-        panel.grid.minor = element_blank(),
-        axis.ticks = element_line(size = 0.2),
-        legend.text = element_text(size = 7),
-        legend.title = element_text(size = 7),
-        plot.margin = unit(c(0.3,0.5,0.3,0.3), "cm"),
-        panel.border = element_rect(size = 0.3))
+for(Group_0 in c("A", "B", "C", "D")){
+  
+  if(Group_0 == "A") upper_bound <- 14000 else if(Group_0 == "B") upper_bound <- 24000 else if(Group_0 == "C") upper_bound <- 34000 else upper_bound <- 55000
+  
+  breaks <- plyr::round_any(seq(0,upper_bound, length.out = 3), 5000, f = floor)
+  
+  data_4.3.2.2 <- data_4.3.2.1 %>%
+    filter(Group_Income == Group_0)
+  
+  P_4.3.2.1 <- ggplot()+
+    geom_point(data = data_4.3.2.2, aes(x = hh_expenditures_USD_2014,
+                                        y = carbon_intensity_kg_per_USD_national), 
+               alpha = 0.05, shape = 21, colour = "black", fill = "#4DBBD5FF", size = 0.5)+
+    geom_smooth(data = data_4.3.2.2, 
+                aes(x = hh_expenditures_USD_2014, weight = hh_weights, 
+                    y = carbon_intensity_kg_per_USD_national, group = Country),
+                level = 0.95, method = "lm", formula = y ~ x + I(x^2), colour = "#E64B35FF", 
+                fill  = "#E64B35FF", size = 0.5)+
+    theme_bw()+
+    facet_wrap(. ~ Country_long, ncol = 4)+
+    xlab("Household expenditures in US-$ (2014)") + ylab("Carbon intensity of consumption [kgCO2/USD]")+
+    labs(colour = "", fill = "")+
+    coord_cartesian(xlim = c(0, upper_bound), ylim = c(0,3))+
+    scale_y_continuous(expand = c(0,0))+
+    scale_x_continuous(labels = scales::dollar_format(accuracy = 1),  expand = c(0,0),
+                       breaks = breaks)+
+    scale_fill_discrete(guide = "none")+
+    ggtitle("")+
+    theme(axis.text.y = element_text(size = 6), 
+          axis.text.x = element_text(size = 6),
+          axis.title  = element_text(size = 7),
+          plot.title = element_text(size = 11),
+          legend.position = "bottom",
+          strip.text = element_text(size = 7),
+          #strip.text.y = element_text(angle = 180),
+          #panel.grid.major = element_blank(),
+          panel.grid.minor = element_blank(),
+          axis.ticks = element_line(size = 0.2),
+          legend.text = element_text(size = 7),
+          legend.title = element_text(size = 7),
+          plot.margin = unit(c(0.3,0.3,0.3,0.3), "cm"),
+          panel.border = element_rect(size = 0.3))
+  
+  jpeg(sprintf("1_Figures/Analysis_Carbon_Intensity_Curve/All_Panel_%s.jpg", Group_0), width = 15.5, height = 19.375, unit = "cm", res = 400)
+  print(P_4.3.2.1)
+  dev.off()
+}
 
-jpeg(sprintf("1_Figures/Analysis_Carbon_Intensity_Curve/All_Panel.jpg", i), width = 15.5, height = 15, unit = "cm", res = 200)
-print(P_4.3.2.1)
-dev.off()
+for(Group_0 in c("A", "B", "C", "D")){
+  
+  if(Group_0 == "A") upper_bound <- 7000 else if(Group_0 == "B") upper_bound <- 12000 else if(Group_0 == "C") upper_bound <- 17000 else upper_bound <- 27000
+  
+  breaks <- plyr::round_any(seq(0,upper_bound, length.out = 3), 2500, f = floor)
+  
+  data_4.3.2.3 <- data_4.3.2.1 %>%
+    filter(Group_Income == Group_0)
+  
+  P_4.3.2.2 <- ggplot()+
+    geom_point(data = data_4.3.2.3, aes(x = hh_expenditures_USD_2014_pc,
+                                        y = carbon_intensity_kg_per_USD_national_per_capita), 
+               alpha = 0.05, shape = 21, colour = "black", fill = "#4DBBD5FF", size = 0.5)+
+    geom_smooth(data = data_4.3.2.3, 
+                aes(x = hh_expenditures_USD_2014_pc, weight = hh_weights, 
+                    y = carbon_intensity_kg_per_USD_national_per_capita, group = Country),
+                level = 0.95, method = "lm", formula = y ~ x + I(x^2), colour = "#E64B35FF", 
+                fill  = "#E64B35FF", size = 0.5)+
+    theme_bw()+
+    facet_wrap(. ~ Country_long, ncol = 4)+
+    xlab("Household expenditures per capita in US-$ (2014)") + ylab("Carbon intensity of consumption per capita [kgCO2/USD]")+
+    labs(colour = "", fill = "")+
+    coord_cartesian(xlim = c(0, upper_bound), ylim = c(0,3))+
+    scale_y_continuous(expand = c(0,0))+
+    scale_x_continuous(labels = scales::dollar_format(accuracy = 1),  expand = c(0,0),
+                       breaks = breaks)+
+    scale_fill_discrete(guide = "none")+
+    ggtitle("")+
+    theme(axis.text.y = element_text(size = 6), 
+          axis.text.x = element_text(size = 6),
+          axis.title  = element_text(size = 7),
+          plot.title = element_text(size = 11),
+          legend.position = "bottom",
+          strip.text = element_text(size = 7),
+          #strip.text.y = element_text(angle = 180),
+          #panel.grid.major = element_blank(),
+          panel.grid.minor = element_blank(),
+          axis.ticks = element_line(size = 0.2),
+          legend.text = element_text(size = 7),
+          legend.title = element_text(size = 7),
+          plot.margin = unit(c(0.3,0.3,0.3,0.3), "cm"),
+          panel.border = element_rect(size = 0.3))
+  
+  jpeg(sprintf("1_Figures/Analysis_Carbon_Intensity_Curve/All_Panel_%s_PC.jpg", Group_0), width = 15.5, height = 19.375, unit = "cm", res = 400)
+  print(P_4.3.2.2)
+  dev.off()
+}
 
-print(i)
-
-rm(data_4.3.1.2, data_4.3.1.2.1, P_4.3.1.2)
+rm(P_4.3.2.1, data_4.3.2.1, data_4.3.2.2)
   
 
 # 4.3.2.2 Carbon intensity of consumption - Tables ####

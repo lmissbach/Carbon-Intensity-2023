@@ -641,6 +641,8 @@ for (i in Country.Set.B){
 
 # 3.1   Analyse and systematically compare carbon intensities ####
 
+dir.create("1_Figures/Analysis_Carbon_Intensities_GTAP", showWarnings = FALSE)
+
 carbon_intensities_2.1 <- carbon_intensities_0 %>%
   select(everything())%>%
   filter(CO2_t_per_dollar_national != "Inf")%>%
@@ -783,15 +785,15 @@ P_2.1.2 <- ggplot(carbon_intensities_2.1.2)+
         plot.margin = unit(c(0.3,0.3,0.3,0.3), "cm"),
         panel.border = element_rect(size = 0.3))
 
-jpeg("1_Figures/Figure_2.1.0.jpg", width = 40, height = 40, unit = "cm", res = 400)
+jpeg("1_Figures/Analysis_Carbon_Intensities_GTAP/Figure_2.1.0.jpg", width = 40, height = 40, unit = "cm", res = 400)
 print(P_2.1)
 dev.off()
 
-jpeg("1_Figures/Figure_2.1.1.jpg", width = 40, height = 40, unit = "cm", res = 400)
+jpeg("1_Figures/Analysis_Carbon_Intensities_GTAP/Figure_2.1.1.jpg", width = 40, height = 40, unit = "cm", res = 400)
 print(P_2.1.1)
 dev.off()
 
-jpeg("1_Figures/Figure_2.1.2.jpg", width = 20, height = 20, unit = "cm", res = 400)
+jpeg("1_Figures/Analysis_Carbon_Intensities_GTAP/Figure_2.1.2.jpg", width = 20, height = 20, unit = "cm", res = 400)
 print(P_2.1.2)
 dev.off()
 
