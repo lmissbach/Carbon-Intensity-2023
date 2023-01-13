@@ -79,7 +79,13 @@ rm(data_1)
 # 3.      Summary statistics ####
 
 Country.Set <- distinct(data_2, Country)%>%
-  mutate(Country_long = countrycode(Country, origin = "iso3c", destination = "country.name"))
+  mutate(Country_long = countrycode(Country, origin = "iso3c", destination = "country.name"))%>%
+  left_join(ungroup(summarise(group_by(data_2, Country), hh_expenditures_USD_2014_mean = wtd.mean(hh_expenditures_USD_2014))))%>%
+  arrange(hh_expenditures_USD_2014_mean)%>%
+  mutate(Group_Income = c(rep("A", 20),
+                          rep("B", 20),
+                          rep("C", 20),
+                          rep("D", nrow(.)-60)))
 
 # 3.1     General summary statistics ####
 
@@ -706,12 +712,12 @@ P_4.3.2.1 <- ggplot()+
   geom_smooth(data = data_4.3.2.1, 
               aes(x = hh_expenditures_USD_2014_pc, weight = hh_weights, 
                   y = carbon_intensity_kg_per_USD_national, group = Country),
-              level = 0.99, method = "lm", formula = y ~ x + I(x^2), fullrange = TRUE)+
+              level = 0.99, method = "lm", formula = y ~ x + I(x^2))+
   theme_bw()+
   facet_wrap(. ~ Country)+
   xlab("Household expenditures per capita in US-$ (2014)") + ylab("Carbon intensity [kgCO2/USD]")+
   labs(colour = "", fill = "")+
-  coord_cartesian(xlim = c(0, upper_bound), ylim = c(0,3))+
+  coord_cartesian(xlim = c(0, 15000), ylim = c(0,3))+
   scale_y_continuous(expand = c(0,0))+
   scale_x_continuous(labels = scales::dollar_format(accuracy = 1),  expand = c(0,0))+
   ggtitle("")+
