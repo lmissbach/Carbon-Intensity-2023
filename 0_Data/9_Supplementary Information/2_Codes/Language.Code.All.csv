@@ -16,8 +16,8 @@ BOL,032. URUCHIPAYA,32,14
 BOL,033. WEENHAYEK,33,15
 BOL,041. ALEMÁN,41,16
 BOL,042. ÁRABE,42,17
-BOL,045. CHINO,45,18
-BOL,005. CANICHANA,5,19
+BOL,Other language,45,18
+BOL,Other language,5,19
 BOL,054. INGLÉS,54,20
 BOL,058. PORTUGUÉS,58,21
 BOL,006. CASTELLANO (español),6,22
@@ -81,7 +81,7 @@ MLI,NA,NA,79
 MMR,Kachin,1,80
 MMR,Chinese,10,81
 MMR,Hindi/other indian,12,82
-MMR,Other foreign language,13,83
+MMR,Other indigenous,13,83
 MMR,Kayah,2,84
 MMR,Kayin,3,85
 MMR,Chin,4,86

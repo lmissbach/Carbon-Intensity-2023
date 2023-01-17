@@ -450,6 +450,96 @@ rm(data_joint_0, Cooking.Codes.All.1, Lighting.Codes.All.1, Heating.Codes.All.1,
 #  select(Country, starts_with("exp_USD_Electricity"))%>%
 #  mutate(electrification_rate = 1 - (exp_USD_Electricity_NAs/exp_USD_Electricity_Obs))
 
+# 1.3   Systematically screen for unique observations on country-level ####
+
+# 8 observations unique for Country-CF
+
+data_analysis_CF <- data_joint_1 %>%
+  group_by(Country, CF)%>%
+  summarise(number = n())%>%
+  mutate(min_number = min(number))%>%
+  ungroup()%>%
+  arrange(min_number, Country, number)
+
+# No observation unique for Country-LF
+
+data_analysis_LF <- data_joint_1 %>%
+  group_by(Country, LF)%>%
+  summarise(number = n())%>%
+  ungroup()%>%
+  arrange(number)
+
+# One observation unique for Country-HF
+
+data_analysis_HF <- data_joint_1 %>%
+  group_by(Country, HF)%>%
+  summarise(number = n())%>%
+  ungroup()
+
+# Six observations unique for Country-ISCED
+
+data_analysis_ISCED <- data_joint_1 %>%
+  group_by(Country, ISCED)%>%
+  summarise(number = n())%>%
+  mutate(min_number = min(number))%>%
+  ungroup()%>%
+  arrange(min_number, Country, number)
+
+# Three observations unique for Country-Religion
+
+data_analysis_Religion <- data_joint_1 %>%
+  group_by(Country, Religion)%>%
+  summarise(number = n())%>%
+  mutate(min_number = min(number))%>%
+  ungroup()%>%
+  arrange(min_number, Country, number)
+
+# Two observations unique for Country-language
+
+data_analysis_Language <- data_joint_1 %>%
+  group_by(Country, Language)%>%
+  summarise(number = n())%>%
+  mutate(min_number = min(number))%>%
+  ungroup()%>%
+  arrange(min_number, Country, number)
+
+# Many observations unique for Country-ethnicity
+
+data_analysis_Ethnicity <- data_joint_1 %>%
+  group_by(Country, Ethnicity)%>%
+  summarise(number = n())%>%
+  mutate(min_number = min(number))%>%
+  ungroup()%>%
+  arrange(min_number, Country, number)
+
+# Adjust 
+
+data_joint_1 <- data_joint_1 %>%
+  # Adjust cooking fuels where necessary
+  mutate(CF = ifelse(Country == "BEN" & CF == "Other biomass", "Unknown",
+                     ifelse(Country == "GNB" & CF == "Liquid fuel", "Unknown",
+                            ifelse(Country == "IDN" & CF == "Coal", "Charcoal",
+                                   ifelse(Country == "LBR" & CF == "Kerosene", "Unknown",
+                                          ifelse(Country == "MLI" & CF == "Electricity", "Unknown",
+                                                 ifelse(Country == "MWI" & CF == "Gas", "Unknown",
+                                                        ifelse(Country == "TGO" & CF == "Liquid fuel", "Unknown", 
+                                                               ifelse(Country == "BFA" & CF == "Electricity", "Unknown", CF)))))))))%>%
+  # Adjust heating fuels where necessary
+  mutate(HF = ifelse(Country == "ARM" & HF == "Liquid fuels", "Unknown", HF))%>%
+  # Adjust ISCED where necessary
+  mutate(ISCED = ifelse((Country == "BGR" | Country == "LBR" | Country == "NOR" | Country == "THA") & ISCED == 0, 9,
+                        ifelse((Country == "MMR" | Country == "SLV") & ISCED == 8,7, ISCED)))%>%
+  # Adjust religion where necessary
+  mutate(Religion = ifelse(Country == "GTM" & Religion == "Uspanteko", "Otro idioma extranjero",
+                           ifelse(Country == "NER" & Religion == "Animiste", "Autre Réligion",
+                                  ifelse(Country == "NIC" & Religion == "Si, Garifuna", "No Sabe", 
+                                         ifelse(Country == "MMR" & (Religion == "No religion" | Religion == "Animist"), "Other religion", Religion)))))%>%
+  # Adjust language where necessary 
+  mutate(Language = ifelse(Language == "005. CANICHANA" | Language == "045. CHINO", "Other language",
+                           ifelse(Country == "MMR" & Language == "Other foreign language", "Other indigenous",Language)))
+  
+rm(data_analysis_CF, data_analysis_HF, data_analysis_ISCED, data_analysis_LF, data_analysis_Religion, data_analysis_Language)  
+
 # 2     Output ####
 
 # 2.1   Create and save codes ####

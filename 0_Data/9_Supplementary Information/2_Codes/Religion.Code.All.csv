@@ -80,7 +80,7 @@ GTM,Pokoman,12,78
 GTM,Ch´orti,13,79
 GTM,Jakalteko (popti),14,80
 GTM,Mopan,16,81
-GTM,Uspanteko,17,82
+GTM,Otro idioma extranjero,17,82
 GTM,Tz´utujil,18,83
 GTM,Q´eqchi´,2,84
 GTM,Chalchiteko,21,85
@@ -137,68 +137,72 @@ MLI,Chr,2,135
 MLI,Animiste,3,136
 MLI,Autre R,4,137
 MLI,Sans R,5,138
-MMR,NA,NA,139
-MNG,NA,NA,140
-MWI,NA,NA,141
-NER,Musulman,1,142
-NER,Chrétien,2,143
-NER,Animiste,3,144
-NER,Autre Réligion,4,145
-NGA,NA,NA,146
-NIC,Non-Indigeneous,NA,147
-NIC,No Sabe,NA,148
-NIC,"Si, Chorotega / Nathual / Mange",NA,149
-NIC,"Si, Cacapera / Matagalpa",NA,150
-NIC,"Si, Otro",NA,151
-NIC,"Si, Xiu / Sutiava",NA,152
-NIC,"Si, Miskitu",NA,153
-NIC,"Si, Rama",NA,154
-NIC,"Si, Creole",NA,155
-NIC,"Si, Nahoa / Nicarao",NA,156
-NIC,"Si, Mestizo de la costa caribe",NA,157
-NIC,"Si, Mayagna / Sumu",NA,158
-NIC,"Si, Garifuna",NA,159
-NLD,NA,NA,160
-NOR,NA,NA,161
-PAK,NA,NA,162
-PER,NA,NA,163
-PHL,NA,NA,164
-POL,NA,NA,165
-PRT,NA,NA,166
-PRY,NA,NA,167
-ROU,NA,NA,168
-RWA,NA,NA,169
-SEN,Musulman,1,170
-SEN,Chrétien,2,171
-SEN,Animiste,3,172
-SEN,Autre Réligion,4,173
-SEN,Sans Réligion,5,174
-SLV,NA,NA,175
-SUR,Roman Catholic,1,176
-SUR,Jewish,10,177
-SUR,Winti,11,178
-SUR,Other,12,179
-SUR,None,13,180
-SUR,Lutheran,2,181
-SUR,Evangelical,3,182
-SUR,Moravian,4,183
-SUR,Reformed church,5,184
-SUR,Hindu,6,185
-SUR,Islam,7,186
-SUR,Jehovah Witness,8,187
-SUR,Javanism,9,188
-SVK,NA,NA,189
-SWE,NA,NA,190
-TGO,Musulman,1,191
-TGO,Chrétien,2,192
-TGO,Animiste,3,193
-TGO,Autre Réligion,4,194
-TGO,Sans Réligion,5,195
-THA,Buddhist,1,196
-THA,Islam,2,197
-THA,Christ,3,198
-THA,Other,4,199
-TUR,NA,NA,200
-UGA,NA,NA,201
-URY,NA,NA,202
-ZAF,NA,NA,203
+MMR,Buddhist,1,139
+MMR,Other religion,2,140
+MMR,Hindu,3,141
+MMR,Muslim,4,142
+MMR,Christian,5,143
+MMR,Other religion,7,144
+MNG,NA,NA,145
+MWI,NA,NA,146
+NER,Musulman,1,147
+NER,Chrétien,2,148
+NER,Autre Réligion,3,149
+NER,Autre Réligion,4,150
+NGA,NA,NA,151
+NIC,Non-Indigeneous,NA,152
+NIC,No Sabe,NA,153
+NIC,"Si, Chorotega / Nathual / Mange",NA,154
+NIC,"Si, Cacapera / Matagalpa",NA,155
+NIC,"Si, Otro",NA,156
+NIC,"Si, Xiu / Sutiava",NA,157
+NIC,"Si, Miskitu",NA,158
+NIC,"Si, Rama",NA,159
+NIC,"Si, Creole",NA,160
+NIC,"Si, Nahoa / Nicarao",NA,161
+NIC,"Si, Mestizo de la costa caribe",NA,162
+NIC,"Si, Mayagna / Sumu",NA,163
+NLD,NA,NA,164
+NOR,NA,NA,165
+PAK,NA,NA,166
+PER,NA,NA,167
+PHL,NA,NA,168
+POL,NA,NA,169
+PRT,NA,NA,170
+PRY,NA,NA,171
+ROU,NA,NA,172
+RWA,NA,NA,173
+SEN,Musulman,1,174
+SEN,Chrétien,2,175
+SEN,Animiste,3,176
+SEN,Autre Réligion,4,177
+SEN,Sans Réligion,5,178
+SLV,NA,NA,179
+SUR,Roman Catholic,1,180
+SUR,Jewish,10,181
+SUR,Winti,11,182
+SUR,Other,12,183
+SUR,None,13,184
+SUR,Lutheran,2,185
+SUR,Evangelical,3,186
+SUR,Moravian,4,187
+SUR,Reformed church,5,188
+SUR,Hindu,6,189
+SUR,Islam,7,190
+SUR,Jehovah Witness,8,191
+SUR,Javanism,9,192
+SVK,NA,NA,193
+SWE,NA,NA,194
+TGO,Musulman,1,195
+TGO,Chrétien,2,196
+TGO,Animiste,3,197
+TGO,Autre Réligion,4,198
+TGO,Sans Réligion,5,199
+THA,Buddhist,1,200
+THA,Islam,2,201
+THA,Christ,3,202
+THA,Other,4,203
+TUR,NA,NA,204
+UGA,NA,NA,205
+URY,NA,NA,206
+ZAF,NA,NA,207
