@@ -1,0 +1,60 @@
+
+\begin{table}[htbp!]
+   \centering
+   \small
+   \begin{adjustbox}{width = 1\textwidth, max height = 0.95\textheight, center}
+      \begin{threeparttable}[b]
+         \caption{\label{tab:Logit_1_NER} Logit-model coefficients for carbon-intensive consumers in Niger}
+         \begin{tabular}{lcc}
+            \tabularnewline \midrule \midrule
+            Dependent Variables: & Upper 20\%    & Lower 20\%\\   
+            Test                 & (1)           & (2)\\  
+            \midrule
+            \emph{Variables}\\
+            (Intercept)          & -2.87$^{***}$ & -0.902\\   
+                                 & (0.628)       & (0.608)\\   
+            HH Exp. (log)        & 0.178$^{**}$  & -0.018\\   
+                                 & (0.083)       & (0.063)\\   
+            HH Size              & 0.037$^{**}$  & -0.139$^{***}$\\   
+                                 & (0.015)       & (0.018)\\   
+            Urban Area           & 0.142         & -0.770$^{***}$\\   
+                                 & (0.141)       & (0.178)\\   
+            Electricity Acc.     & 1.18$^{***}$  & -2.23$^{***}$\\   
+                                 & (0.139)       & (0.532)\\   
+            Car Ownership        & 2.10$^{***}$  & -1.23\\   
+                                 & (0.452)       & (0.758)\\   
+            CF $=$ Firewood      & -0.416$^{*}$  & 0.568\\   
+                                 & (0.218)       & (0.365)\\   
+            CF $=$ Gas           & 0.908$^{***}$ & -0.871\\   
+                                 & (0.272)       & (0.806)\\   
+            CF $=$ Otherbiomass  & -0.938        & 0.336\\   
+                                 & (0.780)       & (0.602)\\   
+            CF $=$ Unknown       & 0.225         & 0.364\\   
+                                 & (0.408)       & (0.548)\\   
+            ISCED $=$ 0          & -0.113        & 0.173\\   
+                                 & (0.132)       & (0.173)\\   
+            ISCED $=$ 2          & 0.073         & -0.578$^{**}$\\   
+                                 & (0.199)       & (0.293)\\   
+            ISCED $=$ 3          & 0.568$^{*}$   & -1.05$^{*}$\\   
+                                 & (0.294)       & (0.563)\\   
+            ISCED $=$ 4          & -0.107        & -12.2$^{***}$\\   
+                                 & (0.444)       & (0.216)\\   
+            ISCED $=$ 6          & 0.008         & -0.877\\   
+                                 & (0.438)       & (1.06)\\   
+            \midrule 
+            Standard-Errors & \multicolumn{2}{c}{Heteroskedasticity-robust} \\ 
+            Observations         & 6,024         & 6,024\\  
+            Squared Correlation  & 0.22846       & 0.09071\\  
+            \midrule \midrule
+            \multicolumn{3}{l}{\emph{Heteroskedasticity-robust standard-errors in parentheses}}\\
+            \multicolumn{3}{l}{\emph{Signif. Codes: ***: 0.01, **: 0.05, *: 0.1}}\\
+         \end{tabular}
+         
+         \begin{tablenotes}\item \medskip \textit{Note:}
+            \item This table displays regression results from equation LOGIT on the log-odds transformed probability of higher (lower) additional costs than 80\% of the population in Niger as the dependent variable. 
+         \end{tablenotes}
+      \end{threeparttable}
+   \end{adjustbox}
+\end{table}
+
+

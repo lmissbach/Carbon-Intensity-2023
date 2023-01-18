@@ -1,0 +1,38 @@
+
+\begin{table}[htbp!]
+   \centering
+   \small
+   \begin{adjustbox}{width = 1\textwidth, max height = 0.95\textheight, center}
+      \begin{threeparttable}[b]
+         \caption{\label{tab:Logit_1_NLD} Logit-model coefficients for carbon-intensive consumers in Netherlands}
+         \begin{tabular}{lcc}
+            \tabularnewline \midrule \midrule
+            Dependent Variables: & Upper 20\%     & Lower 20\%\\   
+            Test                 & (1)            & (2)\\  
+            \midrule
+            \emph{Variables}\\
+            (Intercept)          & 19.6$^{***}$   & -17.1$^{***}$\\   
+                                 & (0.829)        & (0.860)\\   
+            HH Exp. (log)        & -2.03$^{***}$  & 1.51$^{***}$\\   
+                                 & (0.082)        & (0.083)\\   
+            HH Size              & 0.344$^{***}$  & -0.550$^{***}$\\   
+                                 & (0.027)        & (0.039)\\   
+            Urban Area           & -0.711$^{***}$ & 1.00$^{***}$\\   
+                                 & (0.087)        & (0.142)\\   
+            \midrule 
+            Standard-Errors & \multicolumn{2}{c}{Heteroskedasticity-robust} \\ 
+            Observations         & 14,408         & 14,408\\  
+            Squared Correlation  & 0.12307        & 0.08289\\  
+            \midrule \midrule
+            \multicolumn{3}{l}{\emph{Heteroskedasticity-robust standard-errors in parentheses}}\\
+            \multicolumn{3}{l}{\emph{Signif. Codes: ***: 0.01, **: 0.05, *: 0.1}}\\
+         \end{tabular}
+         
+         \begin{tablenotes}\item \medskip \textit{Note:}
+            \item This table displays regression results from equation LOGIT on the log-odds transformed probability of higher (lower) additional costs than 80\% of the population in Netherlands as the dependent variable. 
+         \end{tablenotes}
+      \end{threeparttable}
+   \end{adjustbox}
+\end{table}
+
+

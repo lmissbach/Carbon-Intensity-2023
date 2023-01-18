@@ -1,0 +1,54 @@
+
+\begin{table}[htbp!]
+   \centering
+   \small
+   \begin{adjustbox}{width = 1\textwidth, max height = 0.95\textheight, center}
+      \begin{threeparttable}[b]
+         \caption{\label{tab:Logit_1_FRA} Logit-model coefficients for carbon-intensive consumers in France}
+         \begin{tabular}{lcc}
+            \tabularnewline \midrule \midrule
+            Dependent Variables: & Upper 20\%     & Lower 20\%\\   
+            Test                 & (1)            & (2)\\  
+            \midrule
+            \emph{Variables}\\
+            (Intercept)          & 4.71$^{***}$   & 0.433\\   
+                                 & (0.422)        & (0.479)\\   
+            HH Exp. (log)        & -0.541$^{***}$ & -0.216$^{***}$\\   
+                                 & (0.044)        & (0.050)\\   
+            HH Size              & 0.060$^{***}$  & -0.228$^{***}$\\   
+                                 & (0.021)        & (0.026)\\   
+            Urban Area           & -0.994$^{***}$ & 0.826$^{***}$\\   
+                                 & (0.051)        & (0.062)\\   
+            ISCED $=$ 0          & -0.191         & 0.540$^{***}$\\   
+                                 & (0.182)        & (0.187)\\   
+            ISCED $=$ 2          & -0.169$^{*}$   & 0.119\\   
+                                 & (0.092)        & (0.108)\\   
+            ISCED $=$ 3          & -0.306$^{***}$ & 0.442$^{***}$\\   
+                                 & (0.095)        & (0.106)\\   
+            ISCED $=$ 4          & 0.036          & 0.207$^{**}$\\   
+                                 & (0.080)        & (0.097)\\   
+            ISCED $=$ 5          & -0.212$^{**}$  & 0.273$^{**}$\\   
+                                 & (0.103)        & (0.112)\\   
+            ISCED $=$ 6          & -0.252$^{**}$  & 0.240$^{**}$\\   
+                                 & (0.116)        & (0.121)\\   
+            ISCED $=$ 7          & -0.347$^{***}$ & 0.359$^{***}$\\   
+                                 & (0.125)        & (0.126)\\   
+            ISCED $=$ 9          & -0.447$^{*}$   & 0.246\\   
+                                 & (0.242)        & (0.250)\\   
+            \midrule 
+            Standard-Errors & \multicolumn{2}{c}{Heteroskedasticity-robust} \\ 
+            Observations         & 16,978         & 16,978\\  
+            Squared Correlation  & 0.02532        & 0.02388\\  
+            \midrule \midrule
+            \multicolumn{3}{l}{\emph{Heteroskedasticity-robust standard-errors in parentheses}}\\
+            \multicolumn{3}{l}{\emph{Signif. Codes: ***: 0.01, **: 0.05, *: 0.1}}\\
+         \end{tabular}
+         
+         \begin{tablenotes}\item \medskip \textit{Note:}
+            \item This table displays regression results from equation LOGIT on the log-odds transformed probability of higher (lower) additional costs than 80\% of the population in France as the dependent variable. 
+         \end{tablenotes}
+      \end{threeparttable}
+   \end{adjustbox}
+\end{table}
+
+

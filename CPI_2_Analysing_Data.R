@@ -6,7 +6,8 @@
 if(!require("pacman")) install.packages("pacman")
 
 p_load("boot", "broom", "countrycode","fixest", "ggpubr", "ggrepel",
-       "ggsci", "Hmisc", "knitr", "kableExtra", "openxlsx", "rattle", "scales", "tidyverse", "xtable")
+       "ggsci", "Hmisc", "knitr", "kableExtra", "marginaleffects", "margins",
+       "openxlsx", "rattle", "scales", "tidyverse", "xtable")
 
 options(scipen=999,
         dplyr.summarise.inform = FALSE)
@@ -1066,8 +1067,151 @@ print(i)
 
 # 5.      Econometric analysis ####
 
+# Overhead Overleaf
+
+tex.style <- style.tex(model.title = "Test", fixef.title = "\\midrule",
+                       stats.title = "\\midrule", model.format = "",
+                       fontsize = "small")
+
+dict_latex <- c(Income_Group_5 = "Expenditure Quintile", 
+                log_hh_expenditures_USD_2014 = "HH Exp. (log)", 
+                car.01 = "Car Ownership",
+                hh_size = "HH Size", 
+                refrigerator.01 = "Refrigerator Own.", 
+                urban_01 = "Urban Area", 
+                burden_CO2_national = "Carbon Price Incidence",
+                affected_more_than_80q_CO2n ="Log-Odds of Expecting Higher Additional Costs than 80% of Population",
+                affected_upper_80 = "Upper 20%",
+                affected_lower_80 = "Lower 20%",
+                affected_80_no_transfers = "Log-Odds of Higher Incidence than 80% of Pop. and No Access to Transfers",
+                electricity.access = "Electricity Acc.",
+                Ethnicity = "ETH")
+
+reference.list_5.3.1.1 <- data.frame(Country = Country.Set$Country)%>%
+  mutate(REF_ISCED = ifelse(Country != "FIN", "Reference group for education (\\textit{ISCED}) is ISCED-level 1",
+                            "Reference group for education (\\textit{ISCED} is ISCED-level 2"))%>%
+  mutate(REF_CF    = ifelse(Country %in% c("GTM", "DOM"), "\\textit{LPG} for cooking fuel (\\textit{CF})",
+                            ifelse(Country %in% c("BEN","BFA","TGO","NER","NGA","GNB", "MLI"), "\\textit{Charchoal} for cooking fuel (\\textit{CF})",
+                                   "\\textit{Electricity} for cooking fuel (\\textit{CF})")))%>%
+  left_join(read.xlsx("2_Tables/2_Logit_Models/Reference_Categories_Logit.xlsx"))%>%
+  mutate(ref = tolower(ref))%>%
+  mutate(REF_ETH   = ifelse(!is.na(ref), c(paste0("\\textit{",ref,"}")), NA))%>%
+  mutate(REF_ETH_0 = "for ethnicitiy (\\textit{ETH})")%>%
+  mutate(REF       = ifelse(is.na(REF_ETH), paste0(REF_ISCED, " and ", REF_CF, "."), 
+                            paste0(REF_ISCED, ", ", REF_CF, " and ", REF_ETH, " ", REF_ETH_0, ".")))
+
 # 5.1     OLS ####
 
 # 5.2     Inequality decomposition ####
 
 # 5.3     Logit-Model ####
+
+data_5.3 <- data_2 %>%
+  group_by(Country)%>%
+  mutate(barrier_upper_80 = wtd.quantile(carbon_intensity_kg_per_USD_national, probs = 0.8, weights = hh_weights),
+         barrier_lower_80 = wtd.quantile(carbon_intensity_kg_per_USD_national, probs = 0.2, weights = hh_weights))%>%
+  ungroup()%>%
+  mutate(affected_upper_80 = ifelse(carbon_intensity_kg_per_USD_national > barrier_upper_80,1,0),
+         affected_lower_80 = ifelse(carbon_intensity_kg_per_USD_national < barrier_lower_80,1,0))
+
+# 5.3.1   Logit-Model (Tables) ####
+
+# Overhead
+
+list_5.3.1.1       <- list()
+data_frame_5.3.1.1 <- data.frame()
+data_frame_5.3.1.2 <- data.frame()
+
+for(i in Country.Set$Country){
+  
+  data_5.3.1.1 <- data_5.3 %>%
+    filter(Country == i)
+  
+  formula_0 <- " ~ log_hh_expenditures_USD_2014 + hh_size"
+  
+  if(sum(is.na(data_5.3.1.1$urban_01)) == 0)           formula_0 <- paste0(formula_0, " + urban_01")
+  if(sum(is.na(data_5.3.1.1$electricity.access))==0)   formula_0 <- paste0(formula_0, " + electricity.access")
+  if(sum(is.na(data_5.3.1.1$car.01))==0)               formula_0 <- paste0(formula_0, " + car.01")
+  if(sum(is.na(data_5.3.1.1$CF))==0){
+    if(!i %in% c("BEN","BFA","GTM","DOM","TGO","NER","NGA","GNB","MLI")) formula_0 <- paste0(formula_0, ' + i(CF, ref = "Electricity")')
+    if(i  %in% c("GTM","DOM"))                                           formula_0 <- paste0(formula_0, ' + i(CF, ref = "LPG")')
+    if(i  %in% c("BEN","BFA","TGO","NER","NGA","GNB","MLI"))             formula_0 <- paste0(formula_0, ' + i(CF, ref = "Charcoal")')
+  }
+  if(sum(is.na(data_5.3.1.1$ISCED))==0 & !i %in% c("SWE", "NLD")){
+    if(i != "FIN") formula_0 <- paste0(formula_0, " + i(ISCED, ref = 1)")
+    if(i == "FIN") formula_0 <- paste0(formula_0, " + i(ISCED, ref = 2)")
+  }                
+  # Leave out for now
+  if(sum(is.na(data_5.3.1.1$Ethnicity))==0 & i != "BOL"){
+    ref_0 <- count(data_5.3.1.1, Ethnicity)$Ethnicity[which.max(count(data_5.3.1.1, Ethnicity)$n)]
+    
+    data_frame_5.3.1.2 <- bind_rows(data_frame_5.3.1.2, data.frame(Country = i, Type = "Ethnicity", ref = ref_0))
+    
+    formula_0 <- paste0(formula_0, ' + i(Ethnicity, ref = "', ref_0,'")')
+  }
+  #if("religion" %in% colnames(household_information_0) & sum(is.na(data_2.1.2.1$religion))==0)           formula_0 <- paste0(formula_0, " + factor(religion)")
+  #if("district" %in% colnames(household_information_0) & sum(is.na(data_2.1.2.1$district))==0)           formula_0 <- paste0(formula_0, " + factor(district)")
+  #if("province" %in% colnames(household_information_0) & sum(is.na(data_2.1.2.1$province))==0)           formula_0 <- paste0(formula_0, " + factor(province)")
+  
+  formula_1 <- as.formula(paste0("affected_upper_80", formula_0))
+  formula_2 <- as.formula(paste0("affected_lower_80", formula_0))
+  
+  model_5.3.1.1 <- feglm(formula_1, 
+                         data    = data_5.3.1.1, 
+                         weights = data_5.3.1.1$hh_weights, 
+                         family = quasibinomial("logit"), 
+                         se = "hetero")
+  
+  model_5.3.1.2 <- feglm(formula_2, 
+                         data    = data_5.3.1.1, 
+                         weights = data_5.3.1.1$hh_weights, 
+                         family = quasibinomial("logit"), 
+                         se = "hetero")
+
+  REF_0 <- reference.list_5.3.1.1$REF[reference.list_5.3.1.1$Country.Country == i]
+
+  etable(model_5.3.1.1, model_5.3.1.2, dict = dict_latex, tex = TRUE, file = sprintf("2_Tables/2_Logit_Models/Table_Logit_Burden_%s.tex", i),
+         digits = 3, replace = TRUE, fitstat = c("n", "cor2"), style.tex = tex.style, se.row = TRUE, tpt = TRUE,
+         title = sprintf("Logit-model coefficients for carbon-intensive consumers in %s", Country.Set$Country_long[Country.Set$Country == i]),  
+         label = sprintf("tab:Logit_1_%s",i), adjustbox = "width = 1\\textwidth, max height = 0.95\\textheight, center", placement = "htbp!",
+         notes = c("\\medskip \\textit{Note:}",
+                   paste0("This table displays regression results from equation LOGIT on the log-odds transformed probability of higher (lower) additional costs than 80\\% of the population ", sprintf("in %s",Country.Set$Country_long[Country.Set$Country == i]), " as the dependent variable. ", REF_0)))
+  
+  # etable(model_5.3.1.2, dict = dict_latex, tex = TRUE, file = sprintf("2_Tables/2_Logit_Models/Table_Logit_Burden_lower_%s.tex", i),
+  #        digits = 3, replace = TRUE, fitstat = c("n", "cor2"), style.tex = tex.style, se.row = TRUE, tpt = TRUE,
+  #        title = sprintf("Logit-Model Coefficients Hardship Cases in %s", Country.Set$Country_long[Country.Set$Country == i]),  
+  #        label = sprintf("tab:Logit_1_%s",i), adjustbox = "width = 1\\textwidth, max height = 0.95\\textheight, center", placement = "htbp!",
+  #        notes = c("\\medskip \\textit{Note:}",
+  #                  paste0("This table displays regression results from equation LOGIT on the log-odds transformed probability of lower additional costs than 80\\% of the population ", sprintf("in %s",i), " as the dependent variable.  ", REF_0)))
+  
+  # Additional stuff done for Latin America - check out if necessary 
+  
+  tidy_5.3.1.1 <- tidy(model_5.3.1.1)%>%
+    mutate(Country = i)%>%
+    mutate(Type = "affected_upper_80")
+  
+  tidy_5.3.1.2 <- tidy(model_5.3.1.2)%>%
+    mutate(Country = i)%>%
+    mutate(Type = "affected_lower_80")
+  
+  data_frame_5.3.1.1 <- data_frame_5.3.1.1 %>%
+    bind_rows(tidy_5.3.1.1)%>%
+    bind_rows(tidy_5.3.1.2)
+  
+  list_5.3.1.1[[paste0(i, "_U")]] <- model_5.3.1.1
+  list_5.3.1.1[[paste0(i, "_L")]] <- model_5.3.1.2
+  print(i)
+  
+  rm(data_5.3.1.1, tidy_5.3.1.1, tidy_5.3.1.2, model_5.3.1.1, model_5.3.1.2)
+}
+
+data_frame_5.3.1.3 <- data_frame_5.3.1.1 %>%
+  filter(term != "(Intercept)")%>%
+  mutate(Type_B = "Logit")
+
+write.xlsx(data_frame_5.3.1.2, "2_Tables/2_Logit_Models/Reference_Categories_Logit.xlsx")
+
+# 5.3.2   Logit-Model (Figures / marginal effects) ####
+
+summary(marginaleffects(model_fixest))
+summary(marginaleffects(model_fixest))

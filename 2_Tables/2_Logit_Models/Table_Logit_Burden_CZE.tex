@@ -1,0 +1,52 @@
+
+\begin{table}[htbp!]
+   \centering
+   \small
+   \begin{adjustbox}{width = 1\textwidth, max height = 0.95\textheight, center}
+      \begin{threeparttable}[b]
+         \caption{\label{tab:Logit_1_CZE} Logit-model coefficients for carbon-intensive consumers in Czechia}
+         \begin{tabular}{lcc}
+            \tabularnewline \midrule \midrule
+            Dependent Variables: & Upper 20\%     & Lower 20\%\\   
+            Test                 & (1)            & (2)\\  
+            \midrule
+            \emph{Variables}\\
+            (Intercept)          & 8.11$^{***}$   & -9.86$^{***}$\\   
+                                 & (1.30)         & (1.63)\\   
+            HH Exp. (log)        & -0.883$^{***}$ & 1.01$^{***}$\\   
+                                 & (0.136)        & (0.152)\\   
+            HH Size              & -0.025         & -0.328$^{***}$\\   
+                                 & (0.058)        & (0.059)\\   
+            Urban Area           & -1.19$^{***}$  & 0.863$^{***}$\\   
+                                 & (0.110)        & (0.119)\\   
+            ISCED $=$ 2          & -0.824         & -0.661\\   
+                                 & (0.682)        & (0.986)\\   
+            ISCED $=$ 3          & -0.543         & -0.869\\   
+                                 & (0.641)        & (0.957)\\   
+            ISCED $=$ 4          & -12.8$^{***}$  & -12.4$^{***}$\\   
+                                 & (0.640)        & (0.956)\\   
+            ISCED $=$ 5          & -0.710         & -0.716\\   
+                                 & (0.899)        & (1.07)\\   
+            ISCED $=$ 6          & -0.879         & -0.622\\   
+                                 & (0.734)        & (0.992)\\   
+            ISCED $=$ 7          & -0.499         & -0.869\\   
+                                 & (0.667)        & (0.966)\\   
+            ISCED $=$ 9          & -1.22          & -0.736\\   
+                                 & (1.26)         & (1.17)\\   
+            \midrule 
+            Standard-Errors & \multicolumn{2}{c}{Heteroskedasticity-robust} \\ 
+            Observations         & 2,929          & 2,929\\  
+            Squared Correlation  & 0.08100        & 0.05586\\  
+            \midrule \midrule
+            \multicolumn{3}{l}{\emph{Heteroskedasticity-robust standard-errors in parentheses}}\\
+            \multicolumn{3}{l}{\emph{Signif. Codes: ***: 0.01, **: 0.05, *: 0.1}}\\
+         \end{tabular}
+         
+         \begin{tablenotes}\item \medskip \textit{Note:}
+            \item This table displays regression results from equation LOGIT on the log-odds transformed probability of higher (lower) additional costs than 80\% of the population in Czechia as the dependent variable. 
+         \end{tablenotes}
+      \end{threeparttable}
+   \end{adjustbox}
+\end{table}
+
+

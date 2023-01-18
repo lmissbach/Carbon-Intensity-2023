@@ -1,0 +1,50 @@
+
+\begin{table}[htbp!]
+   \centering
+   \small
+   \begin{adjustbox}{width = 1\textwidth, max height = 0.95\textheight, center}
+      \begin{threeparttable}[b]
+         \caption{\label{tab:Logit_1_HRV} Logit-model coefficients for carbon-intensive consumers in Croatia}
+         \begin{tabular}{lcc}
+            \tabularnewline \midrule \midrule
+            Dependent Variables: & Upper 20\%    & Lower 20\%\\   
+            Test                 & (1)           & (2)\\  
+            \midrule
+            \emph{Variables}\\
+            (Intercept)          & -4.89$^{***}$ & 7.83$^{***}$\\   
+                                 & (1.04)        & (1.33)\\   
+            HH Exp. (log)        & 0.291$^{**}$  & -0.834$^{***}$\\   
+                                 & (0.121)       & (0.159)\\   
+            HH Size              & 0.006         & -0.293$^{***}$\\   
+                                 & (0.045)       & (0.067)\\   
+            Urban Area           & 0.224$^{*}$   & -0.073\\   
+                                 & (0.124)       & (0.133)\\   
+            ISCED $=$ 2          & 0.569         & -0.476$^{*}$\\   
+                                 & (0.356)       & (0.249)\\   
+            ISCED $=$ 3          & 0.667$^{*}$   & -0.995$^{***}$\\   
+                                 & (0.349)       & (0.250)\\   
+            ISCED $=$ 5          & 0.819$^{*}$   & -1.66$^{***}$\\   
+                                 & (0.427)       & (0.460)\\   
+            ISCED $=$ 6          & 0.294         & -0.576\\   
+                                 & (0.507)       & (0.459)\\   
+            ISCED $=$ 7          & 0.674$^{*}$   & -1.05$^{***}$\\   
+                                 & (0.399)       & (0.358)\\   
+            ISCED $=$ 9          & -0.681        & 0.728$^{*}$\\   
+                                 & (0.808)       & (0.399)\\   
+            \midrule 
+            Standard-Errors & \multicolumn{2}{c}{Heteroskedasticity-robust} \\ 
+            Observations         & 2,029         & 2,029\\  
+            Squared Correlation  & 0.01486       & 0.18186\\  
+            \midrule \midrule
+            \multicolumn{3}{l}{\emph{Heteroskedasticity-robust standard-errors in parentheses}}\\
+            \multicolumn{3}{l}{\emph{Signif. Codes: ***: 0.01, **: 0.05, *: 0.1}}\\
+         \end{tabular}
+         
+         \begin{tablenotes}\item \medskip \textit{Note:}
+            \item This table displays regression results from equation LOGIT on the log-odds transformed probability of higher (lower) additional costs than 80\% of the population in Croatia as the dependent variable. 
+         \end{tablenotes}
+      \end{threeparttable}
+   \end{adjustbox}
+\end{table}
+
+
