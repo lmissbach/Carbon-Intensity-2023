@@ -1291,4 +1291,81 @@ for(i in Country.Set$Country){
 
 # write.xlsx(data_frame_5.3.2.1, "1_Figures/Analysis_Logit_Models_Marginal_Effects/Average_Marginal_Effects_Logit.xlsx")
 
-data_5.3.1.3 <- read.xlsx("1_Figures/Analysis_Logit_Models_Marginal_Effects/Average_Marginal_Effects_Logit.xlsx")
+data_frame_5.3.2.3 <- read.xlsx("1_Figures/Analysis_Logit_Models_Marginal_Effects/Average_Marginal_Effects_Logit.xlsx")
+
+for (Type_0 in c("affected_lower_80", "affected_upper_80")){
+  # Add education and CF later
+  for (Term_0 in c("urban_01", "car.01", "electricity.access", "hh_size", "log_hh_expenditures_USD_2014")){
+    data_frame_5.3.2.4 <- data_frame_5.3.2.3 %>%
+      filter(Type == Type_0)%>%
+      filter(term == Term_0)%>%
+      left_join(select(Country.Set, Country, hh_expenditures_USD_2014_mean), by = "Country")
+    
+    labels_data_frame <- expand_grid(Term_0 = data_frame_5.3.2.3$term,
+                                     Type_0 = data_frame_5.3.2.3$Type)%>%
+      unique()%>%
+      mutate(title_0 = ifelse(Term_0 == "urban_01", "Urban citizenship",
+                              ifelse(Term_0 == "car.01", "Car ownership",
+                                     ifelse(Term_0 == "electricity.access", "Electricity access",
+                                            ifelse(Term_0 == "log_hh_expenditures_USD_2014", "Household expenditures",
+                                                   ifelse(Term_0 == "hh_size", "Household size", NA))))))%>%
+      mutate(legend_0 = tolower(title_0))%>%
+      mutate(bound_0 = ifelse(Term_0 == "urban_01", -0.25,
+                              ifelse(Term_0 == "car.01" & Type_0 == "affected_lower_80",-0.5,
+                                     ifelse(Term_0 == "car.01" & Type_0 == "affected_upper_80",-0.2,
+                                            ifelse(Term_0 == "electricity.access" & Type_0 == "affected_upper_80", -0.4,
+                                                   ifelse(Term_0 == "electricity.access" & Type_0 == "affected_lower_80", -0.8,
+                                                          ifelse(Term_0 == "log_hh_expenditures_USD_2014", -0.3,
+                                                                 ifelse(Term_0 == "hh_size" & Type_0 == "affected_upper_80", -0.05,
+                                                                        ifelse(Term_0 == "hh_size" & Type_0 == "affected_lower_80", -0.12,NA)))))))))%>%
+      mutate(bound_1 = ifelse(Term_0 == "urban_01", 0.25,
+                              ifelse(Term_0 == "car.01" & Type_0 == "affected_lower_80",0.3,
+                                     ifelse(Term_0 == "car.01" & Type_0 == "affected_upper_80",0.55,
+                                            ifelse(Term_0 == "electricity.access" & Type_0 == "affected_upper_80", 0.6,
+                                                   ifelse(Term_0 == "electricity.access" & Type_0 == "affected_lower_80", 0.5,
+                                                          ifelse(Term_0 == "log_hh_expenditures_USD_2014" & Type_0 == "affected_upper_80", 0.15,
+                                                                 ifelse(Term_0 == "log_hh_expenditures_USD_2014" & Type_0 == "affected_lower_80", 0.3,
+                                                                        ifelse(Term_0 == "hh_size" & Type_0 == "affected_upper_80", 0.1,
+                                                                               ifelse(Term_0 == "hh_size" & Type_0 == "affected_lower_80", 0.05,NA))))))))))
+    
+    bound_0  <- labels_data_frame$bound_0[labels_data_frame$Term_0 == Term_0 & labels_data_frame$Type_0 == Type_0]
+    bound_1  <- labels_data_frame$bound_1[labels_data_frame$Term_0 == Term_0 & labels_data_frame$Type_0 == Type_0]
+    title_0  <- labels_data_frame$title_0[labels_data_frame$Term_0 == Term_0 & labels_data_frame$Type_0 == Type_0]
+    legend_0 <- labels_data_frame$legend_0[labels_data_frame$Term_0 == Term_0 & labels_data_frame$Type_0 == Type_0]
+    if(Type_0 == "affected_upper_80") state_0 <- "higher" else state_0 <- "lower" 
+    
+    
+    P_5.3.2.4 <- ggplot(data = data_frame_5.3.2.4, aes(x = estimate, y = reorder(Country, desc(estimate))))+
+      geom_vline(aes(xintercept = 0))+
+      geom_errorbar(aes(xmin = conf.low, xmax = conf.high), width = 0.5, size = 0.3)+
+      geom_point(shape = 21, aes (fill = "#E64B35FF"), size = 1.5)+
+      theme_bw()+
+      xlab(paste0("Average marginal effect of ",legend_0," on probability of ", state_0 ," 20% of carbon intensity"))+ 
+      ylab("Country")+
+      labs(colour = "", fill = "")+
+      coord_cartesian(xlim = c(bound_0, bound_1))+
+      scale_x_continuous(labels = scales::percent_format(accuracy = 1),  expand = c(0,0))+
+      scale_fill_discrete(guide = "none")+
+      ggtitle(title_0)+
+      theme(axis.text.y = element_text(size = 6), 
+            axis.text.x = element_text(size = 6),
+            axis.title  = element_text(size = 7),
+            plot.title = element_text(size = 11),
+            legend.position = "bottom",
+            # strip.text = element_text(size = 7),
+            #strip.text.y = element_text(angle = 180),
+            #panel.grid.major = element_blank(),
+            panel.grid.major.y = element_blank(),
+            panel.grid.minor.y = element_blank(),
+            axis.ticks = element_line(size = 0.2),
+            legend.text = element_text(size = 7),
+            legend.title = element_text(size = 7),
+            plot.margin = unit(c(0.3,0.3,0.3,0.3), "cm"),
+            panel.border = element_rect(size = 0.3))
+    
+    jpeg(sprintf("1_Figures/Analysis_Logit_Models_Marginal_Effects/Average_Marginal_Effects_%s_%s.jpg", Type_0, Term_0), width = 15.5, height = 16, unit = "cm", res = 600)
+    print(P_5.3.2.4)
+    dev.off()
+    
+  }
+}
