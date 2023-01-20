@@ -1142,13 +1142,13 @@ for(i in Country.Set$Country){
     if(i == "FIN") formula_0 <- paste0(formula_0, " + i(ISCED, ref = 2)")
   }                
   # Leave out for now
-  if(sum(is.na(data_5.3.1.1$Ethnicity))==0 & i != "BOL"){
-    ref_0 <- count(data_5.3.1.1, Ethnicity)$Ethnicity[which.max(count(data_5.3.1.1, Ethnicity)$n)]
-    
-    data_frame_5.3.1.2 <- bind_rows(data_frame_5.3.1.2, data.frame(Country = i, Type = "Ethnicity", ref = ref_0))
-    
-    formula_0 <- paste0(formula_0, ' + i(Ethnicity, ref = "', ref_0,'")')
-  }
+  #if(sum(is.na(data_5.3.1.1$Ethnicity))==0 & i != "BOL"){
+  #  ref_0 <- count(data_5.3.1.1, Ethnicity)$Ethnicity[which.max(count(data_5.3.1.1, Ethnicity)$n)]
+  #  
+  #  data_frame_5.3.1.2 <- bind_rows(data_frame_5.3.1.2, data.frame(Country = i, Type = "Ethnicity", ref = ref_0))
+  #  
+  #  formula_0 <- paste0(formula_0, ' + i(Ethnicity, ref = "', ref_0,'")')
+  #}
   #if("religion" %in% colnames(household_information_0) & sum(is.na(data_2.1.2.1$religion))==0)           formula_0 <- paste0(formula_0, " + factor(religion)")
   #if("district" %in% colnames(household_information_0) & sum(is.na(data_2.1.2.1$district))==0)           formula_0 <- paste0(formula_0, " + factor(district)")
   #if("province" %in% colnames(household_information_0) & sum(is.na(data_2.1.2.1$province))==0)           formula_0 <- paste0(formula_0, " + factor(province)")
@@ -1205,13 +1205,90 @@ for(i in Country.Set$Country){
   rm(data_5.3.1.1, tidy_5.3.1.1, tidy_5.3.1.2, model_5.3.1.1, model_5.3.1.2)
 }
 
+# may also display results for multiple countries in one table one day
+
 data_frame_5.3.1.3 <- data_frame_5.3.1.1 %>%
   filter(term != "(Intercept)")%>%
   mutate(Type_B = "Logit")
 
 write.xlsx(data_frame_5.3.1.2, "2_Tables/2_Logit_Models/Reference_Categories_Logit.xlsx")
 
-# 5.3.2   Logit-Model (Figures / marginal effects) ####
+rm(list_5.3.1.1)
 
-summary(marginaleffects(model_fixest))
-summary(marginaleffects(model_fixest))
+# 5.3.2   Logit-Model (Figures / average marginal effects) ####
+
+list_5.3.2.1       <- list()
+data_frame_5.3.2.1 <- data.frame()
+data_frame_5.3.2.2 <- data.frame()
+
+for(i in Country.Set$Country){
+  
+  start_5.3.2.1 <- Sys.time()
+  
+  data_5.3.2.1 <- data_5.3 %>%
+    filter(Country == i)%>%
+    mutate(ISCED = factor(ISCED))
+  
+  formula_0 <- " ~ log_hh_expenditures_USD_2014 + hh_size"
+  
+  if(sum(is.na(data_5.3.2.1$urban_01)) == 0)           formula_0 <- paste0(formula_0, " + urban_01")
+  if(sum(is.na(data_5.3.2.1$electricity.access))==0)   formula_0 <- paste0(formula_0, " + electricity.access")
+  if(sum(is.na(data_5.3.2.1$car.01))==0)               formula_0 <- paste0(formula_0, " + car.01")
+  if(sum(is.na(data_5.3.2.1$CF))==0){
+    if(!i %in% c("BEN","BFA","GTM","DOM","TGO","NER","NGA","GNB","MLI")) formula_0 <- paste0(formula_0, ' + i(CF, ref = "Electricity")')
+    if(i  %in% c("GTM","DOM"))                                           formula_0 <- paste0(formula_0, ' + i(CF, ref = "LPG")')
+    if(i  %in% c("BEN","BFA","TGO","NER","NGA","GNB","MLI"))             formula_0 <- paste0(formula_0, ' + i(CF, ref = "Charcoal")')
+  }
+  if(sum(is.na(data_5.3.2.1$ISCED))==0 & !i %in% c("SWE", "NLD")){
+    if(i != "FIN") formula_0 <- paste0(formula_0, " + i(ISCED, ref = 1)")
+    if(i == "FIN") formula_0 <- paste0(formula_0, " + i(ISCED, ref = 2)")
+  }                
+  # Leave out for now
+  #if(sum(is.na(data_5.3.2.1$Ethnicity))==0 & i != "BOL"){
+  #  ref_0 <- count(data_5.3.2.1, Ethnicity)$Ethnicity[which.max(count(data_5.3.2.1, Ethnicity)$n)]
+  #  
+  #  data_frame_5.3.2.2 <- bind_rows(data_frame_5.3.2.2, data.frame(Country = i, Type = "Ethnicity", ref = ref_0))
+  #  
+  #  formula_0 <- paste0(formula_0, ' + i(Ethnicity, ref = "', ref_0,'")')
+  #}
+  #if(sum(is.na(data_5.3.2.1$Religion))==0)           formula_0 <- paste0(formula_0, " + Religion")
+  #if(sum(is.na(data_5.3.2.1$District))==0)           formula_0 <- paste0(formula_0, " + District")
+  #if(sum(is.na(data_5.3.2.1$Province))==0)           formula_0 <- paste0(formula_0, " + Province")
+  
+  formula_1 <- as.formula(paste0("affected_upper_80", formula_0))
+  formula_2 <- as.formula(paste0("affected_lower_80", formula_0))
+  
+  model_5.3.2.1 <- feglm(formula_1, 
+                         data    = data_5.3.2.1, 
+                         weights = data_5.3.2.1$hh_weights, 
+                         family = quasibinomial("logit"), 
+                         se = "hetero")
+  
+  model_5.3.2.2 <- feglm(formula_2, 
+                         data    = data_5.3.2.1, 
+                         weights = data_5.3.2.1$hh_weights, 
+                         family = quasibinomial("logit"), 
+                         se = "hetero")
+  
+  tidy_5.3.2.1 <- tidy(marginaleffects(model_5.3.2.1))%>%
+    mutate(Country = i)%>%
+    mutate(Type = "affected_upper_80")
+  
+  tidy_5.3.2.2 <- tidy(marginaleffects(model_5.3.2.2))%>%
+    mutate(Country = i)%>%
+    mutate(Type = "affected_lower_80")
+  
+  data_frame_5.3.2.1 <- data_frame_5.3.2.1 %>%
+    bind_rows(tidy_5.3.2.1)%>%
+    bind_rows(tidy_5.3.2.2)
+  
+  end_5.3.2.1 <- Sys.time()
+  
+  print(paste0(i, " ", round(end_5.3.2.1 - start_5.3.2.1,1), "secs"))
+  
+  rm(data_5.3.2.1, tidy_5.3.2.1, tidy_5.3.2.2, model_5.3.2.1, model_5.3.2.2)
+}
+
+# write.xlsx(data_frame_5.3.2.1, "1_Figures/Analysis_Logit_Models_Marginal_Effects/Average_Marginal_Effects_Logit.xlsx")
+
+data_5.3.1.3 <- read.xlsx("1_Figures/Analysis_Logit_Models_Marginal_Effects/Average_Marginal_Effects_Logit.xlsx")
