@@ -11,15 +11,19 @@
 \usepackage{booktabs}
 \usepackage{csquotes}
 \usepackage{float}
+\usepackage[maxfloats=256]{morefloats}
 \usepackage{graphicx}
 \usepackage{longtable}
 \usepackage{lscape}
+\usepackage{pgffor}
 \usepackage{subfig,caption}
 \usepackage{tabularx}
 \usepackage{threeparttablex}
 \usepackage{xcolor}
 \usepackage{xtab}
 \usepackage{hyperref}
+
+\maxdeadcycles = 1000
 
 % everything concerning biblatex
 
@@ -207,15 +211,19 @@
 
 \input{../2_Tables/Table_Summary_A4_Cooking_Fuels} \label{tab:A4_CF}
 
-\input{../2_Tables/Table_Summary_A4_Lighting_Fuels} \label{tab:A4_LF}
+\input{../2_Tables/Table_Summary_A4_Lighting_Fuels} \label{tab:A5_LF}
 
-\input{../2_Tables/Table_Summary_A5_Appliances} \label{tab:A5}
+\input{../2_Tables/Table_Summary_A5_Appliances} \label{tab:A6}
 
-\input{../2_Tables/2_Logit_Models/Table_Logit_Burden_BRA}
-\input{../2_Tables/2_Logit_Models/Table_Logit_Burden_COL}
-\input{../2_Tables/2_Logit_Models/Table_Logit_Burden_DEU}
-\input{../2_Tables/2_Logit_Models/Table_Logit_Burden_IND}
-\input{../2_Tables/2_Logit_Models/Table_Logit_Burden_MMR}
-\input{../2_Tables/2_Logit_Models/Table_Logit_Burden_PER}
+\clearpage
+
+\foreach \country in {ARG, ARM, BEL, BEN, BFA,
+BGD, BGR, BOL, BRA, BRB, CHL, %CIV,
+ COL, CRI, CYP, CZE, DEU, DNK, DOM,
+ ECU, ESP, EST, ETH, FIN, FRA, GHA, GRC, GTM,
+ HRV, HUN, IDN, IND, IRL, IRQ, ISR, ITA, KEN, KHM, LBR, LTU, LUX, LVA, MAR, MDV, MEX, MLI, MMR, MNG, MWI, NER, NGA,  NIC, NLD, NOR, PAK,
+  PER, PHL, POL, PRT, PRY, ROU, RWA, SEN, SLV, SUR, SVK, SWE, TGO, THA, TUR, UGA, URY, ZAF}{
+  \input{../2_Tables/2_Logit_Models/Table_Logit_Burden_\country}
+}
 
 \end{document}
