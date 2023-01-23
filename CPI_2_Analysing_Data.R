@@ -1226,8 +1226,8 @@ for(i in Country.Set$Country){
   start_5.3.2.1 <- Sys.time()
   
   data_5.3.2.1 <- data_5.3 %>%
-    filter(Country == i)%>%
-    mutate(ISCED = factor(ISCED))
+    mutate(ISCED              = factor(ISCED))%>%
+    filter(Country == i)
   
   formula_0 <- " ~ log_hh_expenditures_USD_2014 + hh_size"
   
@@ -1270,11 +1270,11 @@ for(i in Country.Set$Country){
                          family = quasibinomial("logit"), 
                          se = "hetero")
   
-  tidy_5.3.2.1 <- tidy(marginaleffects(model_5.3.2.1))%>%
+  tidy_5.3.2.1 <- tidy(marginaleffects(model_5.3.2.1, wts = data_5.3.2.1$hh_weights))%>%
     mutate(Country = i)%>%
     mutate(Type = "affected_upper_80")
   
-  tidy_5.3.2.2 <- tidy(marginaleffects(model_5.3.2.2))%>%
+  tidy_5.3.2.2 <- tidy(marginaleffects(model_5.3.2.2, wts = data_5.3.2.1$hh_weights))%>%
     mutate(Country = i)%>%
     mutate(Type = "affected_lower_80")
   
