@@ -406,6 +406,8 @@ data_joint_1 <- data_joint_0 %>%
   mutate_at(vars(starts_with("exp_USD_")), list(~ ifelse(is.na(.),0,.)))%>%
   # Remove 13 households from Nigeria without information on hh_weights
   filter(!is.na(hh_weights))%>%
+  # Adjust incorrect weights for Czech Republic 
+  mutate(hh_weights = ifelse(Country == "CZE", hh_weights*129.1408, hh_weights))%>%
   filter(!is.na(hh_expenditures_USD_2014))%>%
   select(- truck1.01, -pump.01, -solar.heater.01, -video.01, -cooker.01, -air.cooler.01, -cooler.01, -sewing.machine.01, -sewing_machine.01,
          - region, -ocu_hhh, -vacuum.01, -internet.access, -municipality, -clust, -printer.01, -density, -alphabetism, -freezer.01, -heater.01,
@@ -767,6 +769,8 @@ carbon_intensities_2.1.1 <- carbon_intensities_0 %>%
   mutate(Explanation_0 = sub("\\:.*", "",Explanation))%>%
   mutate(Explanation_0 = ifelse(is.na(Explanation_0), "Gas extraction, manufacture, distribution", Explanation_0))%>%
   mutate(Explanation_1 = paste0(Explanation_0, " (", GTAP, ")"))%>%
+  mutate(Explanation_1 = ifelse(Explanation_1 == "Manufacture of fabricated metal products, except machinery and equipment (fmp)",
+                         "Fabricated metal products, except machinery and equipment (fmp)", Explanation_1))%>%
   mutate(GTAP_1 = factor(Explanation_1, levels = unique(Explanation_1[order(max_value, decreasing = TRUE)]), ordered = TRUE))%>%
   select(-starts_with("Explanation"))
   
@@ -887,8 +891,111 @@ jpeg("1_Figures/Analysis_Carbon_Intensities_GTAP/Figure_2.1.2.jpg", width = 20, 
 print(P_2.1.2)
 dev.off()
 
-rm(carbon_intensities, carbon_intensities_0, carbon_intensities_1, carbon_intensities_2.1, carbon_intensities_2.1.1, carbon_intensities_2.1.2, GTAP.Code,
-   P_2.1, P_2.1.1, P_2.1.2)
+# Grouped for Paper
+
+GTAP_Groups <- distinct(carbon_intensities_2.1.1, GTAP)%>%
+  mutate(Group_0 = c(rep("A", 16),
+                     rep("B", 16),
+                     rep("C", 16),
+                     rep("D", 13)))%>%
+  mutate(Group_1A = c(rep(NA, 48),
+                     rep("A",1),
+                     rep("B",4),
+                     rep("C",4),
+                     rep("D",4)))
+
+for(Group_1 in c("A", "B", "C", "D")){
+  carbon_intensities_2.1.2 <- carbon_intensities_2.1.1 %>%
+    left_join(GTAP_Groups, by = "GTAP")%>%
+    filter(Group_0 == Group_1)%>%
+    mutate(CO2_kg_per_dollar_national = CO2_t_per_dollar_national*1000)
+  
+  if (Group_1 == "A") upper_0 <- 0.7
+  if (Group_1 == "B") upper_0 <- 1.4
+  if (Group_1 == "C") upper_0 <- 2.8
+  if (Group_1 == "D") upper_0 <- 44
+  
+  if(Group_1 == "D"){
+    carbon_intensities_2.1.3 <- carbon_intensities_2.1.2 %>%
+      group_by(Group_1A)%>%
+      summarise(max_value = max(max_value))%>%
+      ungroup()%>%
+      mutate(max_value = max_value*1050)%>%
+      right_join(distinct(carbon_intensities_2.1.2, GTAP_1, Group_1A))%>%
+      bind_rows(mutate(., max_value = 0))
+    
+    P_2.1.3 <- ggplot(carbon_intensities_2.1.2)+
+      geom_point(data = carbon_intensities_2.1.3, aes(x = 1, y = max_value), alpha = 0)+
+      geom_point(aes(y = CO2_kg_per_dollar_national, x = 1, fill = factor(included)), position = position_jitter(width = 0.4, seed = 2022), size = 1.5, shape = 21)+
+      geom_text_repel(aes(x = 1, label = label, y = CO2_kg_per_dollar_national), 
+                      size = 2.5, segment.size = 0.3, max.overlaps = Inf, position = position_jitter(width = 0.4, seed = 2022))+
+      facet_wrap(. ~ GTAP_1, labeller = label_wrap_gen(width = 25), scales = "free_y")+
+      theme_bw()+
+      scale_fill_manual(values = "#0072B5FF", guide = "none")+
+      scale_y_continuous(expand = c(0,0))+
+      labs(fill = "")+
+      ylab(expression(paste("Carbon intensity in kg", CO[2], sep = " per USD")))+
+      xlab("")+
+      ggtitle("Sectoral carbon intensity - included items")+
+      theme(axis.text.y = element_text(size = 6), 
+            axis.text.x = element_blank(),
+            axis.ticks.x = element_blank(),
+            axis.title  = element_text(size = 6),
+            plot.title  = element_text(size = 10),
+            legend.position = "bottom",
+            strip.text = element_text(size = 7),
+            #strip.text.y = element_text(angle = 180),
+            panel.grid.major = element_line(size = 0.3),
+            panel.grid.minor = element_blank(),
+            axis.ticks = element_line(size = 0.2),
+            legend.text = element_text(size = 7),
+            legend.title = element_text(size = 7),
+            plot.margin = unit(c(0.3,0.3,0.3,0.3), "cm"),
+            panel.border = element_rect(size = 0.3))
+      
+  }
+  
+  if(Group_1 != "D"){
+    P_2.1.3 <- ggplot(carbon_intensities_2.1.2)+
+      geom_point(aes(y = CO2_kg_per_dollar_national, x = 1, fill = factor(included)), position = position_jitter(width = 0.4, seed = 2022), size = 1.5, shape = 21)+
+      geom_text_repel(aes(x = 1, label = label, y = CO2_kg_per_dollar_national), 
+                      size = 2.5, segment.size = 0.3, max.overlaps = Inf, position = position_jitter(width = 0.4, seed = 2022))+
+      facet_wrap(. ~ GTAP_1, labeller = label_wrap_gen(width = 25), scale = "free_y")+
+      theme_bw()+
+      coord_cartesian(ylim = c(0,upper_0))+
+      scale_fill_manual(values = "#0072B5FF", guide = "none")+
+      scale_y_continuous(expand = c(0,0), labels = scales::label_number(accuracy = 0.1))+
+      labs(fill = "")+
+      ylab(expression(paste("Carbon intensity in kg", CO[2], sep = " per USD")))+
+      xlab("")+
+      ggtitle("Sectoral carbon intensity - included items")+
+      theme(axis.text.y = element_text(size = 6), 
+            axis.text.x = element_blank(),
+            axis.ticks.x = element_blank(),
+            axis.title  = element_text(size = 6),
+            plot.title  = element_text(size = 10),
+            legend.position = "bottom",
+            strip.text = element_text(size = 7),
+            #strip.text.y = element_text(angle = 180),
+            panel.grid.major = element_line(size = 0.3),
+            panel.grid.minor = element_blank(),
+            axis.ticks = element_line(size = 0.2),
+            legend.text = element_text(size = 7),
+            legend.title = element_text(size = 7),
+            plot.margin = unit(c(0.3,0.3,0.3,0.3), "cm"),
+            panel.border = element_rect(size = 0.3))
+  }
+  
+  
+  
+  jpeg(sprintf("1_Figures/Analysis_Carbon_Intensities_GTAP/Figure_2.1.1_%s.jpg", Group_1), width = 15.75, height = 17, unit = "cm", res = 400)
+  print(P_2.1.3)
+  dev.off()
+}
+
+rm(carbon_intensities, carbon_intensities_0, carbon_intensities_1, carbon_intensities_2.1, carbon_intensities_2.1.1, carbon_intensities_2.1.2, carbon_intensities_2.1.3, 
+   GTAP.Code, GTAP_Groups, matching, 
+   P_2.1, P_2.1.1, P_2.1.2, P_2.1.3)
 
 # 4     Miscellaneous ####
 
