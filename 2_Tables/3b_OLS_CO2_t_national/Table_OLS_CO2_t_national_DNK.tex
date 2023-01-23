@@ -1,0 +1,52 @@
+
+\begin{table}[htbp!]
+   \centering
+   \small
+   \begin{adjustbox}{width = 1\textwidth, max height = 0.95\textheight, center}
+      \begin{threeparttable}[b]
+         \caption{\label{tab:OLS_2_DNK} OLS-regression coefficients for carbon footprint in Denmark}
+         \begin{tabular}{lc}
+            \tabularnewline \midrule \midrule
+            Dependent Variable: & scaled\_CO2\_t\_national\\     
+            Test                & (1)\\  
+            \midrule
+            \emph{Variables}\\
+            (Intercept)         & -8.32$^{***}$\\   
+                                & (0.560)\\   
+            HH Exp. (log)       & 0.783$^{***}$\\   
+                                & (0.056)\\   
+            HH Size             & 0.082$^{***}$\\   
+                                & (0.024)\\   
+            Urban Area          & -0.092$^{**}$\\   
+                                & (0.047)\\   
+            ISCED $=$ 2         & -0.213$^{**}$\\   
+                                & (0.107)\\   
+            ISCED $=$ 3         & -0.060\\   
+                                & (0.062)\\   
+            ISCED $=$ 4         & -0.036\\   
+                                & (0.105)\\   
+            ISCED $=$ 5         & 0.019\\   
+                                & (0.075)\\   
+            ISCED $=$ 6         & -0.278$^{***}$\\   
+                                & (0.075)\\   
+            ISCED $=$ 7         & 0.040\\   
+                                & (0.295)\\   
+            ISCED $=$ 9         & -0.255$^{**}$\\   
+                                & (0.102)\\   
+            \midrule 
+            Standard-Errors     & Heteroskedasticity-robust \\   
+            Observations        & 2,205\\  
+            Squared Correlation & 0.18433\\  
+            \midrule \midrule
+            \multicolumn{2}{l}{\emph{Heteroskedasticity-robust standard-errors in parentheses}}\\
+            \multicolumn{2}{l}{\emph{Signif. Codes: ***: 0.01, **: 0.05, *: 0.1}}\\
+         \end{tabular}
+         
+         \begin{tablenotes}\item \medskip \textit{Note:}
+            \item This table displays regression results from equation OLS on the carbon footprint of consumption in  in DNK as the dependent variable.  
+         \end{tablenotes}
+      \end{threeparttable}
+   \end{adjustbox}
+\end{table}
+
+

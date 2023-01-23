@@ -1,0 +1,64 @@
+
+\begin{table}[htbp!]
+   \centering
+   \small
+   \begin{adjustbox}{width = 1\textwidth, max height = 0.95\textheight, center}
+      \begin{threeparttable}[b]
+         \caption{\label{tab:OLS_1_SLV} OLS-regression coefficients for carbon intensity of consumers in El Salvador}
+         \begin{tabular}{lc}
+            \tabularnewline \midrule \midrule
+            Dependent Variable: & scaled\_carbon\_intensity\_kg\_per\_USD\_national\\        
+            Test                & (1)\\  
+            \midrule
+            \emph{Variables}\\
+            (Intercept)         & 3.85$^{***}$\\   
+                                & (0.160)\\   
+            HH Exp. (log)       & -0.574$^{***}$\\   
+                                & (0.013)\\   
+            HH Size             & 0.194$^{***}$\\   
+                                & (0.005)\\   
+            Urban Area          & -0.013\\   
+                                & (0.017)\\   
+            Electricity Acc.    & 0.039\\   
+                                & (0.057)\\   
+            Car Ownership       & 0.925$^{***}$\\   
+                                & (0.031)\\   
+            CF $=$ Charcoal     & 0.014\\   
+                                & (0.216)\\   
+            CF $=$ Firewood     & -0.980$^{***}$\\   
+                                & (0.101)\\   
+            CF $=$ Gas          & 0.104\\   
+                                & (0.098)\\   
+            CF $=$ Kerosene     & 0.043\\   
+                                & (0.302)\\   
+            CF $=$ Unknown      & -0.787$^{***}$\\   
+                                & (0.110)\\   
+            ISCED $=$ 0         & -0.049$^{**}$\\   
+                                & (0.020)\\   
+            ISCED $=$ 3         & 0.071$^{***}$\\   
+                                & (0.021)\\   
+            ISCED $=$ 5         & 0.069\\   
+                                & (0.059)\\   
+            ISCED $=$ 6         & 0.153$^{*}$\\   
+                                & (0.079)\\   
+            ISCED $=$ 7         & 0.294$^{***}$\\   
+                                & (0.049)\\   
+            ISCED $=$ 9         & -0.404\\   
+                                & (0.332)\\   
+            \midrule 
+            Standard-Errors     & Heteroskedasticity-robust \\   
+            Observations        & 23,622\\  
+            Squared Correlation & 0.30703\\  
+            \midrule \midrule
+            \multicolumn{2}{l}{\emph{Heteroskedasticity-robust standard-errors in parentheses}}\\
+            \multicolumn{2}{l}{\emph{Signif. Codes: ***: 0.01, **: 0.05, *: 0.1}}\\
+         \end{tabular}
+         
+         \begin{tablenotes}\item \medskip \textit{Note:}
+            \item This table displays regression results from equation OLS on the carbon intensity of consumption in  in El Salvador as the dependent variable. 
+         \end{tablenotes}
+      \end{threeparttable}
+   \end{adjustbox}
+\end{table}
+
+

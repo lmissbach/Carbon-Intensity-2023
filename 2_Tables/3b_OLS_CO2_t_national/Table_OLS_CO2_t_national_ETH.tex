@@ -1,0 +1,72 @@
+
+\begin{table}[htbp!]
+   \centering
+   \small
+   \begin{adjustbox}{width = 1\textwidth, max height = 0.95\textheight, center}
+      \begin{threeparttable}[b]
+         \caption{\label{tab:OLS_2_ETH} OLS-regression coefficients for carbon footprint in Ethiopia}
+         \begin{tabular}{lc}
+            \tabularnewline \midrule \midrule
+            Dependent Variable: & scaled\_CO2\_t\_national\\     
+            Test                & (1)\\  
+            \midrule
+            \emph{Variables}\\
+            (Intercept)         & -4.75$^{***}$\\   
+                                & (0.212)\\   
+            HH Exp. (log)       & 0.752$^{***}$\\   
+                                & (0.030)\\   
+            HH Size             & 0.009$^{*}$\\   
+                                & (0.005)\\   
+            Urban Area          & 0.173$^{***}$\\   
+                                & (0.033)\\   
+            Electricity Acc.    & -0.126$^{***}$\\   
+                                & (0.021)\\   
+            Car Ownership       & 0.814$^{***}$\\   
+                                & (0.169)\\   
+            CF $=$ Charcoal     & -0.415$^{***}$\\   
+                                & (0.056)\\   
+            CF $=$ Firewood     & -0.310$^{***}$\\   
+                                & (0.060)\\   
+            CF $=$ Gas          & 0.279\\   
+                                & (0.633)\\   
+            CF $=$ Kerosene     & -0.047\\   
+                                & (0.122)\\   
+            CF $=$ LPG          & 0.022\\   
+                                & (0.179)\\   
+            CF $=$ Otherbiomass & -0.336$^{***}$\\   
+                                & (0.078)\\   
+            CF $=$ Unknown      & -0.113\\   
+                                & (0.130)\\   
+            ISCED $=$ 0         & -0.026\\   
+                                & (0.023)\\   
+            ISCED $=$ 2         & 0.058\\   
+                                & (0.041)\\   
+            ISCED $=$ 3         & 0.170$^{**}$\\   
+                                & (0.085)\\   
+            ISCED $=$ 4         & 0.206$^{***}$\\   
+                                & (0.062)\\   
+            ISCED $=$ 5         & 0.162$^{***}$\\   
+                                & (0.056)\\   
+            ISCED $=$ 6         & 0.245\\   
+                                & (0.156)\\   
+            ISCED $=$ 7         & 1.46$^{***}$\\   
+                                & (0.561)\\   
+            ISCED $=$ 9         & 0.084\\   
+                                & (0.111)\\   
+            \midrule 
+            Standard-Errors     & Heteroskedasticity-robust \\   
+            Observations        & 6,767\\  
+            Squared Correlation & 0.61037\\  
+            \midrule \midrule
+            \multicolumn{2}{l}{\emph{Heteroskedasticity-robust standard-errors in parentheses}}\\
+            \multicolumn{2}{l}{\emph{Signif. Codes: ***: 0.01, **: 0.05, *: 0.1}}\\
+         \end{tabular}
+         
+         \begin{tablenotes}\item \medskip \textit{Note:}
+            \item This table displays regression results from equation OLS on the carbon footprint of consumption in  in ETH as the dependent variable.  
+         \end{tablenotes}
+      \end{threeparttable}
+   \end{adjustbox}
+\end{table}
+
+

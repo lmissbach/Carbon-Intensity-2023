@@ -1,0 +1,64 @@
+
+\begin{table}[htbp!]
+   \centering
+   \small
+   \begin{adjustbox}{width = 1\textwidth, max height = 0.95\textheight, center}
+      \begin{threeparttable}[b]
+         \caption{\label{tab:OLS_2_MEX} OLS-regression coefficients for carbon footprint in Mexico}
+         \begin{tabular}{lc}
+            \tabularnewline \midrule \midrule
+            Dependent Variable: & scaled\_CO2\_t\_national\\     
+            Test                & (1)\\  
+            \midrule
+            \emph{Variables}\\
+            (Intercept)         & -6.69$^{***}$\\   
+                                & (0.105)\\   
+            HH Exp. (log)       & 0.764$^{***}$\\   
+                                & (0.009)\\   
+            HH Size             & 0.013$^{***}$\\   
+                                & (0.002)\\   
+            Urban Area          & -0.007\\   
+                                & (0.006)\\   
+            Electricity Acc.    & -0.328$^{***}$\\   
+                                & (0.066)\\   
+            Car Ownership       & 0.471$^{***}$\\   
+                                & (0.008)\\   
+            CF $=$ Coal         & 0.319$^{***}$\\   
+                                & (0.045)\\   
+            CF $=$ Firewood     & 0.059$^{**}$\\   
+                                & (0.025)\\   
+            CF $=$ Gas          & 0.643$^{***}$\\   
+                                & (0.030)\\   
+            CF $=$ LPG          & 0.142$^{***}$\\   
+                                & (0.024)\\   
+            CF $=$ Unknown      & 0.081$^{*}$\\   
+                                & (0.047)\\   
+            ISCED $=$ 0         & 0.083$^{***}$\\   
+                                & (0.007)\\   
+            ISCED $=$ 2         & -0.015$^{**}$\\   
+                                & (0.008)\\   
+            ISCED $=$ 3         & 0.008\\   
+                                & (0.011)\\   
+            ISCED $=$ 5         & 0.047$^{**}$\\   
+                                & (0.023)\\   
+            ISCED $=$ 6         & 0.247$^{***}$\\   
+                                & (0.016)\\   
+            ISCED $=$ 7         & 0.456$^{***}$\\   
+                                & (0.039)\\   
+            \midrule 
+            Standard-Errors     & Heteroskedasticity-robust \\   
+            Observations        & 88,899\\  
+            Squared Correlation & 0.55806\\  
+            \midrule \midrule
+            \multicolumn{2}{l}{\emph{Heteroskedasticity-robust standard-errors in parentheses}}\\
+            \multicolumn{2}{l}{\emph{Signif. Codes: ***: 0.01, **: 0.05, *: 0.1}}\\
+         \end{tabular}
+         
+         \begin{tablenotes}\item \medskip \textit{Note:}
+            \item This table displays regression results from equation OLS on the carbon footprint of consumption in  in MEX as the dependent variable.  
+         \end{tablenotes}
+      \end{threeparttable}
+   \end{adjustbox}
+\end{table}
+
+

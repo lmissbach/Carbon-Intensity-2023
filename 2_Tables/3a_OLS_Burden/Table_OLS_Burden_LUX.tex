@@ -1,0 +1,52 @@
+
+\begin{table}[htbp!]
+   \centering
+   \small
+   \begin{adjustbox}{width = 1\textwidth, max height = 0.95\textheight, center}
+      \begin{threeparttable}[b]
+         \caption{\label{tab:OLS_1_LUX} OLS-regression coefficients for carbon intensity of consumers in Luxembourg}
+         \begin{tabular}{lc}
+            \tabularnewline \midrule \midrule
+            Dependent Variable: & scaled\_carbon\_intensity\_kg\_per\_USD\_national\\        
+            Test                & (1)\\  
+            \midrule
+            \emph{Variables}\\
+            (Intercept)         & 7.84$^{***}$\\   
+                                & (0.641)\\   
+            HH Exp. (log)       & -0.723$^{***}$\\   
+                                & (0.059)\\   
+            HH Size             & 0.080$^{***}$\\   
+                                & (0.016)\\   
+            Urban Area          & -0.226$^{***}$\\   
+                                & (0.065)\\   
+            ISCED $=$ 2         & 0.030\\   
+                                & (0.097)\\   
+            ISCED $=$ 3         & -0.032\\   
+                                & (0.091)\\   
+            ISCED $=$ 4         & 0.054\\   
+                                & (0.121)\\   
+            ISCED $=$ 5         & -0.003\\   
+                                & (0.139)\\   
+            ISCED $=$ 6         & -0.170\\   
+                                & (0.111)\\   
+            ISCED $=$ 7         & -0.165$^{*}$\\   
+                                & (0.094)\\   
+            ISCED $=$ 9         & 0.030\\   
+                                & (0.098)\\   
+            \midrule 
+            Standard-Errors     & Heteroskedasticity-robust \\   
+            Observations        & 3,167\\  
+            Squared Correlation & 0.17582\\  
+            \midrule \midrule
+            \multicolumn{2}{l}{\emph{Heteroskedasticity-robust standard-errors in parentheses}}\\
+            \multicolumn{2}{l}{\emph{Signif. Codes: ***: 0.01, **: 0.05, *: 0.1}}\\
+         \end{tabular}
+         
+         \begin{tablenotes}\item \medskip \textit{Note:}
+            \item This table displays regression results from equation OLS on the carbon intensity of consumption in  in Luxembourg as the dependent variable. 
+         \end{tablenotes}
+      \end{threeparttable}
+   \end{adjustbox}
+\end{table}
+
+

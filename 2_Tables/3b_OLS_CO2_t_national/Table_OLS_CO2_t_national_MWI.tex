@@ -1,0 +1,62 @@
+
+\begin{table}[htbp!]
+   \centering
+   \small
+   \begin{adjustbox}{width = 1\textwidth, max height = 0.95\textheight, center}
+      \begin{threeparttable}[b]
+         \caption{\label{tab:OLS_2_MWI} OLS-regression coefficients for carbon footprint in Malawi}
+         \begin{tabular}{lc}
+            \tabularnewline \midrule \midrule
+            Dependent Variable: & scaled\_CO2\_t\_national\\     
+            Test                & (1)\\  
+            \midrule
+            \emph{Variables}\\
+            (Intercept)         & -1.43$^{***}$\\   
+                                & (0.308)\\   
+            HH Exp. (log)       & 0.288$^{***}$\\   
+                                & (0.012)\\   
+            HH Size             & 0.010$^{***}$\\   
+                                & (0.004)\\   
+            Urban Area          & -0.068$^{*}$\\   
+                                & (0.037)\\   
+            Electricity Acc.    & 0.611$^{***}$\\   
+                                & (0.053)\\   
+            Car Ownership       & 2.63$^{***}$\\   
+                                & (0.376)\\   
+            CF $=$ Charcoal     & -0.486\\   
+                                & (0.299)\\   
+            CF $=$ Firewood     & -0.567$^{*}$\\   
+                                & (0.296)\\   
+            CF $=$ Otherbiomass & -0.489$^{*}$\\   
+                                & (0.297)\\   
+            CF $=$ Unknown      & 1.64\\   
+                                & (1.73)\\   
+            ISCED $=$ 0         & 0.024\\   
+                                & (0.019)\\   
+            ISCED $=$ 2         & 0.040\\   
+                                & (0.036)\\   
+            ISCED $=$ 3         & 0.173$^{***}$\\   
+                                & (0.051)\\   
+            ISCED $=$ 6         & 0.875$^{***}$\\   
+                                & (0.157)\\   
+            ISCED $=$ 7         & 4.05$^{*}$\\   
+                                & (2.39)\\   
+            ISCED $=$ 8         & 1.06\\   
+                                & (0.874)\\   
+            \midrule 
+            Standard-Errors     & Heteroskedasticity-robust \\   
+            Observations        & 11,374\\  
+            Squared Correlation & 0.51414\\  
+            \midrule \midrule
+            \multicolumn{2}{l}{\emph{Heteroskedasticity-robust standard-errors in parentheses}}\\
+            \multicolumn{2}{l}{\emph{Signif. Codes: ***: 0.01, **: 0.05, *: 0.1}}\\
+         \end{tabular}
+         
+         \begin{tablenotes}\item \medskip \textit{Note:}
+            \item This table displays regression results from equation OLS on the carbon footprint of consumption in  in MWI as the dependent variable.  
+         \end{tablenotes}
+      \end{threeparttable}
+   \end{adjustbox}
+\end{table}
+
+

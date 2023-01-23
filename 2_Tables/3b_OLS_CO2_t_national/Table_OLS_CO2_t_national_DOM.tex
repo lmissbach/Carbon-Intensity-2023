@@ -1,0 +1,62 @@
+
+\begin{table}[htbp!]
+   \centering
+   \small
+   \begin{adjustbox}{width = 1\textwidth, max height = 0.95\textheight, center}
+      \begin{threeparttable}[b]
+         \caption{\label{tab:OLS_2_DOM} OLS-regression coefficients for carbon footprint in Dominican Republic}
+         \begin{tabular}{lc}
+            \tabularnewline \midrule \midrule
+            Dependent Variable: & scaled\_CO2\_t\_national\\     
+            Test                & (1)\\  
+            \midrule
+            \emph{Variables}\\
+            (Intercept)         & -6.96$^{***}$\\   
+                                & (0.275)\\   
+            HH Exp. (log)       & 0.796$^{***}$\\   
+                                & (0.034)\\   
+            HH Size             & -0.040$^{***}$\\   
+                                & (0.007)\\   
+            Urban Area          & -0.059$^{***}$\\   
+                                & (0.015)\\   
+            Electricity Acc.    & -0.029\\   
+                                & (0.026)\\   
+            Car Ownership       & 0.912$^{***}$\\   
+                                & (0.039)\\   
+            CF $=$ Coal         & 0.088$^{***}$\\   
+                                & (0.034)\\   
+            CF $=$ Electricity  & -0.050\\   
+                                & (0.182)\\   
+            CF $=$ Firewood     & 0.052$^{*}$\\   
+                                & (0.027)\\   
+            CF $=$ Kerosene     & 0.138\\   
+                                & (0.126)\\   
+            CF $=$ Unknown      & -0.032\\   
+                                & (0.025)\\   
+            ISCED $=$ 0         & 0.079$^{***}$\\   
+                                & (0.018)\\   
+            ISCED $=$ 2         & -0.101$^{***}$\\   
+                                & (0.018)\\   
+            ISCED $=$ 3         & -0.169$^{*}$\\   
+                                & (0.090)\\   
+            ISCED $=$ 6         & 0.099$^{***}$\\   
+                                & (0.037)\\   
+            ISCED $=$ 7         & 0.974$^{***}$\\   
+                                & (0.318)\\   
+            \midrule 
+            Standard-Errors     & Heteroskedasticity-robust \\   
+            Observations        & 8,884\\  
+            Squared Correlation & 0.56877\\  
+            \midrule \midrule
+            \multicolumn{2}{l}{\emph{Heteroskedasticity-robust standard-errors in parentheses}}\\
+            \multicolumn{2}{l}{\emph{Signif. Codes: ***: 0.01, **: 0.05, *: 0.1}}\\
+         \end{tabular}
+         
+         \begin{tablenotes}\item \medskip \textit{Note:}
+            \item This table displays regression results from equation OLS on the carbon footprint of consumption in  in DOM as the dependent variable.  
+         \end{tablenotes}
+      \end{threeparttable}
+   \end{adjustbox}
+\end{table}
+
+

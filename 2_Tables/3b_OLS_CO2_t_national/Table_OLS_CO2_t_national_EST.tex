@@ -1,0 +1,54 @@
+
+\begin{table}[htbp!]
+   \centering
+   \small
+   \begin{adjustbox}{width = 1\textwidth, max height = 0.95\textheight, center}
+      \begin{threeparttable}[b]
+         \caption{\label{tab:OLS_2_EST} OLS-regression coefficients for carbon footprint in Estonia}
+         \begin{tabular}{lc}
+            \tabularnewline \midrule \midrule
+            Dependent Variable: & scaled\_CO2\_t\_national\\     
+            Test                & (1)\\  
+            \midrule
+            \emph{Variables}\\
+            (Intercept)         & -8.56$^{***}$\\   
+                                & (0.253)\\   
+            HH Exp. (log)       & 0.922$^{***}$\\   
+                                & (0.031)\\   
+            HH Size             & 0.058$^{***}$\\   
+                                & (0.014)\\   
+            Urban Area          & 0.041\\   
+                                & (0.026)\\   
+            ISCED $=$ 0         & 0.467\\   
+                                & (0.409)\\   
+            ISCED $=$ 2         & -0.156$^{**}$\\   
+                                & (0.061)\\   
+            ISCED $=$ 3         & -0.140$^{**}$\\   
+                                & (0.058)\\   
+            ISCED $=$ 4         & -0.192$^{***}$\\   
+                                & (0.071)\\   
+            ISCED $=$ 5         & -0.139$^{**}$\\   
+                                & (0.068)\\   
+            ISCED $=$ 6         & 0.055\\   
+                                & (0.113)\\   
+            ISCED $=$ 7         & -0.027\\   
+                                & (0.067)\\   
+            ISCED $=$ 9         & -0.085\\   
+                                & (0.087)\\   
+            \midrule 
+            Standard-Errors     & Heteroskedasticity-robust \\   
+            Observations        & 3,395\\  
+            Squared Correlation & 0.54072\\  
+            \midrule \midrule
+            \multicolumn{2}{l}{\emph{Heteroskedasticity-robust standard-errors in parentheses}}\\
+            \multicolumn{2}{l}{\emph{Signif. Codes: ***: 0.01, **: 0.05, *: 0.1}}\\
+         \end{tabular}
+         
+         \begin{tablenotes}\item \medskip \textit{Note:}
+            \item This table displays regression results from equation OLS on the carbon footprint of consumption in  in EST as the dependent variable.  
+         \end{tablenotes}
+      \end{threeparttable}
+   \end{adjustbox}
+\end{table}
+
+

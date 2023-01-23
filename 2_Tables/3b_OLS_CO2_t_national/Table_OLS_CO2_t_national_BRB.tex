@@ -1,0 +1,64 @@
+
+\begin{table}[htbp!]
+   \centering
+   \small
+   \begin{adjustbox}{width = 1\textwidth, max height = 0.95\textheight, center}
+      \begin{threeparttable}[b]
+         \caption{\label{tab:OLS_2_BRB} OLS-regression coefficients for carbon footprint in Barbados}
+         \begin{tabular}{lc}
+            \tabularnewline \midrule \midrule
+            Dependent Variable: & scaled\_CO2\_t\_national\\     
+            Test                & (1)\\  
+            \midrule
+            \emph{Variables}\\
+            (Intercept)         & -5.72$^{***}$\\   
+                                & (0.270)\\   
+            HH Exp. (log)       & 0.568$^{***}$\\   
+                                & (0.032)\\   
+            HH Size             & 0.075$^{***}$\\   
+                                & (0.011)\\   
+            Electricity Acc.    & -0.040\\   
+                                & (0.059)\\   
+            Car Ownership       & 0.644$^{***}$\\   
+                                & (0.031)\\   
+            CF $=$ Firewood     & 0.305$^{*}$\\   
+                                & (0.169)\\   
+            CF $=$ Gas          & -0.135\\   
+                                & (0.125)\\   
+            CF $=$ Kerosene     & -0.019\\   
+                                & (0.173)\\   
+            CF $=$ LPG          & -0.199$^{*}$\\   
+                                & (0.119)\\   
+            CF $=$ Unknown      & 0.039\\   
+                                & (0.155)\\   
+            ISCED $=$ 0         & 0.053\\   
+                                & (0.040)\\   
+            ISCED $=$ 2         & -0.025\\   
+                                & (0.111)\\   
+            ISCED $=$ 3         & 0.061\\   
+                                & (0.048)\\   
+            ISCED $=$ 6         & -0.005\\   
+                                & (0.049)\\   
+            ISCED $=$ 7         & 0.286$^{**}$\\   
+                                & (0.120)\\   
+            ISCED $=$ 8         & 0.301\\   
+                                & (0.310)\\   
+            ISCED $=$ 9         & -0.032\\   
+                                & (0.048)\\   
+            \midrule 
+            Standard-Errors     & Heteroskedasticity-robust \\   
+            Observations        & 2,434\\  
+            Squared Correlation & 0.59339\\  
+            \midrule \midrule
+            \multicolumn{2}{l}{\emph{Heteroskedasticity-robust standard-errors in parentheses}}\\
+            \multicolumn{2}{l}{\emph{Signif. Codes: ***: 0.01, **: 0.05, *: 0.1}}\\
+         \end{tabular}
+         
+         \begin{tablenotes}\item \medskip \textit{Note:}
+            \item This table displays regression results from equation OLS on the carbon footprint of consumption in  in BRB as the dependent variable.  
+         \end{tablenotes}
+      \end{threeparttable}
+   \end{adjustbox}
+\end{table}
+
+

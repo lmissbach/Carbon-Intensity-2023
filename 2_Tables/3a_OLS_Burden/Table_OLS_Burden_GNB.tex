@@ -1,0 +1,56 @@
+
+\begin{table}[htbp!]
+   \centering
+   \small
+   \begin{adjustbox}{width = 1\textwidth, max height = 0.95\textheight, center}
+      \begin{threeparttable}[b]
+         \caption{\label{tab:OLS_1_GNB} OLS-regression coefficients for carbon intensity of consumers in Guinea-Bissau}
+         \begin{tabular}{lc}
+            \tabularnewline \midrule \midrule
+            Dependent Variable: & scaled\_carbon\_intensity\_kg\_per\_USD\_national\\        
+            Test                & (1)\\  
+            \midrule
+            \emph{Variables}\\
+            (Intercept)         & -1.37$^{***}$\\   
+                                & (0.238)\\   
+            HH Exp. (log)       & 0.180$^{***}$\\   
+                                & (0.031)\\   
+            HH Size             & -0.011$^{***}$\\   
+                                & (0.004)\\   
+            Urban Area          & -0.200$^{***}$\\   
+                                & (0.039)\\   
+            Electricity Acc.    & 0.570$^{***}$\\   
+                                & (0.045)\\   
+            Car Ownership       & 0.915$^{***}$\\   
+                                & (0.152)\\   
+            CF $=$ Firewood     & -0.048\\   
+                                & (0.039)\\   
+            CF $=$ Gas          & 0.126\\   
+                                & (0.151)\\   
+            CF $=$ Unknown      & 0.310$^{**}$\\   
+                                & (0.153)\\   
+            ISCED $=$ 0         & -0.064$^{**}$\\   
+                                & (0.030)\\   
+            ISCED $=$ 2         & 0.077\\   
+                                & (0.056)\\   
+            ISCED $=$ 3         & 0.010\\   
+                                & (0.080)\\   
+            ISCED $=$ 6         & 0.143$^{*}$\\   
+                                & (0.087)\\   
+            \midrule 
+            Standard-Errors     & Heteroskedasticity-robust \\   
+            Observations        & 5,351\\  
+            Squared Correlation & 0.12906\\  
+            \midrule \midrule
+            \multicolumn{2}{l}{\emph{Heteroskedasticity-robust standard-errors in parentheses}}\\
+            \multicolumn{2}{l}{\emph{Signif. Codes: ***: 0.01, **: 0.05, *: 0.1}}\\
+         \end{tabular}
+         
+         \begin{tablenotes}\item \medskip \textit{Note:}
+            \item This table displays regression results from equation OLS on the carbon intensity of consumption in  in Guinea-Bissau as the dependent variable. 
+         \end{tablenotes}
+      \end{threeparttable}
+   \end{adjustbox}
+\end{table}
+
+

@@ -1,0 +1,56 @@
+
+\begin{table}[htbp!]
+   \centering
+   \small
+   \begin{adjustbox}{width = 1\textwidth, max height = 0.95\textheight, center}
+      \begin{threeparttable}[b]
+         \caption{\label{tab:OLS_1_RWA} OLS-regression coefficients for carbon intensity of consumers in Rwanda}
+         \begin{tabular}{lc}
+            \tabularnewline \midrule \midrule
+            Dependent Variable: & scaled\_carbon\_intensity\_kg\_per\_USD\_national\\        
+            Test                & (1)\\  
+            \midrule
+            \emph{Variables}\\
+            (Intercept)         & -1.82$^{***}$\\   
+                                & (0.101)\\   
+            HH Exp. (log)       & 0.240$^{***}$\\   
+                                & (0.016)\\   
+            HH Size             & 0.011$^{***}$\\   
+                                & (0.004)\\   
+            Urban Area          & 0.132$^{***}$\\   
+                                & (0.024)\\   
+            Car Ownership       & 3.43$^{***}$\\   
+                                & (0.234)\\   
+            CF $=$ Firewood     & 0.137\\   
+                                & (0.110)\\   
+            CF $=$ Gas          & 1.46$^{***}$\\   
+                                & (0.168)\\   
+            CF $=$ Unknown      & -0.017\\   
+                                & (0.066)\\   
+            ISCED $=$ 0         & -0.018\\   
+                                & (0.015)\\   
+            ISCED $=$ 2         & 0.262$^{***}$\\   
+                                & (0.048)\\   
+            ISCED $=$ 3         & 0.213$^{***}$\\   
+                                & (0.031)\\   
+            ISCED $=$ 6         & 0.640$^{***}$\\   
+                                & (0.070)\\   
+            ISCED $=$ 9         & 0.020\\   
+                                & (0.242)\\   
+            \midrule 
+            Standard-Errors     & Heteroskedasticity-robust \\   
+            Observations        & 14,577\\  
+            Squared Correlation & 0.38738\\  
+            \midrule \midrule
+            \multicolumn{2}{l}{\emph{Heteroskedasticity-robust standard-errors in parentheses}}\\
+            \multicolumn{2}{l}{\emph{Signif. Codes: ***: 0.01, **: 0.05, *: 0.1}}\\
+         \end{tabular}
+         
+         \begin{tablenotes}\item \medskip \textit{Note:}
+            \item This table displays regression results from equation OLS on the carbon intensity of consumption in  in Rwanda as the dependent variable. 
+         \end{tablenotes}
+      \end{threeparttable}
+   \end{adjustbox}
+\end{table}
+
+
