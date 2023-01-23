@@ -1087,7 +1087,7 @@ dict_latex <- c(Income_Group_5 = "Expenditure Quintile",
                 electricity.access = "Electricity Acc.",
                 Ethnicity = "ETH")
 
-reference.list_5.3.1.1 <- data.frame(Country = Country.Set$Country)%>%
+reference.list_5.0.1.1 <- data.frame(Country = Country.Set$Country)%>%
   mutate(REF_ISCED = ifelse(Country != "FIN", "Reference group for education (\\textit{ISCED}) is ISCED-level 1",
                             "Reference group for education (\\textit{ISCED} is ISCED-level 2"))%>%
   mutate(REF_CF    = ifelse(Country %in% c("GTM", "DOM"), "\\textit{LPG} for cooking fuel (\\textit{CF})",
@@ -1101,6 +1101,193 @@ reference.list_5.3.1.1 <- data.frame(Country = Country.Set$Country)%>%
                             paste0(REF_ISCED, ", ", REF_CF, " and ", REF_ETH, " ", REF_ETH_0, ".")))
 
 # 5.1     OLS ####
+
+data_5.1 <- data_2 %>%
+  group_by(Country)%>%
+  mutate(mean_carbon_intensity_kg_per_USD_national   = wtd.mean(carbon_intensity_kg_per_USD_national, weights = hh_weights),
+         sd_carbon_intensity_kg_per_USD_national = sqrt(wtd.var(carbon_intensity_kg_per_USD_national, weights = hh_weights)),
+         mean_CO2_t_national        = wtd.mean(CO2_t_national,      weights = hh_weights),
+         sd_CO2_t_national      = sqrt(wtd.var(CO2_t_national,      weights = hh_weights)))%>%
+  ungroup()%>%
+  mutate(scaled_carbon_intensity_kg_per_USD_national = (carbon_intensity_kg_per_USD_national - mean_carbon_intensity_kg_per_USD_national)/sd_carbon_intensity_kg_per_USD_national,
+         scaled_CO2_t_national      = (CO2_t_national      - mean_CO2_t_national)/sd_CO2_t_national)%>%
+  select(-mean_carbon_intensity_kg_per_USD_national, - mean_CO2_t_national, - sd_carbon_intensity_kg_per_USD_national, - sd_CO2_t_national)
+  
+# 5.1.1   OLS (Tables) ####
+
+# Overhead
+
+list_5.1.1.1       <- list()
+data_frame_5.1.1.1 <- data.frame()
+
+for(i in Country.Set$Country){
+  
+  data_5.1.1.1 <- data_5.1 %>%
+    filter(Country == i)
+  
+  formula_0 <- " ~ log_hh_expenditures_USD_2014 + hh_size"
+  
+  if(sum(is.na(data_5.1.1.1$urban_01)) == 0)           formula_0 <- paste0(formula_0, " + urban_01")
+  if(sum(is.na(data_5.1.1.1$electricity.access))==0)   formula_0 <- paste0(formula_0, " + electricity.access")
+  if(sum(is.na(data_5.1.1.1$car.01))==0)               formula_0 <- paste0(formula_0, " + car.01")
+  if(sum(is.na(data_5.1.1.1$CF))==0){
+    if(!i %in% c("BEN","BFA","GTM","DOM","TGO","NER","NGA","GNB","MLI")) formula_0 <- paste0(formula_0, ' + i(CF, ref = "Electricity")')
+    if(i  %in% c("GTM","DOM"))                                           formula_0 <- paste0(formula_0, ' + i(CF, ref = "LPG")')
+    if(i  %in% c("BEN","BFA","TGO","NER","NGA","GNB","MLI"))             formula_0 <- paste0(formula_0, ' + i(CF, ref = "Charcoal")')
+  }
+  if(sum(is.na(data_5.1.1.1$ISCED))==0 & !i %in% c("SWE", "NLD")){
+    if(i != "FIN") formula_0 <- paste0(formula_0, " + i(ISCED, ref = 1)")
+    if(i == "FIN") formula_0 <- paste0(formula_0, " + i(ISCED, ref = 2)")
+  }                
+  # Leave out for now
+  #if(sum(is.na(data_5.1.1.1$Ethnicity))==0 & i != "BOL"){
+  #  ref_0 <- count(data_5.1.1.1, Ethnicity)$Ethnicity[which.max(count(data_5.1.1.1, Ethnicity)$n)]
+  #  
+  #  data_frame_5.1.1.2 <- bind_rows(data_frame_5.1.1.2, data.frame(Country = i, Type = "Ethnicity", ref = ref_0))
+  #  
+  #  formula_0 <- paste0(formula_0, ' + i(Ethnicity, ref = "', ref_0,'")')
+  #}
+  #if("religion" %in% colnames(household_information_0) & sum(is.na(data_2.1.2.1$religion))==0)           formula_0 <- paste0(formula_0, " + factor(religion)")
+  #if("district" %in% colnames(household_information_0) & sum(is.na(data_2.1.2.1$district))==0)           formula_0 <- paste0(formula_0, " + factor(district)")
+  #if("province" %in% colnames(household_information_0) & sum(is.na(data_2.1.2.1$province))==0)           formula_0 <- paste0(formula_0, " + factor(province)")
+  
+  formula_1 <- as.formula(paste0("scaled_carbon_intensity_kg_per_USD_national", formula_0))
+  formula_2 <- as.formula(paste0("scaled_CO2_t_national", formula_0))
+  
+  model_5.1.1.1 <- feols(formula_1, 
+                         data    = data_5.1.1.1, 
+                         weights = data_5.1.1.1$hh_weights,  
+                         se = "hetero")
+  
+  model_5.1.1.2 <- feols(formula_2, 
+                         data    = data_5.1.1.1, 
+                         weights = data_5.1.1.1$hh_weights, 
+                         se = "hetero")
+  
+  REF_0 <- reference.list_5.0.1.1$REF[reference.list_5.0.1.1$Country.Country == i]
+  
+  etable(model_5.1.1.1, dict = dict_latex, tex = TRUE, file = sprintf("2_Tables/3a_OLS_Burden/Table_OLS_Burden_%s.tex", i),
+         digits = 3, replace = TRUE, fitstat = c("n", "cor2"), style.tex = tex.style, se.row = TRUE, tpt = TRUE,
+         title = sprintf("OLS-regression coefficients for carbon intensity of consumers in %s", Country.Set$Country_long[Country.Set$Country == i]),  
+         label = sprintf("tab:OLS_1_%s",i), adjustbox = "width = 1\\textwidth, max height = 0.95\\textheight, center", placement = "htbp!",
+         notes = c("\\medskip \\textit{Note:}",
+                   paste0("This table displays regression results from equation OLS on the carbon intensity of consumption in  ", sprintf("in %s",Country.Set$Country_long[Country.Set$Country == i]), " as the dependent variable. ", REF_0)))
+  
+  etable(model_5.1.1.2, dict = dict_latex, tex = TRUE, file = sprintf("2_Tables/3b_OLS_CO2_t_national/Table_OLS_CO2_t_national_%s.tex", i),
+         digits = 3, replace = TRUE, fitstat = c("n", "cor2"), style.tex = tex.style, se.row = TRUE, tpt = TRUE,
+         title = sprintf("OLS-regression coefficients for carbon footprint in %s", Country.Set$Country_long[Country.Set$Country == i]),  
+         label = sprintf("tab:OLS_2_%s",i), adjustbox = "width = 1\\textwidth, max height = 0.95\\textheight, center", placement = "htbp!",
+         notes = c("\\medskip \\textit{Note:}",
+                   paste0("This table displays regression results from equation OLS on the carbon footprint of consumption in  ", sprintf("in %s",i), " as the dependent variable.  ", REF_0)))
+  
+  tidy_5.1.1.1 <- tidy(model_5.1.1.1)%>%
+    mutate(Country = i)%>%
+    mutate(Type = "carbon_intensity_kg_per_USD_national")
+
+  tidy_5.1.1.2 <- tidy(model_5.1.1.2)%>%
+    mutate(Country = i)%>%
+    mutate(Type = "CO2_t_national")
+  
+  data_frame_5.1.1.1 <- data_frame_5.1.1.1 %>%
+    bind_rows(tidy_5.1.1.1)%>%
+    bind_rows(tidy_5.1.1.2)
+  
+  print(i)
+  
+  rm(data_5.1.1.1, tidy_5.1.1.1, tidy_5.1.1.2, model_5.1.1.1, model_5.1.1.2)
+}
+
+# may also display results for multiple countries in one table one day
+
+# 5.1.2   OLS (Figures / average marginal effects) ####
+
+data_frame_5.1.2.1 <- data_frame_5.1.1.1 %>%
+  filter(term != "(Intercept)")%>%
+  mutate(Type_B = "OLS")%>%
+  mutate(CF_base = ifelse(Country %in% c("GTM", "DOM"), "LPG",
+                          ifelse(Country %in% c("BEN","BFA","TGO","NER","NGA","GNB","MLI"), "Charcoal", "Electricity")))
+
+for (Type_0 in c("carbon_intensity_kg_per_USD_national", "CO2_t_national")){
+  # Add education - questionable - maybe cluster higher education / lower education
+  for (Term_0 in c("urban_01", "car.01", "electricity.access", "hh_size", "log_hh_expenditures_USD_2014")){
+    data_frame_5.1.2.2 <- data_frame_5.1.2.1 %>%
+      filter(Type == Type_0)%>%
+      filter(term == Term_0)%>%
+      left_join(select(Country.Set, Country, hh_expenditures_USD_2014_mean), by = "Country")%>%
+      mutate(Colour_Type = ifelse(estimate > 0, "A", "B"))%>%
+      mutate(conf.low  = estimate - 1.96*std.error,
+             conf.high = estimate + 1.96*std.error)
+    
+    labels_data_frame <- expand_grid(Term_0 = data_frame_5.1.2.1$term,
+                                     Type_0 = data_frame_5.1.2.1$Type)%>%
+      unique()%>%
+      mutate(title_0 = ifelse(Term_0 == "urban_01", "Urban citizenship",
+                              ifelse(Term_0 == "car.01", "Car ownership",
+                                     ifelse(Term_0 == "electricity.access", "Electricity access",
+                                            ifelse(Term_0 == "log_hh_expenditures_USD_2014", "Household expenditures",
+                                                   ifelse(Term_0 == "hh_size", "Household size", NA))))))%>%
+      mutate(legend_0 = tolower(title_0))%>%
+      mutate(bound_0 = ifelse(Term_0 == "log_hh_expenditures_USD_2014", -1.5,
+                              ifelse(Type_0 == "carbon_intensity_kg_per_USD_national" & Term_0 == "electricity.access", -2, -1)))%>%
+      mutate(bound_1 = ifelse(Type_0 == "carbon_intensity_kg_per_USD_national" & Term_0 == "electricity.access", 2,
+                              ifelse(Term_0 == "car.01" & Type_0 == "carbon_intensity_kg_per_USD_national", 4,
+                                     ifelse(Term_0 == "car.01" & Type_0 == "CO2_t_national", 6.5,
+                                            ifelse(Term_0 == "log_hh_expenditures_USD_2014", 1.5,1)))))
+                                     
+    bound_0  <- labels_data_frame$bound_0[labels_data_frame$Term_0 == Term_0 & labels_data_frame$Type_0 == Type_0]
+    bound_1  <- labels_data_frame$bound_1[labels_data_frame$Term_0 == Term_0 & labels_data_frame$Type_0 == Type_0]
+    title_0  <- labels_data_frame$title_0[labels_data_frame$Term_0 == Term_0 & labels_data_frame$Type_0 == Type_0]
+    legend_0 <- labels_data_frame$legend_0[labels_data_frame$Term_0 == Term_0 & labels_data_frame$Type_0 == Type_0]
+    
+    if(Type_0 == "carbon_intensity_kg_per_USD_national") state_0 <- "carbon intensity of consumption [SD]" else state_0 <- "carbon footprint of consumption [SD]"
+    
+    P_5.1.2.1 <- ggplot(data = data_frame_5.1.2.2, aes(x = estimate, y = reorder(Country, desc(estimate))))+
+      geom_vline(aes(xintercept = 0))+
+      geom_errorbar(aes(xmin = conf.low, xmax = conf.high), width = 0.5, size = 0.3)+
+      geom_point(shape = 21, aes (fill = Colour_Type), size = 1.5)+
+      theme_bw()+
+      xlab(paste0("Average marginal effect of ",legend_0," on ", state_0))+ 
+      ylab("Country")+
+      labs(colour = "", fill = "")+
+      coord_cartesian(xlim = c(bound_0, bound_1))+
+      scale_x_continuous(expand = c(0,00))+
+      scale_fill_manual(guide = "none", values = c("#4DBBD5FF", "#E64B35FF"))+
+      ggtitle(title_0)+
+      theme(axis.text.y = element_text(size = 6), 
+            axis.text.x = element_text(size = 6),
+            axis.title  = element_text(size = 7),
+            plot.title = element_text(size = 11),
+            legend.position = "bottom",
+            # strip.text = element_text(size = 7),
+            #strip.text.y = element_text(angle = 180),
+            #panel.grid.major = element_blank(),
+            panel.grid.major.y = element_blank(),
+            panel.grid.minor.y = element_blank(),
+            axis.ticks = element_line(size = 0.2),
+            legend.text = element_text(size = 7),
+            legend.title = element_text(size = 7),
+            plot.margin = unit(c(0.3,0.3,0.3,0.3), "cm"),
+            panel.border = element_rect(size = 0.3))
+    
+    if(Type_0 == "carbon_intensity_kg_per_USD_national"){
+      jpeg(sprintf("1_Figures/Analysis_OLS_ME_Carbon_Intensity/AME_OLS_CI_%s.jpg", Term_0), width = 15.5, height = 16, unit = "cm", res = 600)
+      print(P_5.1.2.1)
+      dev.off()
+    }
+    
+    if(Type_0 == "CO2_t_national"){
+      jpeg(sprintf("1_Figures/Analysis_OLS_ME_Carbon_Footprint/AME_OLS_FP_%s.jpg", Term_0), width = 15.5, height = 16, unit = "cm", res = 600)
+      print(P_5.1.2.1)
+      dev.off()
+    }
+    
+    }
+  
+  rm(P_5.1.2.1, data_frame_5.1.2.2, labels_data_frame, bound_0, bound_1, legend_0, state_0, Term_0, title_0, Type_0)
+}
+
+# Separately for cooking fuels
+
 
 # 5.2     Inequality decomposition ####
 
@@ -1168,7 +1355,7 @@ for(i in Country.Set$Country){
                          family = quasibinomial("logit"), 
                          se = "hetero")
 
-  REF_0 <- reference.list_5.3.1.1$REF[reference.list_5.3.1.1$Country.Country == i]
+  REF_0 <- reference.list_5.0.1.1$REF[reference.list_5.0.1.1$Country.Country == i]
 
   etable(model_5.3.1.1, model_5.3.1.2, dict = dict_latex, tex = TRUE, file = sprintf("2_Tables/2_Logit_Models/Table_Logit_Burden_%s.tex", i),
          digits = 3, replace = TRUE, fitstat = c("n", "cor2"), style.tex = tex.style, se.row = TRUE, tpt = TRUE,
@@ -1288,7 +1475,7 @@ for(i in Country.Set$Country){
   
   print(paste0(i, " ", round(end_5.3.2.1 - start_5.3.2.1,1), "secs"))
   
-  rm(data_5.3.2.1, tidy_5.3.2.1, tidy_5.3.2.2, model_5.3.2.1, model_5.3.2.2)
+  rm(data_5.3.2.1, tidy_5.3.2.1, tidy_5.3.2.2, model_5.3.2.1, model_5.3.2.2, start_5.3.2.1, end_5.3.2.1, formula_0, formula_1, formula_2)
 }
 
 # write.xlsx(data_frame_5.3.2.1, "1_Figures/Analysis_Logit_Models_Marginal_Effects/Average_Marginal_Effects_Logit.xlsx")
@@ -1369,6 +1556,8 @@ for (Type_0 in c("affected_lower_80", "affected_upper_80")){
     jpeg(sprintf("1_Figures/Analysis_Logit_Models_Marginal_Effects/Average_Marginal_Effects_%s_%s.jpg", Type_0, Term_0), width = 15.5, height = 16, unit = "cm", res = 600)
     print(P_5.3.2.4)
     dev.off()
+    
+    rm(P_5.3.2.4, data_frame_5.3.2.4, labels_data_frame, bound_0, bound_1, legend_0, state_0, Term_0, title_0, Type_0)
     
   }
 }
@@ -1454,10 +1643,15 @@ for (Type_0 in c("affected_lower_80", "affected_upper_80")){
               panel.border = element_rect(size = 0.3))+
         ggforce::facet_col(vars(A), scales = "free", space = "free")
       
-      jpeg(sprintf("1_Figures/Analysis_Logit_Models_Marginal_Effects/Average_Marginal_Effects_%s_CF_%s.jpg", Type_0, B_0), width = 15.5, height = height_0, unit = "cm", res = 600)
+      jpeg(sprintf("1_Figures/Analysis_Logit_Models_Marginal_Effects/Average_Marginal_Effects_%s_CF_%s.jpg", Type_0, B_0), width = 15.5, height = 16, unit = "cm", res = 600)
       print(P_5.3.2.5)
       dev.off()
       
     }
     
+    rm(P_5.3.2.5, data_frame_5.3.2.5, ATY, B_0, bound_0, bound_1, legend_0, state_0, title_0, Type_0, labels_data_frame, data_frame_5.3.2.4)
+    
 }
+
+# 6       ML-supported analysis ####
+# 6.1     BRT ####
