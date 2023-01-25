@@ -1111,7 +1111,11 @@ data_5.1 <- data_2 %>%
   ungroup()%>%
   mutate(scaled_carbon_intensity_kg_per_USD_national = (carbon_intensity_kg_per_USD_national - mean_carbon_intensity_kg_per_USD_national)/sd_carbon_intensity_kg_per_USD_national,
          scaled_CO2_t_national      = (CO2_t_national      - mean_CO2_t_national)/sd_CO2_t_national)%>%
-  select(-mean_carbon_intensity_kg_per_USD_national, - mean_CO2_t_national, - sd_carbon_intensity_kg_per_USD_national, - sd_CO2_t_national)
+  select(-mean_carbon_intensity_kg_per_USD_national, - mean_CO2_t_national, - sd_carbon_intensity_kg_per_USD_national, - sd_CO2_t_national)%>%
+  mutate(ISCED_0 = ifelse(ISCED == 0 | ISCED == 1, "0-1",
+                          ifelse(ISCED == 2 | ISCED == 3 | ISCED == 4 | ISCED == 5, "2-5",
+                                 ifelse(ISCED == 6 | ISCED == 7 | ISCED == 8, "6-8", 
+                                        ifelse(ISCED == 9, "9", ISCED)))))
   
 # 5.1.1   OLS (Tables) ####
 
@@ -1135,9 +1139,9 @@ for(i in Country.Set$Country){
     if(i  %in% c("GTM","DOM"))                                           formula_0 <- paste0(formula_0, ' + i(CF, ref = "LPG")')
     if(i  %in% c("BEN","BFA","TGO","NER","NGA","GNB","MLI"))             formula_0 <- paste0(formula_0, ' + i(CF, ref = "Charcoal")')
   }
-  if(sum(is.na(data_5.1.1.1$ISCED))==0 & !i %in% c("SWE", "NLD")){
-    if(i != "FIN") formula_0 <- paste0(formula_0, " + i(ISCED, ref = 1)")
-    if(i == "FIN") formula_0 <- paste0(formula_0, " + i(ISCED, ref = 2)")
+  if(sum(is.na(data_5.1.1.1$ISCED_0))==0 & !i %in% c("SWE", "NLD")){
+    if(i != "FIN") formula_0 <- paste0(formula_0, ' + i(ISCED_0, ref = "0-1")')
+    if(i == "FIN") formula_0 <- paste0(formula_0, ' + i(ISCED_0, ref = "2-5")')
   }                
   # Leave out for now
   #if(sum(is.na(data_5.1.1.1$Ethnicity))==0 & i != "BOL"){
@@ -1208,8 +1212,9 @@ data_frame_5.1.2.1 <- data_frame_5.1.1.1 %>%
                           ifelse(Country %in% c("BEN","BFA","TGO","NER","NGA","GNB","MLI"), "Charcoal", "Electricity")))
 
 for (Type_0 in c("carbon_intensity_kg_per_USD_national", "CO2_t_national")){
-  # Add education - questionable - maybe cluster higher education / lower education
-  for (Term_0 in c("urban_01", "car.01", "electricity.access", "hh_size", "log_hh_expenditures_USD_2014")){
+
+  for (Term_0 in c("urban_01", "car.01", "electricity.access", "hh_size", "log_hh_expenditures_USD_2014", 
+                   "ISCED_0::2-5", "ISCED_0::6-8")){
     data_frame_5.1.2.2 <- data_frame_5.1.2.1 %>%
       filter(Type == Type_0)%>%
       filter(term == Term_0)%>%
@@ -1225,14 +1230,17 @@ for (Type_0 in c("carbon_intensity_kg_per_USD_national", "CO2_t_national")){
                               ifelse(Term_0 == "car.01", "Car ownership",
                                      ifelse(Term_0 == "electricity.access", "Electricity access",
                                             ifelse(Term_0 == "log_hh_expenditures_USD_2014", "Household expenditures",
-                                                   ifelse(Term_0 == "hh_size", "Household size", NA))))))%>%
+                                                   ifelse(Term_0 == "hh_size", "Household size", 
+                                                          ifelse(Term_0 == "ISCED_0::2-5", "Secondary education",
+                                                                 ifelse(Term_0 == "ISCED_0::6-8", "Tertiary education", NA))))))))%>%
       mutate(legend_0 = tolower(title_0))%>%
       mutate(bound_0 = ifelse(Term_0 == "log_hh_expenditures_USD_2014", -1.5,
                               ifelse(Type_0 == "carbon_intensity_kg_per_USD_national" & Term_0 == "electricity.access", -2, -1)))%>%
       mutate(bound_1 = ifelse(Type_0 == "carbon_intensity_kg_per_USD_national" & Term_0 == "electricity.access", 2,
                               ifelse(Term_0 == "car.01" & Type_0 == "carbon_intensity_kg_per_USD_national", 4,
                                      ifelse(Term_0 == "car.01" & Type_0 == "CO2_t_national", 6.5,
-                                            ifelse(Term_0 == "log_hh_expenditures_USD_2014", 1.5,1)))))
+                                            ifelse(Term_0 == "log_hh_expenditures_USD_2014", 1.5,
+                                                   ifelse(Term_0 == "ISCED_0::6-8", 1.5, 1))))))
                                      
     bound_0  <- labels_data_frame$bound_0[labels_data_frame$Term_0 == Term_0 & labels_data_frame$Type_0 == Type_0]
     bound_1  <- labels_data_frame$bound_1[labels_data_frame$Term_0 == Term_0 & labels_data_frame$Type_0 == Type_0]
@@ -1250,7 +1258,7 @@ for (Type_0 in c("carbon_intensity_kg_per_USD_national", "CO2_t_national")){
       ylab("Country")+
       labs(colour = "", fill = "")+
       coord_cartesian(xlim = c(bound_0, bound_1))+
-      scale_x_continuous(expand = c(0,0))+
+      scale_x_continuous(expand = c(0,0), breaks = seq(round(bound_0), round(bound_1), 1))+
       scale_fill_manual(guide = "none", values = c("#4DBBD5FF", "#E64B35FF"))+
       ggtitle(title_0)+
       theme(axis.text.y = element_text(size = 6), 
@@ -1268,6 +1276,8 @@ for (Type_0 in c("carbon_intensity_kg_per_USD_national", "CO2_t_national")){
             legend.title = element_text(size = 7),
             plot.margin = unit(c(0.3,0.3,0.3,0.3), "cm"),
             panel.border = element_rect(size = 0.3))
+    
+    if(Term_0 == "ISCED_0::2-5") Term_0 <- "secondary_education" else if(Term_0 == "ISCED_0::6-8") Term_0 <- "higher_education" 
     
     if(Type_0 == "carbon_intensity_kg_per_USD_national"){
       jpeg(sprintf("1_Figures/Analysis_OLS_ME_Carbon_Intensity/AME_OLS_CI_%s.jpg", Term_0), width = 15.5, height = 16, unit = "cm", res = 600)
@@ -1320,7 +1330,7 @@ for (Type_0 in c("carbon_intensity_kg_per_USD_national", "CO2_t_national")){
       mutate(legend_0 = ifelse(B == "Electricity A" | B == "Electricity B", "cooking fuel choice compared to electricity",
                                ifelse(B == "LPG", "cooking fuel choice compared to LPG", title_0)))%>%
       mutate(bound_0 = ifelse(Type_0 == "carbon_intensity_kg_per_USD_national", c(-1,-2.5,-3,-2), c(-1,-2,-1,-2)),
-             bound_1 = ifelse(Type_0 == "carbon_intensity_kg_per_USD_national", c(3,5,7,1), c(2,2,2.5,1)))
+             bound_1 = ifelse(Type_0 == "carbon_intensity_kg_per_USD_national", c(3,4,7,1), c(2,2,2.5,1)))
     
     bound_0   <- labels_data_frame$bound_0[labels_data_frame$B == B_0 & labels_data_frame$Type_0 == Type_0]
     bound_1   <- labels_data_frame$bound_1[labels_data_frame$B == B_0 & labels_data_frame$Type_0 == Type_0]
@@ -1343,7 +1353,7 @@ for (Type_0 in c("carbon_intensity_kg_per_USD_national", "CO2_t_national")){
       labs(colour = "", fill = "")+
       coord_cartesian(xlim = c(bound_0, bound_1))+
       scale_y_discrete(labels = function(x) str_sub(x,1,3))+
-      scale_x_continuous(expand = c(0,0))+
+      scale_x_continuous(expand = c(0,0), breaks = seq(bound_0, bound_1, 1))+
       scale_fill_manual(guide = "none", values = c("#4DBBD5FF", "#E64B35FF"))+
       ggtitle(title_0)+
       theme(axis.text.y = ATY, 
@@ -1377,10 +1387,10 @@ for (Type_0 in c("carbon_intensity_kg_per_USD_national", "CO2_t_national")){
     
   }
   
-  rm(ATY, B_0, bound_0, bound_1, legend_0, state_0, title_0, Type_0, formula_0, formula_1, formula_2, P_5.1.2.2, 
-     data_frame_5.1.2.1, data_frame_5.1.2.3, data_frame_5.1.2.4, labels_data_frame, list_5.1.1.1)
-  
 }
+
+rm(ATY, B_0, bound_0, bound_1, legend_0, state_0, title_0, Type_0, formula_0, formula_1, formula_2, P_5.1.2.2, 
+   data_frame_5.1.2.3, data_frame_5.1.2.4, labels_data_frame, list_5.1.1.1)
 
 # 5.2     Inequality decomposition ####
 
