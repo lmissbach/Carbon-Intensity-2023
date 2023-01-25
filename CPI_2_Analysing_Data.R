@@ -1250,7 +1250,7 @@ for (Type_0 in c("carbon_intensity_kg_per_USD_national", "CO2_t_national")){
       ylab("Country")+
       labs(colour = "", fill = "")+
       coord_cartesian(xlim = c(bound_0, bound_1))+
-      scale_x_continuous(expand = c(0,00))+
+      scale_x_continuous(expand = c(0,0))+
       scale_fill_manual(guide = "none", values = c("#4DBBD5FF", "#E64B35FF"))+
       ggtitle(title_0)+
       theme(axis.text.y = element_text(size = 6), 
@@ -1288,6 +1288,99 @@ for (Type_0 in c("carbon_intensity_kg_per_USD_national", "CO2_t_national")){
 
 # Separately for cooking fuels
 
+for (Type_0 in c("carbon_intensity_kg_per_USD_national", "CO2_t_national")){
+  
+  data_frame_5.1.2.3 <- data_frame_5.1.2.1 %>%
+    filter(Type == Type_0)%>%
+    separate(term, c("term_0", "term_1"), sep = "::")%>%
+    filter(term_0 == "CF")%>%
+    left_join(select(Country.Set, Country, hh_expenditures_USD_2014_mean), by = "Country")%>%
+    mutate(Colour_Type = ifelse(estimate > 0, "A", "B"))%>%
+    filter(term_1 != "Unknown")%>%
+    group_by(CF_base, term_1)%>%
+    arrange(desc(estimate))%>%
+    ungroup()%>%
+    mutate(number = 1:n())%>%
+    mutate(test = fct_reorder(interaction(Country,CF_base,term_1), number))%>%
+    mutate(Category = ifelse(CF_base == "Electricity" & term_1 %in% c("Charcoal", "Firewood", "Coal", "Other biomass"), "Electricity A",
+                             ifelse(CF_base == "Electricity", "Electricity B", CF_base)))%>%
+    mutate(conf.low  = estimate - 1.96*std.error,
+           conf.high = estimate + 1.96*std.error)
+  
+  for (B_0 in c("Electricity A", "Electricity B", "LPG", "Charcoal")){
+    
+    labels_data_frame <- expand_grid(B      = data_frame_5.1.2.3$Category,
+                                     Type_0 = data_frame_5.1.2.3$Type)%>%
+      unique()%>%
+      arrange(B)%>%
+      mutate(title_0 = ifelse(B == "Electricity A", "Cooking fuel choice compared to electricity - solid fuels",
+                              ifelse(B == "LPG", "Cooking fuel choice compared to LPG",
+                                     ifelse(B == "Charcoal", "Cooking fuel choice compared to charcoal", 
+                                            ifelse(B == "Electricity B", "Cooking fuel choice compared to electricity - liquid fuels", NA)))))%>%
+      mutate(legend_0 = ifelse(B == "Electricity A" | B == "Electricity B", "cooking fuel choice compared to electricity",
+                               ifelse(B == "LPG", "cooking fuel choice compared to LPG", title_0)))%>%
+      mutate(bound_0 = ifelse(Type_0 == "carbon_intensity_kg_per_USD_national", c(-1,-2.5,-3,-2), c(-1,-2,-1,-2)),
+             bound_1 = ifelse(Type_0 == "carbon_intensity_kg_per_USD_national", c(3,5,7,1), c(2,2,2.5,1)))
+    
+    bound_0   <- labels_data_frame$bound_0[labels_data_frame$B == B_0 & labels_data_frame$Type_0 == Type_0]
+    bound_1   <- labels_data_frame$bound_1[labels_data_frame$B == B_0 & labels_data_frame$Type_0 == Type_0]
+    title_0   <- labels_data_frame$title_0[labels_data_frame$B == B_0 & labels_data_frame$Type_0 == Type_0]
+    legend_0 <- labels_data_frame$legend_0[labels_data_frame$B == B_0 & labels_data_frame$Type_0 == Type_0]
+    if(Type_0 == "carbon_intensity_kg_per_USD_national") state_0 <- "carbon intensity of consumption [SD]" else state_0 <- "carbon footprint of consumption [SD]"
+    if(B_0 == "Electricity A" | B_0 == "Electricity B") ATY <- element_text(size = 4) else ATY <- element_text(size = 6)
+    
+    data_frame_5.1.2.4 <- data_frame_5.1.2.3 %>%
+      filter(Category == B_0)
+    
+    P_5.1.2.2 <- ggplot(data = data_frame_5.1.2.4, aes(x = estimate, y = test))+
+      geom_vline(aes(xintercept = 0))+
+      geom_errorbar(aes(xmin = conf.low, xmax = conf.high), width = 0.5, size = 0.3)+
+      geom_point(shape = 21, aes (fill = Colour_Type), size = 1.5)+
+      theme_bw()+
+      facet_wrap(. ~ term_1, scales = "free_y", ncol = 1)+
+      xlab(paste0("Average marginal effect of ",legend_0," on ", state_0))+
+      ylab("Country")+
+      labs(colour = "", fill = "")+
+      coord_cartesian(xlim = c(bound_0, bound_1))+
+      scale_y_discrete(labels = function(x) str_sub(x,1,3))+
+      scale_x_continuous(expand = c(0,0))+
+      scale_fill_manual(guide = "none", values = c("#4DBBD5FF", "#E64B35FF"))+
+      ggtitle(title_0)+
+      theme(axis.text.y = ATY, 
+            axis.text.x = element_text(size = 6),
+            axis.title  = element_text(size = 7),
+            plot.title = element_text(size = 11),
+            legend.position = "bottom",
+            # strip.text = element_text(size = 7),
+            #strip.text.y = element_text(angle = 180),
+            #panel.grid.major = element_blank(),
+            panel.grid.major.y = element_blank(),
+            panel.grid.minor.y = element_blank(),
+            axis.ticks = element_line(size = 0.2),
+            legend.text = element_text(size = 7),
+            legend.title = element_text(size = 7),
+            plot.margin = unit(c(0.3,0.3,0.3,0.3), "cm"),
+            panel.border = element_rect(size = 0.3))+
+      ggforce::facet_col(vars(term_1), scales = "free", space = "free")
+    
+    if(Type_0 == "carbon_intensity_kg_per_USD_national"){
+      jpeg(sprintf("1_Figures/Analysis_OLS_ME_Carbon_Intensity/AME_OLS_CI_CI_%s.jpg", B_0), width = 15.5, height = 16, unit = "cm", res = 600)
+      print(P_5.1.2.2)
+      dev.off()
+    }
+    
+    if(Type_0 == "CO2_t_national"){
+      jpeg(sprintf("1_Figures/Analysis_OLS_ME_Carbon_Footprint/AME_OLS_FP_CF_%s.jpg", B_0), width = 15.5, height = 16, unit = "cm", res = 600)
+      print(P_5.1.2.2)
+      dev.off()
+    }
+    
+  }
+  
+  rm(ATY, B_0, bound_0, bound_1, legend_0, state_0, title_0, Type_0, formula_0, formula_1, formula_2, P_5.1.2.2, 
+     data_frame_5.1.2.1, data_frame_5.1.2.3, data_frame_5.1.2.4, labels_data_frame, list_5.1.1.1)
+  
+}
 
 # 5.2     Inequality decomposition ####
 
