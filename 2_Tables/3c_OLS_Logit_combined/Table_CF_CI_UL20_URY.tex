@@ -1,0 +1,60 @@
+
+\begin{table}[htbp!]
+   \centering
+   \small
+   \begin{adjustbox}{width = 1\textwidth, max height = 0.95\textheight, center}
+      \begin{threeparttable}[b]
+         \caption{\label{tab:Logit_1_URY} Model coefficients: carbon-intensive consumers in Uruguay}
+         \begin{tabular}{lcccc}
+            \tabularnewline \midrule \midrule
+            Dependent Variables: & CO$_{2}$ footprint & CO$_{2}$ intensity & Upper 20\%     & Lower 20\%\\   
+             & \multicolumn{2}{c}{OLS} & \multicolumn{2}{c}{Logit} \\ 
+            Model                & (1)                & (2)                & (3)            & (4)\\  
+            \midrule
+            \emph{Variables}\\
+            (Intercept)          & -5.62$^{***}$      & 4.88$^{***}$       & 8.63$^{***}$   & -9.07$^{***}$\\   
+                                 & (0.225)            & (0.444)            & (0.810)        & (1.04)\\   
+            HH Exp. (log)        & 0.591$^{***}$      & -0.448$^{***}$     & -1.05$^{***}$  & 0.943$^{***}$\\   
+                                 & (0.018)            & (0.024)            & (0.063)        & (0.081)\\   
+            HH Size              & 0.032$^{***}$      & 0.045$^{***}$      & 0.036          & -0.285$^{***}$\\   
+                                 & (0.006)            & (0.008)            & (0.027)        & (0.033)\\   
+            Urban Area           & -0.214$^{***}$     & -0.421$^{***}$     & -0.867$^{***}$ & 0.710$^{***}$\\   
+                                 & (0.026)            & (0.038)            & (0.088)        & (0.123)\\   
+            Electricity Acc.     & -0.411$^{***}$     & -1.02$^{***}$      & -1.42$^{**}$   & 0.426\\   
+                                 & (0.153)            & (0.376)            & (0.575)        & (0.693)\\   
+            Car Ownership        & 0.744$^{***}$      & 1.05$^{***}$       & 2.65$^{***}$   & -2.80$^{***}$\\   
+                                 & (0.018)            & (0.029)            & (0.102)        & (0.124)\\   
+            CF $=$ Firewood      & 0.155              & 0.104              & 0.408          & 0.177\\   
+                                 & (0.120)            & (0.149)            & (0.362)        & (0.345)\\   
+            CF $=$ Gas           & 0.607$^{***}$      & 0.384$^{***}$      & 1.19$^{***}$   & -1.25$^{***}$\\   
+                                 & (0.123)            & (0.069)            & (0.303)        & (0.319)\\   
+            CF $=$ Kerosene      & 0.236              & -0.133             & -9.41$^{***}$  & 0.737\\   
+                                 & (0.323)            & (0.399)            & (0.221)        & (1.30)\\   
+            CF $=$ LPG           & 0.034              & 0.219$^{***}$      & 0.515$^{**}$   & -1.08$^{***}$\\   
+                                 & (0.044)            & (0.035)            & (0.217)        & (0.151)\\   
+            CF $=$ Unknown       & 0.203              & -0.132             & -0.617         & 0.219\\   
+                                 & (0.179)            & (0.257)            & (1.29)         & (0.638)\\   
+            ISCED $=$ 2-5        & 0.058$^{***}$      & 0.002              & 0.136          & 0.283$^{***}$\\   
+                                 & (0.022)            & (0.025)            & (0.091)        & (0.093)\\   
+            ISCED $=$ 6-8        & 0.084              & -0.072$^{**}$      & -0.107         & 0.633$^{***}$\\   
+                                 & (0.052)            & (0.036)            & (0.189)        & (0.174)\\   
+            ISCED $=$ 9          & 0.021              & -0.156$^{***}$     & -0.446$^{***}$ & -0.029\\   
+                                 & (0.024)            & (0.038)            & (0.135)        & (0.127)\\   
+            \midrule 
+            Standard-Errors & \multicolumn{4}{c}{Heteroskedasticity-robust} \\ 
+            Observations         & 6,888              & 6,888              & 6,888          & 6,888\\  
+            Squared Correlation  & 0.55033            & 0.27994            & 0.20847        & 0.21190\\  
+            \midrule \midrule
+            \multicolumn{5}{l}{\emph{Heteroskedasticity-robust standard-errors in parentheses}}\\
+            \multicolumn{5}{l}{\emph{Signif. Codes: ***: 0.01, **: 0.05, *: 0.1}}\\
+         \end{tabular}
+         
+         \begin{tablenotes}\item \medskip \textit{Note:}
+            \item This table displays regression results from equation OLS on the carbon emissions embedded in consumption [SD] (1) and on the carbon intensity of consumption [SD] (2), respectively. 
+                                      Column (3) ((4) respectively) shows regression results from equation LOGIT on the log-odds transformed probability of higher (lower) additional costs than 80\% of the population in Uruguay as the dependent variable. Reference group for education (\textit{ISCED}) is ISCED-level 0-1 (primary or no education) and \textit{Electricity} for cooking fuel (\textit{CF}).
+         \end{tablenotes}
+      \end{threeparttable}
+   \end{adjustbox}
+\end{table}
+
+

@@ -7,57 +7,51 @@
          \caption{\label{tab:OLS_2_COL} OLS-regression coefficients for carbon footprint in Colombia}
          \begin{tabular}{lc}
             \tabularnewline \midrule \midrule
-            Dependent Variable: & scaled\_CO2\_t\_national\\     
-            Test                & (1)\\  
+            Dependent Variable: & CO$_{2}$ footprint\\  
+            Model               & (1)\\  
             \midrule
             \emph{Variables}\\
-            (Intercept)         & -4.34$^{***}$\\   
-                                & (0.081)\\   
-            HH Exp. (log)       & 0.506$^{***}$\\   
+            (Intercept)         & -4.31$^{***}$\\   
+                                & (0.079)\\   
+            HH Exp. (log)       & 0.507$^{***}$\\   
                                 & (0.010)\\   
             HH Size             & 0.015$^{***}$\\   
                                 & (0.003)\\   
-            Urban Area          & -0.050$^{***}$\\   
+            Urban Area          & -0.053$^{***}$\\   
                                 & (0.012)\\   
-            Electricity Acc.    & -0.149$^{***}$\\   
+            Electricity Acc.    & -0.159$^{***}$\\   
                                 & (0.027)\\   
-            Car Ownership       & 0.707$^{***}$\\   
+            Car Ownership       & 0.727$^{***}$\\   
                                 & (0.023)\\   
-            CF $=$ Coal         & -0.128\\   
-                                & (0.091)\\   
-            CF $=$ Firewood     & -0.041\\   
+            CF $=$ Coal         & -0.140\\   
+                                & (0.094)\\   
+            CF $=$ Firewood     & -0.043\\   
+                                & (0.037)\\   
+            CF $=$ Gas          & 0.111$^{***}$\\   
                                 & (0.036)\\   
-            CF $=$ Gas          & 0.122$^{***}$\\   
+            CF $=$ Kerosene     & 0.113\\   
+                                & (0.075)\\   
+            CF $=$ LPG          & 0.028\\   
                                 & (0.035)\\   
-            CF $=$ Kerosene     & 0.101\\   
-                                & (0.071)\\   
-            CF $=$ LPG          & 0.036\\   
-                                & (0.034)\\   
-            CF $=$ Unknown      & -0.012\\   
-                                & (0.045)\\   
-            ISCED $=$ 0         & 0.090$^{***}$\\   
-                                & (0.014)\\   
-            ISCED $=$ 2         & -0.038$^{***}$\\   
-                                & (0.015)\\   
-            ISCED $=$ 3         & -0.100$^{***}$\\   
-                                & (0.011)\\   
-            ISCED $=$ 6         & -0.063$^{***}$\\   
+            CF $=$ Unknown      & -0.019\\   
+                                & (0.046)\\   
+            ISCED $=$ 2-5       & -0.092$^{***}$\\   
+                                & (0.009)\\   
+            ISCED $=$ 6-8       & -0.041$^{***}$\\   
                                 & (0.016)\\   
-            ISCED $=$ 7         & 0.198$^{***}$\\   
-                                & (0.052)\\   
-            ISCED $=$ 9         & -0.037\\   
+            ISCED $=$ 9         & -0.048\\   
                                 & (0.084)\\   
             \midrule 
             Standard-Errors     & Heteroskedasticity-robust \\   
             Observations        & 86,866\\  
-            Squared Correlation & 0.47623\\  
+            Squared Correlation & 0.47525\\  
             \midrule \midrule
             \multicolumn{2}{l}{\emph{Heteroskedasticity-robust standard-errors in parentheses}}\\
             \multicolumn{2}{l}{\emph{Signif. Codes: ***: 0.01, **: 0.05, *: 0.1}}\\
          \end{tabular}
          
          \begin{tablenotes}\item \medskip \textit{Note:}
-            \item This table displays regression results from equation OLS on the carbon footprint of consumption in  in COL as the dependent variable.  
+            \item This table displays regression results from equation OLS on the carbon footprint of consumption in  in COL as the dependent variable.  Reference group for education (\textit{ISCED}) is ISCED-level 0-1 (primary or no education) and \textit{Electricity} for cooking fuel (\textit{CF}).
          \end{tablenotes}
       \end{threeparttable}
    \end{adjustbox}

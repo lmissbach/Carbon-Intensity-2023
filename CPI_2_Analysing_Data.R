@@ -1095,7 +1095,7 @@ reference.list_5.0.1.1 <- data.frame(Country = Country.Set$Country)%>%
   mutate(REF_ISCED = ifelse(Country != "FIN", "Reference group for education (\\textit{ISCED}) is ISCED-level 0-1 (primary or no education)",
                             "Reference group for education (\\textit{ISCED} is ISCED-level 2-5 (secondary education)"))%>%
   mutate(REF_CF    = ifelse(Country %in% c("GTM", "DOM"), "\\textit{LPG} for cooking fuel (\\textit{CF})",
-                            ifelse(Country %in% c("BEN","BFA","TGO","NER","NGA","GNB", "MLI"), "\\textit{Charchoal} for cooking fuel (\\textit{CF})",
+                            ifelse(Country %in% c("BEN","BFA","TGO","NER","NGA","GNB", "MLI"), "\\textit{Charcoal} for cooking fuel (\\textit{CF})",
                                    ifelse(Country %in% c("ARM", "BEL", "BGD", "BGR", "CHL", "CYP", "CZE", "DEU", "DNK", "ESP", "EST",
                                                          "FIN", "FRA", "GRC", "HRV", "HUN", "IRL", "ISR", "ITA", "LTU", "LUX", "LVA",
                                                          "MAR", "MNG", "NLD", "NOR", "PAK", "PHL", "POL", "PRT", "ROU", "SVK", "SWE"),"", "\\textit{Electricity} for cooking fuel (\\textit{CF})"))))%>%
@@ -1543,7 +1543,7 @@ for(i in Country.Set$Country){
   
 }
 
-rm(list_5.1.1.1, list_5.3.1.1)
+rm(list_5.1.1.1, list_5.3.1.1, model_5.3.1.0.A, model_5.3.1.0.B, model_5.3.1.0.C, model_5.3.1.0.D)
 
 # 5.3.2   Logit-Model (Figures / average marginal effects) ####
 

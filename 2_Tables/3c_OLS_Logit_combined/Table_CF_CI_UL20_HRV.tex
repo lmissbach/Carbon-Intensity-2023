@@ -1,0 +1,46 @@
+
+\begin{table}[htbp!]
+   \centering
+   \small
+   \begin{adjustbox}{width = 1\textwidth, max height = 0.95\textheight, center}
+      \begin{threeparttable}[b]
+         \caption{\label{tab:Logit_1_HRV} Model coefficients: carbon-intensive consumers in Croatia}
+         \begin{tabular}{lcccc}
+            \tabularnewline \midrule \midrule
+            Dependent Variables: & CO$_{2}$ footprint & CO$_{2}$ intensity & Upper 20\%    & Lower 20\%\\   
+             & \multicolumn{2}{c}{OLS} & \multicolumn{2}{c}{Logit} \\ 
+            Model                & (1)                & (2)                & (3)           & (4)\\  
+            \midrule
+            \emph{Variables}\\
+            (Intercept)          & -9.84$^{***}$      & -2.50$^{***}$      & -5.19$^{***}$ & 9.37$^{***}$\\   
+                                 & (0.346)            & (0.352)            & (0.957)       & (1.26)\\   
+            HH Exp. (log)        & 1.05$^{***}$       & 0.229$^{***}$      & 0.326$^{***}$ & -1.01$^{***}$\\   
+                                 & (0.042)            & (0.043)            & (0.111)       & (0.152)\\   
+            HH Size              & 0.029$^{**}$       & 0.008              & 0.001         & -0.271$^{***}$\\   
+                                 & (0.014)            & (0.017)            & (0.044)       & (0.067)\\   
+            Urban Area           & 0.042              & 0.140$^{***}$      & 0.243$^{**}$  & -0.135\\   
+                                 & (0.032)            & (0.045)            & (0.123)       & (0.131)\\   
+            ISCED $=$ 2-5        & -0.084             & 0.288$^{***}$      & 0.633$^{*}$   & -0.758$^{***}$\\   
+                                 & (0.064)            & (0.106)            & (0.342)       & (0.241)\\   
+            ISCED $=$ 6-8        & -0.010             & 0.215$^{*}$        & 0.552         & -0.726$^{**}$\\   
+                                 & (0.091)            & (0.128)            & (0.387)       & (0.332)\\   
+            ISCED $=$ 9          & -0.058             & -0.295$^{**}$      & -0.698        & 0.793$^{*}$\\   
+                                 & (0.098)            & (0.125)            & (0.809)       & (0.414)\\   
+            \midrule 
+            Standard-Errors & \multicolumn{4}{c}{Heteroskedasticity-robust} \\ 
+            Observations         & 2,029              & 2,029              & 2,029         & 2,029\\  
+            Squared Correlation  & 0.49738            & 0.04854            & 0.01402       & 0.17842\\  
+            \midrule \midrule
+            \multicolumn{5}{l}{\emph{Heteroskedasticity-robust standard-errors in parentheses}}\\
+            \multicolumn{5}{l}{\emph{Signif. Codes: ***: 0.01, **: 0.05, *: 0.1}}\\
+         \end{tabular}
+         
+         \begin{tablenotes}\item \medskip \textit{Note:}
+            \item This table displays regression results from equation OLS on the carbon emissions embedded in consumption [SD] (1) and on the carbon intensity of consumption [SD] (2), respectively. 
+                                      Column (3) ((4) respectively) shows regression results from equation LOGIT on the log-odds transformed probability of higher (lower) additional costs than 80\% of the population in Croatia as the dependent variable. Reference group for education (\textit{ISCED}) is ISCED-level 0-1 (primary or no education).
+         \end{tablenotes}
+      \end{threeparttable}
+   \end{adjustbox}
+\end{table}
+
+

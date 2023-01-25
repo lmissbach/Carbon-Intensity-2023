@@ -1,0 +1,56 @@
+
+\begin{table}[htbp!]
+   \centering
+   \small
+   \begin{adjustbox}{width = 1\textwidth, max height = 0.95\textheight, center}
+      \begin{threeparttable}[b]
+         \caption{\label{tab:Logit_1_ARG} Model coefficients: carbon-intensive consumers in Argentina}
+         \begin{tabular}{lcccc}
+            \tabularnewline \midrule \midrule
+            Dependent Variables: & CO$_{2}$ footprint & CO$_{2}$ intensity & Upper 20\%     & Lower 20\%\\   
+             & \multicolumn{2}{c}{OLS} & \multicolumn{2}{c}{Logit} \\ 
+            Model                & (1)                & (2)                & (3)            & (4)\\  
+            \midrule
+            \emph{Variables}\\
+            (Intercept)          & -7.39$^{***}$      & 3.05$^{***}$       & -5.82$^{***}$  & -4.60$^{***}$\\   
+                                 & (0.358)            & (0.267)            & (0.433)        & (1.19)\\   
+            HH Exp. (log)        & 0.740$^{***}$      & -0.568$^{***}$     & -1.28$^{***}$  & 0.943$^{***}$\\   
+                                 & (0.014)            & (0.019)            & (0.048)        & (0.054)\\   
+            HH Size              & 0.034$^{***}$      & 0.057$^{***}$      & 0.115$^{***}$  & -0.264$^{***}$\\   
+                                 & (0.004)            & (0.006)            & (0.016)        & (0.021)\\   
+            Electricity Acc.     & 0.040              & 1.50$^{***}$       & 14.7$^{***}$   & -3.70$^{***}$\\   
+                                 & (0.329)            & (0.218)            & (0.167)        & (1.12)\\   
+            Car Ownership        & 0.525$^{***}$      & 0.731$^{***}$      & 1.65$^{***}$   & -1.49$^{***}$\\   
+                                 & (0.012)            & (0.021)            & (0.066)        & (0.073)\\   
+            CF $=$ Gas           & 0.140$^{*}$        & 0.265$^{***}$      & 0.372          & -0.722$^{***}$\\   
+                                 & (0.077)            & (0.060)            & (0.356)        & (0.173)\\   
+            CF $=$ Kerosene      & 0.194$^{**}$       & -0.386$^{***}$     & -1.12$^{**}$   & 0.255\\   
+                                 & (0.095)            & (0.105)            & (0.561)        & (0.464)\\   
+            CF $=$ LPG           & 0.125              & 0.230$^{***}$      & 0.189          & -1.10$^{***}$\\   
+                                 & (0.077)            & (0.062)            & (0.356)        & (0.183)\\   
+            CF $=$ Unknown       & 0.352              & -0.115             & -0.258         & 0.063\\   
+                                 & (0.250)            & (0.229)            & (0.704)        & (0.555)\\   
+            ISCED $=$ 2-5        & -0.042$^{***}$     & -0.049$^{**}$      & -0.028         & 0.212$^{***}$\\   
+                                 & (0.015)            & (0.024)            & (0.068)        & (0.076)\\   
+            ISCED $=$ 6-8        & -0.039$^{*}$       & -0.160$^{***}$     & -0.252$^{***}$ & 0.627$^{***}$\\   
+                                 & (0.020)            & (0.027)            & (0.083)        & (0.080)\\   
+            ISCED $=$ 9          & 0.077              & -0.016             & 0.283          & 0.115\\   
+                                 & (0.049)            & (0.099)            & (0.229)        & (0.315)\\   
+            \midrule 
+            Standard-Errors & \multicolumn{4}{c}{Heteroskedasticity-robust} \\ 
+            Observations         & 21,539             & 21,539             & 21,539         & 21,539\\  
+            Squared Correlation  & 0.53519            & 0.20573            & 0.12024        & 0.16005\\  
+            \midrule \midrule
+            \multicolumn{5}{l}{\emph{Heteroskedasticity-robust standard-errors in parentheses}}\\
+            \multicolumn{5}{l}{\emph{Signif. Codes: ***: 0.01, **: 0.05, *: 0.1}}\\
+         \end{tabular}
+         
+         \begin{tablenotes}\item \medskip \textit{Note:}
+            \item This table displays regression results from equation OLS on the carbon emissions embedded in consumption [SD] (1) and on the carbon intensity of consumption [SD] (2), respectively. 
+                                      Column (3) ((4) respectively) shows regression results from equation LOGIT on the log-odds transformed probability of higher (lower) additional costs than 80\% of the population in Argentina as the dependent variable. Reference group for education (\textit{ISCED}) is ISCED-level 0-1 (primary or no education) and \textit{Electricity} for cooking fuel (\textit{CF}).
+         \end{tablenotes}
+      \end{threeparttable}
+   \end{adjustbox}
+\end{table}
+
+

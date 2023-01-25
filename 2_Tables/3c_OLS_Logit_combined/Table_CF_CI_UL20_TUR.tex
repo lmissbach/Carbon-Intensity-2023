@@ -1,0 +1,58 @@
+
+\begin{table}[htbp!]
+   \centering
+   \small
+   \begin{adjustbox}{width = 1\textwidth, max height = 0.95\textheight, center}
+      \begin{threeparttable}[b]
+         \caption{\label{tab:Logit_1_TUR} Model coefficients: carbon-intensive consumers in Turkey}
+         \begin{tabular}{lcccc}
+            \tabularnewline \midrule \midrule
+            Dependent Variables: & CO$_{2}$ footprint & CO$_{2}$ intensity & Upper 20\%     & Lower 20\%\\   
+             & \multicolumn{2}{c}{OLS} & \multicolumn{2}{c}{Logit} \\ 
+            Model                & (1)                & (2)                & (3)            & (4)\\  
+            \midrule
+            \emph{Variables}\\
+            (Intercept)          & -7.72$^{***}$      & 2.22$^{***}$       & 2.45$^{***}$   & -1.33$^{**}$\\   
+                                 & (0.170)            & (0.223)            & (0.548)        & (0.660)\\   
+            HH Exp. (log)        & 0.814$^{***}$      & -0.269$^{***}$     & -0.478$^{***}$ & 0.133$^{*}$\\   
+                                 & (0.019)            & (0.024)            & (0.056)        & (0.073)\\   
+            HH Size              & 0.003              & -0.007             & -0.002         & -0.020\\   
+                                 & (0.006)            & (0.006)            & (0.016)        & (0.018)\\   
+            Urban Area           & -0.158$^{***}$     & -0.207$^{***}$     & -0.381$^{***}$ & 0.179$^{**}$\\   
+                                 & (0.026)            & (0.031)            & (0.065)        & (0.083)\\   
+            Car Ownership        & 0.266$^{***}$      & 0.172$^{***}$      & 0.087          & -1.02$^{***}$\\   
+                                 & (0.022)            & (0.022)            & (0.071)        & (0.072)\\   
+            CF $=$ Coal          & 0.678$^{***}$      & 0.890$^{***}$      & 1.70$^{***}$   & -1.50$^{***}$\\   
+                                 & (0.158)            & (0.202)            & (0.465)        & (0.439)\\   
+            CF $=$ Firewood      & 0.077              & -0.057             & 0.080          & -0.116\\   
+                                 & (0.081)            & (0.106)            & (0.342)        & (0.242)\\   
+            CF $=$ Gas           & -0.179$^{***}$     & 0.102              & -0.846$^{***}$ & -0.689$^{***}$\\   
+                                 & (0.067)            & (0.073)            & (0.318)        & (0.203)\\   
+            CF $=$ LPG           & 0.363$^{***}$      & 0.595$^{***}$      & 1.23$^{***}$   & -1.42$^{***}$\\   
+                                 & (0.066)            & (0.073)            & (0.302)        & (0.200)\\   
+            CF $=$ Otherbiomass  & -0.168$^{**}$      & -0.459$^{***}$     & -0.906$^{**}$  & 0.865$^{***}$\\   
+                                 & (0.079)            & (0.098)            & (0.451)        & (0.282)\\   
+            CF $=$ Unknown       & 0.084              & 0.022              & 0.227          & -0.580\\   
+                                 & (0.113)            & (0.206)            & (0.650)        & (0.479)\\   
+            ISCED $=$ 2-5        & 0.008              & -0.015             & 0.060          & -0.019\\   
+                                 & (0.021)            & (0.022)            & (0.071)        & (0.070)\\   
+            ISCED $=$ 6-8        & 0.122$^{***}$      & -0.015             & 0.025          & 0.056\\   
+                                 & (0.032)            & (0.027)            & (0.107)        & (0.096)\\   
+            \midrule 
+            Standard-Errors & \multicolumn{4}{c}{Heteroskedasticity-robust} \\ 
+            Observations         & 10,060             & 10,060             & 10,060         & 10,060\\  
+            Squared Correlation  & 0.34462            & 0.12794            & 0.10910        & 0.06852\\  
+            \midrule \midrule
+            \multicolumn{5}{l}{\emph{Heteroskedasticity-robust standard-errors in parentheses}}\\
+            \multicolumn{5}{l}{\emph{Signif. Codes: ***: 0.01, **: 0.05, *: 0.1}}\\
+         \end{tabular}
+         
+         \begin{tablenotes}\item \medskip \textit{Note:}
+            \item This table displays regression results from equation OLS on the carbon emissions embedded in consumption [SD] (1) and on the carbon intensity of consumption [SD] (2), respectively. 
+                                      Column (3) ((4) respectively) shows regression results from equation LOGIT on the log-odds transformed probability of higher (lower) additional costs than 80\% of the population in Turkey as the dependent variable. Reference group for education (\textit{ISCED}) is ISCED-level 0-1 (primary or no education) and \textit{Electricity} for cooking fuel (\textit{CF}).
+         \end{tablenotes}
+      \end{threeparttable}
+   \end{adjustbox}
+\end{table}
+
+

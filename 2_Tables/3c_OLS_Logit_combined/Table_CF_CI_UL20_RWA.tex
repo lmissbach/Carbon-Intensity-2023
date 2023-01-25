@@ -1,0 +1,54 @@
+
+\begin{table}[htbp!]
+   \centering
+   \small
+   \begin{adjustbox}{width = 1\textwidth, max height = 0.95\textheight, center}
+      \begin{threeparttable}[b]
+         \caption{\label{tab:Logit_1_RWA} Model coefficients: carbon-intensive consumers in Rwanda}
+         \begin{tabular}{lcccc}
+            \tabularnewline \midrule \midrule
+            Dependent Variables: & CO$_{2}$ footprint & CO$_{2}$ intensity & Upper 20\%    & Lower 20\%\\   
+             & \multicolumn{2}{c}{OLS} & \multicolumn{2}{c}{Logit} \\ 
+            Model                & (1)                & (2)                & (3)           & (4)\\  
+            \midrule
+            \emph{Variables}\\
+            (Intercept)          & -2.13$^{***}$      & -1.83$^{***}$      & -7.28$^{***}$ & 3.35$^{***}$\\   
+                                 & (0.066)            & (0.097)            & (0.343)       & (0.219)\\   
+            HH Exp. (log)        & 0.281$^{***}$      & 0.242$^{***}$      & 0.787$^{***}$ & -0.674$^{***}$\\   
+                                 & (0.010)            & (0.015)            & (0.052)       & (0.036)\\   
+            HH Size              & 0.019$^{***}$      & 0.011$^{***}$      & 0.026$^{*}$   & -0.019\\   
+                                 & (0.004)            & (0.004)            & (0.013)       & (0.012)\\   
+            Urban Area           & 0.105$^{***}$      & 0.132$^{***}$      & 0.260$^{***}$ & -0.722$^{***}$\\   
+                                 & (0.019)            & (0.024)            & (0.073)       & (0.108)\\   
+            Car Ownership        & 5.65$^{***}$       & 3.42$^{***}$       & 2.30$^{***}$  & -11.3$^{***}$\\   
+                                 & (0.361)            & (0.234)            & (0.499)       & (0.112)\\   
+            CF $=$ Firewood      & 0.039              & 0.136              & 0.514         & -12.5$^{***}$\\   
+                                 & (0.100)            & (0.111)            & (0.598)       & (0.131)\\   
+            CF $=$ Gas           & 1.63$^{***}$       & 1.46$^{***}$       & 4.61$^{***}$  & -11.8$^{***}$\\   
+                                 & (0.228)            & (0.168)            & (1.01)        & (0.129)\\   
+            CF $=$ Unknown       & -0.022             & -0.017             & -0.023        & 0.410$^{*}$\\   
+                                 & (0.014)            & (0.066)            & (0.316)       & (0.233)\\   
+            ISCED $=$ 2-5        & 0.094$^{***}$      & 0.231$^{***}$      & 0.470$^{***}$ & -0.646$^{***}$\\   
+                                 & (0.022)            & (0.027)            & (0.077)       & (0.115)\\   
+            ISCED $=$ 6-8        & 0.518$^{***}$      & 0.644$^{***}$      & 1.30$^{***}$  & -2.68$^{***}$\\   
+                                 & (0.077)            & (0.070)            & (0.134)       & (0.713)\\   
+            ISCED $=$ 9          & 0.062              & 0.025              & 0.412         & 0.159\\   
+                                 & (0.058)            & (0.242)            & (1.04)        & (0.975)\\   
+            \midrule 
+            Standard-Errors & \multicolumn{4}{c}{Heteroskedasticity-robust} \\ 
+            Observations         & 14,577             & 14,577             & 14,577        & 14,577\\  
+            Squared Correlation  & 0.67197            & 0.38717            & 0.18865       & 0.06367\\  
+            \midrule \midrule
+            \multicolumn{5}{l}{\emph{Heteroskedasticity-robust standard-errors in parentheses}}\\
+            \multicolumn{5}{l}{\emph{Signif. Codes: ***: 0.01, **: 0.05, *: 0.1}}\\
+         \end{tabular}
+         
+         \begin{tablenotes}\item \medskip \textit{Note:}
+            \item This table displays regression results from equation OLS on the carbon emissions embedded in consumption [SD] (1) and on the carbon intensity of consumption [SD] (2), respectively. 
+                                      Column (3) ((4) respectively) shows regression results from equation LOGIT on the log-odds transformed probability of higher (lower) additional costs than 80\% of the population in Rwanda as the dependent variable. Reference group for education (\textit{ISCED}) is ISCED-level 0-1 (primary or no education) and \textit{Electricity} for cooking fuel (\textit{CF}).
+         \end{tablenotes}
+      \end{threeparttable}
+   \end{adjustbox}
+\end{table}
+
+

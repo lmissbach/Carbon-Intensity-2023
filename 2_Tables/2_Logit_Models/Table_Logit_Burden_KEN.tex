@@ -8,58 +8,50 @@
          \begin{tabular}{lcc}
             \tabularnewline \midrule \midrule
             Dependent Variables: & Upper 20\%     & Lower 20\%\\   
-            Test                 & (1)            & (2)\\  
+            Model                & (1)            & (2)\\  
             \midrule
             \emph{Variables}\\
-            (Intercept)          & -4.57$^{***}$  & 2.00$^{***}$\\   
-                                 & (0.433)        & (0.458)\\   
-            HH Exp. (log)        & 0.480$^{***}$  & -0.451$^{***}$\\   
-                                 & (0.041)        & (0.029)\\   
-            HH Size              & -0.067$^{***}$ & 0.022$^{**}$\\   
+            (Intercept)          & -4.64$^{***}$  & 2.64$^{***}$\\   
+                                 & (0.428)        & (0.463)\\   
+            HH Exp. (log)        & 0.488$^{***}$  & -0.519$^{***}$\\   
+                                 & (0.040)        & (0.029)\\   
+            HH Size              & -0.067$^{***}$ & 0.030$^{***}$\\   
                                  & (0.012)        & (0.010)\\   
-            Urban Area           & -0.231$^{***}$ & 0.042\\   
-                                 & (0.062)        & (0.061)\\   
-            Electricity Acc.     & 0.026          & 0.014\\   
-                                 & (0.056)        & (0.052)\\   
-            CF $=$ Charcoal      & -0.336         & -0.228\\   
-                                 & (0.348)        & (0.415)\\   
-            CF $=$ Firewood      & 0.034          & -0.209\\   
-                                 & (0.345)        & (0.414)\\   
-            CF $=$ Gas           & -0.039         & 0.102\\   
-                                 & (0.580)        & (0.653)\\   
-            CF $=$ Kerosene      & -0.063         & -0.495\\   
-                                 & (0.351)        & (0.424)\\   
-            CF $=$ LPG           & -0.275         & -1.32$^{***}$\\   
-                                 & (0.355)        & (0.429)\\   
-            CF $=$ Otherbiomass  & 0.335          & -0.458\\   
-                                 & (0.490)        & (0.528)\\   
-            CF $=$ Unknown       & 0.331          & 0.783$^{*}$\\   
-                                 & (0.386)        & (0.437)\\   
-            ISCED $=$ 0          & -0.029         & 0.619$^{***}$\\   
-                                 & (0.070)        & (0.054)\\   
-            ISCED $=$ 2          & 0.016          & -0.118$^{*}$\\   
-                                 & (0.067)        & (0.066)\\   
-            ISCED $=$ 3          & 0.142          & -0.550$^{***}$\\   
-                                 & (0.100)        & (0.112)\\   
-            ISCED $=$ 4          & 0.472$^{**}$   & -0.633$^{**}$\\   
-                                 & (0.198)        & (0.273)\\   
-            ISCED $=$ 6          & 0.076          & -0.058\\   
-                                 & (0.171)        & (0.201)\\   
-            ISCED $=$ 7          & 0.335          & 0.413\\   
-                                 & (0.268)        & (0.390)\\   
-            ISCED $=$ 9          & -0.280         & 0.778$^{***}$\\   
+            Urban Area           & -0.237$^{***}$ & 0.064\\   
+                                 & (0.062)        & (0.060)\\   
+            Electricity Acc.     & 0.030          & -0.032\\   
+                                 & (0.056)        & (0.051)\\   
+            CF $=$ Charcoal      & -0.322         & -0.249\\   
+                                 & (0.348)        & (0.420)\\   
+            CF $=$ Firewood      & 0.048          & -0.217\\   
+                                 & (0.345)        & (0.419)\\   
+            CF $=$ Gas           & -0.055         & 0.104\\   
+                                 & (0.581)        & (0.654)\\   
+            CF $=$ Kerosene      & -0.051         & -0.555\\   
+                                 & (0.352)        & (0.430)\\   
+            CF $=$ LPG           & -0.251         & -1.35$^{***}$\\   
+                                 & (0.354)        & (0.435)\\   
+            CF $=$ Otherbiomass  & 0.339          & -0.502\\   
+                                 & (0.491)        & (0.528)\\   
+            CF $=$ Unknown       & 0.346          & 0.701\\   
+                                 & (0.387)        & (0.442)\\   
+            ISCED $=$ 2-5        & 0.070          & -0.336$^{***}$\\   
+                                 & (0.060)        & (0.058)\\   
+            ISCED $=$ 6-8        & 0.104          & -0.042\\   
+                                 & (0.153)        & (0.183)\\   
+            ISCED $=$ 9          & -0.276         & 0.619$^{**}$\\   
                                  & (0.313)        & (0.289)\\   
             \midrule 
             Standard-Errors & \multicolumn{2}{c}{Heteroskedasticity-robust} \\ 
             Observations         & 21,714         & 21,714\\  
-            Squared Correlation  & 0.03047        & 0.09131\\  
+            Squared Correlation  & 0.02977        & 0.07044\\  
             \midrule \midrule
             \multicolumn{3}{l}{\emph{Heteroskedasticity-robust standard-errors in parentheses}}\\
             \multicolumn{3}{l}{\emph{Signif. Codes: ***: 0.01, **: 0.05, *: 0.1}}\\
          \end{tabular}
          
          \begin{tablenotes}\item \medskip \textit{Note:}
-            \item This table displays regression results from equation LOGIT on the log-odds transformed probability of higher (lower) additional costs than 80\% of the population in Kenya as the dependent variable. 
+            \item This table displays regression results from equation LOGIT on the log-odds transformed probability of higher (lower) additional costs than 80\% of the population in Kenya as the dependent variable. Reference group for education (\textit{ISCED}) is ISCED-level 0-1 (primary or no education) and \textit{Electricity} for cooking fuel (\textit{CF}).
          \end{tablenotes}
       \end{threeparttable}
    \end{adjustbox}

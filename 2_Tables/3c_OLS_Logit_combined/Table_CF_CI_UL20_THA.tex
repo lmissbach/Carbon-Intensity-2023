@@ -1,0 +1,60 @@
+
+\begin{table}[htbp!]
+   \centering
+   \small
+   \begin{adjustbox}{width = 1\textwidth, max height = 0.95\textheight, center}
+      \begin{threeparttable}[b]
+         \caption{\label{tab:Logit_1_THA} Model coefficients: carbon-intensive consumers in Thailand}
+         \begin{tabular}{lcccc}
+            \tabularnewline \midrule \midrule
+            Dependent Variables: & CO$_{2}$ footprint & CO$_{2}$ intensity & Upper 20\%     & Lower 20\%\\   
+             & \multicolumn{2}{c}{OLS} & \multicolumn{2}{c}{Logit} \\ 
+            Model                & (1)                & (2)                & (3)            & (4)\\  
+            \midrule
+            \emph{Variables}\\
+            (Intercept)          & -4.76$^{***}$      & 0.170              & 0.409          & -0.265\\   
+                                 & (0.086)            & (0.142)            & (0.434)        & (0.323)\\   
+            HH Exp. (log)        & 0.599$^{***}$      & -0.249$^{***}$     & -0.608$^{***}$ & 0.448$^{***}$\\   
+                                 & (0.008)            & (0.011)            & (0.024)        & (0.032)\\   
+            HH Size              & 0.064$^{***}$      & 0.136$^{***}$      & 0.186$^{***}$  & -0.557$^{***}$\\   
+                                 & (0.003)            & (0.005)            & (0.012)        & (0.020)\\   
+            Urban Area           & 0.007              & -0.064$^{***}$     & -0.113$^{***}$ & 0.168$^{***}$\\   
+                                 & (0.009)            & (0.012)            & (0.033)        & (0.036)\\   
+            Electricity Acc.     & -0.515$^{***}$     & 0.923$^{***}$      & 1.43$^{***}$   & -2.15$^{***}$\\   
+                                 & (0.066)            & (0.113)            & (0.393)        & (0.253)\\   
+            Car Ownership        & 0.753$^{***}$      & 0.505$^{***}$      & 1.00$^{***}$   & -1.19$^{***}$\\   
+                                 & (0.019)            & (0.023)            & (0.052)        & (0.068)\\   
+            CF $=$ Charcoal      & 0.162$^{***}$      & 0.185$^{***}$      & 0.334$^{**}$   & -0.492$^{***}$\\   
+                                 & (0.036)            & (0.050)            & (0.148)        & (0.098)\\   
+            CF $=$ Firewood      & 0.222$^{***}$      & 0.103$^{**}$       & 0.164          & -0.401$^{***}$\\   
+                                 & (0.035)            & (0.050)            & (0.148)        & (0.095)\\   
+            CF $=$ Gas           & 0.266$^{***}$      & 0.581$^{***}$      & 1.12$^{***}$   & -1.39$^{***}$\\   
+                                 & (0.035)            & (0.045)            & (0.134)        & (0.078)\\   
+            CF $=$ Kerosene      & 0.372$^{**}$       & 0.682$^{***}$      & 1.28$^{***}$   & -1.67$^{**}$\\   
+                                 & (0.151)            & (0.182)            & (0.479)        & (0.754)\\   
+            CF $=$ Unknown       & 0.047              & 0.067              & 0.241          & -0.328$^{***}$\\   
+                                 & (0.035)            & (0.049)            & (0.148)        & (0.083)\\   
+            ISCED $=$ 2-5        & 0.0007             & -0.011             & -0.063         & 0.042\\   
+                                 & (0.010)            & (0.016)            & (0.046)        & (0.047)\\   
+            ISCED $=$ 6-8        & 0.293$^{***}$      & 0.066$^{***}$      & 0.047          & -0.244$^{***}$\\   
+                                 & (0.024)            & (0.024)            & (0.068)        & (0.070)\\   
+            ISCED $=$ 9          & 0.072$^{***}$      & -0.169$^{***}$     & -0.201$^{***}$ & 0.628$^{***}$\\   
+                                 & (0.013)            & (0.029)            & (0.072)        & (0.069)\\   
+            \midrule 
+            Standard-Errors & \multicolumn{4}{c}{Heteroskedasticity-robust} \\ 
+            Observations         & 42,711             & 42,711             & 42,711         & 42,711\\  
+            Squared Correlation  & 0.64083            & 0.12541            & 0.05266        & 0.15128\\  
+            \midrule \midrule
+            \multicolumn{5}{l}{\emph{Heteroskedasticity-robust standard-errors in parentheses}}\\
+            \multicolumn{5}{l}{\emph{Signif. Codes: ***: 0.01, **: 0.05, *: 0.1}}\\
+         \end{tabular}
+         
+         \begin{tablenotes}\item \medskip \textit{Note:}
+            \item This table displays regression results from equation OLS on the carbon emissions embedded in consumption [SD] (1) and on the carbon intensity of consumption [SD] (2), respectively. 
+                                      Column (3) ((4) respectively) shows regression results from equation LOGIT on the log-odds transformed probability of higher (lower) additional costs than 80\% of the population in Thailand as the dependent variable. Reference group for education (\textit{ISCED}) is ISCED-level 0-1 (primary or no education) and \textit{Electricity} for cooking fuel (\textit{CF}).
+         \end{tablenotes}
+      \end{threeparttable}
+   \end{adjustbox}
+\end{table}
+
+

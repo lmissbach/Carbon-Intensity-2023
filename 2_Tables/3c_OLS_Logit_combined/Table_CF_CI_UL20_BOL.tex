@@ -1,0 +1,60 @@
+
+\begin{table}[htbp!]
+   \centering
+   \small
+   \begin{adjustbox}{width = 1\textwidth, max height = 0.95\textheight, center}
+      \begin{threeparttable}[b]
+         \caption{\label{tab:Logit_1_BOL} Model coefficients: carbon-intensive consumers in Bolivia}
+         \begin{tabular}{lcccc}
+            \tabularnewline \midrule \midrule
+            Dependent Variables: & CO$_{2}$ footprint & CO$_{2}$ intensity & Upper 20\%    & Lower 20\%\\   
+             & \multicolumn{2}{c}{OLS} & \multicolumn{2}{c}{Logit} \\ 
+            Model                & (1)                & (2)                & (3)           & (4)\\  
+            \midrule
+            \emph{Variables}\\
+            (Intercept)          & -6.83$^{***}$      & 6.35$^{***}$       & 10.1$^{***}$  & -14.7$^{***}$\\   
+                                 & (0.224)            & (0.286)            & (0.671)       & (0.858)\\   
+            HH Exp. (log)        & 0.890$^{***}$      & -0.914$^{***}$     & -1.71$^{***}$ & 2.06$^{***}$\\   
+                                 & (0.017)            & (0.030)            & (0.066)       & (0.079)\\   
+            HH Size              & 0.033$^{***}$      & 0.047$^{***}$      & 0.035$^{*}$   & -0.226$^{***}$\\   
+                                 & (0.004)            & (0.006)            & (0.019)       & (0.025)\\   
+            Urban Area           & 0.155$^{***}$      & 0.326$^{***}$      & 0.884$^{***}$ & -0.555$^{***}$\\   
+                                 & (0.016)            & (0.031)            & (0.104)       & (0.107)\\   
+            Electricity Acc.     & -0.019             & 0.803$^{***}$      & 2.08$^{***}$  & -2.15$^{***}$\\   
+                                 & (0.028)            & (0.054)            & (0.287)       & (0.178)\\   
+            Car Ownership        & 0.633$^{***}$      & 0.661$^{***}$      & 1.43$^{***}$  & -1.48$^{***}$\\   
+                                 & (0.021)            & (0.027)            & (0.084)       & (0.102)\\   
+            CF $=$ Firewood      & -0.396$^{**}$      & -0.899$^{***}$     & -1.89$^{***}$ & 1.81$^{***}$\\   
+                                 & (0.187)            & (0.182)            & (0.462)       & (0.638)\\   
+            CF $=$ Gas           & -0.269             & -0.089             & -0.405        & -0.419\\   
+                                 & (0.186)            & (0.176)            & (0.428)       & (0.623)\\   
+            CF $=$ LPG           & -0.478$^{**}$      & -0.387$^{**}$      & -0.953$^{**}$ & 0.444\\   
+                                 & (0.186)            & (0.176)            & (0.429)       & (0.621)\\   
+            CF $=$ Otherbiomass  & -0.357$^{*}$       & -1.27$^{***}$      & -3.25$^{***}$ & 1.76$^{*}$\\   
+                                 & (0.206)            & (0.192)            & (0.884)       & (0.908)\\   
+            CF $=$ Unknown       & -0.590$^{***}$     & -0.682$^{***}$     & -1.42$^{***}$ & 1.39$^{**}$\\   
+                                 & (0.188)            & (0.188)            & (0.459)       & (0.637)\\   
+            ISCED $=$ 2-5        & -0.236$^{***}$     & 0.046              & -0.189        & -0.387$^{**}$\\   
+                                 & (0.027)            & (0.052)            & (0.151)       & (0.157)\\   
+            ISCED $=$ 6-8        & -0.044             & 0.160$^{***}$      & 0.035         & -0.718$^{***}$\\   
+                                 & (0.029)            & (0.055)            & (0.162)       & (0.172)\\   
+            ISCED $=$ 9          & -0.129$^{*}$       & 0.135              & -0.288        & -1.67$^{***}$\\   
+                                 & (0.071)            & (0.094)            & (0.376)       & (0.417)\\   
+            \midrule 
+            Standard-Errors & \multicolumn{4}{c}{Heteroskedasticity-robust} \\ 
+            Observations         & 11,859             & 11,859             & 11,859        & 11,859\\  
+            Squared Correlation  & 0.71756            & 0.23552            & 0.13893       & 0.15692\\  
+            \midrule \midrule
+            \multicolumn{5}{l}{\emph{Heteroskedasticity-robust standard-errors in parentheses}}\\
+            \multicolumn{5}{l}{\emph{Signif. Codes: ***: 0.01, **: 0.05, *: 0.1}}\\
+         \end{tabular}
+         
+         \begin{tablenotes}\item \medskip \textit{Note:}
+            \item This table displays regression results from equation OLS on the carbon emissions embedded in consumption [SD] (1) and on the carbon intensity of consumption [SD] (2), respectively. 
+                                      Column (3) ((4) respectively) shows regression results from equation LOGIT on the log-odds transformed probability of higher (lower) additional costs than 80\% of the population in Bolivia as the dependent variable. Reference group for education (\textit{ISCED}) is ISCED-level 0-1 (primary or no education) and \textit{Electricity} for cooking fuel (\textit{CF}).
+         \end{tablenotes}
+      \end{threeparttable}
+   \end{adjustbox}
+\end{table}
+
+

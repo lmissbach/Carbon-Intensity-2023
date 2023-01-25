@@ -1,0 +1,58 @@
+
+\begin{table}[htbp!]
+   \centering
+   \small
+   \begin{adjustbox}{width = 1\textwidth, max height = 0.95\textheight, center}
+      \begin{threeparttable}[b]
+         \caption{\label{tab:Logit_1_DOM} Model coefficients: carbon-intensive consumers in Dominican Republic}
+         \begin{tabular}{lcccc}
+            \tabularnewline \midrule \midrule
+            Dependent Variables: & CO$_{2}$ footprint & CO$_{2}$ intensity & Upper 20\%     & Lower 20\%\\   
+             & \multicolumn{2}{c}{OLS} & \multicolumn{2}{c}{Logit} \\ 
+            Model                & (1)                & (2)                & (3)            & (4)\\  
+            \midrule
+            \emph{Variables}\\
+            (Intercept)          & -7.04$^{***}$      & 0.976$^{***}$      & 1.37$^{*}$     & -2.65$^{***}$\\   
+                                 & (0.294)            & (0.211)            & (0.743)        & (0.529)\\   
+            HH Exp. (log)        & 0.809$^{***}$      & -0.139$^{***}$     & -0.404$^{***}$ & 0.225$^{***}$\\   
+                                 & (0.036)            & (0.026)            & (0.087)        & (0.065)\\   
+            HH Size              & -0.042$^{***}$     & -0.025$^{***}$     & -0.066$^{***}$ & -0.042$^{*}$\\   
+                                 & (0.007)            & (0.007)            & (0.024)        & (0.023)\\   
+            Urban Area           & -0.057$^{***}$     & -0.103$^{***}$     & -0.240$^{***}$ & 0.186$^{***}$\\   
+                                 & (0.015)            & (0.024)            & (0.076)        & (0.071)\\   
+            Electricity Acc.     & -0.040             & 0.217$^{***}$      & 0.477$^{*}$    & -0.786$^{***}$\\   
+                                 & (0.027)            & (0.054)            & (0.284)        & (0.147)\\   
+            Car Ownership        & 0.925$^{***}$      & 1.25$^{***}$       & 2.45$^{***}$   & -2.00$^{***}$\\   
+                                 & (0.040)            & (0.045)            & (0.101)        & (0.191)\\   
+            CF $=$ Coal          & 0.116$^{***}$      & -0.660$^{***}$     & -0.720$^{**}$  & 2.45$^{***}$\\   
+                                 & (0.036)            & (0.071)            & (0.357)        & (0.197)\\   
+            CF $=$ Electricity   & -0.056             & -0.778$^{***}$     & -0.675         & 3.31$^{***}$\\   
+                                 & (0.186)            & (0.188)            & (1.21)         & (0.898)\\   
+            CF $=$ Firewood      & 0.075$^{***}$      & -0.590$^{***}$     & -0.966$^{***}$ & 1.92$^{***}$\\   
+                                 & (0.029)            & (0.046)            & (0.252)        & (0.131)\\   
+            CF $=$ Kerosene      & 0.145              & 0.067              & -0.041         & 0.421\\   
+                                 & (0.125)            & (0.204)            & (0.440)        & (0.608)\\   
+            CF $=$ Unknown       & -0.028             & -0.486$^{***}$     & -0.490$^{***}$ & 1.74$^{***}$\\   
+                                 & (0.026)            & (0.047)            & (0.184)        & (0.124)\\   
+            ISCED $=$ 2-5        & -0.118$^{***}$     & -0.078$^{***}$     & -0.143$^{*}$   & 0.244$^{***}$\\   
+                                 & (0.018)            & (0.025)            & (0.084)        & (0.075)\\   
+            ISCED $=$ 6-8        & 0.147$^{***}$      & 0.032              & 0.307$^{***}$  & -0.154\\   
+                                 & (0.041)            & (0.039)            & (0.109)        & (0.118)\\   
+            \midrule 
+            Standard-Errors & \multicolumn{4}{c}{Heteroskedasticity-robust} \\ 
+            Observations         & 8,884              & 8,884              & 8,884          & 8,884\\  
+            Squared Correlation  & 0.56717            & 0.26282            & 0.18972        & 0.14755\\  
+            \midrule \midrule
+            \multicolumn{5}{l}{\emph{Heteroskedasticity-robust standard-errors in parentheses}}\\
+            \multicolumn{5}{l}{\emph{Signif. Codes: ***: 0.01, **: 0.05, *: 0.1}}\\
+         \end{tabular}
+         
+         \begin{tablenotes}\item \medskip \textit{Note:}
+            \item This table displays regression results from equation OLS on the carbon emissions embedded in consumption [SD] (1) and on the carbon intensity of consumption [SD] (2), respectively. 
+                                      Column (3) ((4) respectively) shows regression results from equation LOGIT on the log-odds transformed probability of higher (lower) additional costs than 80\% of the population in Dominican Republic as the dependent variable. Reference group for education (\textit{ISCED}) is ISCED-level 0-1 (primary or no education) and \textit{LPG} for cooking fuel (\textit{CF}).
+         \end{tablenotes}
+      \end{threeparttable}
+   \end{adjustbox}
+\end{table}
+
+

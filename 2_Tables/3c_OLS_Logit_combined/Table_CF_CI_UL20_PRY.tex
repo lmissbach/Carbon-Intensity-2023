@@ -1,0 +1,58 @@
+
+\begin{table}[htbp!]
+   \centering
+   \small
+   \begin{adjustbox}{width = 1\textwidth, max height = 0.95\textheight, center}
+      \begin{threeparttable}[b]
+         \caption{\label{tab:Logit_1_PRY} Model coefficients: carbon-intensive consumers in Paraguay}
+         \begin{tabular}{lcccc}
+            \tabularnewline \midrule \midrule
+            Dependent Variables: & CO$_{2}$ footprint & CO$_{2}$ intensity & Upper 20\%     & Lower 20\%\\   
+             & \multicolumn{2}{c}{OLS} & \multicolumn{2}{c}{Logit} \\ 
+            Model                & (1)                & (2)                & (3)            & (4)\\  
+            \midrule
+            \emph{Variables}\\
+            (Intercept)          & -4.50$^{***}$      & 0.848$^{***}$      & 1.41           & 3.47$^{***}$\\   
+                                 & (0.261)            & (0.295)            & (0.869)        & (0.614)\\   
+            HH Exp. (log)        & 0.467$^{***}$      & -0.163$^{***}$     & -0.484$^{***}$ & -0.341$^{***}$\\   
+                                 & (0.032)            & (0.035)            & (0.085)        & (0.071)\\   
+            HH Size              & 0.034$^{***}$      & 0.003              & 0.013          & -0.072$^{***}$\\   
+                                 & (0.008)            & (0.008)            & (0.027)        & (0.024)\\   
+            Urban Area           & -0.005             & -0.0006            & 0.181          & 0.328$^{***}$\\   
+                                 & (0.033)            & (0.049)            & (0.147)        & (0.121)\\   
+            Electricity Acc.     & -0.095             & 0.288$^{**}$       & 0.344          & -1.29$^{***}$\\   
+                                 & (0.067)            & (0.145)            & (0.632)        & (0.294)\\   
+            Car Ownership        & 0.682$^{***}$      & 0.299$^{***}$      & 1.05$^{***}$   & -1.22$^{***}$\\   
+                                 & (0.037)            & (0.031)            & (0.130)        & (0.159)\\   
+            CF $=$ Coal          & 0.948$^{***}$      & 1.39$^{***}$       & 2.89$^{***}$   & -3.52$^{***}$\\   
+                                 & (0.068)            & (0.084)            & (0.265)        & (0.429)\\   
+            CF $=$ Firewood      & 0.083              & -0.060             & 0.146          & 0.316$^{*}$\\   
+                                 & (0.059)            & (0.056)            & (0.278)        & (0.186)\\   
+            CF $=$ LPG           & 0.167$^{***}$      & 0.172$^{***}$      & 0.493$^{**}$   & -1.06$^{***}$\\   
+                                 & (0.051)            & (0.039)            & (0.246)        & (0.166)\\   
+            CF $=$ Unknown       & 0.153$^{*}$        & -0.243$^{***}$     & -0.456         & -0.094\\   
+                                 & (0.079)            & (0.071)            & (0.456)        & (0.330)\\   
+            ISCED $=$ 2-5        & -0.027             & -0.040             & -0.187         & 0.100\\   
+                                 & (0.029)            & (0.039)            & (0.129)        & (0.116)\\   
+            ISCED $=$ 6-8        & 0.118$^{*}$        & -0.142$^{***}$     & -0.885$^{***}$ & 0.939$^{***}$\\   
+                                 & (0.063)            & (0.042)            & (0.189)        & (0.185)\\   
+            ISCED $=$ 9          & 0.142$^{*}$        & 0.436              & 0.066          & 0.268\\   
+                                 & (0.079)            & (0.326)            & (0.266)        & (0.251)\\   
+            \midrule 
+            Standard-Errors & \multicolumn{4}{c}{Heteroskedasticity-robust} \\ 
+            Observations         & 5,410              & 5,410              & 5,410          & 5,410\\  
+            Squared Correlation  & 0.48873            & 0.20585            & 0.18732        & 0.16681\\  
+            \midrule \midrule
+            \multicolumn{5}{l}{\emph{Heteroskedasticity-robust standard-errors in parentheses}}\\
+            \multicolumn{5}{l}{\emph{Signif. Codes: ***: 0.01, **: 0.05, *: 0.1}}\\
+         \end{tabular}
+         
+         \begin{tablenotes}\item \medskip \textit{Note:}
+            \item This table displays regression results from equation OLS on the carbon emissions embedded in consumption [SD] (1) and on the carbon intensity of consumption [SD] (2), respectively. 
+                                      Column (3) ((4) respectively) shows regression results from equation LOGIT on the log-odds transformed probability of higher (lower) additional costs than 80\% of the population in Paraguay as the dependent variable. Reference group for education (\textit{ISCED}) is ISCED-level 0-1 (primary or no education) and \textit{Electricity} for cooking fuel (\textit{CF}).
+         \end{tablenotes}
+      \end{threeparttable}
+   \end{adjustbox}
+\end{table}
+
+

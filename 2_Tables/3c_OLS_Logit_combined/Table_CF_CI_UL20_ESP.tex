@@ -1,0 +1,46 @@
+
+\begin{table}[htbp!]
+   \centering
+   \small
+   \begin{adjustbox}{width = 1\textwidth, max height = 0.95\textheight, center}
+      \begin{threeparttable}[b]
+         \caption{\label{tab:Logit_1_ESP} Model coefficients: carbon-intensive consumers in Spain}
+         \begin{tabular}{lcccc}
+            \tabularnewline \midrule \midrule
+            Dependent Variables: & CO$_{2}$ footprint & CO$_{2}$ intensity & Upper 20\%     & Lower 20\%\\   
+             & \multicolumn{2}{c}{OLS} & \multicolumn{2}{c}{Logit} \\ 
+            Model                & (1)                & (2)                & (3)            & (4)\\  
+            \midrule
+            \emph{Variables}\\
+            (Intercept)          & -9.01$^{***}$      & 1.62$^{***}$       & 2.74$^{***}$   & -0.329\\   
+                                 & (0.154)            & (0.178)            & (0.343)        & (0.409)\\   
+            HH Exp. (log)        & 0.903$^{***}$      & -0.152$^{***}$     & -0.411$^{***}$ & -0.064\\   
+                                 & (0.017)            & (0.018)            & (0.037)        & (0.045)\\   
+            HH Size              & 0.076$^{***}$      & 0.060$^{***}$      & 0.133$^{***}$  & -0.233$^{***}$\\   
+                                 & (0.006)            & (0.006)            & (0.017)        & (0.023)\\   
+            Urban Area           & -0.319$^{***}$     & -0.441$^{***}$     & -0.822$^{***}$ & 0.400$^{***}$\\   
+                                 & (0.016)            & (0.022)            & (0.042)        & (0.052)\\   
+            ISCED $=$ 2-5        & 0.050$^{***}$      & 0.093$^{***}$      & 0.270$^{***}$  & -0.206$^{***}$\\   
+                                 & (0.015)            & (0.024)            & (0.055)        & (0.057)\\   
+            ISCED $=$ 6-8        & 0.078$^{***}$      & 0.077$^{***}$      & 0.214$^{***}$  & -0.249$^{***}$\\   
+                                 & (0.021)            & (0.027)            & (0.077)        & (0.073)\\   
+            ISCED $=$ 9          & 0.152$^{**}$       & 0.116$^{*}$        & 0.071          & -0.621$^{**}$\\   
+                                 & (0.066)            & (0.060)            & (0.238)        & (0.265)\\   
+            \midrule 
+            Standard-Errors & \multicolumn{4}{c}{Heteroskedasticity-robust} \\ 
+            Observations         & 22,127             & 22,127             & 22,127         & 22,127\\  
+            Squared Correlation  & 0.41499            & 0.05536            & 0.04130        & 0.01707\\  
+            \midrule \midrule
+            \multicolumn{5}{l}{\emph{Heteroskedasticity-robust standard-errors in parentheses}}\\
+            \multicolumn{5}{l}{\emph{Signif. Codes: ***: 0.01, **: 0.05, *: 0.1}}\\
+         \end{tabular}
+         
+         \begin{tablenotes}\item \medskip \textit{Note:}
+            \item This table displays regression results from equation OLS on the carbon emissions embedded in consumption [SD] (1) and on the carbon intensity of consumption [SD] (2), respectively. 
+                                      Column (3) ((4) respectively) shows regression results from equation LOGIT on the log-odds transformed probability of higher (lower) additional costs than 80\% of the population in Spain as the dependent variable. Reference group for education (\textit{ISCED}) is ISCED-level 0-1 (primary or no education).
+         \end{tablenotes}
+      \end{threeparttable}
+   \end{adjustbox}
+\end{table}
+
+

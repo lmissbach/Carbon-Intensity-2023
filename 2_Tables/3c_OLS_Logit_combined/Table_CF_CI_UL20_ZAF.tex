@@ -1,0 +1,62 @@
+
+\begin{table}[htbp!]
+   \centering
+   \small
+   \begin{adjustbox}{width = 1\textwidth, max height = 0.95\textheight, center}
+      \begin{threeparttable}[b]
+         \caption{\label{tab:Logit_1_ZAF} Model coefficients: carbon-intensive consumers in South Africa}
+         \begin{tabular}{lcccc}
+            \tabularnewline \midrule \midrule
+            Dependent Variables: & CO$_{2}$ footprint & CO$_{2}$ intensity & Upper 20\%     & Lower 20\%\\   
+             & \multicolumn{2}{c}{OLS} & \multicolumn{2}{c}{Logit} \\ 
+            Model                & (1)                & (2)                & (3)            & (4)\\  
+            \midrule
+            \emph{Variables}\\
+            (Intercept)          & -5.14$^{***}$      & 3.57$^{***}$       & 7.32$^{***}$   & -7.77$^{***}$\\   
+                                 & (0.096)            & (0.100)            & (0.361)        & (0.337)\\   
+            HH Exp. (log)        & 0.596$^{***}$      & -0.591$^{***}$     & -1.58$^{***}$  & 1.25$^{***}$\\   
+                                 & (0.013)            & (0.013)            & (0.043)        & (0.045)\\   
+            HH Size              & -0.015$^{***}$     & 0.006$^{**}$       & 0.008          & -0.094$^{***}$\\   
+                                 & (0.002)            & (0.003)            & (0.010)        & (0.011)\\   
+            Urban Area           & 0.025$^{***}$      & 0.195$^{***}$      & 0.572$^{***}$  & -0.183$^{***}$\\   
+                                 & (0.008)            & (0.017)            & (0.051)        & (0.062)\\   
+            Electricity Acc.     & 0.087$^{***}$      & 1.12$^{***}$       & 3.38$^{***}$   & -3.77$^{***}$\\   
+                                 & (0.018)            & (0.029)            & (0.247)        & (0.129)\\   
+            Car Ownership        & 0.471$^{***}$      & 0.691$^{***}$      & 1.80$^{***}$   & -1.70$^{***}$\\   
+                                 & (0.017)            & (0.023)            & (0.078)        & (0.082)\\   
+            CF $=$ Coal          & -0.020             & 0.060              & 0.095          & 0.117\\   
+                                 & (0.042)            & (0.107)            & (0.297)        & (0.518)\\   
+            CF $=$ Firewood      & 0.073$^{***}$      & -0.229$^{***}$     & -0.544$^{***}$ & 0.468$^{***}$\\   
+                                 & (0.011)            & (0.020)            & (0.071)        & (0.087)\\   
+            CF $=$ Gas           & 0.231$^{***}$      & 0.094$^{***}$      & 0.272$^{*}$    & -0.217\\   
+                                 & (0.053)            & (0.036)            & (0.152)        & (0.144)\\   
+            CF $=$ Kerosene      & 0.086$^{***}$      & -0.165$^{***}$     & -0.176         & 0.022\\   
+                                 & (0.020)            & (0.042)            & (0.180)        & (0.168)\\   
+            CF $=$ Otherbiomass  & 0.050              & -0.168$^{*}$       & -0.219         & 0.361\\   
+                                 & (0.043)            & (0.092)            & (0.475)        & (0.354)\\   
+            CF $=$ Unknown       & 0.014              & -0.644$^{***}$     & -2.95$^{***}$  & 1.43$^{**}$\\   
+                                 & (0.098)            & (0.136)            & (1.15)         & (0.664)\\   
+            ISCED $=$ 2-5        & -0.037$^{***}$     & -0.036$^{*}$       & -0.031         & 0.093\\   
+                                 & (0.008)            & (0.019)            & (0.056)        & (0.066)\\   
+            ISCED $=$ 6-8        & 0.387$^{***}$      & 0.051              & 0.172          & 0.114\\   
+                                 & (0.056)            & (0.040)            & (0.176)        & (0.133)\\   
+            ISCED $=$ 9          & 0.009              & -0.009             & -0.093         & 0.098\\   
+                                 & (0.010)            & (0.025)            & (0.073)        & (0.085)\\   
+            \midrule 
+            Standard-Errors & \multicolumn{4}{c}{Heteroskedasticity-robust} \\ 
+            Observations         & 22,964             & 22,964             & 22,964         & 22,964\\  
+            Squared Correlation  & 0.65354            & 0.26202            & 0.20550        & 0.25988\\  
+            \midrule \midrule
+            \multicolumn{5}{l}{\emph{Heteroskedasticity-robust standard-errors in parentheses}}\\
+            \multicolumn{5}{l}{\emph{Signif. Codes: ***: 0.01, **: 0.05, *: 0.1}}\\
+         \end{tabular}
+         
+         \begin{tablenotes}\item \medskip \textit{Note:}
+            \item This table displays regression results from equation OLS on the carbon emissions embedded in consumption [SD] (1) and on the carbon intensity of consumption [SD] (2), respectively. 
+                                      Column (3) ((4) respectively) shows regression results from equation LOGIT on the log-odds transformed probability of higher (lower) additional costs than 80\% of the population in South Africa as the dependent variable. Reference group for education (\textit{ISCED}) is ISCED-level 0-1 (primary or no education) and \textit{Electricity} for cooking fuel (\textit{CF}).
+         \end{tablenotes}
+      \end{threeparttable}
+   \end{adjustbox}
+\end{table}
+
+

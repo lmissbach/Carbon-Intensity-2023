@@ -1,0 +1,46 @@
+
+\begin{table}[htbp!]
+   \centering
+   \small
+   \begin{adjustbox}{width = 1\textwidth, max height = 0.95\textheight, center}
+      \begin{threeparttable}[b]
+         \caption{\label{tab:Logit_1_LUX} Model coefficients: carbon-intensive consumers in Luxembourg}
+         \begin{tabular}{lcccc}
+            \tabularnewline \midrule \midrule
+            Dependent Variables: & CO$_{2}$ footprint & CO$_{2}$ intensity & Upper 20\%     & Lower 20\%\\   
+             & \multicolumn{2}{c}{OLS} & \multicolumn{2}{c}{Logit} \\ 
+            Model                & (1)                & (2)                & (3)            & (4)\\  
+            \midrule
+            \emph{Variables}\\
+            (Intercept)          & -10.1$^{***}$      & 7.84$^{***}$       & 16.1$^{***}$   & -8.99$^{***}$\\   
+                                 & (0.372)            & (0.631)            & (1.54)         & (1.34)\\   
+            HH Exp. (log)        & 0.932$^{***}$      & -0.724$^{***}$     & -1.63$^{***}$  & 0.747$^{***}$\\   
+                                 & (0.037)            & (0.058)            & (0.150)        & (0.126)\\   
+            HH Size              & 0.077$^{***}$      & 0.080$^{***}$      & 0.127$^{***}$  & -0.277$^{***}$\\   
+                                 & (0.015)            & (0.016)            & (0.046)        & (0.053)\\   
+            Urban Area           & -0.198$^{***}$     & -0.226$^{***}$     & -0.344$^{**}$  & 0.326$^{*}$\\   
+                                 & (0.048)            & (0.065)            & (0.165)        & (0.167)\\   
+            ISCED $=$ 2-5        & 0.018              & 0.005              & -0.003         & -0.223\\   
+                                 & (0.055)            & (0.086)            & (0.189)        & (0.194)\\   
+            ISCED $=$ 6-8        & -0.077             & -0.166$^{*}$       & -0.817$^{***}$ & 0.091\\   
+                                 & (0.063)            & (0.091)            & (0.243)        & (0.214)\\   
+            ISCED $=$ 9          & 0.080              & 0.031              & 0.078          & -0.310\\   
+                                 & (0.064)            & (0.098)            & (0.246)        & (0.222)\\   
+            \midrule 
+            Standard-Errors & \multicolumn{4}{c}{Heteroskedasticity-robust} \\ 
+            Observations         & 3,167              & 3,167              & 3,167          & 3,167\\  
+            Squared Correlation  & 0.31107            & 0.17502            & 0.12758        & 0.03959\\  
+            \midrule \midrule
+            \multicolumn{5}{l}{\emph{Heteroskedasticity-robust standard-errors in parentheses}}\\
+            \multicolumn{5}{l}{\emph{Signif. Codes: ***: 0.01, **: 0.05, *: 0.1}}\\
+         \end{tabular}
+         
+         \begin{tablenotes}\item \medskip \textit{Note:}
+            \item This table displays regression results from equation OLS on the carbon emissions embedded in consumption [SD] (1) and on the carbon intensity of consumption [SD] (2), respectively. 
+                                      Column (3) ((4) respectively) shows regression results from equation LOGIT on the log-odds transformed probability of higher (lower) additional costs than 80\% of the population in Luxembourg as the dependent variable. Reference group for education (\textit{ISCED}) is ISCED-level 0-1 (primary or no education).
+         \end{tablenotes}
+      \end{threeparttable}
+   \end{adjustbox}
+\end{table}
+
+

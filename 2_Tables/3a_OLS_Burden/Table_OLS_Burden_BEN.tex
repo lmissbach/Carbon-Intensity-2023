@@ -7,51 +7,45 @@
          \caption{\label{tab:OLS_1_BEN} OLS-regression coefficients for carbon intensity of consumers in Benin}
          \begin{tabular}{lc}
             \tabularnewline \midrule \midrule
-            Dependent Variable: & scaled\_carbon\_intensity\_kg\_per\_USD\_national\\        
-            Test                & (1)\\  
+            Dependent Variable: & CO$_{2}$ intensity\\  
+            Model               & (1)\\  
             \midrule
             \emph{Variables}\\
-            (Intercept)         & -0.773$^{***}$\\   
-                                & (0.155)\\   
-            HH Exp. (log)       & 0.102$^{***}$\\   
-                                & (0.021)\\   
-            HH Size             & -0.007\\   
+            (Intercept)         & -0.858$^{***}$\\   
+                                & (0.150)\\   
+            HH Exp. (log)       & 0.107$^{***}$\\   
+                                & (0.020)\\   
+            HH Size             & -0.008$^{*}$\\   
                                 & (0.004)\\   
-            Urban Area          & -0.018\\   
+            Urban Area          & -0.015\\   
                                 & (0.025)\\   
-            Electricity Acc.    & 0.016\\   
+            Electricity Acc.    & 0.020\\   
                                 & (0.029)\\   
             Car Ownership       & 1.24$^{***}$\\   
                                 & (0.108)\\   
-            CF $=$ Firewood     & -0.056$^{*}$\\   
+            CF $=$ Firewood     & -0.062$^{**}$\\   
                                 & (0.030)\\   
-            CF $=$ Gas          & 0.527$^{***}$\\   
+            CF $=$ Gas          & 0.523$^{***}$\\   
                                 & (0.078)\\   
-            CF $=$ Liquidfuel   & 0.800$^{***}$\\   
-                                & (0.219)\\   
-            CF $=$ Unknown      & 0.131\\   
-                                & (0.255)\\   
-            ISCED $=$ 0         & -0.072$^{**}$\\   
-                                & (0.030)\\   
-            ISCED $=$ 2         & 0.015\\   
-                                & (0.040)\\   
-            ISCED $=$ 3         & 0.089$^{*}$\\   
-                                & (0.053)\\   
-            ISCED $=$ 4         & -0.070\\   
-                                & (0.099)\\   
-            ISCED $=$ 6         & 0.335$^{***}$\\   
-                                & (0.070)\\   
+            CF $=$ Liquid fuel  & 0.791$^{***}$\\   
+                                & (0.220)\\   
+            CF $=$ Unknown      & 0.145\\   
+                                & (0.256)\\   
+            ISCED $=$ 2-5       & 0.083$^{***}$\\   
+                                & (0.031)\\   
+            ISCED $=$ 6-8       & 0.377$^{***}$\\   
+                                & (0.068)\\   
             \midrule 
             Standard-Errors     & Heteroskedasticity-robust \\   
             Observations        & 8,012\\  
-            Squared Correlation & 0.15305\\  
+            Squared Correlation & 0.15193\\  
             \midrule \midrule
             \multicolumn{2}{l}{\emph{Heteroskedasticity-robust standard-errors in parentheses}}\\
             \multicolumn{2}{l}{\emph{Signif. Codes: ***: 0.01, **: 0.05, *: 0.1}}\\
          \end{tabular}
          
          \begin{tablenotes}\item \medskip \textit{Note:}
-            \item This table displays regression results from equation OLS on the carbon intensity of consumption in  in Benin as the dependent variable. 
+            \item This table displays regression results from equation OLS on the carbon intensity of consumption in  in Benin as the dependent variable. Reference group for education (\textit{ISCED}) is ISCED-level 0-1 (primary or no education) and \textit{Charcoal} for cooking fuel (\textit{CF}).
          \end{tablenotes}
       \end{threeparttable}
    \end{adjustbox}

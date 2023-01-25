@@ -1,0 +1,40 @@
+
+\begin{table}[htbp!]
+   \centering
+   \small
+   \begin{adjustbox}{width = 1\textwidth, max height = 0.95\textheight, center}
+      \begin{threeparttable}[b]
+         \caption{\label{tab:Logit_1_MNG} Model coefficients: carbon-intensive consumers in Mongolia}
+         \begin{tabular}{lcccc}
+            \tabularnewline \midrule \midrule
+            Dependent Variables: & CO$_{2}$ footprint & CO$_{2}$ intensity & Upper 20\%    & Lower 20\%\\   
+             & \multicolumn{2}{c}{OLS} & \multicolumn{2}{c}{Logit} \\ 
+            Model                & (1)                & (2)                & (3)           & (4)\\  
+            \midrule
+            \emph{Variables}\\
+            (Intercept)          & -9.72$^{***}$      & 3.86$^{***}$       & 10.8$^{***}$  & 1.09$^{***}$\\   
+                                 & (0.195)            & (0.214)            & (0.422)       & (0.383)\\   
+            HH Exp. (log)        & 1.11$^{***}$       & -0.499$^{***}$     & -1.58$^{***}$ & -0.190$^{***}$\\   
+                                 & (0.024)            & (0.025)            & (0.054)       & (0.048)\\   
+            HH Size              & -0.005             & 0.032$^{***}$      & 0.124$^{***}$ & -0.041$^{**}$\\   
+                                 & (0.005)            & (0.006)            & (0.016)       & (0.016)\\   
+            Urban Area           & 0.161$^{***}$      & 0.524$^{***}$      & 1.24$^{***}$  & -1.20$^{***}$\\   
+                                 & (0.014)            & (0.022)            & (0.064)       & (0.048)\\   
+            \midrule 
+            Standard-Errors & \multicolumn{4}{c}{Heteroskedasticity-robust} \\ 
+            Observations         & 11,197             & 11,197             & 11,197        & 11,197\\  
+            Squared Correlation  & 0.58202            & 0.09462            & 0.10353       & 0.06908\\  
+            \midrule \midrule
+            \multicolumn{5}{l}{\emph{Heteroskedasticity-robust standard-errors in parentheses}}\\
+            \multicolumn{5}{l}{\emph{Signif. Codes: ***: 0.01, **: 0.05, *: 0.1}}\\
+         \end{tabular}
+         
+         \begin{tablenotes}\item \medskip \textit{Note:}
+            \item This table displays regression results from equation OLS on the carbon emissions embedded in consumption [SD] (1) and on the carbon intensity of consumption [SD] (2), respectively. 
+                                      Column (3) ((4) respectively) shows regression results from equation LOGIT on the log-odds transformed probability of higher (lower) additional costs than 80\% of the population in Mongolia as the dependent variable. Reference group for education (\textit{ISCED}) is ISCED-level 0-1 (primary or no education).
+         \end{tablenotes}
+      \end{threeparttable}
+   \end{adjustbox}
+\end{table}
+
+

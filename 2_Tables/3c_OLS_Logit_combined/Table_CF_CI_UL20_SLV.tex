@@ -1,0 +1,60 @@
+
+\begin{table}[htbp!]
+   \centering
+   \small
+   \begin{adjustbox}{width = 1\textwidth, max height = 0.95\textheight, center}
+      \begin{threeparttable}[b]
+         \caption{\label{tab:Logit_1_SLV} Model coefficients: carbon-intensive consumers in El Salvador}
+         \begin{tabular}{lcccc}
+            \tabularnewline \midrule \midrule
+            Dependent Variables: & CO$_{2}$ footprint & CO$_{2}$ intensity & Upper 20\%    & Lower 20\%\\   
+             & \multicolumn{2}{c}{OLS} & \multicolumn{2}{c}{Logit} \\ 
+            Model                & (1)                & (2)                & (3)           & (4)\\  
+            \midrule
+            \emph{Variables}\\
+            (Intercept)          & -2.73$^{***}$      & 3.82$^{***}$       & 8.98$^{***}$  & -6.83$^{***}$\\   
+                                 & (0.257)            & (0.160)            & (0.618)       & (0.474)\\   
+            HH Exp. (log)        & 0.291$^{***}$      & -0.571$^{***}$     & -1.58$^{***}$ & 1.04$^{***}$\\   
+                                 & (0.011)            & (0.013)            & (0.050)       & (0.041)\\   
+            HH Size              & 0.127$^{***}$      & 0.193$^{***}$      & 0.454$^{***}$ & -0.657$^{***}$\\   
+                                 & (0.005)            & (0.005)            & (0.020)       & (0.024)\\   
+            Urban Area           & 0.073$^{***}$      & -0.010             & 0.018         & 0.069\\   
+                                 & (0.011)            & (0.017)            & (0.056)       & (0.058)\\   
+            Electricity Acc.     & -0.082$^{***}$     & 0.042              & 0.040         & -1.13$^{***}$\\   
+                                 & (0.020)            & (0.057)            & (0.156)       & (0.138)\\   
+            Car Ownership        & 1.15$^{***}$       & 0.932$^{***}$      & 2.33$^{***}$  & -2.39$^{***}$\\   
+                                 & (0.035)            & (0.030)            & (0.087)       & (0.164)\\   
+            CF $=$ Charcoal      & -0.070             & 0.005              & -0.803        & -0.170\\   
+                                 & (0.446)            & (0.216)            & (0.949)       & (0.609)\\   
+            CF $=$ Firewood      & -0.561$^{**}$      & -0.995$^{***}$     & -2.69$^{***}$ & 2.61$^{***}$\\   
+                                 & (0.267)            & (0.103)            & (0.585)       & (0.335)\\   
+            CF $=$ Gas           & -0.309             & 0.094              & 0.430         & -0.070\\   
+                                 & (0.271)            & (0.100)            & (0.587)       & (0.320)\\   
+            CF $=$ Kerosene      & -0.170             & 0.028              & -0.103        & 0.291\\   
+                                 & (0.298)            & (0.306)            & (0.923)       & (0.882)\\   
+            CF $=$ Unknown       & -0.392             & -0.801$^{***}$     & -4.20$^{***}$ & 2.32$^{***}$\\   
+                                 & (0.275)            & (0.112)            & (0.649)       & (0.366)\\   
+            ISCED $=$ 2-5        & 0.077$^{***}$      & 0.080$^{***}$      & 0.102         & -0.293$^{***}$\\   
+                                 & (0.017)            & (0.020)            & (0.079)       & (0.075)\\   
+            ISCED $=$ 6-8        & 0.565$^{***}$      & 0.243$^{***}$      & 0.649$^{***}$ & -0.262$^{*}$\\   
+                                 & (0.060)            & (0.042)            & (0.133)       & (0.135)\\   
+            ISCED $=$ 9          & -0.179$^{*}$       & -0.389             & -7.02$^{***}$ & 10.6$^{***}$\\   
+                                 & (0.097)            & (0.335)            & (0.055)       & (0.045)\\   
+            \midrule 
+            Standard-Errors & \multicolumn{4}{c}{Heteroskedasticity-robust} \\ 
+            Observations         & 23,622             & 23,622             & 23,622        & 23,622\\  
+            Squared Correlation  & 0.60178            & 0.30637            & 0.20873       & 0.26854\\  
+            \midrule \midrule
+            \multicolumn{5}{l}{\emph{Heteroskedasticity-robust standard-errors in parentheses}}\\
+            \multicolumn{5}{l}{\emph{Signif. Codes: ***: 0.01, **: 0.05, *: 0.1}}\\
+         \end{tabular}
+         
+         \begin{tablenotes}\item \medskip \textit{Note:}
+            \item This table displays regression results from equation OLS on the carbon emissions embedded in consumption [SD] (1) and on the carbon intensity of consumption [SD] (2), respectively. 
+                                      Column (3) ((4) respectively) shows regression results from equation LOGIT on the log-odds transformed probability of higher (lower) additional costs than 80\% of the population in El Salvador as the dependent variable. Reference group for education (\textit{ISCED}) is ISCED-level 0-1 (primary or no education) and \textit{Electricity} for cooking fuel (\textit{CF}).
+         \end{tablenotes}
+      \end{threeparttable}
+   \end{adjustbox}
+\end{table}
+
+

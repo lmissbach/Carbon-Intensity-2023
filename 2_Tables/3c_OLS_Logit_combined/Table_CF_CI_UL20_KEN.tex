@@ -1,0 +1,62 @@
+
+\begin{table}[htbp!]
+   \centering
+   \small
+   \begin{adjustbox}{width = 1\textwidth, max height = 0.95\textheight, center}
+      \begin{threeparttable}[b]
+         \caption{\label{tab:Logit_1_KEN} Model coefficients: carbon-intensive consumers in Kenya}
+         \begin{tabular}{lcccc}
+            \tabularnewline \midrule \midrule
+            Dependent Variables: & CO$_{2}$ footprint & CO$_{2}$ intensity & Upper 20\%     & Lower 20\%\\   
+             & \multicolumn{2}{c}{OLS} & \multicolumn{2}{c}{Logit} \\ 
+            Model                & (1)                & (2)                & (3)            & (4)\\  
+            \midrule
+            \emph{Variables}\\
+            (Intercept)          & -3.51$^{***}$      & -1.66$^{***}$      & -4.64$^{***}$  & 2.64$^{***}$\\   
+                                 & (0.315)            & (0.142)            & (0.428)        & (0.463)\\   
+            HH Exp. (log)        & 0.478$^{***}$      & 0.221$^{***}$      & 0.488$^{***}$  & -0.519$^{***}$\\   
+                                 & (0.042)            & (0.016)            & (0.040)        & (0.029)\\   
+            HH Size              & -0.010             & -0.031$^{***}$     & -0.067$^{***}$ & 0.030$^{***}$\\   
+                                 & (0.009)            & (0.004)            & (0.012)        & (0.010)\\   
+            Urban Area           & -0.024             & -0.113$^{***}$     & -0.237$^{***}$ & 0.064\\   
+                                 & (0.015)            & (0.023)            & (0.062)        & (0.060)\\   
+            Electricity Acc.     & -0.050$^{**}$      & 0.014              & 0.030          & -0.032\\   
+                                 & (0.023)            & (0.021)            & (0.056)        & (0.051)\\   
+            CF $=$ Charcoal      & -0.061             & 0.045              & -0.322         & -0.249\\   
+                                 & (0.097)            & (0.090)            & (0.348)        & (0.420)\\   
+            CF $=$ Firewood      & 0.053              & 0.202$^{**}$       & 0.048          & -0.217\\   
+                                 & (0.110)            & (0.092)            & (0.345)        & (0.419)\\   
+            CF $=$ Gas           & 0.672              & 0.402              & -0.055         & 0.104\\   
+                                 & (0.481)            & (0.314)            & (0.581)        & (0.654)\\   
+            CF $=$ Kerosene      & -0.099             & 0.164$^{*}$        & -0.051         & -0.555\\   
+                                 & (0.096)            & (0.093)            & (0.352)        & (0.430)\\   
+            CF $=$ LPG           & 0.253$^{**}$       & 0.182$^{**}$       & -0.251         & -1.35$^{***}$\\   
+                                 & (0.113)            & (0.092)            & (0.354)        & (0.435)\\   
+            CF $=$ Otherbiomass  & 0.111              & 0.348$^{**}$       & 0.339          & -0.502\\   
+                                 & (0.121)            & (0.149)            & (0.491)        & (0.528)\\   
+            CF $=$ Unknown       & 0.026              & 0.168              & 0.346          & 0.701\\   
+                                 & (0.103)            & (0.128)            & (0.387)        & (0.442)\\   
+            ISCED $=$ 2-5        & -0.016             & 0.079$^{***}$      & 0.070          & -0.336$^{***}$\\   
+                                 & (0.022)            & (0.022)            & (0.060)        & (0.058)\\   
+            ISCED $=$ 6-8        & 0.749$^{***}$      & 0.088              & 0.104          & -0.042\\   
+                                 & (0.184)            & (0.064)            & (0.153)        & (0.183)\\   
+            ISCED $=$ 9          & -0.070             & -0.076             & -0.276         & 0.619$^{**}$\\   
+                                 & (0.049)            & (0.100)            & (0.313)        & (0.289)\\   
+            \midrule 
+            Standard-Errors & \multicolumn{4}{c}{Heteroskedasticity-robust} \\ 
+            Observations         & 21,714             & 21,714             & 21,714         & 21,714\\  
+            Squared Correlation  & 0.28496            & 0.04628            & 0.02977        & 0.07044\\  
+            \midrule \midrule
+            \multicolumn{5}{l}{\emph{Heteroskedasticity-robust standard-errors in parentheses}}\\
+            \multicolumn{5}{l}{\emph{Signif. Codes: ***: 0.01, **: 0.05, *: 0.1}}\\
+         \end{tabular}
+         
+         \begin{tablenotes}\item \medskip \textit{Note:}
+            \item This table displays regression results from equation OLS on the carbon emissions embedded in consumption [SD] (1) and on the carbon intensity of consumption [SD] (2), respectively. 
+                                      Column (3) ((4) respectively) shows regression results from equation LOGIT on the log-odds transformed probability of higher (lower) additional costs than 80\% of the population in Kenya as the dependent variable. Reference group for education (\textit{ISCED}) is ISCED-level 0-1 (primary or no education) and \textit{Electricity} for cooking fuel (\textit{CF}).
+         \end{tablenotes}
+      \end{threeparttable}
+   \end{adjustbox}
+\end{table}
+
+

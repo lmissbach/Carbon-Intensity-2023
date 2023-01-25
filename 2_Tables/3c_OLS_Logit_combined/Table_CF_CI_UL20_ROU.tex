@@ -1,0 +1,46 @@
+
+\begin{table}[htbp!]
+   \centering
+   \small
+   \begin{adjustbox}{width = 1\textwidth, max height = 0.95\textheight, center}
+      \begin{threeparttable}[b]
+         \caption{\label{tab:Logit_1_ROU} Model coefficients: carbon-intensive consumers in Romania}
+         \begin{tabular}{lcccc}
+            \tabularnewline \midrule \midrule
+            Dependent Variables: & CO$_{2}$ footprint & CO$_{2}$ intensity & Upper 20\%     & Lower 20\%\\   
+             & \multicolumn{2}{c}{OLS} & \multicolumn{2}{c}{Logit} \\ 
+            Model                & (1)                & (2)                & (3)            & (4)\\  
+            \midrule
+            \emph{Variables}\\
+            (Intercept)          & -8.67$^{***}$      & -1.24$^{***}$      & -4.23$^{***}$  & 2.77$^{***}$\\   
+                                 & (0.134)            & (0.116)            & (0.310)        & (0.334)\\   
+            HH Exp. (log)        & 1.02$^{***}$       & 0.136$^{***}$      & 0.257$^{***}$  & -0.433$^{***}$\\   
+                                 & (0.018)            & (0.016)            & (0.041)        & (0.045)\\   
+            HH Size              & -0.048$^{***}$     & -0.078$^{***}$     & -0.161$^{***}$ & 0.178$^{***}$\\   
+                                 & (0.006)            & (0.006)            & (0.018)        & (0.017)\\   
+            Urban Area           & 0.153$^{***}$      & 0.286$^{***}$      & 0.881$^{***}$  & -0.837$^{***}$\\   
+                                 & (0.013)            & (0.015)            & (0.044)        & (0.041)\\   
+            ISCED $=$ 2-5        & -0.058$^{***}$     & 0.122$^{***}$      & 0.493$^{***}$  & -0.575$^{***}$\\   
+                                 & (0.020)            & (0.027)            & (0.066)        & (0.052)\\   
+            ISCED $=$ 6-8        & 0.186$^{***}$      & 0.190$^{***}$      & 0.602$^{***}$  & -0.983$^{***}$\\   
+                                 & (0.031)            & (0.035)            & (0.088)        & (0.094)\\   
+            ISCED $=$ 9          & 0.518$^{***}$      & 0.398$^{***}$      & 1.05$^{***}$   & -1.24$^{***}$\\   
+                                 & (0.129)            & (0.095)            & (0.220)        & (0.372)\\   
+            \midrule 
+            Standard-Errors & \multicolumn{4}{c}{Heteroskedasticity-robust} \\ 
+            Observations         & 30,625             & 30,625             & 30,625         & 30,625\\  
+            Squared Correlation  & 0.34308            & 0.03872            & 0.04433        & 0.06340\\  
+            \midrule \midrule
+            \multicolumn{5}{l}{\emph{Heteroskedasticity-robust standard-errors in parentheses}}\\
+            \multicolumn{5}{l}{\emph{Signif. Codes: ***: 0.01, **: 0.05, *: 0.1}}\\
+         \end{tabular}
+         
+         \begin{tablenotes}\item \medskip \textit{Note:}
+            \item This table displays regression results from equation OLS on the carbon emissions embedded in consumption [SD] (1) and on the carbon intensity of consumption [SD] (2), respectively. 
+                                      Column (3) ((4) respectively) shows regression results from equation LOGIT on the log-odds transformed probability of higher (lower) additional costs than 80\% of the population in Romania as the dependent variable. Reference group for education (\textit{ISCED}) is ISCED-level 0-1 (primary or no education).
+         \end{tablenotes}
+      \end{threeparttable}
+   \end{adjustbox}
+\end{table}
+
+

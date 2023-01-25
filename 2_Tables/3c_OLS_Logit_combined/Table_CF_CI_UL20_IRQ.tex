@@ -1,0 +1,56 @@
+
+\begin{table}[htbp!]
+   \centering
+   \small
+   \begin{adjustbox}{width = 1\textwidth, max height = 0.95\textheight, center}
+      \begin{threeparttable}[b]
+         \caption{\label{tab:Logit_1_IRQ} Model coefficients: carbon-intensive consumers in Iraq}
+         \begin{tabular}{lcccc}
+            \tabularnewline \midrule \midrule
+            Dependent Variables: & CO$_{2}$ footprint & CO$_{2}$ intensity & Upper 20\%    & Lower 20\%\\   
+             & \multicolumn{2}{c}{OLS} & \multicolumn{2}{c}{Logit} \\ 
+            Model                & (1)                & (2)                & (3)           & (4)\\  
+            \midrule
+            \emph{Variables}\\
+            (Intercept)          & -8.59$^{***}$      & 5.80$^{***}$       & 9.89$^{***}$  & -10.1$^{***}$\\   
+                                 & (0.155)            & (0.260)            & (0.578)       & (0.555)\\   
+            HH Exp. (log)        & 0.917$^{***}$      & -0.660$^{***}$     & -1.24$^{***}$ & 1.03$^{***}$\\   
+                                 & (0.013)            & (0.025)            & (0.045)       & (0.045)\\   
+            HH Size              & 0.006$^{***}$      & 0.011$^{***}$      & -0.002        & -0.054$^{***}$\\   
+                                 & (0.002)            & (0.003)            & (0.008)       & (0.008)\\   
+            Urban Area           & -0.012             & 0.063$^{***}$      & -0.009        & -0.322$^{***}$\\   
+                                 & (0.011)            & (0.019)            & (0.054)       & (0.049)\\   
+            Electricity Acc.     & -0.055             & -0.098             & -0.344$^{*}$  & 0.258\\   
+                                 & (0.037)            & (0.074)            & (0.186)       & (0.197)\\   
+            Car Ownership        & 0.444$^{***}$      & 0.547$^{***}$      & 1.18$^{***}$  & -0.851$^{***}$\\   
+                                 & (0.014)            & (0.022)            & (0.065)       & (0.063)\\   
+            CF $=$ Kerosene      & -0.024             & -0.124             & -0.477        & 0.415\\   
+                                 & (0.112)            & (0.161)            & (0.455)       & (0.388)\\   
+            CF $=$ LPG           & -0.086             & 0.056              & -0.120        & -0.184\\   
+                                 & (0.097)            & (0.128)            & (0.397)       & (0.340)\\   
+            CF $=$ Otherbiomass  & 0.004              & -0.782$^{***}$     & -1.36$^{***}$ & 1.60$^{***}$\\   
+                                 & (0.110)            & (0.180)            & (0.508)       & (0.409)\\   
+            ISCED $=$ 2-5        & 0.039$^{***}$      & 0.147$^{***}$      & 0.271$^{***}$ & -0.476$^{***}$\\   
+                                 & (0.015)            & (0.023)            & (0.072)       & (0.067)\\   
+            ISCED $=$ 6-8        & 0.159$^{***}$      & 0.272$^{***}$      & 0.535$^{***}$ & -0.528$^{***}$\\   
+                                 & (0.028)            & (0.033)            & (0.104)       & (0.103)\\   
+            ISCED $=$ 9          & 0.084$^{***}$      & 0.212$^{***}$      & 0.373$^{***}$ & -0.723$^{***}$\\   
+                                 & (0.027)            & (0.040)            & (0.113)       & (0.126)\\   
+            \midrule 
+            Standard-Errors & \multicolumn{4}{c}{Heteroskedasticity-robust} \\ 
+            Observations         & 24,994             & 24,994             & 24,994        & 24,994\\  
+            Squared Correlation  & 0.62213            & 0.17199            & 0.08170       & 0.08000\\  
+            \midrule \midrule
+            \multicolumn{5}{l}{\emph{Heteroskedasticity-robust standard-errors in parentheses}}\\
+            \multicolumn{5}{l}{\emph{Signif. Codes: ***: 0.01, **: 0.05, *: 0.1}}\\
+         \end{tabular}
+         
+         \begin{tablenotes}\item \medskip \textit{Note:}
+            \item This table displays regression results from equation OLS on the carbon emissions embedded in consumption [SD] (1) and on the carbon intensity of consumption [SD] (2), respectively. 
+                                      Column (3) ((4) respectively) shows regression results from equation LOGIT on the log-odds transformed probability of higher (lower) additional costs than 80\% of the population in Iraq as the dependent variable. Reference group for education (\textit{ISCED}) is ISCED-level 0-1 (primary or no education) and \textit{Electricity} for cooking fuel (\textit{CF}).
+         \end{tablenotes}
+      \end{threeparttable}
+   \end{adjustbox}
+\end{table}
+
+

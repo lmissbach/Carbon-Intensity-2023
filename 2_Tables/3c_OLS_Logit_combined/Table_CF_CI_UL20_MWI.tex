@@ -1,0 +1,56 @@
+
+\begin{table}[htbp!]
+   \centering
+   \small
+   \begin{adjustbox}{width = 1\textwidth, max height = 0.95\textheight, center}
+      \begin{threeparttable}[b]
+         \caption{\label{tab:Logit_1_MWI} Model coefficients: carbon-intensive consumers in Malawi}
+         \begin{tabular}{lcccc}
+            \tabularnewline \midrule \midrule
+            Dependent Variables: & CO$_{2}$ footprint & CO$_{2}$ intensity & Upper 20\%     & Lower 20\%\\   
+             & \multicolumn{2}{c}{OLS} & \multicolumn{2}{c}{Logit} \\ 
+            Model                & (1)                & (2)                & (3)            & (4)\\  
+            \midrule
+            \emph{Variables}\\
+            (Intercept)          & -1.24$^{***}$      & -0.735$^{***}$     & -4.74$^{***}$  & -0.296\\   
+                                 & (0.326)            & (0.219)            & (0.472)        & (0.650)\\   
+            HH Exp. (log)        & 0.288$^{***}$      & 0.128$^{***}$      & 0.512$^{***}$  & -0.026\\   
+                                 & (0.012)            & (0.017)            & (0.057)        & (0.031)\\   
+            HH Size              & 0.010$^{**}$       & 0.011$^{**}$       & 0.011          & -0.161$^{***}$\\   
+                                 & (0.004)            & (0.005)            & (0.015)        & (0.015)\\   
+            Urban Area           & -0.069$^{*}$       & -0.194$^{***}$     & -0.513$^{***}$ & 0.015\\   
+                                 & (0.037)            & (0.040)            & (0.106)        & (0.118)\\   
+            Electricity Acc.     & 0.615$^{***}$      & 0.883$^{***}$      & 1.75$^{***}$   & -1.76$^{***}$\\   
+                                 & (0.053)            & (0.058)            & (0.104)        & (0.245)\\   
+            Car Ownership        & 2.71$^{***}$       & 1.61$^{***}$       & 0.937$^{***}$  & -1.16$^{*}$\\   
+                                 & (0.381)            & (0.252)            & (0.235)        & (0.692)\\   
+            CF $=$ Charcoal      & -0.653$^{**}$      & -0.240             & -0.427         & -0.318\\   
+                                 & (0.321)            & (0.192)            & (0.277)        & (0.616)\\   
+            CF $=$ Firewood      & -0.737$^{**}$      & -0.208             & -0.120         & -0.040\\   
+                                 & (0.317)            & (0.193)            & (0.296)        & (0.628)\\   
+            CF $=$ Otherbiomass  & -0.656$^{**}$      & -0.044             & 0.488          & -0.188\\   
+                                 & (0.318)            & (0.212)            & (0.378)        & (0.682)\\   
+            CF $=$ Unknown       & 1.42               & 2.72$^{*}$         & 2.53           & -10.0$^{***}$\\   
+                                 & (1.71)             & (1.47)             & (2.50)         & (0.627)\\   
+            ISCED $=$ 2-5        & 0.078$^{***}$      & 0.066$^{**}$       & 0.164$^{**}$   & -0.462$^{***}$\\   
+                                 & (0.026)            & (0.030)            & (0.079)        & (0.093)\\   
+            ISCED $=$ 6-8        & 0.913$^{***}$      & 0.286$^{**}$       & 0.193          & -1.36$^{***}$\\   
+                                 & (0.162)            & (0.120)            & (0.182)        & (0.479)\\   
+            \midrule 
+            Standard-Errors & \multicolumn{4}{c}{Heteroskedasticity-robust} \\ 
+            Observations         & 11,374             & 11,374             & 11,374         & 11,374\\  
+            Squared Correlation  & 0.49700            & 0.20096            & 0.15836        & 0.04758\\  
+            \midrule \midrule
+            \multicolumn{5}{l}{\emph{Heteroskedasticity-robust standard-errors in parentheses}}\\
+            \multicolumn{5}{l}{\emph{Signif. Codes: ***: 0.01, **: 0.05, *: 0.1}}\\
+         \end{tabular}
+         
+         \begin{tablenotes}\item \medskip \textit{Note:}
+            \item This table displays regression results from equation OLS on the carbon emissions embedded in consumption [SD] (1) and on the carbon intensity of consumption [SD] (2), respectively. 
+                                      Column (3) ((4) respectively) shows regression results from equation LOGIT on the log-odds transformed probability of higher (lower) additional costs than 80\% of the population in Malawi as the dependent variable. Reference group for education (\textit{ISCED}) is ISCED-level 0-1 (primary or no education) and \textit{Electricity} for cooking fuel (\textit{CF}).
+         \end{tablenotes}
+      \end{threeparttable}
+   \end{adjustbox}
+\end{table}
+
+

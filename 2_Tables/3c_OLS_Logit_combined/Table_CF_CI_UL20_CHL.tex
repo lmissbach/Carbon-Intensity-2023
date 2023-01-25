@@ -1,0 +1,44 @@
+
+\begin{table}[htbp!]
+   \centering
+   \small
+   \begin{adjustbox}{width = 1\textwidth, max height = 0.95\textheight, center}
+      \begin{threeparttable}[b]
+         \caption{\label{tab:Logit_1_CHL} Model coefficients: carbon-intensive consumers in Chile}
+         \begin{tabular}{lcccc}
+            \tabularnewline \midrule \midrule
+            Dependent Variables: & CO$_{2}$ footprint & CO$_{2}$ intensity & Upper 20\%    & Lower 20\%\\   
+             & \multicolumn{2}{c}{OLS} & \multicolumn{2}{c}{Logit} \\ 
+            Model                & (1)                & (2)                & (3)           & (4)\\  
+            \midrule
+            \emph{Variables}\\
+            (Intercept)          & -8.90$^{***}$      & 5.20$^{***}$       & 11.4$^{***}$  & -7.04$^{***}$\\   
+                                 & (0.146)            & (0.219)            & (0.505)       & (0.582)\\   
+            HH Exp. (log)        & 0.910$^{***}$      & -0.571$^{***}$     & -1.44$^{***}$ & 0.702$^{***}$\\   
+                                 & (0.016)            & (0.024)            & (0.058)       & (0.062)\\   
+            HH Size              & 0.064$^{***}$      & 0.100$^{***}$      & 0.228$^{***}$ & -0.420$^{***}$\\   
+                                 & (0.006)            & (0.008)            & (0.024)       & (0.030)\\   
+            ISCED $=$ 2-5        & -0.144$^{***}$     & -0.115$^{***}$     & -0.160        & 0.136\\   
+                                 & (0.018)            & (0.040)            & (0.098)       & (0.126)\\   
+            ISCED $=$ 6-8        & 0.058$^{***}$      & -0.045             & -0.115        & 0.200$^{*}$\\   
+                                 & (0.021)            & (0.042)            & (0.098)       & (0.114)\\   
+            ISCED $=$ 9          & -0.007             & 0.232              & 0.500         & 1.00\\   
+                                 & (0.149)            & (0.283)            & (0.448)       & (0.693)\\   
+            \midrule 
+            Standard-Errors & \multicolumn{4}{c}{Heteroskedasticity-robust} \\ 
+            Observations         & 15,237             & 15,237             & 15,237        & 15,237\\  
+            Squared Correlation  & 0.62880            & 0.19448            & 0.14630       & 0.07866\\  
+            \midrule \midrule
+            \multicolumn{5}{l}{\emph{Heteroskedasticity-robust standard-errors in parentheses}}\\
+            \multicolumn{5}{l}{\emph{Signif. Codes: ***: 0.01, **: 0.05, *: 0.1}}\\
+         \end{tabular}
+         
+         \begin{tablenotes}\item \medskip \textit{Note:}
+            \item This table displays regression results from equation OLS on the carbon emissions embedded in consumption [SD] (1) and on the carbon intensity of consumption [SD] (2), respectively. 
+                                      Column (3) ((4) respectively) shows regression results from equation LOGIT on the log-odds transformed probability of higher (lower) additional costs than 80\% of the population in Chile as the dependent variable. Reference group for education (\textit{ISCED}) is ISCED-level 0-1 (primary or no education).
+         \end{tablenotes}
+      \end{threeparttable}
+   \end{adjustbox}
+\end{table}
+
+

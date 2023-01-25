@@ -1,0 +1,46 @@
+
+\begin{table}[htbp!]
+   \centering
+   \small
+   \begin{adjustbox}{width = 1\textwidth, max height = 0.95\textheight, center}
+      \begin{threeparttable}[b]
+         \caption{\label{tab:Logit_1_EST} Model coefficients: carbon-intensive consumers in Estonia}
+         \begin{tabular}{lcccc}
+            \tabularnewline \midrule \midrule
+            Dependent Variables: & CO$_{2}$ footprint & CO$_{2}$ intensity & Upper 20\%     & Lower 20\%\\   
+             & \multicolumn{2}{c}{OLS} & \multicolumn{2}{c}{Logit} \\ 
+            Model                & (1)                & (2)                & (3)            & (4)\\  
+            \midrule
+            \emph{Variables}\\
+            (Intercept)          & -8.52$^{***}$      & 2.69$^{***}$       & 5.12$^{***}$   & -4.67$^{***}$\\   
+                                 & (0.249)            & (0.355)            & (0.788)        & (0.904)\\   
+            HH Exp. (log)        & 0.924$^{***}$      & -0.329$^{***}$     & -0.786$^{***}$ & 0.408$^{***}$\\   
+                                 & (0.030)            & (0.040)            & (0.091)        & (0.099)\\   
+            HH Size              & 0.059$^{***}$      & 0.066$^{***}$      & 0.065          & -0.268$^{***}$\\   
+                                 & (0.014)            & (0.017)            & (0.048)        & (0.054)\\   
+            Urban Area           & 0.041              & 0.153$^{***}$      & 0.305$^{***}$  & -0.220$^{**}$\\   
+                                 & (0.026)            & (0.043)            & (0.109)        & (0.104)\\   
+            ISCED $=$ 2-5        & -0.210$^{***}$     & 0.097              & 0.318          & 0.296\\   
+                                 & (0.081)            & (0.185)            & (0.433)        & (0.391)\\   
+            ISCED $=$ 6-8        & -0.074             & 0.231              & 0.607          & -0.127\\   
+                                 & (0.089)            & (0.193)            & (0.458)        & (0.409)\\   
+            ISCED $=$ 9          & -0.149             & 0.144              & 0.399          & 0.138\\   
+                                 & (0.105)            & (0.201)            & (0.499)        & (0.439)\\   
+            \midrule 
+            Standard-Errors & \multicolumn{4}{c}{Heteroskedasticity-robust} \\ 
+            Observations         & 3,395              & 3,395              & 3,395          & 3,395\\  
+            Squared Correlation  & 0.54119            & 0.02929            & 0.02736        & 0.01561\\  
+            \midrule \midrule
+            \multicolumn{5}{l}{\emph{Heteroskedasticity-robust standard-errors in parentheses}}\\
+            \multicolumn{5}{l}{\emph{Signif. Codes: ***: 0.01, **: 0.05, *: 0.1}}\\
+         \end{tabular}
+         
+         \begin{tablenotes}\item \medskip \textit{Note:}
+            \item This table displays regression results from equation OLS on the carbon emissions embedded in consumption [SD] (1) and on the carbon intensity of consumption [SD] (2), respectively. 
+                                      Column (3) ((4) respectively) shows regression results from equation LOGIT on the log-odds transformed probability of higher (lower) additional costs than 80\% of the population in Estonia as the dependent variable. Reference group for education (\textit{ISCED}) is ISCED-level 0-1 (primary or no education).
+         \end{tablenotes}
+      \end{threeparttable}
+   \end{adjustbox}
+\end{table}
+
+

@@ -1,0 +1,64 @@
+
+\begin{table}[htbp!]
+   \centering
+   \small
+   \begin{adjustbox}{width = 1\textwidth, max height = 0.95\textheight, center}
+      \begin{threeparttable}[b]
+         \caption{\label{tab:Logit_1_MMR} Model coefficients: carbon-intensive consumers in Myanmar (Burma)}
+         \begin{tabular}{lcccc}
+            \tabularnewline \midrule \midrule
+            Dependent Variables: & CO$_{2}$ footprint & CO$_{2}$ intensity & Upper 20\%    & Lower 20\%\\   
+             & \multicolumn{2}{c}{OLS} & \multicolumn{2}{c}{Logit} \\ 
+            Model                & (1)                & (2)                & (3)           & (4)\\  
+            \midrule
+            \emph{Variables}\\
+            (Intercept)          & -5.73$^{***}$      & -1.86$^{***}$      & -5.09$^{***}$ & 1.83$^{***}$\\   
+                                 & (0.328)            & (0.269)            & (0.699)       & (0.661)\\   
+            HH Exp. (log)        & 0.720$^{***}$      & 0.227$^{***}$      & 0.428$^{***}$ & -0.437$^{***}$\\   
+                                 & (0.042)            & (0.036)            & (0.091)       & (0.087)\\   
+            HH Size              & 0.020$^{**}$       & 0.009              & 0.042$^{*}$   & -0.109$^{***}$\\   
+                                 & (0.010)            & (0.010)            & (0.025)       & (0.029)\\   
+            Urban Area           & 0.040              & -0.031             & -0.235$^{*}$  & -0.087\\   
+                                 & (0.043)            & (0.046)            & (0.130)       & (0.144)\\   
+            Electricity Acc.     & 0.092$^{***}$      & 0.148$^{***}$      & 0.352$^{***}$ & -0.452$^{***}$\\   
+                                 & (0.028)            & (0.045)            & (0.130)       & (0.112)\\   
+            Car Ownership        & 1.22$^{***}$       & 0.864$^{***}$      & 1.12$^{***}$  & -0.580\\   
+                                 & (0.170)            & (0.148)            & (0.206)       & (0.473)\\   
+            CF $=$ Charcoal      & -0.048             & -0.112$^{*}$       & -0.242        & 0.933$^{***}$\\   
+                                 & (0.066)            & (0.062)            & (0.172)       & (0.255)\\   
+            CF $=$ Coal          & 0.372$^{**}$       & 1.50$^{***}$       & 2.66$^{***}$  & -11.3$^{***}$\\   
+                                 & (0.152)            & (0.436)            & (0.987)       & (0.247)\\   
+            CF $=$ Firewood      & 0.026              & -0.053             & -0.120        & 1.07$^{***}$\\   
+                                 & (0.068)            & (0.064)            & (0.159)       & (0.240)\\   
+            CF $=$ Kerosene      & 0.165              & 0.026              & 0.050         & 0.300\\   
+                                 & (0.101)            & (0.265)            & (0.995)       & (1.07)\\   
+            CF $=$ LPG           & 0.165              & -0.056             & 0.157         & 0.220\\   
+                                 & (0.168)            & (0.120)            & (0.364)       & (0.709)\\   
+            CF $=$ Otherbiomass  & -0.144$^{*}$       & -0.280$^{***}$     & -1.04$^{**}$  & 1.42$^{***}$\\   
+                                 & (0.079)            & (0.094)            & (0.427)       & (0.374)\\   
+            CF $=$ Unknown       & 0.979$^{***}$      & 1.60$^{***}$       & 2.05$^{***}$  & -0.900\\   
+                                 & (0.294)            & (0.335)            & (0.486)       & (0.669)\\   
+            ISCED $=$ 2-5        & 0.028              & 0.037              & 0.210         & -0.189\\   
+                                 & (0.037)            & (0.052)            & (0.137)       & (0.128)\\   
+            ISCED $=$ 6-8        & 0.106              & -0.004             & -0.068        & -0.695$^{*}$\\   
+                                 & (0.139)            & (0.109)            & (0.255)       & (0.398)\\   
+            ISCED $=$ 9          & -0.001             & 0.004              & -0.051        & -0.050\\   
+                                 & (0.038)            & (0.060)            & (0.163)       & (0.137)\\   
+            \midrule 
+            Standard-Errors & \multicolumn{4}{c}{Heteroskedasticity-robust} \\ 
+            Observations         & 3,648              & 3,648              & 3,648         & 3,648\\  
+            Squared Correlation  & 0.42244            & 0.12351            & 0.06261       & 0.08438\\  
+            \midrule \midrule
+            \multicolumn{5}{l}{\emph{Heteroskedasticity-robust standard-errors in parentheses}}\\
+            \multicolumn{5}{l}{\emph{Signif. Codes: ***: 0.01, **: 0.05, *: 0.1}}\\
+         \end{tabular}
+         
+         \begin{tablenotes}\item \medskip \textit{Note:}
+            \item This table displays regression results from equation OLS on the carbon emissions embedded in consumption [SD] (1) and on the carbon intensity of consumption [SD] (2), respectively. 
+                                      Column (3) ((4) respectively) shows regression results from equation LOGIT on the log-odds transformed probability of higher (lower) additional costs than 80\% of the population in Myanmar (Burma) as the dependent variable. Reference group for education (\textit{ISCED}) is ISCED-level 0-1 (primary or no education) and \textit{Electricity} for cooking fuel (\textit{CF}).
+         \end{tablenotes}
+      \end{threeparttable}
+   \end{adjustbox}
+\end{table}
+
+

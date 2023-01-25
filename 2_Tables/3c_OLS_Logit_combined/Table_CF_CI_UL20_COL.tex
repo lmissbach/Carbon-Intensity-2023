@@ -1,0 +1,62 @@
+
+\begin{table}[htbp!]
+   \centering
+   \small
+   \begin{adjustbox}{width = 1\textwidth, max height = 0.95\textheight, center}
+      \begin{threeparttable}[b]
+         \caption{\label{tab:Logit_1_COL} Model coefficients: carbon-intensive consumers in Colombia}
+         \begin{tabular}{lcccc}
+            \tabularnewline \midrule \midrule
+            Dependent Variables: & CO$_{2}$ footprint & CO$_{2}$ intensity & Upper 20\%     & Lower 20\%\\   
+             & \multicolumn{2}{c}{OLS} & \multicolumn{2}{c}{Logit} \\ 
+            Model                & (1)                & (2)                & (3)            & (4)\\  
+            \midrule
+            \emph{Variables}\\
+            (Intercept)          & -4.31$^{***}$      & 2.44$^{***}$       & 4.93$^{***}$   & -2.72$^{***}$\\   
+                                 & (0.079)            & (0.111)            & (0.304)        & (0.243)\\   
+            HH Exp. (log)        & 0.507$^{***}$      & -0.349$^{***}$     & -0.982$^{***}$ & 0.437$^{***}$\\   
+                                 & (0.010)            & (0.010)            & (0.026)        & (0.026)\\   
+            HH Size              & 0.015$^{***}$      & 0.052$^{***}$      & 0.153$^{***}$  & -0.215$^{***}$\\   
+                                 & (0.003)            & (0.004)            & (0.010)        & (0.014)\\   
+            Urban Area           & -0.053$^{***}$     & -0.128$^{***}$     & -0.180$^{***}$ & 0.030\\   
+                                 & (0.012)            & (0.024)            & (0.059)        & (0.062)\\   
+            Electricity Acc.     & -0.159$^{***}$     & 0.245$^{***}$      & 0.627$^{***}$  & -1.14$^{***}$\\   
+                                 & (0.027)            & (0.066)            & (0.216)        & (0.126)\\   
+            Car Ownership        & 0.727$^{***}$      & 0.485$^{***}$      & 1.42$^{***}$   & -0.895$^{***}$\\   
+                                 & (0.023)            & (0.020)            & (0.056)        & (0.070)\\   
+            CF $=$ Coal          & -0.140             & -0.437$^{***}$     & -0.631         & 0.539\\   
+                                 & (0.094)            & (0.136)            & (0.720)        & (0.508)\\   
+            CF $=$ Firewood      & -0.043             & -0.642$^{***}$     & -1.53$^{***}$  & 1.12$^{***}$\\   
+                                 & (0.037)            & (0.048)            & (0.186)        & (0.115)\\   
+            CF $=$ Gas           & 0.111$^{***}$      & 0.412$^{***}$      & 1.20$^{***}$   & -1.26$^{***}$\\   
+                                 & (0.036)            & (0.037)            & (0.142)        & (0.085)\\   
+            CF $=$ Kerosene      & 0.113              & 0.111              & 0.665          & -1.02$^{**}$\\   
+                                 & (0.075)            & (0.216)            & (0.607)        & (0.422)\\   
+            CF $=$ LPG           & 0.028              & 0.241$^{***}$      & 0.909$^{***}$  & -0.418$^{***}$\\   
+                                 & (0.035)            & (0.038)            & (0.145)        & (0.090)\\   
+            CF $=$ Unknown       & -0.019             & -0.419$^{***}$     & -1.03$^{***}$  & 1.14$^{***}$\\   
+                                 & (0.046)            & (0.053)            & (0.309)        & (0.142)\\   
+            ISCED $=$ 2-5        & -0.092$^{***}$     & -0.128$^{***}$     & -0.262$^{***}$ & 0.132$^{***}$\\   
+                                 & (0.009)            & (0.015)            & (0.040)        & (0.044)\\   
+            ISCED $=$ 6-8        & -0.041$^{***}$     & -0.180$^{***}$     & -0.457$^{***}$ & 0.269$^{***}$\\   
+                                 & (0.016)            & (0.016)            & (0.055)        & (0.054)\\   
+            ISCED $=$ 9          & -0.048             & 0.253              & 1.32$^{**}$    & 0.049\\   
+                                 & (0.084)            & (0.215)            & (0.618)        & (0.538)\\   
+            \midrule 
+            Standard-Errors & \multicolumn{4}{c}{Heteroskedasticity-robust} \\ 
+            Observations         & 86,866             & 86,866             & 86,866         & 86,866\\  
+            Squared Correlation  & 0.47525            & 0.15627            & 0.12396        & 0.13369\\  
+            \midrule \midrule
+            \multicolumn{5}{l}{\emph{Heteroskedasticity-robust standard-errors in parentheses}}\\
+            \multicolumn{5}{l}{\emph{Signif. Codes: ***: 0.01, **: 0.05, *: 0.1}}\\
+         \end{tabular}
+         
+         \begin{tablenotes}\item \medskip \textit{Note:}
+            \item This table displays regression results from equation OLS on the carbon emissions embedded in consumption [SD] (1) and on the carbon intensity of consumption [SD] (2), respectively. 
+                                      Column (3) ((4) respectively) shows regression results from equation LOGIT on the log-odds transformed probability of higher (lower) additional costs than 80\% of the population in Colombia as the dependent variable. Reference group for education (\textit{ISCED}) is ISCED-level 0-1 (primary or no education) and \textit{Electricity} for cooking fuel (\textit{CF}).
+         \end{tablenotes}
+      \end{threeparttable}
+   \end{adjustbox}
+\end{table}
+
+

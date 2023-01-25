@@ -1,0 +1,46 @@
+
+\begin{table}[htbp!]
+   \centering
+   \small
+   \begin{adjustbox}{width = 1\textwidth, max height = 0.95\textheight, center}
+      \begin{threeparttable}[b]
+         \caption{\label{tab:Logit_1_MAR} Model coefficients: carbon-intensive consumers in Morocco}
+         \begin{tabular}{lcccc}
+            \tabularnewline \midrule \midrule
+            Dependent Variables: & CO$_{2}$ footprint & CO$_{2}$ intensity & Upper 20\%     & Lower 20\%\\   
+             & \multicolumn{2}{c}{OLS} & \multicolumn{2}{c}{Logit} \\ 
+            Model                & (1)                & (2)                & (3)            & (4)\\  
+            \midrule
+            \emph{Variables}\\
+            (Intercept)          & -11.5$^{***}$      & 0.757$^{***}$      & -0.401         & -3.31$^{***}$\\   
+                                 & (0.167)            & (0.172)            & (0.442)        & (0.360)\\   
+            HH Exp. (log)        & 1.31$^{***}$       & -0.105$^{***}$     & -0.120$^{**}$  & 0.310$^{***}$\\   
+                                 & (0.020)            & (0.021)            & (0.054)        & (0.044)\\   
+            HH Size              & -0.009$^{***}$     & 0.034$^{***}$      & 0.023$^{**}$   & -0.146$^{***}$\\   
+                                 & (0.003)            & (0.005)            & (0.011)        & (0.012)\\   
+            Urban Area           & -0.070$^{***}$     & -0.031             & -0.155$^{***}$ & -0.157$^{***}$\\   
+                                 & (0.010)            & (0.021)            & (0.050)        & (0.051)\\   
+            ISCED $=$ 2-5        & 0.046$^{***}$      & 0.066$^{***}$      & 0.160$^{***}$  & -0.056\\   
+                                 & (0.016)            & (0.025)            & (0.061)        & (0.061)\\   
+            ISCED $=$ 6-8        & 0.452$^{***}$      & 0.244$^{***}$      & 0.532$^{***}$  & -0.480$^{***}$\\   
+                                 & (0.044)            & (0.043)            & (0.101)        & (0.126)\\   
+            ISCED $=$ 9          & -0.021             & -0.028             & -0.089         & -0.046\\   
+                                 & (0.033)            & (0.038)            & (0.101)        & (0.092)\\   
+            \midrule 
+            Standard-Errors & \multicolumn{4}{c}{Heteroskedasticity-robust} \\ 
+            Observations         & 15,970             & 15,970             & 15,970         & 15,970\\  
+            Squared Correlation  & 0.64166            & 0.00944            & 0.00387        & 0.01332\\  
+            \midrule \midrule
+            \multicolumn{5}{l}{\emph{Heteroskedasticity-robust standard-errors in parentheses}}\\
+            \multicolumn{5}{l}{\emph{Signif. Codes: ***: 0.01, **: 0.05, *: 0.1}}\\
+         \end{tabular}
+         
+         \begin{tablenotes}\item \medskip \textit{Note:}
+            \item This table displays regression results from equation OLS on the carbon emissions embedded in consumption [SD] (1) and on the carbon intensity of consumption [SD] (2), respectively. 
+                                      Column (3) ((4) respectively) shows regression results from equation LOGIT on the log-odds transformed probability of higher (lower) additional costs than 80\% of the population in Morocco as the dependent variable. Reference group for education (\textit{ISCED}) is ISCED-level 0-1 (primary or no education).
+         \end{tablenotes}
+      \end{threeparttable}
+   \end{adjustbox}
+\end{table}
+
+

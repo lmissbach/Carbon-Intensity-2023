@@ -1,0 +1,66 @@
+
+\begin{table}[htbp!]
+   \centering
+   \small
+   \begin{adjustbox}{width = 1\textwidth, max height = 0.95\textheight, center}
+      \begin{threeparttable}[b]
+         \caption{\label{tab:Logit_1_NGA} Model coefficients: carbon-intensive consumers in Nigeria}
+         \begin{tabular}{lcccc}
+            \tabularnewline \midrule \midrule
+            Dependent Variables: & CO$_{2}$ footprint & CO$_{2}$ intensity & Upper 20\%     & Lower 20\%\\   
+             & \multicolumn{2}{c}{OLS} & \multicolumn{2}{c}{Logit} \\ 
+            Model                & (1)                & (2)                & (3)            & (4)\\  
+            \midrule
+            \emph{Variables}\\
+            (Intercept)          & -5.55$^{***}$      & -0.363$^{***}$     & -0.526         & 4.23$^{***}$\\   
+                                 & (0.086)            & (0.124)            & (0.334)        & (0.283)\\   
+            HH Exp. (log)        & 0.635$^{***}$      & -0.036$^{**}$      & -0.320$^{***}$ & -0.598$^{***}$\\   
+                                 & (0.011)            & (0.016)            & (0.045)        & (0.037)\\   
+            HH Size              & 0.0010             & -0.012$^{***}$     & -0.028$^{***}$ & 0.033$^{***}$\\   
+                                 & (0.002)            & (0.002)            & (0.009)        & (0.007)\\   
+            Urban Area           & -0.008             & -0.005             & -0.009         & 0.127$^{**}$\\   
+                                 & (0.014)            & (0.019)            & (0.054)        & (0.062)\\   
+            Electricity Acc.     & 0.194$^{***}$      & 0.606$^{***}$      & 1.46$^{***}$   & -1.19$^{***}$\\   
+                                 & (0.010)            & (0.018)            & (0.066)        & (0.052)\\   
+            Car Ownership        & 0.985$^{***}$      & 0.616$^{***}$      & 1.37$^{***}$   & -1.01$^{***}$\\   
+                                 & (0.037)            & (0.034)            & (0.079)        & (0.171)\\   
+            CF $=$ Coal          & 0.249$^{*}$        & -0.049             & -0.256         & 0.247\\   
+                                 & (0.148)            & (0.238)            & (0.945)        & (0.686)\\   
+            CF $=$ Firewood      & 0.087$^{***}$      & 0.122$^{***}$      & 0.288$^{***}$  & -0.153\\   
+                                 & (0.023)            & (0.032)            & (0.107)        & (0.100)\\   
+            CF $=$ Gas           & 0.616$^{**}$       & 0.338$^{**}$       & 0.395          & -13.6$^{***}$\\   
+                                 & (0.247)            & (0.150)            & (0.513)        & (0.099)\\   
+            CF $=$ Kerosene      & 0.271$^{***}$      & 0.402$^{***}$      & 0.602$^{***}$  & -1.79$^{***}$\\   
+                                 & (0.026)            & (0.038)            & (0.114)        & (0.155)\\   
+            CF $=$ Liquid fuel   & 0.375$^{***}$      & 1.37$^{***}$       & 3.53$^{***}$   & -10.4$^{***}$\\   
+                                 & (0.079)            & (0.411)            & (1.20)         & (0.132)\\   
+            CF $=$ LPG           & 0.620$^{***}$      & 0.616$^{***}$      & 1.17$^{***}$   & -2.79$^{***}$\\   
+                                 & (0.031)            & (0.038)            & (0.114)        & (0.258)\\   
+            CF $=$ Otherbiomass  & 0.099$^{**}$       & -0.175$^{***}$     & -1.09$^{**}$   & 0.540$^{**}$\\   
+                                 & (0.043)            & (0.065)            & (0.543)        & (0.229)\\   
+            CF $=$ Unknown       & 0.063              & -0.018             & 0.168          & 0.676$^{***}$\\   
+                                 & (0.044)            & (0.076)            & (0.219)        & (0.174)\\   
+            ISCED $=$ 2-5        & -0.001             & 0.060$^{***}$      & 0.113$^{**}$   & -0.247$^{***}$\\   
+                                 & (0.011)            & (0.016)            & (0.054)        & (0.048)\\   
+            ISCED $=$ 6-8        & 0.302$^{***}$      & 0.199$^{***}$      & 0.404$^{***}$  & -0.516$^{***}$\\   
+                                 & (0.033)            & (0.034)            & (0.090)        & (0.162)\\   
+            ISCED $=$ 9          & 0.029              & 0.085              & 0.478          & 0.434\\   
+                                 & (0.066)            & (0.149)            & (0.463)        & (0.331)\\   
+            \midrule 
+            Standard-Errors & \multicolumn{4}{c}{Heteroskedasticity-robust} \\ 
+            Observations         & 22,110             & 22,110             & 22,110         & 22,110\\  
+            Squared Correlation  & 0.62300            & 0.23683            & 0.14191        & 0.18356\\  
+            \midrule \midrule
+            \multicolumn{5}{l}{\emph{Heteroskedasticity-robust standard-errors in parentheses}}\\
+            \multicolumn{5}{l}{\emph{Signif. Codes: ***: 0.01, **: 0.05, *: 0.1}}\\
+         \end{tabular}
+         
+         \begin{tablenotes}\item \medskip \textit{Note:}
+            \item This table displays regression results from equation OLS on the carbon emissions embedded in consumption [SD] (1) and on the carbon intensity of consumption [SD] (2), respectively. 
+                                      Column (3) ((4) respectively) shows regression results from equation LOGIT on the log-odds transformed probability of higher (lower) additional costs than 80\% of the population in Nigeria as the dependent variable. Reference group for education (\textit{ISCED}) is ISCED-level 0-1 (primary or no education) and \textit{Charcoal} for cooking fuel (\textit{CF}).
+         \end{tablenotes}
+      \end{threeparttable}
+   \end{adjustbox}
+\end{table}
+
+

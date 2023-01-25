@@ -7,15 +7,15 @@
          \caption{\label{tab:OLS_2_SEN} OLS-regression coefficients for carbon footprint in Senegal}
          \begin{tabular}{lc}
             \tabularnewline \midrule \midrule
-            Dependent Variable: & scaled\_CO2\_t\_national\\     
-            Test                & (1)\\  
+            Dependent Variable: & CO$_{2}$ footprint\\  
+            Model               & (1)\\  
             \midrule
             \emph{Variables}\\
-            (Intercept)         & -5.87$^{***}$\\   
-                                & (0.253)\\   
+            (Intercept)         & -5.84$^{***}$\\   
+                                & (0.258)\\   
             HH Exp. (log)       & 0.652$^{***}$\\   
                                 & (0.024)\\   
-            HH Size             & 0.009$^{***}$\\   
+            HH Size             & 0.008$^{***}$\\   
                                 & (0.002)\\   
             Urban Area          & 0.086$^{***}$\\   
                                 & (0.019)\\   
@@ -23,37 +23,31 @@
                                 & (0.020)\\   
             Car Ownership       & 1.54$^{***}$\\   
                                 & (0.138)\\   
-            CF $=$ Charcoal     & -0.142\\   
-                                & (0.144)\\   
-            CF $=$ Firewood     & -0.162\\   
-                                & (0.145)\\   
-            CF $=$ Gas          & 0.145\\   
-                                & (0.143)\\   
-            CF $=$ Otherbiomass & -0.241\\   
-                                & (0.151)\\   
-            CF $=$ Unknown      & 0.011\\   
-                                & (0.177)\\   
-            ISCED $=$ 0         & -0.005\\   
-                                & (0.022)\\   
-            ISCED $=$ 2         & 0.071$^{*}$\\   
-                                & (0.040)\\   
-            ISCED $=$ 3         & 0.147$^{***}$\\   
-                                & (0.051)\\   
-            ISCED $=$ 4         & -0.003\\   
-                                & (0.101)\\   
-            ISCED $=$ 6         & 0.261$^{**}$\\   
-                                & (0.105)\\   
+            CF $=$ Charcoal     & -0.186\\   
+                                & (0.153)\\   
+            CF $=$ Firewood     & -0.207\\   
+                                & (0.154)\\   
+            CF $=$ Gas          & 0.102\\   
+                                & (0.152)\\   
+            CF $=$ Otherbiomass & -0.286$^{*}$\\   
+                                & (0.159)\\   
+            CF $=$ Unknown      & -0.033\\   
+                                & (0.185)\\   
+            ISCED $=$ 2-5       & 0.094$^{***}$\\   
+                                & (0.032)\\   
+            ISCED $=$ 6-8       & 0.263$^{**}$\\   
+                                & (0.106)\\   
             \midrule 
             Standard-Errors     & Heteroskedasticity-robust \\   
             Observations        & 7,156\\  
-            Squared Correlation & 0.63202\\  
+            Squared Correlation & 0.63177\\  
             \midrule \midrule
             \multicolumn{2}{l}{\emph{Heteroskedasticity-robust standard-errors in parentheses}}\\
             \multicolumn{2}{l}{\emph{Signif. Codes: ***: 0.01, **: 0.05, *: 0.1}}\\
          \end{tabular}
          
          \begin{tablenotes}\item \medskip \textit{Note:}
-            \item This table displays regression results from equation OLS on the carbon footprint of consumption in  in SEN as the dependent variable.  
+            \item This table displays regression results from equation OLS on the carbon footprint of consumption in  in SEN as the dependent variable.  Reference group for education (\textit{ISCED}) is ISCED-level 0-1 (primary or no education) and \textit{Electricity} for cooking fuel (\textit{CF}).
          \end{tablenotes}
       \end{threeparttable}
    \end{adjustbox}

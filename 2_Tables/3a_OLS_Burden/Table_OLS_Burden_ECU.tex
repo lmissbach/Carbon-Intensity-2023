@@ -7,14 +7,14 @@
          \caption{\label{tab:OLS_1_ECU} OLS-regression coefficients for carbon intensity of consumers in Ecuador}
          \begin{tabular}{lc}
             \tabularnewline \midrule \midrule
-            Dependent Variable: & scaled\_carbon\_intensity\_kg\_per\_USD\_national\\        
-            Test                & (1)\\  
+            Dependent Variable: & CO$_{2}$ intensity\\  
+            Model               & (1)\\  
             \midrule
             \emph{Variables}\\
-            (Intercept)         & 5.89$^{***}$\\   
-                                & (0.287)\\   
-            HH Exp. (log)       & -0.827$^{***}$\\   
-                                & (0.034)\\   
+            (Intercept)         & 5.86$^{***}$\\   
+                                & (0.285)\\   
+            HH Exp. (log)       & -0.823$^{***}$\\   
+                                & (0.033)\\   
             HH Size             & 0.029$^{***}$\\   
                                 & (0.004)\\   
             Urban Area          & 0.010\\   
@@ -23,35 +23,27 @@
                                 & (0.025)\\   
             Car Ownership       & 1.21$^{***}$\\   
                                 & (0.029)\\   
-            CF $=$ Firewood     & -0.405$^{***}$\\   
+            CF $=$ Firewood     & -0.402$^{***}$\\   
                                 & (0.129)\\   
-            CF $=$ LPG          & 0.262$^{**}$\\   
-                                & (0.125)\\   
-            CF $=$ Unknown      & -0.310$^{**}$\\   
+            CF $=$ LPG          & 0.263$^{**}$\\   
+                                & (0.126)\\   
+            CF $=$ Unknown      & -0.309$^{**}$\\   
                                 & (0.157)\\   
-            ISCED $=$ 0         & -0.003\\   
-                                & (0.036)\\   
-            ISCED $=$ 2         & -0.145\\   
-                                & (0.407)\\   
-            ISCED $=$ 3         & 0.006\\   
-                                & (0.015)\\   
-            ISCED $=$ 5         & -0.093$^{**}$\\   
-                                & (0.038)\\   
-            ISCED $=$ 6         & 0.123$^{***}$\\   
+            ISCED $=$ 2-5       & -0.002\\   
+                                & (0.014)\\   
+            ISCED $=$ 6-8       & 0.135$^{***}$\\   
                                 & (0.023)\\   
-            ISCED $=$ 7         & 0.284$^{***}$\\   
-                                & (0.048)\\   
             \midrule 
             Standard-Errors     & Heteroskedasticity-robust \\   
             Observations        & 28,263\\  
-            Squared Correlation & 0.32735\\  
+            Squared Correlation & 0.32697\\  
             \midrule \midrule
             \multicolumn{2}{l}{\emph{Heteroskedasticity-robust standard-errors in parentheses}}\\
             \multicolumn{2}{l}{\emph{Signif. Codes: ***: 0.01, **: 0.05, *: 0.1}}\\
          \end{tabular}
          
          \begin{tablenotes}\item \medskip \textit{Note:}
-            \item This table displays regression results from equation OLS on the carbon intensity of consumption in  in Ecuador as the dependent variable. 
+            \item This table displays regression results from equation OLS on the carbon intensity of consumption in  in Ecuador as the dependent variable. Reference group for education (\textit{ISCED}) is ISCED-level 0-1 (primary or no education) and \textit{Electricity} for cooking fuel (\textit{CF}).
          \end{tablenotes}
       \end{threeparttable}
    \end{adjustbox}

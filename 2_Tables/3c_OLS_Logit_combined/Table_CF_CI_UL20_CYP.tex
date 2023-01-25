@@ -1,0 +1,46 @@
+
+\begin{table}[htbp!]
+   \centering
+   \small
+   \begin{adjustbox}{width = 1\textwidth, max height = 0.95\textheight, center}
+      \begin{threeparttable}[b]
+         \caption{\label{tab:Logit_1_CYP} Model coefficients: carbon-intensive consumers in Cyprus}
+         \begin{tabular}{lcccc}
+            \tabularnewline \midrule \midrule
+            Dependent Variables: & CO$_{2}$ footprint & CO$_{2}$ intensity & Upper 20\%     & Lower 20\%\\   
+             & \multicolumn{2}{c}{OLS} & \multicolumn{2}{c}{Logit} \\ 
+            Model                & (1)                & (2)                & (3)            & (4)\\  
+            \midrule
+            \emph{Variables}\\
+            (Intercept)          & -10.5$^{***}$      & 4.50$^{***}$       & 8.80$^{***}$   & -3.38$^{***}$\\   
+                                 & (0.307)            & (0.537)            & (1.04)         & (1.21)\\   
+            HH Exp. (log)        & 1.01$^{***}$       & -0.464$^{***}$     & -1.02$^{***}$  & 0.275$^{**}$\\   
+                                 & (0.033)            & (0.056)            & (0.113)        & (0.129)\\   
+            HH Size              & 0.098$^{***}$      & 0.068$^{***}$      & 0.077$^{*}$    & -0.188$^{***}$\\   
+                                 & (0.011)            & (0.015)            & (0.043)        & (0.048)\\   
+            Urban Area           & -0.128$^{***}$     & -0.162$^{***}$     & -0.484$^{***}$ & 0.105\\   
+                                 & (0.030)            & (0.048)            & (0.117)        & (0.121)\\   
+            ISCED $=$ 2-5        & 0.048              & 0.208$^{***}$      & 0.359$^{**}$   & -0.544$^{***}$\\   
+                                 & (0.032)            & (0.063)            & (0.140)        & (0.132)\\   
+            ISCED $=$ 6-8        & 0.113$^{***}$      & 0.168$^{**}$       & 0.066          & -0.547$^{***}$\\   
+                                 & (0.043)            & (0.071)            & (0.194)        & (0.165)\\   
+            ISCED $=$ 9          & 0.012              & -0.165             & -12.5$^{***}$  & 0.828\\   
+                                 & (0.216)            & (0.162)            & (0.182)        & (0.546)\\   
+            \midrule 
+            Standard-Errors & \multicolumn{4}{c}{Heteroskedasticity-robust} \\ 
+            Observations         & 2,876              & 2,876              & 2,876          & 2,876\\  
+            Squared Correlation  & 0.60134            & 0.07439            & 0.06273        & 0.02174\\  
+            \midrule \midrule
+            \multicolumn{5}{l}{\emph{Heteroskedasticity-robust standard-errors in parentheses}}\\
+            \multicolumn{5}{l}{\emph{Signif. Codes: ***: 0.01, **: 0.05, *: 0.1}}\\
+         \end{tabular}
+         
+         \begin{tablenotes}\item \medskip \textit{Note:}
+            \item This table displays regression results from equation OLS on the carbon emissions embedded in consumption [SD] (1) and on the carbon intensity of consumption [SD] (2), respectively. 
+                                      Column (3) ((4) respectively) shows regression results from equation LOGIT on the log-odds transformed probability of higher (lower) additional costs than 80\% of the population in Cyprus as the dependent variable. Reference group for education (\textit{ISCED}) is ISCED-level 0-1 (primary or no education).
+         \end{tablenotes}
+      \end{threeparttable}
+   \end{adjustbox}
+\end{table}
+
+

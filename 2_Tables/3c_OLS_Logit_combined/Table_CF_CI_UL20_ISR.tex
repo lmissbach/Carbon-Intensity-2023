@@ -1,0 +1,48 @@
+
+\begin{table}[htbp!]
+   \centering
+   \small
+   \begin{adjustbox}{width = 1\textwidth, max height = 0.95\textheight, center}
+      \begin{threeparttable}[b]
+         \caption{\label{tab:Logit_1_ISR} Model coefficients: carbon-intensive consumers in Israel}
+         \begin{tabular}{lcccc}
+            \tabularnewline \midrule \midrule
+            Dependent Variables: & CO$_{2}$ footprint & CO$_{2}$ intensity & Upper 20\%     & Lower 20\%\\   
+             & \multicolumn{2}{c}{OLS} & \multicolumn{2}{c}{Logit} \\ 
+            Model                & (1)                & (2)                & (3)            & (4)\\  
+            \midrule
+            \emph{Variables}\\
+            (Intercept)          & -7.45$^{***}$      & 6.63$^{***}$       & 12.9$^{***}$   & -12.8$^{***}$\\   
+                                 & (0.305)            & (0.422)            & (0.809)        & (0.873)\\   
+            HH Exp. (log)        & 0.703$^{***}$      & -0.678$^{***}$     & -1.50$^{***}$  & 1.20$^{***}$\\   
+                                 & (0.032)            & (0.043)            & (0.086)        & (0.088)\\   
+            HH Size              & 0.072$^{***}$      & 0.088$^{***}$      & 0.162$^{***}$  & -0.391$^{***}$\\   
+                                 & (0.006)            & (0.008)            & (0.019)        & (0.032)\\   
+            Urban Area           & -0.205$^{***}$     & -0.204$^{***}$     & -0.308$^{***}$ & 0.758$^{***}$\\   
+                                 & (0.032)            & (0.038)            & (0.105)        & (0.140)\\   
+            Car Ownership        & 0.412$^{***}$      & 0.778$^{***}$      & 1.78$^{***}$   & -1.68$^{***}$\\   
+                                 & (0.022)            & (0.034)            & (0.109)        & (0.093)\\   
+            ISCED $=$ 2-5        & -0.167$^{***}$     & -0.268$^{***}$     & -0.566$^{***}$ & 0.463$^{***}$\\   
+                                 & (0.031)            & (0.046)            & (0.109)        & (0.143)\\   
+            ISCED $=$ 6-8        & -0.219$^{***}$     & -0.391$^{***}$     & -0.890$^{***}$ & 0.763$^{***}$\\   
+                                 & (0.034)            & (0.048)            & (0.119)        & (0.147)\\   
+            ISCED $=$ 9          & -0.162$^{***}$     & -0.184$^{***}$     & -0.605$^{***}$ & 0.086\\   
+                                 & (0.038)            & (0.060)            & (0.145)        & (0.190)\\   
+            \midrule 
+            Standard-Errors & \multicolumn{4}{c}{Heteroskedasticity-robust} \\ 
+            Observations         & 8,786              & 8,786              & 8,786          & 8,786\\  
+            Squared Correlation  & 0.50093            & 0.21892            & 0.13399        & 0.15129\\  
+            \midrule \midrule
+            \multicolumn{5}{l}{\emph{Heteroskedasticity-robust standard-errors in parentheses}}\\
+            \multicolumn{5}{l}{\emph{Signif. Codes: ***: 0.01, **: 0.05, *: 0.1}}\\
+         \end{tabular}
+         
+         \begin{tablenotes}\item \medskip \textit{Note:}
+            \item This table displays regression results from equation OLS on the carbon emissions embedded in consumption [SD] (1) and on the carbon intensity of consumption [SD] (2), respectively. 
+                                      Column (3) ((4) respectively) shows regression results from equation LOGIT on the log-odds transformed probability of higher (lower) additional costs than 80\% of the population in Israel as the dependent variable. Reference group for education (\textit{ISCED}) is ISCED-level 0-1 (primary or no education).
+         \end{tablenotes}
+      \end{threeparttable}
+   \end{adjustbox}
+\end{table}
+
+

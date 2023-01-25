@@ -1,0 +1,56 @@
+
+\begin{table}[htbp!]
+   \centering
+   \small
+   \begin{adjustbox}{width = 1\textwidth, max height = 0.95\textheight, center}
+      \begin{threeparttable}[b]
+         \caption{\label{tab:Logit_1_NER} Model coefficients: carbon-intensive consumers in Niger}
+         \begin{tabular}{lcccc}
+            \tabularnewline \midrule \midrule
+            Dependent Variables: & CO$_{2}$ footprint & CO$_{2}$ intensity & Upper 20\%    & Lower 20\%\\   
+             & \multicolumn{2}{c}{OLS} & \multicolumn{2}{c}{Logit} \\ 
+            Model                & (1)                & (2)                & (3)           & (4)\\  
+            \midrule
+            \emph{Variables}\\
+            (Intercept)          & -2.29$^{***}$      & -0.279             & -3.02$^{***}$ & -0.750\\   
+                                 & (0.152)            & (0.199)            & (0.606)       & (0.578)\\   
+            HH Exp. (log)        & 0.306$^{***}$      & 0.017              & 0.186$^{**}$  & -0.024\\   
+                                 & (0.014)            & (0.026)            & (0.082)       & (0.062)\\   
+            HH Size              & 0.020$^{***}$      & 0.024$^{***}$      & 0.036$^{**}$  & -0.138$^{***}$\\   
+                                 & (0.004)            & (0.005)            & (0.015)       & (0.018)\\   
+            Urban Area           & 0.174$^{***}$      & 0.114$^{**}$       & 0.141         & -0.780$^{***}$\\   
+                                 & (0.046)            & (0.049)            & (0.141)       & (0.178)\\   
+            Electricity Acc.     & 0.275$^{***}$      & 0.534$^{***}$      & 1.19$^{***}$  & -2.25$^{***}$\\   
+                                 & (0.041)            & (0.058)            & (0.138)       & (0.531)\\   
+            Car Ownership        & 3.76$^{***}$       & 1.88$^{***}$       & 2.11$^{***}$  & -1.24\\   
+                                 & (0.290)            & (0.169)            & (0.449)       & (0.753)\\   
+            CF $=$ Firewood      & -0.256$^{**}$      & -0.158             & -0.426$^{**}$ & 0.613$^{*}$\\   
+                                 & (0.112)            & (0.098)            & (0.217)       & (0.363)\\   
+            CF $=$ Gas           & 0.531$^{***}$      & 0.372$^{***}$      & 0.946$^{***}$ & -0.920\\   
+                                 & (0.152)            & (0.116)            & (0.271)       & (0.809)\\   
+            CF $=$ Otherbiomass  & -0.168             & -0.371$^{***}$     & -0.955        & 0.389\\   
+                                 & (0.119)            & (0.129)            & (0.780)       & (0.602)\\   
+            CF $=$ Unknown       & -0.245$^{**}$      & 0.027              & 0.211         & 0.414\\   
+                                 & (0.116)            & (0.189)            & (0.409)       & (0.548)\\   
+            ISCED $=$ 2-5        & 0.013              & 0.130$^{**}$       & 0.252$^{*}$   & -0.814$^{***}$\\   
+                                 & (0.038)            & (0.057)            & (0.148)       & (0.230)\\   
+            ISCED $=$ 6-8        & 0.165              & -0.217             & 0.067         & -1.00\\   
+                                 & (0.253)            & (0.152)            & (0.432)       & (1.06)\\   
+            \midrule 
+            Standard-Errors & \multicolumn{4}{c}{Heteroskedasticity-robust} \\ 
+            Observations         & 6,024              & 6,024              & 6,024         & 6,024\\  
+            Squared Correlation  & 0.69312            & 0.27528            & 0.22796       & 0.08968\\  
+            \midrule \midrule
+            \multicolumn{5}{l}{\emph{Heteroskedasticity-robust standard-errors in parentheses}}\\
+            \multicolumn{5}{l}{\emph{Signif. Codes: ***: 0.01, **: 0.05, *: 0.1}}\\
+         \end{tabular}
+         
+         \begin{tablenotes}\item \medskip \textit{Note:}
+            \item This table displays regression results from equation OLS on the carbon emissions embedded in consumption [SD] (1) and on the carbon intensity of consumption [SD] (2), respectively. 
+                                      Column (3) ((4) respectively) shows regression results from equation LOGIT on the log-odds transformed probability of higher (lower) additional costs than 80\% of the population in Niger as the dependent variable. Reference group for education (\textit{ISCED}) is ISCED-level 0-1 (primary or no education) and \textit{Charcoal} for cooking fuel (\textit{CF}).
+         \end{tablenotes}
+      \end{threeparttable}
+   \end{adjustbox}
+\end{table}
+
+
