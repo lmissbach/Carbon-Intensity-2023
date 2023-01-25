@@ -1065,6 +1065,164 @@ dev.off()
 
 print(i)
 
+# 4.5     Vertical vs. horizontal inequality (Tables and Figures) ####
+
+data_4.5 <- data_2 %>%
+  group_by(Country, Income_Group_5)%>%
+  summarise(median_burden_CO2_national = wtd.quantile(burden_CO2_national, probs = 0.5, weights = hh_weights),
+            q95_burden_CO2_national    = wtd.quantile(burden_CO2_national, probs = 0.95, weights = hh_weights),
+            q05_burden_CO2_national    = wtd.quantile(burden_CO2_national, probs = 0.05, weights = hh_weights),
+            q20_burden_CO2_national    = wtd.quantile(burden_CO2_national, probs = 0.20, weights = hh_weights),
+            q80_burden_CO2_national    = wtd.quantile(burden_CO2_national, probs = 0.80, weights = hh_weights))%>%
+  ungroup()%>%
+  filter(Income_Group_5 == 1 | Income_Group_5 == 5)%>%
+  mutate(dif_q95_q05_burden_CO2_national = q95_burden_CO2_national - q05_burden_CO2_national,
+         dif_q80_q20_burden_CO2_national = q80_burden_CO2_national - q20_burden_CO2_national,)%>%
+  select(Country, Income_Group_5, dif_q95_q05_burden_CO2_national, dif_q80_q20_burden_CO2_national, median_burden_CO2_national)%>%
+  pivot_wider(names_from = Income_Group_5, values_from = c(median_burden_CO2_national, dif_q95_q05_burden_CO2_national, dif_q80_q20_burden_CO2_national))%>%
+  mutate(median_1_5    = median_burden_CO2_national_1/median_burden_CO2_national_5,
+         dif_95_05_1_5 = dif_q95_q05_burden_CO2_national_1/dif_q95_q05_burden_CO2_national_5,
+         dif_80_20_1_5 = dif_q80_q20_burden_CO2_national_1/dif_q80_q20_burden_CO2_national_5)
+
+# Table Output
+
+data_4.5.1 <- data_4.5 %>%
+  mutate_at(vars(median_burden_CO2_national_1:dif_q80_q20_burden_CO2_national_5), list(~ label_percent(accuracy = 0.01)(.)))%>%
+  mutate_at(vars(median_1_5:dif_80_20_1_5), list(~ round(.,2)))
+
+colnames(data_4.5.1) <- c("Country", "$\\overline{AC}_{r}^{1}$", "MAC5", "H1", "H5", "H1A", "H5A", "MAC 1/5", "H 1/5", "H 1/5 A")
+
+kbl(mutate_all(data_4.5.1, linebreak), format = "latex", caption = "Comparing Median Additional Costs (AC) and Horizontal Spread between first and fifth Expenditure Quintile", 
+    booktabs = T, align = "l|cc|cccc|ccc", vline = "", linesep = "", longtable = T,
+    col.names = NULL)%>%
+  kable_styling(position = "center", latex_options = c("HOLD_position", "repeat_header"), font_size = 9)%>%
+  add_header_above(c("Country" = 1, 
+                     "$\\\\overline{AC}_{r}^{1}$" = 1, 
+                     "$\\\\overline{AC}_{r}^{5}$" = 1, 
+                     "$\\\\overline{H}_{r}^{1}$" = 1, 
+                     "$\\\\overline{H}_{r}^{5}$" = 1,
+                     "$\\\\overline{H}_{r}^{1*}$" = 1,
+                     "$\\\\overline{H}_{r}^{5*}$" = 1,
+                     "$\\\\widehat{AC}_{r}^{1}$" = 1,
+                     "$\\\\widehat{H}_{r}^{1}$" = 1,
+                     "$\\\\widehat{H}_{r}^{1*}$" = 1), escape = FALSE, align = "c")%>%
+  column_spec(1, width = "2.88 cm")%>%
+  column_spec(2:10, width = "1.46 cm")%>%
+  footnote(general = "This table shows the median additional costs from carbon pricing in the first expenditure quintile ($\\\\overline{AC}_{r}^{1}$) and in the fifth quintile ($\\\\overline{AC}_{r}^{5}$). It displays the difference between the 5$^{th}$ (20$^{th}$) and 95$^{th}$ (80$^{th}$) within quintile percentile incidence for the first ($\\\\overline{H}_{r}^{1}$ and $\\\\overline{H}_{r}^{1*}$) and the fifth quintile ($\\\\overline{H}_{r}^{5}$ and $\\\\overline{H}_{r}^{5*}$). It also compares median additional costs from carbon pricing in the first income quintile to that in the fifth quintile ($\\\\hat{AC}$$_{r}^{1}$). Lastly it displays our comparison index faciltiating the comparison of within quintile variation between the first and fifth quintile ($\\\\hat{H}_{r}^{1}$ and $\\\\hat{H}_{r}^{1*}$ respectively).",
+           threeparttable = T, escape = FALSE)%>%
+  save_kable(., "2_Tables/Table_Vertical_Horizontal.tex")
+
+# From Latin America paper
+
+poly <- data.frame(g = c(1,1,1,2,2,2,2,3,3,3,4,4,4,5,5,5,5,6,6,6), x = c(0.05,0.05,0.95,
+                                                                         0.05,0.05,0.95,0.95,
+                                                                         1.05,1.05,2.95,
+                                                                         2.96,2.96,1.06,
+                                                                         2.95,1.05,1.05,2.95,
+                                                                         0.06,0.96,0.96), 
+                   y = c(0.06,0.96,0.96,
+                         1.05,2.95,2.95,1.05,
+                         1.06,2.96,2.96,
+                         2.95,1.05,1.05,
+                         0.95,0.95,0.05,0.05,
+                         0.05,0.95,0.05))%>%
+  mutate(x_1 = ifelse(g == 1,0.25,
+                      ifelse(g == 2,0.5,
+                             ifelse(g == 3,1.75,
+                                    ifelse(g == 4,2.25,
+                                           ifelse(g == 5,2,
+                                                  ifelse(g == 6,0.75,0)))))))%>%
+  mutate(y_1 = ifelse(g == 1,0.75,
+                      ifelse(g == 2,2,
+                             ifelse(g == 3,2.25,
+                                    ifelse(g == 4,1.75,
+                                           ifelse(g == 5,0.5,
+                                                  ifelse(g == 6,0.25,0)))))))%>%
+  mutate(z_1 = ifelse(g == 6 & x_1 == lag(x_1), NA,x_1),
+         z_2 = ifelse(x_1 == lead(x_1), NA, x_1))%>%
+  mutate(z_3 = ifelse(g == 6, z_1, z_2))%>%
+  mutate(z_1 = ifelse(g == 6 & y_1 == lag(y_1), NA,y_1),
+         z_2 = ifelse(y_1 == lead(y_1), NA, y_1))%>%
+  mutate(z_4 = ifelse(g == 6, z_1, z_2))%>%
+  mutate(label = ifelse(g == 1, "Regressive and homogeneous (Horizontal)",
+                        ifelse(g == 2, "Regressive and heterogeneous", 
+                               ifelse(g == 3, "Progressive and heterogeneous (Horizontal)",
+                                      ifelse(g == 4, "Progressive and heterogeneous (Vertical)",
+                                             ifelse(g == 5, "Progressive and homogeneous",
+                                                    ifelse(g == 6, "Regressive and heterogeneous (Vertical)", "FAIL")))))))
+
+poly_2 <- data.frame(g = c(1,1,1,1,
+                           2,2,2,2,
+                           3,3,3,3,
+                           4,4,4,4),
+                     y = c(0.01,0.99,0.99,0.01,
+                           1.01,3.19,3.19,1.01,
+                           1.01,3.19,3.19,1.01,
+                           0.01,0.99,0.99,0.01),
+                     x = c(0.01,0.01,0.99,0.99,
+                           0.01,0.01,0.99,0.99,
+                           1.01,1.01,3.19,3.19,
+                           1.01,1.01,3.19,3.19),
+                     label = c(rep("Progressive and more heterogeneous in IQ5",4),
+                               rep("Regressive and more heterogeneous in IQ5",4),
+                               rep("Regressive and more heterogeneous in IQ1",4),
+                               rep("Progressive and more heterogeneous in IQ1",4)))
+
+poly_3 <- data.frame(g = c(1,1,1,
+                           2,2,2),
+                     y = c(0.03,3.18,3.18,
+                           0.02,3.17,0.02),
+                     x = c(0.02,0.02,3.17,
+                           0.03,3.18,3.18))
+
+poly_4 <- data.frame(text = c("Horizontal Differences > Vertical Differences",
+                              "Vertical Differences > Horizontal Differences"),
+                     x = c(2,1),
+                     y = c(0.5,2.5))
+
+data_4.5.2 <- data_4.5 
+
+P.4.5.1 <- ggplot()+
+  #geom_polygon(data = poly, aes(x = y, y = x, group = g), colour = "black", alpha = 0.5, fill = NA)+
+  geom_polygon(data = poly_3, aes(x = x, y = y, group = g), colour = "black", fill = NA)+
+  geom_polygon(data = poly_2, aes(x = x, y = y, group = g, fill = label), alpha = 0.5)+
+  geom_text(data = poly_4, aes(label = text, x = x, y = y))+
+  #geom_text(data = poly, aes(x = z_4, y = z_3, group = g, label = label))+
+  theme_bw()+
+  geom_point(data = data_4.5.2, aes(y = median_1_5, x = dif_95_05_1_5), shape = 17, colour = "black", size = 2)+
+  geom_text_repel(data = data_4.5.2, aes(label = Country, y = median_1_5, x = dif_95_05_1_5),
+                  direction = "both", size = 2, max.overlaps = 100)+
+  coord_cartesian(xlim = c(0,3.2), ylim = c(0,3.2))+
+  #geom_abline(intercept = 0, slope = 1)+
+  scale_fill_npg(guide = guide_legend(nrow = 2))+
+  #scale_shape_manual(values = c(15,15,15,15,17,17,17,17,18,18,18,18,19,19,19,19))+
+  scale_x_continuous(expand = c(0,0))+
+  scale_y_continuous(expand = c(0,0))+
+  ylab("Vertical Distribution Coefficient")+
+  xlab("Horizontal Distribution Coefficient")+
+  labs(fill = "")+
+  #guides(fill = guide_legend(nrow = 2))+
+  theme(axis.text.y = element_text(size = 7), 
+        axis.text.x = element_text(size = 7),
+        axis.title  = element_text(size = 7),
+        plot.title  = element_text(size = 7),
+        legend.position = "bottom",
+        strip.text = element_text(size = 7),
+        #strip.text.y = element_text(angle = 180),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        axis.ticks = element_line(size = 0.2),
+        legend.text = element_text(size = 7),
+        legend.title = element_text(size = 7),
+        plot.margin = unit(c(0.1,0.1,0,0), "cm"),
+        panel.border = element_rect(size = 0.3))
+
+jpeg("1_Figures/Analysis_Vertical_Horizontal/Figure_VH.jpg", width = 15.75, height = 16, unit = "cm", res = 600)
+print(P.4.5.1)
+dev.off()
+
+rm(poly, poly_2, poly_3, poly_4, data_4.5, data_4.5.1, data_4.5.2, P.4.5.1)
+
 # 5.      Econometric analysis ####
 
 # Overhead Overleaf
@@ -1387,7 +1545,7 @@ for (Type_0 in c("carbon_intensity_kg_per_USD_national", "CO2_t_national")){
       ggforce::facet_col(vars(term_1), scales = "free", space = "free")
     
     if(Type_0 == "carbon_intensity_kg_per_USD_national"){
-      jpeg(sprintf("1_Figures/Analysis_OLS_ME_Carbon_Intensity/AME_OLS_CI_CI_%s.jpg", B_0), width = 15.5, height = 16, unit = "cm", res = 600)
+      jpeg(sprintf("1_Figures/Analysis_OLS_ME_Carbon_Intensity/AME_OLS_CI_CF_%s.jpg", B_0), width = 15.5, height = 16, unit = "cm", res = 600)
       print(P_5.1.2.2)
       dev.off()
     }
@@ -1623,11 +1781,14 @@ for(i in Country.Set$Country){
 
 # write.xlsx(data_frame_5.3.2.1, "1_Figures/Analysis_Logit_Models_Marginal_Effects/Average_Marginal_Effects_Logit.xlsx")
 
-data_frame_5.3.2.3 <- read.xlsx("1_Figures/Analysis_Logit_Models_Marginal_Effects/Average_Marginal_Effects_Logit.xlsx")
+data_frame_5.3.2.3 <- read.xlsx("1_Figures/Analysis_Logit_Models_Marginal_Effects/Average_Marginal_Effects_Logit.xlsx")%>%
+  mutate(term = ifelse((contrast == "6-8 - 2-5" | contrast == "6-8 - 0-1") & !is.na(contrast), "higher_education",
+                       ifelse(contrast == "2-5 - 0-1" & !is.na(contrast), "secondary_education", term)))
 
 for (Type_0 in c("affected_lower_80", "affected_upper_80")){
   # Add education - questionable - maybe cluster higher education / lower education
-  for (Term_0 in c("urban_01", "car.01", "electricity.access", "hh_size", "log_hh_expenditures_USD_2014")){
+  for (Term_0 in c("urban_01", "car.01", "electricity.access", "hh_size", "log_hh_expenditures_USD_2014",
+                   "secondary_education", "higher_education")){
     data_frame_5.3.2.4 <- data_frame_5.3.2.3 %>%
       filter(Type == Type_0)%>%
       filter(term == Term_0)%>%
@@ -1641,7 +1802,9 @@ for (Type_0 in c("affected_lower_80", "affected_upper_80")){
                               ifelse(Term_0 == "car.01", "Car ownership",
                                      ifelse(Term_0 == "electricity.access", "Electricity access",
                                             ifelse(Term_0 == "log_hh_expenditures_USD_2014", "Household expenditures",
-                                                   ifelse(Term_0 == "hh_size", "Household size", NA))))))%>%
+                                                   ifelse(Term_0 == "hh_size", "Household size", 
+                                                          ifelse(Term_0 == "secondary_education", "Secondary education",
+                                                                 ifelse(Term_0 == "higher_education", "Higher education", NA))))))))%>%
       mutate(legend_0 = tolower(title_0))%>%
       mutate(bound_0 = ifelse(Term_0 == "urban_01", -0.25,
                               ifelse(Term_0 == "car.01" & Type_0 == "affected_lower_80",-0.5,
@@ -1650,7 +1813,8 @@ for (Type_0 in c("affected_lower_80", "affected_upper_80")){
                                                    ifelse(Term_0 == "electricity.access" & Type_0 == "affected_lower_80", -0.85,
                                                           ifelse(Term_0 == "log_hh_expenditures_USD_2014", -0.35,
                                                                  ifelse(Term_0 == "hh_size" & Type_0 == "affected_upper_80", -0.05,
-                                                                        ifelse(Term_0 == "hh_size" & Type_0 == "affected_lower_80", -0.12,NA)))))))))%>%
+                                                                        ifelse(Term_0 == "hh_size" & Type_0 == "affected_lower_80", -0.12,
+                                                                               ifelse(Term_0 == "secondary_education",-0.5,-0.75))))))))))%>%
       mutate(bound_1 = ifelse(Term_0 == "urban_01", 0.22,
                               ifelse(Term_0 == "car.01" & Type_0 == "affected_lower_80",0.25,
                                      ifelse(Term_0 == "car.01" & Type_0 == "affected_upper_80",0.55,
@@ -1659,7 +1823,7 @@ for (Type_0 in c("affected_lower_80", "affected_upper_80")){
                                                           ifelse(Term_0 == "log_hh_expenditures_USD_2014" & Type_0 == "affected_upper_80", 0.15,
                                                                  ifelse(Term_0 == "log_hh_expenditures_USD_2014" & Type_0 == "affected_lower_80", 0.3,
                                                                         ifelse(Term_0 == "hh_size" & Type_0 == "affected_upper_80", 0.1,
-                                                                               ifelse(Term_0 == "hh_size" & Type_0 == "affected_lower_80", 0.05,NA))))))))))
+                                                                               ifelse(Term_0 == "hh_size" & Type_0 == "affected_lower_80", 0.05,0.5))))))))))
     
     bound_0  <- labels_data_frame$bound_0[labels_data_frame$Term_0 == Term_0 & labels_data_frame$Type_0 == Type_0]
     bound_1  <- labels_data_frame$bound_1[labels_data_frame$Term_0 == Term_0 & labels_data_frame$Type_0 == Type_0]
@@ -1699,10 +1863,10 @@ for (Type_0 in c("affected_lower_80", "affected_upper_80")){
     jpeg(sprintf("1_Figures/Analysis_Logit_Models_Marginal_Effects/Average_Marginal_Effects_%s_%s.jpg", Type_0, Term_0), width = 15.5, height = 16, unit = "cm", res = 600)
     print(P_5.3.2.4)
     dev.off()
-    
-    rm(P_5.3.2.4, data_frame_5.3.2.4, labels_data_frame, bound_0, bound_1, legend_0, state_0, Term_0, title_0, Type_0)
-    
+
   }
+  
+  rm(P_5.3.2.4, data_frame_5.3.2.4, labels_data_frame, bound_0, bound_1, legend_0, state_0, Term_0, title_0, Type_0)
 }
 
 for (Type_0 in c("affected_lower_80", "affected_upper_80")){
