@@ -50,115 +50,117 @@ DEU,NA,NA,48
 DNK,NA,NA,49
 DOM,NA,NA,50
 ECU,NA,NA,51
-ESP,NA,NA,52
-EST,NA,NA,53
-ETH,NA,NA,54
-FIN,NA,NA,55
-FRA,NA,NA,56
-GHA,NA,NA,57
-GNB,Benim,1,58
-GNB,Outra da CEDEAO,10,59
-GNB,Outra em África,11,60
-GNB,Outro país não africano,12,61
-GNB,Costa do Marfim,3,62
-GNB,Guiné-Bissau,4,63
-GNB,Mali,5,64
-GNB,Senegal,7,65
-GNB,Nigéria,9,66
-GRC,NA,NA,67
-GTM,NA,NA,68
-HRV,NA,NA,69
-HUN,NA,NA,70
-IDN,NA,NA,71
-IND,NA,NA,72
-IRL,NA,NA,73
-IRQ,NA,NA,74
-ISR,NA,NA,75
-ITA,NA,NA,76
-KEN,NA,NA,77
-KHM,NA,NA,78
-LBR,NA,NA,79
-LTU,NA,NA,80
-LUX,NA,NA,81
-LVA,NA,NA,82
-MAR,NA,NA,83
-MDV,Maldivian,1,84
-MDV,Foreigner,2,85
-MEX,NA,NA,86
-MLI,Benin,1,87
-MLI,Autre CEDEAO,10,88
-MLI,Autre Afrique,11,89
-MLI,Autre pays hors Afrique,12,90
-MLI,Burkina Faso,2,91
-MLI,c,3,92
-MLI,Guin,4,93
-MLI,Mali,5,94
-MLI,Niger,6,95
-MLI,s,7,96
-MLI,Togo,8,97
-MMR,NA,NA,98
-MNG,NA,NA,99
-MWI,NA,NA,100
-NER,Benin,1,101
-NER,Autre Afrique,11,102
-NER,Cameroun,13,103
-NER,Tchad,14,104
-NER,Burkina Faso,2,105
-NER,Côte d'Ivoire,3,106
-NER,Mali,5,107
-NER,Niger,6,108
-NER,Sénégal,7,109
-NER,Togo,8,110
-NER,Nigéria,9,111
-NGA,NA,NA,112
-NIC,NA,NA,113
-NLD,NA,NA,114
-NOR,NA,NA,115
-PAK,NA,NA,116
-PER,NA,NA,117
-PHL,NA,NA,118
-POL,NA,NA,119
-PRT,NA,NA,120
-PRY,NA,NA,121
-ROU,NA,NA,122
-RWA,Rwandese,60,123
-RWA,Burundian,61,124
-RWA,Congolese,62,125
-RWA,Ugandan,63,126
-RWA,Kenyan,65,127
-RWA,Other African,66,128
-SEN,Autre CEDEAO,10,129
-SEN,Autre Afrique,11,130
-SEN,Autre pays hors Afrique,12,131
-SEN,Burkina Faso,2,132
-SEN,Guinée Bissau,4,133
-SEN,Mali,5,134
-SEN,Niger,6,135
-SEN,Sénégal,7,136
-SEN,Togo,8,137
-SEN,Nigéria,9,138
-SLV,NA,NA,139
-SUR,Suriname,1,140
-SUR,The Netherlands,2,141
-SUR,Guyana,3,142
-SUR,Brasil,4,143
-SUR,French Guyana,5,144
-SUR,China,6,145
-SUR,Other,7,146
-SVK,NA,NA,147
-SWE,NA,NA,148
-TGO,Benin,1,149
-TGO,Autre CEDEAO,10,150
-TGO,Autre Afrique,11,151
-TGO,Burkina Faso,2,152
-TGO,Côte d'Ivoire,3,153
-TGO,Guinée Bissau,4,154
-TGO,Mali,5,155
-TGO,Niger,6,156
-TGO,Togo,8,157
-TGO,Nigéria,9,158
-THA,NA,NA,159
-TUR,NA,NA,160
-UGA,NA,NA,161
-URY,NA,NA,162
-ZAF,NA,NA,163
+EGY,NA,NA,52
+ESP,NA,NA,53
+EST,NA,NA,54
+ETH,NA,NA,55
+FIN,NA,NA,56
+FRA,NA,NA,57
+GHA,NA,NA,58
+GNB,Benim,1,59
+GNB,Outra da CEDEAO,10,60
+GNB,Outra em África,11,61
+GNB,Outro país não africano,12,62
+GNB,Costa do Marfim,3,63
+GNB,Guiné-Bissau,4,64
+GNB,Mali,5,65
+GNB,Senegal,7,66
+GNB,Nigéria,9,67
+GRC,NA,NA,68
+GTM,NA,NA,69
+HRV,NA,NA,70
+HUN,NA,NA,71
+IDN,NA,NA,72
+IND,NA,NA,73
+IRL,NA,NA,74
+IRQ,NA,NA,75
+ISR,NA,NA,76
+ITA,NA,NA,77
+JOR,NA,NA,78
+KEN,NA,NA,79
+KHM,NA,NA,80
+LBR,NA,NA,81
+LTU,NA,NA,82
+LUX,NA,NA,83
+LVA,NA,NA,84
+MAR,NA,NA,85
+MDV,Maldivian,1,86
+MDV,Foreigner,2,87
+MEX,NA,NA,88
+MLI,Benin,1,89
+MLI,Autre CEDEAO,10,90
+MLI,Autre Afrique,11,91
+MLI,Autre pays hors Afrique,12,92
+MLI,Burkina Faso,2,93
+MLI,c,3,94
+MLI,Guin,4,95
+MLI,Mali,5,96
+MLI,Niger,6,97
+MLI,s,7,98
+MLI,Togo,8,99
+MMR,NA,NA,100
+MNG,NA,NA,101
+MWI,NA,NA,102
+NER,Benin,1,103
+NER,Autre Afrique,11,104
+NER,Cameroun,13,105
+NER,Tchad,14,106
+NER,Burkina Faso,2,107
+NER,Côte d'Ivoire,3,108
+NER,Mali,5,109
+NER,Niger,6,110
+NER,Sénégal,7,111
+NER,Togo,8,112
+NER,Nigéria,9,113
+NGA,NA,NA,114
+NIC,NA,NA,115
+NLD,NA,NA,116
+NOR,NA,NA,117
+PAK,NA,NA,118
+PER,NA,NA,119
+PHL,NA,NA,120
+POL,NA,NA,121
+PRT,NA,NA,122
+PRY,NA,NA,123
+ROU,NA,NA,124
+RWA,Rwandese,60,125
+RWA,Burundian,61,126
+RWA,Congolese,62,127
+RWA,Ugandan,63,128
+RWA,Kenyan,65,129
+RWA,Other African,66,130
+SEN,Autre CEDEAO,10,131
+SEN,Autre Afrique,11,132
+SEN,Autre pays hors Afrique,12,133
+SEN,Burkina Faso,2,134
+SEN,Guinée Bissau,4,135
+SEN,Mali,5,136
+SEN,Niger,6,137
+SEN,Sénégal,7,138
+SEN,Togo,8,139
+SEN,Nigéria,9,140
+SLV,NA,NA,141
+SUR,Suriname,1,142
+SUR,The Netherlands,2,143
+SUR,Guyana,3,144
+SUR,Brasil,4,145
+SUR,French Guyana,5,146
+SUR,China,6,147
+SUR,Other,7,148
+SVK,NA,NA,149
+SWE,NA,NA,150
+TGO,Benin,1,151
+TGO,Autre CEDEAO,10,152
+TGO,Autre Afrique,11,153
+TGO,Burkina Faso,2,154
+TGO,Côte d'Ivoire,3,155
+TGO,Guinée Bissau,4,156
+TGO,Mali,5,157
+TGO,Niger,6,158
+TGO,Togo,8,159
+TGO,Nigéria,9,160
+THA,NA,NA,161
+TUR,NA,NA,162
+UGA,NA,NA,163
+URY,NA,NA,164
+ZAF,NA,NA,165
