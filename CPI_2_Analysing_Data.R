@@ -926,7 +926,6 @@ for(Group_0 in c("A", "B", "C", "D")){
 
 rm(P_4.3.2.1, data_4.3.2.1, data_4.3.2.2)
   
-
 # 4.3.2.2 Carbon intensity of consumption - Tables ####
 
 for(i in Country.Set$Country){
@@ -1302,7 +1301,7 @@ for(i in Country.Set$Country){
   if(sum(is.na(data_5.1.1.1$urban_01)) == 0)           formula_0 <- paste0(formula_0, " + urban_01")
   if(sum(is.na(data_5.1.1.1$electricity.access))==0)   formula_0 <- paste0(formula_0, " + electricity.access")
   if(sum(is.na(data_5.1.1.1$car.01))==0)               formula_0 <- paste0(formula_0, " + car.01")
-  if(sum(is.na(data_5.1.1.1$CF))==0){
+  if(sum(is.na(data_5.1.1.1$CF))==0 & i != "JOR"){
     if(!i %in% c("BEN","BFA","GTM","DOM","TGO","NER","NGA","GNB","MLI")) formula_0 <- paste0(formula_0, ' + i(CF, ref = "Electricity")')
     if(i  %in% c("GTM","DOM"))                                           formula_0 <- paste0(formula_0, ' + i(CF, ref = "LPG")')
     if(i  %in% c("BEN","BFA","TGO","NER","NGA","GNB","MLI"))             formula_0 <- paste0(formula_0, ' + i(CF, ref = "Charcoal")')
@@ -1705,9 +1704,7 @@ rm(list_5.1.1.1, list_5.3.1.1, model_5.3.1.0.A, model_5.3.1.0.B, model_5.3.1.0.C
 
 # 5.3.2   Logit-Model (Figures / average marginal effects) ####
 
-list_5.3.2.1       <- list()
 data_frame_5.3.2.1 <- data.frame()
-data_frame_5.3.2.2 <- data.frame()
 
 for(i in Country.Set$Country){
   
@@ -1959,6 +1956,8 @@ for (Type_0 in c("affected_lower_80", "affected_upper_80")){
     rm(P_5.3.2.5, data_frame_5.3.2.5, ATY, B_0, bound_0, bound_1, legend_0, state_0, title_0, Type_0, labels_data_frame, data_frame_5.3.2.4)
     
 }
+
+rm(data_frame_5.3.2.1, data_frame_5.3.2.3, data_5.3, Type_0, i)
 
 # 6       ML-supported analysis ####
 # 6.1     BRT ####
