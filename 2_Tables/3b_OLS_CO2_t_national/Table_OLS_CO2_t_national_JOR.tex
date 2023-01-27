@@ -1,0 +1,44 @@
+
+\begin{table}[htbp!]
+   \centering
+   \small
+   \begin{adjustbox}{width = 1\textwidth, max height = 0.95\textheight, center}
+      \begin{threeparttable}[b]
+         \caption{\label{tab:OLS_2_JOR} OLS-regression coefficients for carbon footprint in Jordan}
+         \begin{tabular}{lc}
+            \tabularnewline \midrule \midrule
+            Dependent Variable: & CO$_{2}$ footprint\\  
+            Model               & (1)\\  
+            \midrule
+            \emph{Variables}\\
+            (Intercept)         & -10.3$^{***}$\\   
+                                & (0.360)\\   
+            HH Exp. (log)       & 1.09$^{***}$\\   
+                                & (0.041)\\   
+            HH Size             & -0.036$^{***}$\\   
+                                & (0.005)\\   
+            Urban Area          & 0.002\\   
+                                & (0.020)\\   
+            Car Ownership       & 0.801$^{***}$\\   
+                                & (0.023)\\   
+            ISCED $=$ 2-5       & -0.029\\   
+                                & (0.020)\\   
+            ISCED $=$ 6-8       & 0.446$^{***}$\\   
+                                & (0.150)\\   
+            \midrule 
+            Standard-Errors     & Heteroskedasticity-robust \\   
+            Observations        & 4,850\\  
+            Squared Correlation & 0.72937\\  
+            \midrule \midrule
+            \multicolumn{2}{l}{\emph{Heteroskedasticity-robust standard-errors in parentheses}}\\
+            \multicolumn{2}{l}{\emph{Signif. Codes: ***: 0.01, **: 0.05, *: 0.1}}\\
+         \end{tabular}
+         
+         \begin{tablenotes}\item \medskip \textit{Note:}
+            \item This table displays regression results from equation OLS on the carbon footprint of consumption in  in JOR as the dependent variable.  Reference group for education (\textit{ISCED}) is ISCED-level 0-1 (primary or no education) and \textit{Electricity} for cooking fuel (\textit{CF}).
+         \end{tablenotes}
+      \end{threeparttable}
+   \end{adjustbox}
+\end{table}
+
+

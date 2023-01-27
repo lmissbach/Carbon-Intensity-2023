@@ -81,7 +81,7 @@ GTM,Pokoman,12,79
 GTM,Ch´orti,13,80
 GTM,Jakalteko (popti),14,81
 GTM,Mopan,16,82
-GTM,Uspanteko,17,83
+GTM,Otro idioma extranjero,17,83
 GTM,Tz´utujil,18,84
 GTM,Q´eqchi´,2,85
 GTM,Chalchiteko,21,86
@@ -140,16 +140,16 @@ MLI,Animiste,3,138
 MLI,Autre R,4,139
 MLI,Sans R,5,140
 MMR,Buddhist,1,141
-MMR,Animist,2,142
+MMR,Other religion,2,142
 MMR,Hindu,3,143
 MMR,Muslim,4,144
 MMR,Christian,5,145
-MMR,No religion,7,146
+MMR,Other religion,7,146
 MNG,NA,NA,147
 MWI,NA,NA,148
 NER,Musulman,1,149
 NER,Chrétien,2,150
-NER,Animiste,3,151
+NER,Autre Réligion,3,151
 NER,Autre Réligion,4,152
 NGA,NA,NA,153
 NIC,Non-Indigeneous,NA,154
@@ -164,48 +164,47 @@ NIC,"Si, Creole",NA,162
 NIC,"Si, Nahoa / Nicarao",NA,163
 NIC,"Si, Mestizo de la costa caribe",NA,164
 NIC,"Si, Mayagna / Sumu",NA,165
-NIC,"Si, Garifuna",NA,166
-NLD,NA,NA,167
-NOR,NA,NA,168
-PAK,NA,NA,169
-PER,NA,NA,170
-PHL,NA,NA,171
-POL,NA,NA,172
-PRT,NA,NA,173
-PRY,NA,NA,174
-ROU,NA,NA,175
-RWA,NA,NA,176
-SEN,Musulman,1,177
-SEN,Chrétien,2,178
-SEN,Animiste,3,179
-SEN,Autre Réligion,4,180
-SEN,Sans Réligion,5,181
-SLV,NA,NA,182
-SUR,Roman Catholic,1,183
-SUR,Jewish,10,184
-SUR,Winti,11,185
-SUR,Other,12,186
-SUR,None,13,187
-SUR,Lutheran,2,188
-SUR,Evangelical,3,189
-SUR,Moravian,4,190
-SUR,Reformed church,5,191
-SUR,Hindu,6,192
-SUR,Islam,7,193
-SUR,Jehovah Witness,8,194
-SUR,Javanism,9,195
-SVK,NA,NA,196
-SWE,NA,NA,197
-TGO,Musulman,1,198
-TGO,Chrétien,2,199
-TGO,Animiste,3,200
-TGO,Autre Réligion,4,201
-TGO,Sans Réligion,5,202
-THA,Buddhist,1,203
-THA,Islam,2,204
-THA,Christ,3,205
-THA,Other,4,206
-TUR,NA,NA,207
-UGA,NA,NA,208
-URY,NA,NA,209
-ZAF,NA,NA,210
+NLD,NA,NA,166
+NOR,NA,NA,167
+PAK,NA,NA,168
+PER,NA,NA,169
+PHL,NA,NA,170
+POL,NA,NA,171
+PRT,NA,NA,172
+PRY,NA,NA,173
+ROU,NA,NA,174
+RWA,NA,NA,175
+SEN,Musulman,1,176
+SEN,Chrétien,2,177
+SEN,Animiste,3,178
+SEN,Autre Réligion,4,179
+SEN,Sans Réligion,5,180
+SLV,NA,NA,181
+SUR,Roman Catholic,1,182
+SUR,Jewish,10,183
+SUR,Winti,11,184
+SUR,Other,12,185
+SUR,None,13,186
+SUR,Lutheran,2,187
+SUR,Evangelical,3,188
+SUR,Moravian,4,189
+SUR,Reformed church,5,190
+SUR,Hindu,6,191
+SUR,Islam,7,192
+SUR,Jehovah Witness,8,193
+SUR,Javanism,9,194
+SVK,NA,NA,195
+SWE,NA,NA,196
+TGO,Musulman,1,197
+TGO,Chrétien,2,198
+TGO,Animiste,3,199
+TGO,Autre Réligion,4,200
+TGO,Sans Réligion,5,201
+THA,Buddhist,1,202
+THA,Islam,2,203
+THA,Christ,3,204
+THA,Other,4,205
+TUR,NA,NA,206
+UGA,NA,NA,207
+URY,NA,NA,208
+ZAF,NA,NA,209
