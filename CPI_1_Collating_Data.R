@@ -13,17 +13,14 @@ options(scipen=999)
 
 # 1     Loading Data ####
 
-Country.Set <- c("Argentina", "Armenia", "Bangladesh", "Barbados", "Benin","Bolivia", "Brazil", "Burkina Faso", "Cambodia", "Chile",
+Country.Set <- c("Argentina", "Armenia", "Bangladesh", "Barbados", "Benin","Bolivia", "Brazil", "Burkina Faso", "Cambodia", "Canada", "Chile",
                  "Colombia", "Costa Rica", "Cote dIvoire", "Dominican Republic", "Ecuador", "Egypt", "El Salvador", "Ethiopia", 
                  "Europe", 
-                 "Ghana","Guatemala", 
+                 "Georgia","Ghana","Guatemala", 
                  "Guinea-Bissau", "India", "Indonesia", "Iraq", "Israel", "Jordan","Kenya", "Liberia", "Malawi", "Maldives", "Mali", 
                  "Mexico", "Mongolia", "Morocco", "Myanmar", "Nicaragua", "Niger", "Nigeria", "Norway", "Pakistan", "Paraguay", 
                  "Peru", "Philippines", "Rwanda", "Senegal", "South Africa", "Suriname", "Thailand", "Togo", "Turkey", "Uganda", 
-                 "Uruguay"
-                 #, 
-                 #"Vietnam"
-                 )
+                 "United Kingdom","Uruguay", "USA","Vietnam")
 
 data_joint_0 <- data.frame()
 data_joint_pre <- data.frame()
@@ -54,7 +51,7 @@ for(i in Country.Set){
   
   # fuel_expenditures          <- read_csv(sprintf("../1_Carbon_Pricing_Incidence/1_Data_Incidence_Analysis/2_Fuel_Expenditure_Data/fuel_expenditures_%s.csv", i))
   
-  if(!i %in% c("Chile", "Morocco", "Kenya", "Europe", "Pakistan")) appliances_0_1 <- read_csv(sprintf("../0_Data/1_Household Data/%s/1_Data_Clean/appliances_0_1_new_%s.csv", path_0, i), show_col_types = FALSE)
+  if(!i %in% c("Chile", "Morocco", "Kenya", "Europe", "Pakistan", "USA")) appliances_0_1 <- read_csv(sprintf("../0_Data/1_Household Data/%s/1_Data_Clean/appliances_0_1_new_%s.csv", path_0, i), show_col_types = FALSE)
 
   carbon_pricing_incidence_1 <- left_join(household_information_0, carbon_pricing_incidence_0, by = "hh_id")%>%
     left_join(burden_decomposition_0, by = "hh_id")%>%
@@ -65,7 +62,7 @@ for(i in Country.Set){
                                  Households = nrow(count(carbon_pricing_incidence_1, hh_id)),
                                  Observations = nrow(carbon_pricing_incidence_1)))
   
-  if(!i %in% c("Chile", "Morocco", "Kenya", "Europe", "Pakistan")) {carbon_pricing_incidence_1 <- left_join(carbon_pricing_incidence_1, appliances_0_1, by = "hh_id")}
+  if(!i %in% c("Chile", "Morocco", "Kenya", "Europe", "Pakistan", "USA")) {carbon_pricing_incidence_1 <- left_join(carbon_pricing_incidence_1, appliances_0_1, by = "hh_id")}
   
   # Add codes
   
@@ -229,7 +226,7 @@ for(i in Country.Set){
   
   rm(list = ls(pattern = ".Code"))
   rm(household_information_0, burden_decomposition_0, carbon_pricing_incidence_0, carbon_pricing_incidence_1)
-  if(!i %in% c("Chile", "Morocco", "Kenya", "Europe", "Pakistan")){rm(appliances_0_1)}
+  if(!i %in% c("Chile", "Morocco", "Kenya", "Europe", "Pakistan", "USA")){rm(appliances_0_1)}
 }
 
 data_joint_pre_1 <- data_joint_pre %>%
