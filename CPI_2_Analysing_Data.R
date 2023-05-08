@@ -6,11 +6,13 @@
 if(!require("pacman")) install.packages("pacman")
 
 p_load("boot", "broom", "countrycode","fixest", "ggpubr", "ggrepel",
-       "ggsci", "Hmisc", "knitr", "kableExtra", "marginaleffects", "margins",
-       "openxlsx", "rattle", "scales", "tidyverse", "xtable")
+       "ggsci", "Hmisc", "knitr", "kableExtra", "marginaleffects", "margins", "Metrics",
+       "openxlsx", "rattle", "scales", "tidymodels", "tidyverse", "vip", "xgboost", "xtable")
 
 options(scipen=999,
         dplyr.summarise.inform = FALSE)
+
+set.seed(2023)
 
 # 1       Loading data ####
 
@@ -1961,3 +1963,126 @@ rm(data_frame_5.3.2.1, data_frame_5.3.2.3, data_5.3, Type_0, i)
 
 # 6       ML-supported analysis ####
 # 6.1     BRT ####
+
+# for now: focus on data for South Africa
+
+data_6.1 <- filter(data_2, Country == "ZAF")
+
+# Feature Engineering ####
+
+data_6.1.1 <- data_6.1 %>%
+  # select relevant variables
+  select(Country, hh_id, hh_weights, hh_size,
+         Province, urban_01, electricity.access, 
+         sex_hhh, ISCED, CF, HF, LF, Ethnicity, 
+         hh_expenditures_USD_2014, car.01, refrigerator.01, tv.01, washing_machine.01, 
+         carbon_intensity_kg_per_USD_national)%>%
+  # should have no NA
+  # factors for characters
+  mutate_if(vars(is.character(.)), list(~ as.factor(.)))%>%
+  mutate_at(vars(sex_hhh, ISCED, urban_01, electricity.access), list(~ as.factor(.)))%>%
+  # should have very few unique observations for factors
+  # potentially remove outliers - log-transformation
+  # remove redundant variables
+  select(-Country, -hh_id, -hh_weights)%>%
+  # include hh_weights later in the process
+  select(carbon_intensity_kg_per_USD_national, everything())
+
+rm(data_6.1)
+
+# Splitting the sample ####
+
+data_6.1.2 <- data_6.1.1 %>%
+  initial_split(prop = 0.75)
+
+data_6.1.2.training <- data_6.1.2 %>%
+  training()
+
+data_6.1.2.testing <- data_6.1.2 %>%
+  testing()
+
+rm(data_6.1.1, data_6.1.2)
+
+model_brt <- boost_tree()%>%
+  set_mode("regression")%>%
+  set_engine("xgboost")
+
+# Fitting the model
+
+model_brt_1 <- model_brt %>%
+  fit(carbon_intensity_kg_per_USD_national ~ .,
+      data = data_6.1.2.training)
+
+# tidy()
+# glance()
+# augment()
+
+predictions_6.1 <- augment(model_brt_1, new_data = data_6.1.2.testing)%>%
+  mae(truth = carbon_intensity_kg_per_USD_national, estimate = .pred)
+predictions_6.2 <- augment(model_brt_1, new_data = data_6.1.2.training)
+
+
+folds_6.1 <- vfold_cv(data_6.1.2.training, v = 10)
+# 
+# model_brt_2 <- fit_resamples(model_brt,
+#                              carbon_intensity_kg_per_USD_national ~ .,
+#                              resamples = folds_6.1,
+#                              metrics = metric_set(mae, rmse))
+# 
+# collect_metrics(model_brt_2)
+
+# predictions
+
+predictions_6.1 <- model_brt_1 %>%
+  predict(new_data = data_6.1.2.testing)%>%
+  bind_cols(data_6.1.2.testing)
+
+mae(predictions_6.1,  estimate = .pred, truth = carbon_intensity_kg_per_USD_national)
+rmse(predictions_6.1, estimate = .pred, truth = carbon_intensity_kg_per_USD_national)
+
+# Tuning the model ####
+
+# Optimize the boosted ensemble - tune()
+
+model_brt_3 <- boost_tree(
+  trees       = 1000,
+  #trees       = tune(),
+  #tree_depth  = tune(),
+  #sample_size = tune(),
+  learn_rate  = tune())%>%
+  set_mode("regression")%>%
+  set_engine("xgboost")
+
+# Create a grid
+
+grid_0 <- grid_regular(parameters(model_brt_3),
+                       levels = 2) # how many levels for each parameter
+
+# tune the model
+
+doParallel::registerDoParallel()
+
+model_brt_3.1 <- tune_grid(model_brt_3,
+                           carbon_intensity_kg_per_USD_national ~ .,
+                           resamples = folds_6.1,
+                           grid      = grid_0,
+                           metrics   = metric_set(mae, rmse))
+
+# select best model
+
+model_brt_3.1.1 <- select_best(model_brt_3.1)
+
+model_brt_3.2 <- finalize_model(model_brt_3, model_brt_3.1.1)%>%
+  fit(carbon_intensity_kg_per_USD_national ~ .,
+      data = data_6.1.2.training)
+
+# Most important variables
+
+vip(model_brt_3.2)
+
+# Predicted values
+predictions_6.2 <- predict(model_brt_3.2, new_data = data_6.1.2.training)%>%
+  bind_cols(data_6.1.2.training)
+
+extract_fit_engine(model_brt_3.2)%>%
+  xgb.plot.tree()

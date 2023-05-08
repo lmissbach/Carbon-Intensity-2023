@@ -118,369 +118,439 @@ BRB,Oriental,4,116
 BRB,East Indian,5,117
 BRB,Middle Eastern,6,118
 BRB,Other,7,119
-CHL,NA,NA,120
-CIV,abbey,1,121
-CIV,AKYE OU ATTIE,10,122
-CIV,AVIKAM OU BRIGAM,11,123
-CIV,bakwe,12,124
-CIV,bambara,13,125
-CIV,baoule,14,126
-CIV,bete,15,127
-CIV,birifor,16,128
-CIV,conja,17,129
-CIV,degha,18,130
-CIV,dida,19,131
-CIV,abidji,2,132
-CIV,dioula,20,133
-CIV,djimini,21,134
-CIV,doma,22,135
-CIV,ebrie,23,136
-CIV,ega,24,137
-CIV,ehotile,25,138
-CIV,essouma,26,139
-CIV,foula,27,140
-CIV,gagou,28,141
-CIV,gbin,29,142
-CIV,aboure,3,143
-CIV,GNABOUA (niaboua),30,144
-CIV,godie,31,145
-CIV,gouro,33,146
-CIV,guere,34,147
-CIV,KAMARA OU KOMARA,35,148
-CIV,kodia,36,149
-CIV,komono,37,150
-CIV,koro,38,151
-CIV,abron,4,152
-CIV,koulango,40,153
-CIV,kouya,41,154
-CIV,kouzie,42,155
-CIV,KOYAKA OU KOYARA,43,156
-CIV,krobou,44,157
-CIV,kroumien,45,158
-CIV,lobi,46,159
-CIV,lohron,47,160
-CIV,MAHOU OU MAHOUKA,48,161
-CIV,MALINKE OU MANINKA,49,162
-CIV,adjoukrou,5,163
-CIV,M'BATTO (goua),50,164
-CIV,MONA OU MOUAN,51,165
-CIV,nafana,52,166
-CIV,neyo,53,167
-CIV,N'GAIN,54,168
-CIV,ouan,58,169
-CIV,oubi,59,170
-CIV,agni,6,171
-CIV,samogho,61,172
-CIV,senoufo,62,173
-CIV,tagouana,64,174
-CIV,toura,65,175
-CIV,wane,66,176
-CIV,wobe,67,177
-CIV,YACOUBA OU DAN,68,178
-CIV,YAOURE (yohoure),69,179
-CIV,ahizi,7,180
-CIV,"NATURALISE IVOIRIEN",70,181
-CIV,IVOIRIEN SANS PRECISION,71,182
-CIV,alladian,8,183
-CIV,APPOLO OU N'ZIMA,9,184
-COL,Indigena,1,185
-COL,Gitano-Rrom,2,186
-COL,San Andres y Providencia,3,187
-COL,Palenquero de San Basilio,4,188
-COL,Afrodescendiente,5,189
-COL,Mestizo o blanco,6,190
-CRI,Otro(a),0,191
-CRI,Indigena,1,192
-CRI,Negro o afrodescendiente,2,193
-CRI,Mulato(a),3,194
-CRI,Blanco(a),4,195
-CRI,Mestizo(a),5,196
-CRI,Otro(a),6,197
-CRI,Otro(a),9,198
-CYP,NA,NA,199
-CZE,NA,NA,200
-DEU,NA,NA,201
-DNK,NA,NA,202
-DOM,NA,NA,203
-ECU,Afrodescendiente,1,204
-ECU,Blanco(a),2,205
-ECU,Indígena,3,206
-ECU,Mestizo(a),4,207
-ECU,Montubio(a),5,208
-ECU,Mulato(a),6,209
-ECU,Negro(a),7,210
-ECU,"Otro, cuál",8,211
-EGY,NA,NA,212
-ESP,NA,NA,213
-EST,NA,NA,214
-ETH,NA,NA,215
-FIN,NA,NA,216
-FRA,NA,NA,217
-GHA,Agona,1,218
-GHA,Boron (Brong) (including Banda),10,219
-GHA,Chokosi (Anufor),11,220
-GHA,Denkyira / Twifo,12,221
-GHA,Evalue,13,222
-GHA,Fante,14,223
-GHA,Kwahu,15,224
-GHA,Nzema,16,225
-GHA,Sefwi,17,226
-GHA,Wasa,18,227
-GHA,Bawle,19,228
-GHA,Ahafo,2,229
-GHA,"Dangme (Ada, Shai, Krobo, Osudoku,Ningo)",21,230
-GHA,Ga,22,231
-GHA,Ahanta,3,232
-GHA,Ewe,30,233
-GHA,Akuapem,4,234
-GHA,"Akpafu, Lolobi, Likpe, Bowiri, Buem, Santrokofi, Akposo",41,235
-GHA,"Avatime, Nyongbo, Tafi, Logba",42,236
-GHA,"Awutu, Efutu, Senya, Breku",43,237
-GHA,"Cherepong, Larteh, Anum-Boso",44,238
-GHA,Gonja,45,239
-GHA,Nkonya,46,240
-GHA,"Yeji, Nchumuru, Krachi, Nawuri, Bassa Achode",47,241
-GHA,"Nkomi, Wiase, Dwan",48,242
-GHA,Akwamu,5,243
-GHA,Bimoba,51,244
-GHA,Kokomba,52,245
-GHA,Basare(Kyamba),53,246
-GHA,Salfalba (Sabulaba),55,247
-GHA,Kotokoli,56,248
-GHA,Chamba (Kyamba),57,249
-GHA,Wali (Wala),59,250
-GHA,Akyem,6,251
-GHA,Builsa (Kangyaga or Kanjaga),61,252
-GHA,"Dagarte (Dagaba), Lobi , Wali (Wala)",62,253
-GHA,Dagomba,63,254
-GHA,Kusasi,64,255
-GHA,Mamprusi,65,256
-GHA,Namnam (Nabdom),66,257
-GHA,"Nankansi, Talensi & Gurense (Frafra)",67,258
-GHA,Nanumba,68,259
-GHA,Mosi,69,260
-GHA,Aowin,7,261
-GHA,Kasena (Paga),71,262
-GHA,Mo,72,263
-GHA,Sisala,73,264
-GHA,Vagala,74,265
-GHA,"Other Grusi (e.g. Lela, Templensi, Birifor, Yangala, Miwo)",75,266
-GHA,Asante,8,267
-GHA,Busanga,81,268
-GHA,"Wangara (Bambara, Madingo & Dyula)",82,269
-GHA,Asen (Assin),9,270
-GHA,All other tribes originating from Ghana,91,271
-GHA,"Other tribes originating from outside Ghana (Hausa, Fulani, Zabrama, etc.)",92,272
-GHA,Fulani,93,273
-GHA,Zabrama,94,274
-GHA,Unknown,95,275
-GNB,Fula,1,276
-GNB,Outras Etnias,10,277
-GNB,Naturalizado,11,278
-GNB,Balanta,2,279
-GNB,Mandinga,3,280
-GNB,Papel,4,281
-GNB,Manjaco,5,282
-GNB,Beafada,6,283
-GNB,Mancanha,7,284
-GNB,Bijagos,8,285
-GNB,Felupe,9,286
-GRC,NA,NA,287
-GTM,K´iche´,1,288
-GTM,Chuj,10,289
-GTM,Awateko,11,290
-GTM,Pokoman,12,291
-GTM,Ch´orti,13,292
-GTM,Jakalteko (popti),14,293
-GTM,Mopan,16,294
-GTM,Tz´utujil,18,295
-GTM,Q´eqchi´,2,296
-GTM,Chalchiteko,21,297
-GTM,Akateko,22,298
-GTM,Xinka,23,299
-GTM,Garifuna,24,300
-GTM,Ladino,29,301
-GTM,Kaqchiquel,3,302
-GTM,Extranjero,30,303
-GTM,Mam,4,304
-GTM,Q´anjob´al,5,305
-GTM,Achi,6,306
-GTM,Ixil,7,307
-GTM,Poqomchi´,9,308
-GTM,No Indica,97,309
-GTM,Ignorado,99,310
-HRV,NA,NA,311
-HUN,NA,NA,312
-IDN,NA,NA,313
-IND,Scheduled Tribes,1,314
-IND,Scheduled Castes,2,315
-IND,Other Backward Castes,3,316
-IND,Others,9,317
-IRL,NA,NA,318
-IRQ,NA,NA,319
-ISR,Jewish,1,320
-ISR,Arabic,2,321
-ISR,Other,3,322
-ITA,NA,NA,323
-JOR,Iraq,368,324
-JOR,Jordan,400,325
-JOR,Syrian Arab Republic,760,326
-JOR,Egypt,818,327
-JOR,Other Arab countries,990,328
-JOR,Other non-Arab countries,991,329
-KEN,NA,NA,330
-KHM,Khmer,1,331
-KHM,Cham,2,332
-KHM,Other local ethnic group,3,333
-KHM,Vietnamese,5,334
-KHM,Lao,7,335
-KHM,Other (Specify),8,336
-LBR,Gio,1,337
-LBR,Mende,10,338
-LBR,Krahn,11,339
-LBR,Lorma,12,340
-LBR,Dei,13,341
-LBR,Kissi,14,342
-LBR,Belle,15,343
-LBR,Gbandi,16,344
-LBR,Sarpo,17,345
-LBR,Congo,18,346
-LBR,Other,19,347
-LBR,Kpelle,2,348
-LBR,None,20,349
-LBR,Mano,3,350
-LBR,Vai,4,351
-LBR,Kru,5,352
-LBR,Gola,6,353
-LBR,Grebo,7,354
-LBR,Bassa,8,355
-LBR,Mandingo,9,356
-LTU,NA,NA,357
-LUX,NA,NA,358
-LVA,NA,NA,359
-MAR,NA,NA,360
-MDV,NA,NA,361
-MEX,Indigeneous,1,362
-MEX,Non-Indigeneous,2,363
-MLI,NA,NA,364
-MMR,NA,NA,365
-MNG,NA,NA,366
-MWI,NONE,1,367
-MWI,TRADITIONAL,2,368
-MWI,CHRISTIANITY,3,369
-MWI,ISLAM,4,370
-MWI,OTHER RELIGION,5,371
-NER,NA,NA,372
-NGA,1. CHRISTIAN,1,373
-NGA,2. ISLAM,2,374
-NGA,3. TRADITIONAL,3,375
-NGA,4. OTHER,4,376
-NIC,Indigeneous,11,377
-NIC,Indigeneous,110,378
-NIC,Indigeneous,111,379
-NIC,Indigeneous,112,380
-NIC,Indigeneous,12,381
-NIC,Indigeneous,13,382
-NIC,Indigeneous,14,383
-NIC,Indigeneous,16,384
-NIC,Indigeneous,17,385
-NIC,Indigeneous,18,386
-NIC,Indigeneous,19,387
-NIC,Non-Indigeneous,2,388
-NIC,No Sabe,3,389
-NLD,NA,NA,390
-NOR,NA,NA,391
-PAK,NA,NA,392
-PER,Quechua,1,393
-PER,Aaymara,2,394
-PER,Nativo o indigena de la amazonia,3,395
-PER,Negro/moreno/zambo/mulato/afroperuano,4,396
-PER,Blanco,5,397
-PER,Mestizo,6,398
-PER,Otro,7,399
-PER,No sabe/no responde,8,400
-PER,Otro pueblo indigena u originario,9,401
-PHL,NA,NA,402
-POL,NA,NA,403
-PRT,NA,NA,404
-PRY,NA,NA,405
-ROU,NA,NA,406
-RWA,NA,NA,407
-SEN,Wolof/Lébou,1,408
-SEN,Autres ethnies,10,409
-SEN,Naturalisé,11,410
-SEN,Mandiack/Mankagne,12,411
-SEN,Maure,13,412
-SEN,Sérère,2,413
-SEN,Poular,3,414
-SEN,Soninké,4,415
-SEN,Diola,5,416
-SEN,Mandingue/Socé,6,417
-SEN,Balante,7,418
-SEN,Bambara,8,419
-SEN,Malinké,9,420
-SLV,NA,NA,421
-SUR,Creole/ Afrosurinamese,1,422
-SUR,East Indian,2,423
-SUR,Maroon,3,424
-SUR,Amerindian/ Indigenous,4,425
-SUR,Javanese,5,426
-SUR,Chinese,6,427
-SUR,White,7,428
-SUR,Mixed,8,429
-SUR,Other,9,430
-SVK,NA,NA,431
-SWE,NA,NA,432
-TGO,Adja (Ehoué),1,433
-TGO,Akébou,10,434
-TGO,Akposso,11,435
-TGO,Anyanga (Agnagan),12,436
-TGO,Ahlon,13,437
-TGO,Ana-Ifè,14,438
-TGO,Nago (Anago),15,439
-TGO,Yorouba,16,440
-TGO,Kabyè,17,441
-TGO,Kotokoli,18,442
-TGO,Lamba/ Nawdum,19,443
-TGO,Anlo,2,444
-TGO,Losso,20,445
-TGO,Bariba-Tamberma,22,446
-TGO,Bassar,23,447
-TGO,Gourma,24,448
-TGO,Kokomba,25,449
-TGO,Moba,26,450
-TGO,Mossi,27,451
-TGO,Ngam-gam,28,452
-TGO,Tchamba,29,453
-TGO,Ewé,3,454
-TGO,Tchokossi (Anoufo),30,455
-TGO,Yanga,31,456
-TGO,Bassila,32,457
-TGO,Haoussa,33,458
-TGO,Peul,34,459
-TGO,Autres ethnies togolaises,35,460
-TGO,Naturalisé,36,461
-TGO,Fon,4,462
-TGO,Kpessi,5,463
-TGO,Mina (Guin),6,464
-TGO,Ouatchi,7,465
-TGO,Peda (Pla),8,466
-TGO,Adélé,9,467
-THA,Thai,1,468
-THA,Malay/Yawi,2,469
-THA,Chinese,3,470
-THA,Mon/Burmese,4,471
-THA,Cambodian/Souy,5,472
-THA,Karen,6,473
-THA,Other,7,474
-TUR,NA,NA,475
-UGA,NA,NA,476
-URY,Afro o Negra,1,477
-URY,Asiatica o Amarilla,2,478
-URY,Blanca,3,479
-URY,Indigena,4,480
-URY,Otra,5,481
-ZAF,Black African,1,482
-ZAF,Coloured,2,483
-ZAF,Indian/Asian,3,484
-ZAF,White,4,485
+CAN,NA,NA,120
+CHL,NA,NA,121
+CIV,abbey,1,122
+CIV,AKYE OU ATTIE,10,123
+CIV,AVIKAM OU BRIGAM,11,124
+CIV,bakwe,12,125
+CIV,bambara,13,126
+CIV,baoule,14,127
+CIV,bete,15,128
+CIV,birifor,16,129
+CIV,conja,17,130
+CIV,degha,18,131
+CIV,dida,19,132
+CIV,abidji,2,133
+CIV,dioula,20,134
+CIV,djimini,21,135
+CIV,doma,22,136
+CIV,ebrie,23,137
+CIV,ega,24,138
+CIV,ehotile,25,139
+CIV,essouma,26,140
+CIV,foula,27,141
+CIV,gagou,28,142
+CIV,gbin,29,143
+CIV,aboure,3,144
+CIV,GNABOUA (niaboua),30,145
+CIV,godie,31,146
+CIV,gouro,33,147
+CIV,guere,34,148
+CIV,KAMARA OU KOMARA,35,149
+CIV,kodia,36,150
+CIV,komono,37,151
+CIV,koro,38,152
+CIV,abron,4,153
+CIV,koulango,40,154
+CIV,kouya,41,155
+CIV,kouzie,42,156
+CIV,KOYAKA OU KOYARA,43,157
+CIV,krobou,44,158
+CIV,kroumien,45,159
+CIV,lobi,46,160
+CIV,lohron,47,161
+CIV,MAHOU OU MAHOUKA,48,162
+CIV,MALINKE OU MANINKA,49,163
+CIV,adjoukrou,5,164
+CIV,M'BATTO (goua),50,165
+CIV,MONA OU MOUAN,51,166
+CIV,nafana,52,167
+CIV,neyo,53,168
+CIV,N'GAIN,54,169
+CIV,ouan,58,170
+CIV,oubi,59,171
+CIV,agni,6,172
+CIV,samogho,61,173
+CIV,senoufo,62,174
+CIV,tagouana,64,175
+CIV,toura,65,176
+CIV,wane,66,177
+CIV,wobe,67,178
+CIV,YACOUBA OU DAN,68,179
+CIV,YAOURE (yohoure),69,180
+CIV,ahizi,7,181
+CIV,"NATURALISE IVOIRIEN",70,182
+CIV,IVOIRIEN SANS PRECISION,71,183
+CIV,alladian,8,184
+CIV,APPOLO OU N'ZIMA,9,185
+COL,Indigena,1,186
+COL,Gitano-Rrom,2,187
+COL,San Andres y Providencia,3,188
+COL,Palenquero de San Basilio,4,189
+COL,Afrodescendiente,5,190
+COL,Mestizo o blanco,6,191
+CRI,Otro(a),0,192
+CRI,Indigena,1,193
+CRI,Negro o afrodescendiente,2,194
+CRI,Mulato(a),3,195
+CRI,Blanco(a),4,196
+CRI,Mestizo(a),5,197
+CRI,Otro(a),6,198
+CRI,Otro(a),9,199
+CYP,NA,NA,200
+CZE,NA,NA,201
+DEU,NA,NA,202
+DNK,NA,NA,203
+DOM,NA,NA,204
+ECU,Afrodescendiente,1,205
+ECU,Blanco(a),2,206
+ECU,Indígena,3,207
+ECU,Mestizo(a),4,208
+ECU,Montubio(a),5,209
+ECU,Mulato(a),6,210
+ECU,Negro(a),7,211
+ECU,"Otro, cuál",8,212
+EGY,NA,NA,213
+ESP,NA,NA,214
+EST,NA,NA,215
+ETH,NA,NA,216
+FIN,NA,NA,217
+FRA,NA,NA,218
+GBR,White,1,219
+GBR,Other ethnic group,10,220
+GBR,Mixed race,2,221
+GBR,Asian or Asian British,3,222
+GBR,Black or Black British,4,223
+GEO,Georgian,1,224
+GEO,Azeri,2,225
+GEO,Abkhazian,3,226
+GEO,Greek,4,227
+GEO,Ossetian,5,228
+GEO,Russian,6,229
+GEO,Armenian,7,230
+GEO,Ukrainian,8,231
+GEO,Other,9,232
+GHA,Agona,1,233
+GHA,Boron (Brong) (including Banda),10,234
+GHA,Chokosi (Anufor),11,235
+GHA,Denkyira / Twifo,12,236
+GHA,Evalue,13,237
+GHA,Fante,14,238
+GHA,Kwahu,15,239
+GHA,Nzema,16,240
+GHA,Sefwi,17,241
+GHA,Wasa,18,242
+GHA,Bawle,19,243
+GHA,Ahafo,2,244
+GHA,"Dangme (Ada, Shai, Krobo, Osudoku,Ningo)",21,245
+GHA,Ga,22,246
+GHA,Ahanta,3,247
+GHA,Ewe,30,248
+GHA,Akuapem,4,249
+GHA,"Akpafu, Lolobi, Likpe, Bowiri, Buem, Santrokofi, Akposo",41,250
+GHA,"Avatime, Nyongbo, Tafi, Logba",42,251
+GHA,"Awutu, Efutu, Senya, Breku",43,252
+GHA,"Cherepong, Larteh, Anum-Boso",44,253
+GHA,Gonja,45,254
+GHA,Nkonya,46,255
+GHA,"Yeji, Nchumuru, Krachi, Nawuri, Bassa Achode",47,256
+GHA,"Nkomi, Wiase, Dwan",48,257
+GHA,Akwamu,5,258
+GHA,Bimoba,51,259
+GHA,Kokomba,52,260
+GHA,Basare(Kyamba),53,261
+GHA,Salfalba (Sabulaba),55,262
+GHA,Kotokoli,56,263
+GHA,Chamba (Kyamba),57,264
+GHA,Wali (Wala),59,265
+GHA,Akyem,6,266
+GHA,Builsa (Kangyaga or Kanjaga),61,267
+GHA,"Dagarte (Dagaba), Lobi , Wali (Wala)",62,268
+GHA,Dagomba,63,269
+GHA,Kusasi,64,270
+GHA,Mamprusi,65,271
+GHA,Namnam (Nabdom),66,272
+GHA,"Nankansi, Talensi & Gurense (Frafra)",67,273
+GHA,Nanumba,68,274
+GHA,Mosi,69,275
+GHA,Aowin,7,276
+GHA,Kasena (Paga),71,277
+GHA,Mo,72,278
+GHA,Sisala,73,279
+GHA,Vagala,74,280
+GHA,"Other Grusi (e.g. Lela, Templensi, Birifor, Yangala, Miwo)",75,281
+GHA,Asante,8,282
+GHA,Busanga,81,283
+GHA,"Wangara (Bambara, Madingo & Dyula)",82,284
+GHA,Asen (Assin),9,285
+GHA,All other tribes originating from Ghana,91,286
+GHA,"Other tribes originating from outside Ghana (Hausa, Fulani, Zabrama, etc.)",92,287
+GHA,Fulani,93,288
+GHA,Zabrama,94,289
+GHA,Unknown,95,290
+GNB,Fula,1,291
+GNB,Outras Etnias,10,292
+GNB,Naturalizado,11,293
+GNB,Balanta,2,294
+GNB,Mandinga,3,295
+GNB,Papel,4,296
+GNB,Manjaco,5,297
+GNB,Beafada,6,298
+GNB,Mancanha,7,299
+GNB,Bijagos,8,300
+GNB,Felupe,9,301
+GRC,NA,NA,302
+GTM,K´iche´,1,303
+GTM,Chuj,10,304
+GTM,Awateko,11,305
+GTM,Pokoman,12,306
+GTM,Ch´orti,13,307
+GTM,Jakalteko (popti),14,308
+GTM,Mopan,16,309
+GTM,Tz´utujil,18,310
+GTM,Q´eqchi´,2,311
+GTM,Chalchiteko,21,312
+GTM,Akateko,22,313
+GTM,Xinka,23,314
+GTM,Garifuna,24,315
+GTM,Ladino,29,316
+GTM,Kaqchiquel,3,317
+GTM,Extranjero,30,318
+GTM,Mam,4,319
+GTM,Q´anjob´al,5,320
+GTM,Achi,6,321
+GTM,Ixil,7,322
+GTM,Poqomchi´,9,323
+GTM,No Indica,97,324
+GTM,Ignorado,99,325
+HRV,NA,NA,326
+HUN,NA,NA,327
+IDN,NA,NA,328
+IND,Scheduled Tribes,1,329
+IND,Scheduled Castes,2,330
+IND,Other Backward Castes,3,331
+IND,Others,9,332
+IRL,NA,NA,333
+IRQ,NA,NA,334
+ISR,Jewish,1,335
+ISR,Arabic,2,336
+ISR,Other,3,337
+ITA,NA,NA,338
+JOR,Iraq,368,339
+JOR,Jordan,400,340
+JOR,Syrian Arab Republic,760,341
+JOR,Egypt,818,342
+JOR,Other Arab countries,990,343
+JOR,Other non-Arab countries,991,344
+KEN,NA,NA,345
+KHM,Khmer,1,346
+KHM,Cham,2,347
+KHM,Other local ethnic group,3,348
+KHM,Vietnamese,5,349
+KHM,Lao,7,350
+KHM,Other (Specify),8,351
+LBR,Gio,1,352
+LBR,Mende,10,353
+LBR,Krahn,11,354
+LBR,Lorma,12,355
+LBR,Dei,13,356
+LBR,Kissi,14,357
+LBR,Belle,15,358
+LBR,Gbandi,16,359
+LBR,Sarpo,17,360
+LBR,Congo,18,361
+LBR,Other,19,362
+LBR,Kpelle,2,363
+LBR,None,20,364
+LBR,Mano,3,365
+LBR,Vai,4,366
+LBR,Kru,5,367
+LBR,Gola,6,368
+LBR,Grebo,7,369
+LBR,Bassa,8,370
+LBR,Mandingo,9,371
+LTU,NA,NA,372
+LUX,NA,NA,373
+LVA,NA,NA,374
+MAR,NA,NA,375
+MDV,NA,NA,376
+MEX,Indigeneous,1,377
+MEX,Non-Indigeneous,2,378
+MLI,NA,NA,379
+MMR,NA,NA,380
+MNG,NA,NA,381
+MWI,NONE,1,382
+MWI,TRADITIONAL,2,383
+MWI,CHRISTIANITY,3,384
+MWI,ISLAM,4,385
+MWI,OTHER RELIGION,5,386
+NER,NA,NA,387
+NGA,1. CHRISTIAN,1,388
+NGA,2. ISLAM,2,389
+NGA,3. TRADITIONAL,3,390
+NGA,4. OTHER,4,391
+NIC,Indigeneous,11,392
+NIC,Indigeneous,110,393
+NIC,Indigeneous,111,394
+NIC,Indigeneous,112,395
+NIC,Indigeneous,12,396
+NIC,Indigeneous,13,397
+NIC,Indigeneous,14,398
+NIC,Indigeneous,16,399
+NIC,Indigeneous,17,400
+NIC,Indigeneous,18,401
+NIC,Indigeneous,19,402
+NIC,Non-Indigeneous,2,403
+NIC,No Sabe,3,404
+NLD,NA,NA,405
+NOR,NA,NA,406
+PAK,NA,NA,407
+PER,Quechua,1,408
+PER,Aaymara,2,409
+PER,Nativo o indigena de la amazonia,3,410
+PER,Negro/moreno/zambo/mulato/afroperuano,4,411
+PER,Blanco,5,412
+PER,Mestizo,6,413
+PER,Otro,7,414
+PER,No sabe/no responde,8,415
+PER,Otro pueblo indigena u originario,9,416
+PHL,NA,NA,417
+POL,NA,NA,418
+PRT,NA,NA,419
+PRY,NA,NA,420
+ROU,NA,NA,421
+RWA,NA,NA,422
+SEN,Wolof/Lébou,1,423
+SEN,Autres ethnies,10,424
+SEN,Naturalisé,11,425
+SEN,Mandiack/Mankagne,12,426
+SEN,Maure,13,427
+SEN,Sérère,2,428
+SEN,Poular,3,429
+SEN,Soninké,4,430
+SEN,Diola,5,431
+SEN,Mandingue/Socé,6,432
+SEN,Balante,7,433
+SEN,Bambara,8,434
+SEN,Malinké,9,435
+SLV,NA,NA,436
+SUR,Creole/ Afrosurinamese,1,437
+SUR,East Indian,2,438
+SUR,Maroon,3,439
+SUR,Amerindian/ Indigenous,4,440
+SUR,Javanese,5,441
+SUR,Chinese,6,442
+SUR,White,7,443
+SUR,Mixed,8,444
+SUR,Other,9,445
+SVK,NA,NA,446
+SWE,NA,NA,447
+TGO,Adja (Ehoué),1,448
+TGO,Akébou,10,449
+TGO,Akposso,11,450
+TGO,Anyanga (Agnagan),12,451
+TGO,Ahlon,13,452
+TGO,Ana-Ifè,14,453
+TGO,Nago (Anago),15,454
+TGO,Yorouba,16,455
+TGO,Kabyè,17,456
+TGO,Kotokoli,18,457
+TGO,Lamba/ Nawdum,19,458
+TGO,Anlo,2,459
+TGO,Losso,20,460
+TGO,Bariba-Tamberma,22,461
+TGO,Bassar,23,462
+TGO,Gourma,24,463
+TGO,Kokomba,25,464
+TGO,Moba,26,465
+TGO,Mossi,27,466
+TGO,Ngam-gam,28,467
+TGO,Tchamba,29,468
+TGO,Ewé,3,469
+TGO,Tchokossi (Anoufo),30,470
+TGO,Yanga,31,471
+TGO,Bassila,32,472
+TGO,Haoussa,33,473
+TGO,Peul,34,474
+TGO,Autres ethnies togolaises,35,475
+TGO,Naturalisé,36,476
+TGO,Fon,4,477
+TGO,Kpessi,5,478
+TGO,Mina (Guin),6,479
+TGO,Ouatchi,7,480
+TGO,Peda (Pla),8,481
+TGO,Adélé,9,482
+THA,Thai,1,483
+THA,Malay/Yawi,2,484
+THA,Chinese,3,485
+THA,Mon/Burmese,4,486
+THA,Cambodian/Souy,5,487
+THA,Karen,6,488
+THA,Other,7,489
+TUR,NA,NA,490
+UGA,NA,NA,491
+URY,Afro o Negra,1,492
+URY,Asiatica o Amarilla,2,493
+URY,Blanca,3,494
+URY,Indigena,4,495
+URY,Otra,5,496
+USA,White,1,497
+USA,Asian or Multi-race - Chinese,11,498
+USA,Asian or Multi-race - Filipino,12,499
+USA,Asian or Multi-race - Japanese,13,500
+USA,Asian or Multi-race - Korean,14,501
+USA,Asian or Multi-race - Vietnamese,15,502
+USA,Asian or Multi-race - Asian Indian,16,503
+USA,Asian or Multi-race - Other,17,504
+USA,Black,2,505
+USA,Native American,3,506
+USA,Pacific Islander,5,507
+USA,NA,NA,508
+VNM,kinh,1,509
+VNM,jrai,10,510
+VNM,ngai,11,511
+VNM,ede,12,512
+VNM,bana,13,513
+VNM,sedang,14,514
+VNM,sanchay (Cao lan - San chi),15,515
+VNM,co ho,16,516
+VNM,Cham,17,517
+VNM,san diu,18,518
+VNM,hre,19,519
+VNM,tay,2,520
+VNM,mnong,20,521
+VNM,raglai,21,522
+VNM,stieng,22,523
+VNM,bru - Van Kieu,23,524
+VNM,tho,24,525
+VNM,giay,25,526
+VNM,co tu,26,527
+VNM,gie- trieng,27,528
+VNM,ma,28,529
+VNM,kho mu,29,530
+VNM,thai,3,531
+VNM,co,30,532
+VNM,ta - oi,31,533
+VNM,choro,32,534
+VNM,singmun,34,535
+VNM,hanhi,35,536
+VNM,churu,36,537
+VNM,lao,37,538
+VNM,lachi,38,539
+VNM,chinese,4,540
+VNM,NA,40,541
+VNM,lahu,41,542
+VNM,NA,44,543
+VNM,NA,46,544
+VNM,NA,48,545
+VNM,khmer,5,546
+VNM,NA,56,547
+VNM,muong,6,548
+VNM,nung,7,549
+VNM,hmong (MEO),8,550
+VNM,dao,9,551
+ZAF,Black African,1,552
+ZAF,Coloured,2,553
+ZAF,Indian/Asian,3,554
+ZAF,White,4,555

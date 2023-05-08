@@ -2,8 +2,6 @@
 .Rhistory
 .RData
 .Ruserdata
-**/*.jpg
 **/*.pdf
-1_Figures/**
 *.jpg
 3_Manuscript/main.pdf
