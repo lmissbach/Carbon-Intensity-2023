@@ -5,9 +5,9 @@
 
 if(!require("pacman")) install.packages("pacman")
 
-p_load("boot", "broom", "countrycode","fixest", "ggpubr", "ggrepel",
+p_load("boot", "broom", "countrycode", "DALEXtra", "fixest", "ggpubr", "ggrepel",
        "ggsci", "Hmisc", "knitr", "kableExtra", "marginaleffects", "margins", "Metrics",
-       "openxlsx", "rattle", "scales", "tidymodels", "tidyverse", "vip", "xgboost", "xtable")
+       "openxlsx", "pdp","rattle", "scales", "tidymodels", "tidyverse", "vip", "xgboost", "xtable")
 
 options(scipen=999,
         dplyr.summarise.inform = FALSE)
@@ -1962,127 +1962,206 @@ for (Type_0 in c("affected_lower_80", "affected_upper_80")){
 rm(data_frame_5.3.2.1, data_frame_5.3.2.3, data_5.3, Type_0, i)
 
 # 6       ML-supported analysis ####
-# 6.1     BRT ####
+# 6.1     BRT on carbon intensity of consumption (regression model) ####
 
-# for now: focus on data for South Africa
+# We wish to detect the importance of variables in modelling and non-linear relationships
 
-data_6.1 <- filter(data_2, Country == "ZAF")
+Country.Set.sparse <- c("ISR", "ZAF") 
 
-# Feature Engineering ####
+for (i in Country.Set.sparse){
+  print(paste0("Start: ", i))
+  time_0 <- Sys.time()
 
-data_6.1.1 <- data_6.1 %>%
-  # select relevant variables
-  select(Country, hh_id, hh_weights, hh_size,
-         Province, urban_01, electricity.access, 
-         sex_hhh, ISCED, CF, HF, LF, Ethnicity, 
-         hh_expenditures_USD_2014, car.01, refrigerator.01, tv.01, washing_machine.01, 
-         carbon_intensity_kg_per_USD_national)%>%
-  # should have no NA
-  # factors for characters
-  mutate_if(vars(is.character(.)), list(~ as.factor(.)))%>%
-  mutate_at(vars(sex_hhh, ISCED, urban_01, electricity.access), list(~ as.factor(.)))%>%
-  # should have very few unique observations for factors
-  # potentially remove outliers - log-transformation
-  # remove redundant variables
-  select(-Country, -hh_id, -hh_weights)%>%
-  # include hh_weights later in the process
-  select(carbon_intensity_kg_per_USD_national, everything())
+  # Filter only observations for country of interest  
+  data_6.1 <- filter(data_2, Country == i)
 
-rm(data_6.1)
+  # Feature Engineering
+  # Possibly do it with recipe
+  
+  data_6.1.1 <- data_6.1 %>%
+    # select relevant variables
+    select(Country, hh_id, hh_weights, hh_size,
+           Province, District, urban_01,  
+           sex_hhh, ISCED, Ethnicity, Religion,
+           hh_expenditures_USD_2014, car.01, refrigerator.01, tv.01, washing_machine.01, 
+           carbon_intensity_kg_per_USD_national)%>%
+    # should have no NA
+    # factors instead of characters
+    mutate_if(vars(is.character(.)), list(~ as.factor(.)))%>%
+    mutate_at(vars(sex_hhh, ISCED, urban_01, car.01, refrigerator.01, washing_machine.01), list(~ as.factor(.)))%>%
+    # should have very few unique observations for factors
+    # potentially remove outliers - log-transformation
+    # remove redundant variables
+    select(-Country, -hh_id, -hh_weights)%>%
+    # include hh_weights later in the process
+    select(carbon_intensity_kg_per_USD_national, everything())%>%
+    select(carbon_intensity_kg_per_USD_national, hh_expenditures_USD_2014, hh_size, urban_01, car.01, everything())
+  
+  rm(data_6.1)
+  
+  # Splitting the sample, but no strata
+  
+  data_6.1.2 <- data_6.1.1 %>%
+    initial_split(prop = 0.75)
+  
+  # Data for training
+  data_6.1.2.training <- data_6.1.2 %>%
+    training()
+  
+  # Data for testing
+  data_6.1.2.testing <- data_6.1.2 %>%
+    testing()
+  
+  rm(data_6.1.1, data_6.1.2)
+  
+  # Setup model
+  
+  model_brt <- boost_tree()%>%
+    set_mode("regression")%>%
+    set_engine("xgboost")
+  
+  # Fitting the model on training data
+  
+  model_brt_1 <- model_brt %>%
+    fit(carbon_intensity_kg_per_USD_national ~ .,
+        data = data_6.1.2.training)
+  
+  # What can we do with this fitted model?
+  # tidy() ?
+  # glance() ?
+  # augment()
+  
+  # Use augment to derive predictions for training and test set
+  
+  mae_predictions_6.1.1 <- augment(model_brt_1, new_data = data_6.1.2.testing)%>%
+    mae(truth = carbon_intensity_kg_per_USD_national, estimate = .pred)
+  
+  # Also
+  # predictions_6.1.1 <- model_brt_1 %>%
+  #  predict(new_data = data_6.1.2.testing)%>%
+  #  bind_cols(data_6.1.2.testing)
+  # mae(predictions_6.1.1, estimate = .pred, truth = carbon_intensity_kg_per_USD_national)
+  
+  mae_predictions_6.1.2 <- augment(model_brt_1, new_data = data_6.1.2.training)%>%
+    mae(truth = carbon_intensity_kg_per_USD_national, estimate = .pred)
+  
+  rm(model_brt_1)
+  
+  # Ten-fold cross-validation
+  
+  folds_6.1 <- vfold_cv(data_6.1.2.training, v = 10)
+  
+  model_brt_2 <- fit_resamples(model_brt,
+                               carbon_intensity_kg_per_USD_national ~.,
+                               resamples = folds_6.1,
+                               metrics = metric_set(mae, rmse))
+  
+  mae_predictions_6.1.3 <- collect_metrics(model_brt_2)
+  
+  rm(model_brt_2)
+  
+  # Optimize the ensemble by tuning
+  
+  model_brt_3 <- boost_tree(
+    trees = 1000,
+    tree_depth = tune(),
+    learn_rate = tune(), # the higher the learning rate the faster
+    # min_n = tune(),
+    # mtry = tune(),
+    # stop_iter = tune(),
+    # sample_size = tune()
+  )%>%
+    set_mode("regression")%>%
+    set_engine("xgboost")
+  
+  # Create a tuning grid
+  
+  grid_0 <- grid_latin_hypercube(
+    parameters(model_brt_3), # tuning parameters
+    size = 10
+  )
+  
+  doParallel::registerDoParallel()
 
-# Splitting the sample ####
+  time_1 <- Sys.time()
+  
+  # This is what takes long
+  
+  model_brt_3.1 <- tune_grid(model_brt_3,
+                             carbon_intensity_kg_per_USD_national ~ .,
+                             resamples = folds_6.1,
+                             grid      = grid_0,
+                             metrics   = metric_set(mae, rmse))
+  
+  time_2 <- Sys.time()
+  
+  metrics_3.1 <- collect_metrics(model_brt_3.1)
+  
+  # get the best model available
+  
+  model_brt_3.1.1 <- select_best(model_brt_3.1, metric = "mae") # export this
+  
+  # Final model
+  model_brt_3.1.2 <- finalize_model(model_brt_3, model_brt_3.1.1)%>%
+    # runs model with parameters as selected in model_brt_3.1.1
+    fit(carbon_intensity_kg_per_USD_national ~ ., 
+        data = data_6.1.2.training)
+  
+  predictions_6.2.1 <- augment(model_brt_3.1.2, new_data = data_6.1.2.training)
+  
+  mae_predictions_6.2.1 <- mae(predictions_6.2.1, truth = carbon_intensity_kg_per_USD_national, estimate = .pred)
+  
+  mae_predictions_6.2.2 <- mae(augment(model_brt_3.1.2, new_data = data_6.1.2.testing),
+                               truth = carbon_intensity_kg_per_USD_national,
+                               estimate = .pred)
+  
+  # Most important variables 
+  
+  vi_3.2 <- vi(model_brt_3.1.2)%>%
+    mutate(Country = i)
+  
+  # Preparation for partial dependence plot
+  
+  explainer_6.1 <- explain_tidymodels(model_brt_3.1.2,
+                                      data = select(data_6.1.2.testing, - carbon_intensity_kg_per_USD_national),
+                                      y    = select(data_6.1.2.testing, carbon_intensity_kg_per_USD_national))
+  # TBA
+  pdp_6.1 <- model_profile(
+    explainer = explainer_6.1,
+    variables = "hh_expenditures_USD_2014",
+    N = NULL
+  )
+  
+  pdp_6.1.1 <- as_tibble(pdp_6.1$agr_profiles)%>%
+    mutate(Country = i)
+  
+  pdp_6.1.2 <- as_tibble(pdp_6.1$cp_profiles)%>%
+    mutate(Country = i)
+  
+  # SHAP-values: TBA
+  
+}
 
-data_6.1.2 <- data_6.1.1 %>%
-  initial_split(prop = 0.75)
 
-data_6.1.2.training <- data_6.1.2 %>%
-  training()
+# 6.1.1   Variable Importance Plots ####
 
-data_6.1.2.testing <- data_6.1.2 %>%
-  testing()
+# Variable importance: Which predictor has the largest effect on model outcomes?
+# Fractional contribution of each feature based on the gain feature's splits where gain is the improvement
+# to accuracy brought by a feature to its branches --> Does splitting by features increase accuracy?
+# Relative contribution of feature to the model = each feature's contribution for each tree in the model.
+# Improvement in accuracy.
+# Measures sum up to one !
+# Variables that do not influence model's predicitons may be excluded from model
+# Domain-knowledge-based validation: Identification of most important variables may be helpful in assessing the validity of the model based on domain knowledge.
+# based on the number of times variables are selected for splitting.
 
-rm(data_6.1.1, data_6.1.2)
+# 6.1.2   Partial Dependence Plots ####
 
-model_brt <- boost_tree()%>%
-  set_mode("regression")%>%
-  set_engine("xgboost")
-
-# Fitting the model
-
-model_brt_1 <- model_brt %>%
-  fit(carbon_intensity_kg_per_USD_national ~ .,
-      data = data_6.1.2.training)
-
-# tidy()
-# glance()
-# augment()
-
-predictions_6.1 <- augment(model_brt_1, new_data = data_6.1.2.testing)%>%
-  mae(truth = carbon_intensity_kg_per_USD_national, estimate = .pred)
-predictions_6.2 <- augment(model_brt_1, new_data = data_6.1.2.training)
+# 6.1.3   Measure of models ####
+# 6.1.4   SHAP-Values - TBA ####
+# Combines variable importance and partial dependence plots
+# measuring feature importance based on the marginal contribution of each predictor for each observation
+# Main advantages: local explanation and consistency
 
 
-folds_6.1 <- vfold_cv(data_6.1.2.training, v = 10)
-# 
-# model_brt_2 <- fit_resamples(model_brt,
-#                              carbon_intensity_kg_per_USD_national ~ .,
-#                              resamples = folds_6.1,
-#                              metrics = metric_set(mae, rmse))
-# 
-# collect_metrics(model_brt_2)
-
-# predictions
-
-predictions_6.1 <- model_brt_1 %>%
-  predict(new_data = data_6.1.2.testing)%>%
-  bind_cols(data_6.1.2.testing)
-
-mae(predictions_6.1,  estimate = .pred, truth = carbon_intensity_kg_per_USD_national)
-rmse(predictions_6.1, estimate = .pred, truth = carbon_intensity_kg_per_USD_national)
-
-# Tuning the model ####
-
-# Optimize the boosted ensemble - tune()
-
-model_brt_3 <- boost_tree(
-  trees       = 1000,
-  #trees       = tune(),
-  #tree_depth  = tune(),
-  #sample_size = tune(),
-  learn_rate  = tune())%>%
-  set_mode("regression")%>%
-  set_engine("xgboost")
-
-# Create a grid
-
-grid_0 <- grid_regular(parameters(model_brt_3),
-                       levels = 2) # how many levels for each parameter
-
-# tune the model
-
-doParallel::registerDoParallel()
-
-model_brt_3.1 <- tune_grid(model_brt_3,
-                           carbon_intensity_kg_per_USD_national ~ .,
-                           resamples = folds_6.1,
-                           grid      = grid_0,
-                           metrics   = metric_set(mae, rmse))
-
-# select best model
-
-model_brt_3.1.1 <- select_best(model_brt_3.1)
-
-model_brt_3.2 <- finalize_model(model_brt_3, model_brt_3.1.1)%>%
-  fit(carbon_intensity_kg_per_USD_national ~ .,
-      data = data_6.1.2.training)
-
-# Most important variables
-
-vip(model_brt_3.2)
-
-# Predicted values
-predictions_6.2 <- predict(model_brt_3.2, new_data = data_6.1.2.training)%>%
-  bind_cols(data_6.1.2.training)
-
-extract_fit_engine(model_brt_3.2)%>%
-  xgb.plot.tree()
+# 6.2     BRT on hardship cases (classification model) ####
