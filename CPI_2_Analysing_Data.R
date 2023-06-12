@@ -1966,15 +1966,26 @@ rm(data_frame_5.3.2.1, data_frame_5.3.2.3, data_5.3, Type_0, i)
 
 # We wish to detect the importance of variables in modelling and non-linear relationships
 
-Country.Set.sparse <- c("ISR", "ZAF") 
+Country.Set.sparse <- c("ISR", "KHM","ZAF") 
+
+track <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_BRT.xlsx")
+
+pdp_data <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/PDP_Data.xlsx")
+
+vip_data <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/VIP_Data.xlsx")
 
 for (i in Country.Set.sparse){
+  track_0 <- data.frame(Country = i, date = date())
+  
+  run_ID <- if(i %in% track$Country) paste0(i, "_", max(track$number[track$Country == i])+1) else paste0(i, "_",1)
+  
   print(paste0("Start: ", i))
-  time_0 <- Sys.time()
 
   # Filter only observations for country of interest  
   data_6.1 <- filter(data_2, Country == i)
 
+  track_0$observations_sample = nrow(data_6.1)
+  
   # Feature Engineering
   # Possibly do it with recipe
   
@@ -2014,7 +2025,7 @@ for (i in Country.Set.sparse){
   
   rm(data_6.1.1, data_6.1.2)
   
-  # Setup model
+  # Setup model - Standard version
   
   model_brt <- boost_tree()%>%
     set_mode("regression")%>%
@@ -2036,6 +2047,9 @@ for (i in Country.Set.sparse){
   mae_predictions_6.1.1 <- augment(model_brt_1, new_data = data_6.1.2.testing)%>%
     mae(truth = carbon_intensity_kg_per_USD_national, estimate = .pred)
   
+  rsq_predictions_6.1.1 <- augment(model_brt_1, new_data = data_6.1.2.testing)%>%
+    rsq(truth = carbon_intensity_kg_per_USD_national, estimate = .pred)
+  
   # Also
   # predictions_6.1.1 <- model_brt_1 %>%
   #  predict(new_data = data_6.1.2.testing)%>%
@@ -2043,9 +2057,24 @@ for (i in Country.Set.sparse){
   # mae(predictions_6.1.1, estimate = .pred, truth = carbon_intensity_kg_per_USD_national)
   
   mae_predictions_6.1.2 <- augment(model_brt_1, new_data = data_6.1.2.training)%>%
-    mae(truth = carbon_intensity_kg_per_USD_national, estimate = .pred)
+    mae(truth = carbon_intensity_kg_per_USD_national, estimate = .pred) 
   
-  rm(model_brt_1)
+  rsq_predictions_6.1.2 <- augment(model_brt_1, new_data = data_6.1.2.training)%>%
+    rsq(truth = carbon_intensity_kg_per_USD_national, estimate = .pred) 
+  
+  # Output: Evaluation on training data
+  track_0$mae_1.1 <- mae_predictions_6.1.2$.estimate[1]
+  
+  track_0$rsq_1.1 <- rsq_predictions_6.1.2$.estimate[1]
+  
+  # Output: Evaluation on testing data
+  track_0$mae_1.2 <- mae_predictions_6.1.1$.estimate[1]
+  
+  track_0$rsq_1.2 <- rsq_predictions_6.1.1$.estimate[1]
+  
+  rm(mae_predictions_6.1.1, mae_predictions_6.1.2, 
+     rsq_predictions_6.1.1, rsq_predictions_6.1.2,
+     model_brt_1)
   
   # Ten-fold cross-validation
   
@@ -2058,14 +2087,18 @@ for (i in Country.Set.sparse){
   
   mae_predictions_6.1.3 <- collect_metrics(model_brt_2)
   
-  rm(model_brt_2)
+  # Output: Evaluation with cross-fold validation
+  track_0$mae_2.1  <- mae_predictions_6.1.3$mean[1]
+  track_0$rmse_2.1 <- mae_predictions_6.1.3$mean[2]
+  
+  rm(mae_predictions_6.1.3, model_brt_2, model_brt)
   
   # Optimize the ensemble by tuning
   
   model_brt_3 <- boost_tree(
     trees = 1000,
     tree_depth = tune(),
-    learn_rate = tune(), # the higher the learning rate the faster
+    learn_rate = tune(), # the higher the learning rate the faster - default 0.3
     # min_n = tune(),
     # mtry = tune(),
     # stop_iter = tune(),
@@ -2095,11 +2128,18 @@ for (i in Country.Set.sparse){
   
   time_2 <- Sys.time()
   
+  track_0$tuning_time <- as.integer(difftime(time_1, time_2, units = "min"))
+  
   metrics_3.1 <- collect_metrics(model_brt_3.1)
   
   # get the best model available
   
-  model_brt_3.1.1 <- select_best(model_brt_3.1, metric = "mae") # export this
+  model_brt_3.1.1 <- select_best(model_brt_3.1, metric = "mae") 
+  
+  # Output: best model after tuning
+  track_0 <- bind_cols(track_0, model_brt_3.1.1)%>%
+    rename(tree_depth_best = tree_depth, learn_rate_best = learn_rate)%>%
+    select(-.config)
   
   # Final model
   model_brt_3.1.2 <- finalize_model(model_brt_3, model_brt_3.1.1)%>%
@@ -2111,37 +2151,116 @@ for (i in Country.Set.sparse){
   
   mae_predictions_6.2.1 <- mae(predictions_6.2.1, truth = carbon_intensity_kg_per_USD_national, estimate = .pred)
   
+  rsq_predictions_6.2.1 <- rsq(predictions_6.2.1, truth = carbon_intensity_kg_per_USD_national, estimate = .pred)
+  
   mae_predictions_6.2.2 <- mae(augment(model_brt_3.1.2, new_data = data_6.1.2.testing),
                                truth = carbon_intensity_kg_per_USD_national,
                                estimate = .pred)
   
+  rsq_predictions_6.2.2 <- rsq(augment(model_brt_3.1.2, new_data = data_6.1.2.testing),
+                               truth = carbon_intensity_kg_per_USD_national,
+                               estimate = .pred)
+  
+  # Output: Evaluation of tuned model on training and testing data
+  track_0$mae_3.1 <- mae_predictions_6.2.1$.estimate[1]
+  track_0$mae_3.2 <- mae_predictions_6.2.2$.estimate[1]
+  
+  track_0$rsq_3.1 <- rsq_predictions_6.2.1$.estimate[1]
+  track_0$rsq_3.2 <- rsq_predictions_6.2.2$.estimate[1]
+  
+  rm(predictions_6.2.1, 
+     mae_predictions_6.2.1, mae_predictions_6.2.2,
+     rsq_predictions_6.2.1, rsq_predictions_6.2.2, 
+     folds_6.1, grid_0,
+     metrics_3.1, model_brt_3.1.1, model_brt_3.1, model_brt_3)
+  
   # Most important variables 
   
   vi_3.2 <- vi(model_brt_3.1.2)%>%
-    mutate(Country = i)
+    mutate(Country = i)%>%
+    mutate(run_ID = run_ID)
+  
+  vip_data <- vip_data %>%
+    bind_rows(vi_3.2)
+  
+  rm(vi_3.2)
   
   # Preparation for partial dependence plot
   
   explainer_6.1 <- explain_tidymodels(model_brt_3.1.2,
-                                      data = select(data_6.1.2.testing, - carbon_intensity_kg_per_USD_national),
-                                      y    = select(data_6.1.2.testing, carbon_intensity_kg_per_USD_national))
+                                      data = select(data_6.1.2.training, - carbon_intensity_kg_per_USD_national),
+                                      y    = select(data_6.1.2.training, carbon_intensity_kg_per_USD_national),
+                                      label = "BRT")
   # TBA
   pdp_6.1 <- model_profile(
     explainer = explainer_6.1,
-    variables = "hh_expenditures_USD_2014",
+    variables = c("hh_expenditures_USD_2014"),
+    #variable_type = "numerical",
     N = NULL
   )
   
+  pdp_6.2 <- model_profile(
+    explainer = explainer_6.1,
+    variable_type = "categorical",
+    N = NULL
+  )
+  
+  # Aggregated profile
+  
   pdp_6.1.1 <- as_tibble(pdp_6.1$agr_profiles)%>%
-    mutate(Country = i)
+    mutate(Country = i)%>%
+    mutate(run_ID = run_ID)%>%
+    rename("hh_expenditures_USD_2014" = "_x_")
   
-  pdp_6.1.2 <- as_tibble(pdp_6.1$cp_profiles)%>%
-    mutate(Country = i)
+  # Ceteris paribus profiles
   
-  # SHAP-values: TBA
+  # pdp_6.1.2 <- as_tibble(pdp_6.1$cp_profiles)%>%
+  #   mutate(Country = i)%>%
+  #   mutate(run_ID = run_ID)
+  
+  # Aggregated profile
+  
+  pdp_6.2.1 <- as_tibble(pdp_6.2$agr_profiles)%>%
+    mutate(Country = i)%>%
+    mutate(run_ID = run_ID)%>%
+    rename()
+  
+  pdp_6.3 <- bind_rows(pdp_6.1.1, pdp_6.2.1)
+  
+  pdp_data <- pdp_data %>%
+    bind_rows(pdp_6.3)
+  
+  rm(explainer_6.1, pdp_6.1, data_6.1.2.testing, data_6.1.2.training, pdp_6.2, pdp_6.1.1, pdp_6.2.1,
+     pdp_6.3, model_brt_3.1.2)
+  
+ # SHAP-values: TBA
+  
+  track <- track %>%
+    bind_rows(track_0)
+  
+  rm(track_0, run_ID, time_1, time_2)
+  
+  gc()
   
 }
 
+# Export information on session
+
+track_1 <- track %>%
+  group_by(Country)%>%
+  mutate(number = 1:n())%>%
+  ungroup()%>%
+  mutate(number_ob = paste0(Country, "_", number))%>%
+  select(number_ob, everything())%>%
+  write.xlsx(., "../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_BRT.xlsx")
+
+pdp_data_1 <- pdp_data %>%
+  write.xlsx(., "../0_Data/9_Supplementary Data/BRT-Tracking/PDP_Data.xlsx")
+
+vip_data_1 <- vip_data %>%
+  write.xlsx(.,"../0_Data/9_Supplementary Data/BRT-Tracking/VIP_Data.xlsx")
+
+rm(track, pdp_data, vip_data, track_1, pdp_data_1, vip_data_1)
 
 # 6.1.1   Variable Importance Plots ####
 
@@ -2155,7 +2274,104 @@ for (i in Country.Set.sparse){
 # Domain-knowledge-based validation: Identification of most important variables may be helpful in assessing the validity of the model based on domain knowledge.
 # based on the number of times variables are selected for splitting.
 
+# vip(model_brt_3.1.2)
+
+# Provisional: To be changed later
+
+for(i in c("ISR", "KHM")){
+  
+  data_6.1.1.0 <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/VIP_Data.xlsx")%>%
+    filter(Country == i)%>%
+    # Missing: Of course - select model with best performance on fitting test set
+    mutate(Var_0 = ifelse(grepl("District", Variable), "District", 
+                          ifelse(grepl("Province", Variable), "Province", 
+                                 ifelse(grepl("ISCED", Variable), "ISCED", 
+                                        ifelse(grepl("Ethnicity", Variable), "Ethnicity", 
+                                               ifelse(grepl("Religion", Variable), "Religion", 
+                                                      ifelse(Variable == "hh_expenditures_USD_2014", "HH exp.",
+                                                             ifelse(Variable == "hh_size", "HH size",
+                                                                    ifelse(grepl("car.01", Variable), "Car own.",
+                                                                           ifelse(grepl("urban_01", Variable), "Urban",
+                                                                                  ifelse(grepl("sex_hhh", Variable), "Gender HHH",
+                                                                                         Variable)))))))))),
+           Var_1 = ifelse(grepl("District", Variable), gsub("District?","", Variable), 
+                          ifelse(grepl("Province", Variable), gsub("Province?","", Variable), 
+                                 ifelse(grepl("ISCED", Variable), gsub("ISCED?","", Variable),
+                                        ifelse(grepl("Ethnicity", Variable), gsub("Ethnicity?","", Variable),
+                                               ifelse(grepl("Religion", Variable), gsub("Religion?","", Variable),
+                                                      ifelse(grepl("urban_01", Variable), gsub("urban_01?","", Variable),
+                                                             ifelse(grepl("sex_hhh", Variable), gsub("sex_hhh?","", Variable), 
+                                                                    ifelse(grepl("car.01", Variable), gsub("car.01","", Variable), NA)))))))))%>%
+    mutate(help_0 = ifelse(Importance < 0.01,1,0))
+  
+  data_6.1.1.1 <- filter(data_6.1.1.0, help_0 == 1)%>%
+    summarise(Importance = sum(Importance))%>%
+    mutate(Var_0 = "Other features (Sum)")%>%
+    bind_rows(filter(data_6.1.1.0, help_0 == 0))%>%
+    arrange(desc(Importance))%>%
+    mutate(number_order = ifelse(Var_0 != "Other features (Sum)",1:n(), n()+1))%>%
+    mutate(Var_2 = ifelse(!is.na(Var_1), paste0(Var_0, ": ", Var_1), Var_0))
+  
+  plot_6.1.1 <- ggplot(data_6.1.1.1)+
+    geom_col(aes(x = Importance, y = reorder(Var_2, desc(number_order))), width = 0.7, colour = "black", fill = "#E64B35FF")+
+    theme_bw()+
+    coord_cartesian(xlim = c(0,0.81))+
+    scale_x_continuous(labels = scales::percent_format(), expand = c(0,0))+
+    xlab("Variable importance")+
+    ylab("")+
+    ggtitle(sprintf("Feature importance plot for %s", i))
+  
+  jpeg(sprintf("1_Figures/Test/VIP_Test_%s.jpg",i), width = 15.5, height = 16, unit = "cm", res = 600)
+  print(plot_6.1.1)
+  dev.off()
+  
+}
+
 # 6.1.2   Partial Dependence Plots ####
+
+# Continuous variables
+
+pdp_6.1.1.1 <- pdp_6.1.1 %>%
+  rename(Variable = "_vname_", x = "_x_", y = "_yhat_", id = "_ids_")%>%
+  filter(Variable == "hh_expenditures_USD_2014")
+
+pdp_6.1.2.1 <- pdp_6.1.2 %>%
+  rename(Variable = "_vname_", x = "hh_expenditures_USD_2014", y = "_yhat_", id = "_ids_")
+
+plot_6.1.2.1 <- ggplot()+
+  geom_line(data = pdp_6.1.2.1, aes(x = x, y = y, group = id), colour = "lightgrey", size = 0.05)+
+  geom_line(data = pdp_6.1.1.1, aes(x = x, y = y), colour = "#E64B35FF", size = 1)+
+  theme_bw()+
+  ylab("Prediction carbon intensity of consumption")+
+  xlab("Household expenditures in USD (2014)")+
+  coord_cartesian(xlim = c(0,55000))+
+  scale_x_continuous(labels = scales::dollar_format(), expand = c(0,0))+
+  ggtitle(sprintf("Partial dependence plot for %s - household expenditures", i))
+
+jpeg("1_Figures/Test/PDP_Test_1.jpg", width = 15.5, height = 16, unit = "cm", res = 600)
+print(plot_6.1.2.1)
+dev.off()
+
+# Categorical variables - could potentially be contrasted with marginal effects from OLS
+
+pdp_6.2.1.1 <- pdp_6.2.1 %>%
+  rename(Variable ="_vname_", x = "_x_", y = "_yhat_")%>%
+  filter(!Variable %in% c("sex_hhh", "Religion", "refrigerator.01"))
+
+plot_6.1.2.2 <- ggplot()+
+  geom_col(data = pdp_6.2.1.1, aes(x = x, y = y), width = 0.7, colour = "black", fill = "#E64B35FF")+
+  facet_grid(. ~ Variable, scales = "free", space = "free")+
+  coord_cartesian(ylim = c(0.3,0.6))+
+  theme_bw()+
+  ylab("Prediction carbon intensity of consumption")+
+  xlab("")+
+  ggtitle(sprintf("Partial dependence plot for %s",i))+
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1),
+        strip.text = element_text(angle = 90))
+
+jpeg("1_Figures/Test/PDP_Test_2.jpg", width = 30, height = 16, unit = "cm", res = 600)
+print(plot_6.1.2.2)
+dev.off()
 
 # 6.1.3   Measure of models ####
 # 6.1.4   SHAP-Values - TBA ####
