@@ -353,13 +353,13 @@ Lighting.Codes.All.1 <- Lighting.Codes.All %>%
 
 Heating.Codes.All.1 <- Heating.Codes.All %>%
   select(Country_long, heating_fuel, Heating_Fuel)%>%
-  mutate(HF = ifelse(Heating_Fuel %in% c("Mains gas?", "Gas in tube?", "Bulk gas (zeppelin)?", "Central heating", "Natural gas", "Gas", "Natural Gas", "Gas por cañería"), "Gas", 
-                     ifelse(Heating_Fuel %in% c("electricity?", "Electricity", "Solar", "Electricity form public network", "Electricity from shared generator", "Electricity from private generator", "Other source of electricity", "Solar energy", "Electric", "Energía eléctrica"), "Electricity", 
+  mutate(HF = ifelse(Heating_Fuel %in% c("Mains gas?", "Gas in tube?", "Bulk gas (zeppelin)?", "Central heating", "Natural gas", "Gas", "Natural Gas", "Gas por cañería", "Gas central heating", "Calor gas central heating", "Other gas central heating"), "Gas", 
+                     ifelse(Heating_Fuel %in% c("electricity?", "Electricity", "Solar", "Electricity form public network", "Electricity from shared generator", "Electricity from private generator", "Other source of electricity", "Solar energy", "Electric", "Energía eléctrica", "Electric central heating"), "Electricity", 
                             ifelse(Heating_Fuel %in% c("Gas in a carafe?", "Liquefied gas", "Liquid gas cylinders", "Supergás"), "LPG",
-                                   ifelse(Heating_Fuel %in% c("Wood", "Firewood or Coal", "Wood, coal, plant-sources", "Leña"), "Firewood",
+                                   ifelse(Heating_Fuel %in% c("Wood", "Firewood or Coal", "Wood, coal, plant-sources", "Leña", "Solid fuel central heating"), "Firewood",
                                           ifelse(Heating_Fuel %in% c("Dung of animals", "Animal dung", "Dried cow dung"), "Other biomass", 
                                                  ifelse(Heating_Fuel %in% c("Kerosene / firewood / charcoal?", "Paraffin", "Kerosene", "Queroseno"), "Kerosene",
-                                                        ifelse(Heating_Fuel %in% c("Oil and diesel"), "Liquid fuels",
+                                                        ifelse(Heating_Fuel %in% c("Oil and diesel", "Oil central heating", "Solid fuel or oil central heating"), "Liquid fuels",
                                                                ifelse(Heating_Fuel %in% c("Coal"), "Coal","Unknown")))))))))%>%
   rename(HF_new = HF)
 
