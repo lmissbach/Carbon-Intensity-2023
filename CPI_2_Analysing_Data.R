@@ -5,7 +5,7 @@
 
 if(!require("pacman")) install.packages("pacman")
 
-p_load("boot", "broom", "countrycode", "DALEXtra", "fixest", "ggpubr", "ggrepel",
+p_load("boot", "broom", "countrycode", "cowplot", "DALEXtra", "fixest", "ggpubr", "ggrepel",
        "ggsci", "Hmisc", "knitr", "kableExtra", "marginaleffects", "margins", "Metrics",
        "openxlsx", "pdp","rattle", "scales", "tidymodels", "tidyverse", "vip", "xgboost", "xtable")
 
@@ -1966,7 +1966,9 @@ rm(data_frame_5.3.2.1, data_frame_5.3.2.3, data_5.3, Type_0, i)
 
 # We wish to detect the importance of variables in modelling and non-linear relationships
 
-Country.Set.sparse <- c("ISR", "KHM","ZAF") 
+Country.Set.Test <- c("IND", "IDN", "MEX", )
+
+Country.Set.Test.1 <- c("CHL", "JOR", "DOM", "PER", "MLI", "EGY", "NGA", "BEN", "CIV", "MMR")
 
 track <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_BRT.xlsx")
 
@@ -1974,273 +1976,321 @@ pdp_data <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/PDP_Data.xlsx
 
 vip_data <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/VIP_Data.xlsx")
 
-for (i in Country.Set.sparse){
-  track_0 <- data.frame(Country = i, date = date())
-  
-  run_ID <- if(i %in% track$Country) paste0(i, "_", max(track$number[track$Country == i])+1) else paste0(i, "_",1)
-  
-  print(paste0("Start: ", i))
+set.seed(2023)
 
-  # Filter only observations for country of interest  
-  data_6.1 <- filter(data_2, Country == i)
+options(warn = 1)
 
-  track_0$observations_sample = nrow(data_6.1)
-  
-  # Feature Engineering
-  # Possibly do it with recipe
-  
-  data_6.1.1 <- data_6.1 %>%
-    # select relevant variables
-    select(Country, hh_id, hh_weights, hh_size,
-           Province, District, urban_01,  
-           sex_hhh, ISCED, Ethnicity, Religion,
-           hh_expenditures_USD_2014, car.01, refrigerator.01, tv.01, washing_machine.01, 
-           carbon_intensity_kg_per_USD_national)%>%
-    # should have no NA
-    # factors instead of characters
-    mutate_if(vars(is.character(.)), list(~ as.factor(.)))%>%
-    mutate_at(vars(sex_hhh, ISCED, urban_01, car.01, refrigerator.01, washing_machine.01), list(~ as.factor(.)))%>%
-    # should have very few unique observations for factors
-    # potentially remove outliers - log-transformation
-    # remove redundant variables
-    select(-Country, -hh_id, -hh_weights)%>%
-    # include hh_weights later in the process
-    select(carbon_intensity_kg_per_USD_national, everything())%>%
-    select(carbon_intensity_kg_per_USD_national, hh_expenditures_USD_2014, hh_size, urban_01, car.01, everything())
-  
-  rm(data_6.1)
-  
-  # Splitting the sample, but no strata
-  
-  data_6.1.2 <- data_6.1.1 %>%
-    initial_split(prop = 0.75)
-  
-  # Data for training
-  data_6.1.2.training <- data_6.1.2 %>%
-    training()
-  
-  # Data for testing
-  data_6.1.2.testing <- data_6.1.2 %>%
-    testing()
-  
-  rm(data_6.1.1, data_6.1.2)
-  
-  # Setup model - Standard version
-  
-  model_brt <- boost_tree()%>%
-    set_mode("regression")%>%
-    set_engine("xgboost")
-  
-  # Fitting the model on training data
-  
-  model_brt_1 <- model_brt %>%
-    fit(carbon_intensity_kg_per_USD_national ~ .,
-        data = data_6.1.2.training)
-  
-  # What can we do with this fitted model?
-  # tidy() ?
-  # glance() ?
-  # augment()
-  
-  # Use augment to derive predictions for training and test set
-  
-  mae_predictions_6.1.1 <- augment(model_brt_1, new_data = data_6.1.2.testing)%>%
-    mae(truth = carbon_intensity_kg_per_USD_national, estimate = .pred)
-  
-  rsq_predictions_6.1.1 <- augment(model_brt_1, new_data = data_6.1.2.testing)%>%
-    rsq(truth = carbon_intensity_kg_per_USD_national, estimate = .pred)
-  
-  # Also
-  # predictions_6.1.1 <- model_brt_1 %>%
-  #  predict(new_data = data_6.1.2.testing)%>%
-  #  bind_cols(data_6.1.2.testing)
-  # mae(predictions_6.1.1, estimate = .pred, truth = carbon_intensity_kg_per_USD_national)
-  
-  mae_predictions_6.1.2 <- augment(model_brt_1, new_data = data_6.1.2.training)%>%
-    mae(truth = carbon_intensity_kg_per_USD_national, estimate = .pred) 
-  
-  rsq_predictions_6.1.2 <- augment(model_brt_1, new_data = data_6.1.2.training)%>%
-    rsq(truth = carbon_intensity_kg_per_USD_national, estimate = .pred) 
-  
-  # Output: Evaluation on training data
-  track_0$mae_1.1 <- mae_predictions_6.1.2$.estimate[1]
-  
-  track_0$rsq_1.1 <- rsq_predictions_6.1.2$.estimate[1]
-  
-  # Output: Evaluation on testing data
-  track_0$mae_1.2 <- mae_predictions_6.1.1$.estimate[1]
-  
-  track_0$rsq_1.2 <- rsq_predictions_6.1.1$.estimate[1]
-  
-  rm(mae_predictions_6.1.1, mae_predictions_6.1.2, 
-     rsq_predictions_6.1.1, rsq_predictions_6.1.2,
-     model_brt_1)
-  
-  # Ten-fold cross-validation
-  
-  folds_6.1 <- vfold_cv(data_6.1.2.training, v = 10)
-  
-  model_brt_2 <- fit_resamples(model_brt,
-                               carbon_intensity_kg_per_USD_national ~.,
+for (i in Country.Set.Test.1){
+  tryCatch({
+    
+    track_0 <- data.frame(Country = i, date = date())
+    
+    run_ID <- if(i %in% track$Country) paste0(i, "_", max(track$number[track$Country == i])+1) else paste0(i, "_",1)
+    
+    print(paste0("Start: ", i))
+    
+    # Filter only observations for country of interest  
+    data_6.1 <- filter(data_2, Country == i)
+    
+    track_0$observations_sample = nrow(data_6.1)
+    
+    # Feature Engineering
+    # Possibly do it with recipe
+    
+    data_6.1.1 <- data_6.1 %>%
+      # select relevant variables
+      select(Country, hh_id, hh_weights, hh_size,
+             Province, urban_01, 
+             # District,
+             sex_hhh, ISCED, Ethnicity, Religion, Nationality, Language, religiosity,
+             electricity.access, HF, LF, CF, 
+             hh_expenditures_USD_2014, 
+             car.01, motorcycle.01, refrigerator.01, ac.01, tv.01, washing_machine.01, 
+             carbon_intensity_kg_per_USD_national)%>%
+      # remove redundant variables
+      select(-Country, -hh_id, -hh_weights)%>%
+      # include hh_weights later in the process
+      # factors instead of characters
+      mutate_if(vars(is.character(.)), list(~ as.factor(.)))%>%
+      mutate_at(vars(sex_hhh, ISCED, religiosity, urban_01, ends_with(".01")), list(~ as.factor(.)))
+    # dataset should have no NA
+    #select_if(~ !any(is.na(.)))
+    
+    # Country-specific edits addressing bugs
+    if(i == "SWE"){data_6.1.1 <- select(data_6.1.1, -ISCED, -sex_hhh)}
+    if(i == "NLD"){data_6.1.1 <- select(data_6.1.1, -ISCED)}
+
+    rm(data_6.1)
+    
+    # Splitting the sample, but no strata
+    
+    data_6.1.2 <- data_6.1.1 %>%
+      initial_split(prop = 0.75)
+    
+    # Data for training
+    data_6.1.2.train <- data_6.1.2 %>%
+      training()
+    
+    # Data for testing
+    data_6.1.2.test <- data_6.1.2 %>%
+      testing()
+    
+    rm(data_6.1.1, data_6.1.2)
+    
+    # Feature engineering with recipe()
+    
+    recipe_6.1.0 <- recipe(carbon_intensity_kg_per_USD_national ~ .,
+                           data = data_6.1.2.train)%>%
+      step_filter_missing(all_predictors(), threshold = 0)%>%
+      step_corr(all_numeric(), -all_outcomes(), threshold = 0.9)%>%
+      # should have very few unique observations for factors
+      step_other(all_nominal(), -ends_with(".01"), -ends_with("urban_01"), -ends_with("District"), -ends_with("Province"), threshold = 0.05) # %>%
+      #step_novel(all_nominal(), -ends_with(".01"), -ends_with("urban_01"))%>%
+      #step_dummy(all_nominal(), -ends_with(".01"), -ends_with("urban_01"))
+    
+    data_6.1.2.training <- recipe_6.1.0 %>%
+      prep(training = data_6.1.2.train)%>%
+      bake(new_data = NULL)
+    
+    data_6.1.2.testing <- recipe_6.1.0 %>%
+      prep(training = data_6.1.2.test)%>%
+      bake(new_data = NULL)
+    
+    # Setup model - Standard version
+    
+    model_brt <- boost_tree()%>%
+      set_mode("regression")%>%
+      set_engine("xgboost")
+    
+    # Fitting the model on training data
+    
+    model_brt_1 <- model_brt %>%
+      fit(carbon_intensity_kg_per_USD_national ~ .,
+          data = data_6.1.2.training)
+    
+    # What can we do with this fitted model?
+    # tidy() ?
+    # glance() ?
+    # augment()
+    
+    # Use augment to derive predictions for training and test set
+    
+    mae_predictions_6.1.1 <- augment(model_brt_1, new_data = data_6.1.2.testing)%>%
+      mae(truth = carbon_intensity_kg_per_USD_national, estimate = .pred)
+    
+    rsq_predictions_6.1.1 <- augment(model_brt_1, new_data = data_6.1.2.testing)%>%
+      rsq(truth = carbon_intensity_kg_per_USD_national, estimate = .pred)
+    
+    # Also
+    # predictions_6.1.1 <- model_brt_1 %>%
+    #  predict(new_data = data_6.1.2.testing)%>%
+    #  bind_cols(data_6.1.2.testing)
+    # mae(predictions_6.1.1, estimate = .pred, truth = carbon_intensity_kg_per_USD_national)
+    
+    mae_predictions_6.1.2 <- augment(model_brt_1, new_data = data_6.1.2.training)%>%
+      mae(truth = carbon_intensity_kg_per_USD_national, estimate = .pred) 
+    
+    rsq_predictions_6.1.2 <- augment(model_brt_1, new_data = data_6.1.2.training)%>%
+      rsq(truth = carbon_intensity_kg_per_USD_national, estimate = .pred) 
+    
+    # Output: Evaluation on training data
+    track_0$mae_1.1 <- mae_predictions_6.1.2$.estimate[1]
+    
+    track_0$rsq_1.1 <- rsq_predictions_6.1.2$.estimate[1]
+    
+    # Output: Evaluation on testing data
+    track_0$mae_1.2 <- mae_predictions_6.1.1$.estimate[1]
+    
+    track_0$rsq_1.2 <- rsq_predictions_6.1.1$.estimate[1]
+    
+    rm(mae_predictions_6.1.1, mae_predictions_6.1.2, 
+       rsq_predictions_6.1.1, rsq_predictions_6.1.2,
+       model_brt_1)
+    
+    # Ten-fold cross-validation
+    
+    folds_6.1 <- vfold_cv(data_6.1.2.training, v = 10)
+    
+    model_brt_2 <- fit_resamples(model_brt,
+                                 carbon_intensity_kg_per_USD_national ~.,
+                                 resamples = folds_6.1,
+                                 metrics = metric_set(mae, rmse))
+    
+    mae_predictions_6.1.3 <- collect_metrics(model_brt_2)
+    
+    # Output: Evaluation with cross-fold validation
+    track_0$mae_2.1  <- mae_predictions_6.1.3$mean[1]
+    track_0$rmse_2.1 <- mae_predictions_6.1.3$mean[2]
+    
+    rm(mae_predictions_6.1.3, model_brt_2, model_brt)
+    
+    # Optimize the ensemble by tuning
+    
+    model_brt_3 <- boost_tree(
+      trees = 1000,
+      tree_depth = tune(),
+      learn_rate = tune(), # the higher the learning rate the faster - default 0.3
+      # min_n = tune(),
+      # mtry = tune(),
+      # stop_iter = tune(),
+      # sample_size = tune()
+    )%>%
+      set_mode("regression")%>%
+      set_engine("xgboost")
+    
+    # Create a tuning grid
+    
+    grid_0 <- grid_latin_hypercube(
+      tree_depth(),
+      learn_rate(c(-4,-1)),# tuning parameters
+      size = 10)%>%
+      bind_rows(data.frame(tree_depth = 6, learn_rate = 0.3))
+    
+    doParallel::registerDoParallel()
+    
+    time_1 <- Sys.time()
+    
+    # This is what takes long
+    
+    model_brt_3.1 <- tune_grid(model_brt_3,
+                               carbon_intensity_kg_per_USD_national ~ .,
                                resamples = folds_6.1,
-                               metrics = metric_set(mae, rmse))
+                               grid      = grid_0,
+                               metrics   = metric_set(mae, rmse))
+    
+    time_2 <- Sys.time()
+    
+    track_0$tuning_time <- as.integer(difftime(time_1, time_2, units = "min"))
+    
+    metrics_3.1 <- collect_metrics(model_brt_3.1)
+    
+    # get the best model available
+    
+    model_brt_3.1.1 <- select_best(model_brt_3.1, metric = "mae") 
+    
+    # Output: best model after tuning
+    track_0 <- bind_cols(track_0, model_brt_3.1.1)%>%
+      rename(tree_depth_best = tree_depth, learn_rate_best = learn_rate)%>%
+      select(-.config)
+    
+    # Final model
+    model_brt_3.1.2 <- finalize_model(model_brt_3, model_brt_3.1.1)%>%
+      # runs model with parameters as selected in model_brt_3.1.1
+      fit(carbon_intensity_kg_per_USD_national ~ ., 
+          data = data_6.1.2.training)
+    
+    predictions_6.2.1 <- augment(model_brt_3.1.2, new_data = data_6.1.2.training)
+    
+    mae_predictions_6.2.1 <- mae(predictions_6.2.1, truth = carbon_intensity_kg_per_USD_national, estimate = .pred)
+    
+    rsq_predictions_6.2.1 <- rsq(predictions_6.2.1, truth = carbon_intensity_kg_per_USD_national, estimate = .pred)
+    
+    mae_predictions_6.2.2 <- mae(augment(model_brt_3.1.2, new_data = data_6.1.2.testing),
+                                 truth = carbon_intensity_kg_per_USD_national,
+                                 estimate = .pred)
+    
+    rsq_predictions_6.2.2 <- rsq(augment(model_brt_3.1.2, new_data = data_6.1.2.testing),
+                                 truth = carbon_intensity_kg_per_USD_national,
+                                 estimate = .pred)
+    
+    # Output: Evaluation of tuned model on training and testing data
+    track_0$mae_3.1 <- mae_predictions_6.2.1$.estimate[1]
+    track_0$mae_3.2 <- mae_predictions_6.2.2$.estimate[1]
+    
+    track_0$rsq_3.1 <- rsq_predictions_6.2.1$.estimate[1]
+    track_0$rsq_3.2 <- rsq_predictions_6.2.2$.estimate[1]
+    
+    rm(predictions_6.2.1, 
+       mae_predictions_6.2.1, mae_predictions_6.2.2,
+       rsq_predictions_6.2.1, rsq_predictions_6.2.2, 
+       folds_6.1, grid_0,
+       metrics_3.1, model_brt_3.1.1, model_brt_3.1, model_brt_3)
+    
+    # Most important variables 
+    
+    vi_3.2 <- vi(model_brt_3.1.2)%>%
+      mutate(Country = i)%>%
+      mutate(run_ID = run_ID)
+    
+    vip_data <- vip_data %>%
+      bind_rows(vi_3.2)
+    
+    rm(vi_3.2)
+    
+    # Preparation for partial dependence plot
+    
+    explainer_6.1 <- explain_tidymodels(model_brt_3.1.2,
+                                        data = select(data_6.1.2.training, - carbon_intensity_kg_per_USD_national),
+                                        y    = select(data_6.1.2.training, carbon_intensity_kg_per_USD_national),
+                                        label = "BRT")
+    # TBA
+    pdp_6.1 <- model_profile(
+      explainer = explainer_6.1,
+      variables = c("hh_expenditures_USD_2014"),
+      #variable_type = "numerical",
+      N = NULL
+    )
+    
+    pdp_6.2.1 <- model_profile(
+      explainer = explainer_6.1,
+      variable_type = "categorical",
+      N = NULL
+    )
+    
+    pdp_6.2.2 <- model_profile(
+      explainer = explainer_6.1,
+      variable_type = "numerical",
+      N = NULL
+    )
+    
+    # Aggregated profile
+    
+    pdp_6.1.1 <- as_tibble(pdp_6.1$agr_profiles)%>%
+      mutate(Country = i)%>%
+      mutate(run_ID = run_ID)%>%
+      rename("hh_expenditures_USD_2014" = "_x_")
+    
+    # Ceteris paribus profiles
+    
+    # pdp_6.1.2 <- as_tibble(pdp_6.1$cp_profiles)%>%
+    #   mutate(Country = i)%>%
+    #   mutate(run_ID = run_ID)
+    
+    # Aggregated profile
+    
+    pdp_6.2.3 <- as_tibble(pdp_6.2.1$agr_profiles)%>%
+      mutate(Country = i)%>%
+      mutate(run_ID = run_ID)%>%
+      rename()
+    
+    # pdp_6.2.4 <- as_tibble(pdp_6.2.2$agr_profiles)%>%
+    #   mutate(Country = i)%>%
+    #   mutate(run_ID = run_ID)%>%
+    #   rename()
+    
+    pdp_6.3 <- bind_rows(pdp_6.1.1, pdp_6.2.3)
+    
+    pdp_data <- pdp_data %>%
+      bind_rows(pdp_6.3)
+    
+    rm(explainer_6.1, pdp_6.1, data_6.1.2.testing, data_6.1.2.training, pdp_6.2.1, pdp_6.2.2, pdp_6.2.3, 
+       pdp_6.1.1, pdp_6.3, model_brt_3.1.2, data_6.1.2.test, data_6.1.2.train, recipe_6.1.0)
+    
+    # SHAP-values: TBA
+    
+    track <- track %>%
+      bind_rows(track_0)
+    
+    rm(track_0, run_ID, time_1, time_2)
+    
+    gc()
+    
+    print(paste0("End: ", i, " ", Sys.time()))
+    
+    #parallel::stopCluster()
+    
+  }, error=function(e){cat("ERROR :",conditionMessage(e), "\n")})
   
-  mae_predictions_6.1.3 <- collect_metrics(model_brt_2)
-  
-  # Output: Evaluation with cross-fold validation
-  track_0$mae_2.1  <- mae_predictions_6.1.3$mean[1]
-  track_0$rmse_2.1 <- mae_predictions_6.1.3$mean[2]
-  
-  rm(mae_predictions_6.1.3, model_brt_2, model_brt)
-  
-  # Optimize the ensemble by tuning
-  
-  model_brt_3 <- boost_tree(
-    trees = 1000,
-    tree_depth = tune(),
-    learn_rate = tune(), # the higher the learning rate the faster - default 0.3
-    # min_n = tune(),
-    # mtry = tune(),
-    # stop_iter = tune(),
-    # sample_size = tune()
-  )%>%
-    set_mode("regression")%>%
-    set_engine("xgboost")
-  
-  # Create a tuning grid
-  
-  grid_0 <- grid_latin_hypercube(
-    parameters(model_brt_3), # tuning parameters
-    size = 10
-  )
-  
-  doParallel::registerDoParallel()
-
-  time_1 <- Sys.time()
-  
-  # This is what takes long
-  
-  model_brt_3.1 <- tune_grid(model_brt_3,
-                             carbon_intensity_kg_per_USD_national ~ .,
-                             resamples = folds_6.1,
-                             grid      = grid_0,
-                             metrics   = metric_set(mae, rmse))
-  
-  time_2 <- Sys.time()
-  
-  track_0$tuning_time <- as.integer(difftime(time_1, time_2, units = "min"))
-  
-  metrics_3.1 <- collect_metrics(model_brt_3.1)
-  
-  # get the best model available
-  
-  model_brt_3.1.1 <- select_best(model_brt_3.1, metric = "mae") 
-  
-  # Output: best model after tuning
-  track_0 <- bind_cols(track_0, model_brt_3.1.1)%>%
-    rename(tree_depth_best = tree_depth, learn_rate_best = learn_rate)%>%
-    select(-.config)
-  
-  # Final model
-  model_brt_3.1.2 <- finalize_model(model_brt_3, model_brt_3.1.1)%>%
-    # runs model with parameters as selected in model_brt_3.1.1
-    fit(carbon_intensity_kg_per_USD_national ~ ., 
-        data = data_6.1.2.training)
-  
-  predictions_6.2.1 <- augment(model_brt_3.1.2, new_data = data_6.1.2.training)
-  
-  mae_predictions_6.2.1 <- mae(predictions_6.2.1, truth = carbon_intensity_kg_per_USD_national, estimate = .pred)
-  
-  rsq_predictions_6.2.1 <- rsq(predictions_6.2.1, truth = carbon_intensity_kg_per_USD_national, estimate = .pred)
-  
-  mae_predictions_6.2.2 <- mae(augment(model_brt_3.1.2, new_data = data_6.1.2.testing),
-                               truth = carbon_intensity_kg_per_USD_national,
-                               estimate = .pred)
-  
-  rsq_predictions_6.2.2 <- rsq(augment(model_brt_3.1.2, new_data = data_6.1.2.testing),
-                               truth = carbon_intensity_kg_per_USD_national,
-                               estimate = .pred)
-  
-  # Output: Evaluation of tuned model on training and testing data
-  track_0$mae_3.1 <- mae_predictions_6.2.1$.estimate[1]
-  track_0$mae_3.2 <- mae_predictions_6.2.2$.estimate[1]
-  
-  track_0$rsq_3.1 <- rsq_predictions_6.2.1$.estimate[1]
-  track_0$rsq_3.2 <- rsq_predictions_6.2.2$.estimate[1]
-  
-  rm(predictions_6.2.1, 
-     mae_predictions_6.2.1, mae_predictions_6.2.2,
-     rsq_predictions_6.2.1, rsq_predictions_6.2.2, 
-     folds_6.1, grid_0,
-     metrics_3.1, model_brt_3.1.1, model_brt_3.1, model_brt_3)
-  
-  # Most important variables 
-  
-  vi_3.2 <- vi(model_brt_3.1.2)%>%
-    mutate(Country = i)%>%
-    mutate(run_ID = run_ID)
-  
-  vip_data <- vip_data %>%
-    bind_rows(vi_3.2)
-  
-  rm(vi_3.2)
-  
-  # Preparation for partial dependence plot
-  
-  explainer_6.1 <- explain_tidymodels(model_brt_3.1.2,
-                                      data = select(data_6.1.2.training, - carbon_intensity_kg_per_USD_national),
-                                      y    = select(data_6.1.2.training, carbon_intensity_kg_per_USD_national),
-                                      label = "BRT")
-  # TBA
-  pdp_6.1 <- model_profile(
-    explainer = explainer_6.1,
-    variables = c("hh_expenditures_USD_2014"),
-    #variable_type = "numerical",
-    N = NULL
-  )
-  
-  pdp_6.2 <- model_profile(
-    explainer = explainer_6.1,
-    variable_type = "categorical",
-    N = NULL
-  )
-  
-  # Aggregated profile
-  
-  pdp_6.1.1 <- as_tibble(pdp_6.1$agr_profiles)%>%
-    mutate(Country = i)%>%
-    mutate(run_ID = run_ID)%>%
-    rename("hh_expenditures_USD_2014" = "_x_")
-  
-  # Ceteris paribus profiles
-  
-  # pdp_6.1.2 <- as_tibble(pdp_6.1$cp_profiles)%>%
-  #   mutate(Country = i)%>%
-  #   mutate(run_ID = run_ID)
-  
-  # Aggregated profile
-  
-  pdp_6.2.1 <- as_tibble(pdp_6.2$agr_profiles)%>%
-    mutate(Country = i)%>%
-    mutate(run_ID = run_ID)%>%
-    rename()
-  
-  pdp_6.3 <- bind_rows(pdp_6.1.1, pdp_6.2.1)
-  
-  pdp_data <- pdp_data %>%
-    bind_rows(pdp_6.3)
-  
-  rm(explainer_6.1, pdp_6.1, data_6.1.2.testing, data_6.1.2.training, pdp_6.2, pdp_6.1.1, pdp_6.2.1,
-     pdp_6.3, model_brt_3.1.2)
-  
- # SHAP-values: TBA
-  
-  track <- track %>%
-    bind_rows(track_0)
-  
-  rm(track_0, run_ID, time_1, time_2)
-  
-  gc()
   
 }
 
@@ -2278,7 +2328,7 @@ rm(track, pdp_data, vip_data, track_1, pdp_data_1, vip_data_1)
 
 # Provisional: To be changed later
 
-for(i in c("ISR", "KHM")){
+for(i in c("ISR", "KHM", "ZAF", "BOL")){
   
   data_6.1.1.0 <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/VIP_Data.xlsx")%>%
     filter(Country == i)%>%
@@ -2381,3 +2431,374 @@ dev.off()
 
 
 # 6.2     BRT on hardship cases (classification model) ####
+# 7       Figures Presentation ####
+# 7.1     Figure 1: Scatterplot and friends ####
+
+data_7.1 <- data_2 %>%
+  filter(Country == "ZAF")
+
+data_7.1.1 <- data_7.1 %>%
+  summarise(y5  = wtd.quantile(carbon_intensity_kg_per_USD_national, weights = hh_weights, probs = 0.05),
+            y25 = wtd.quantile(carbon_intensity_kg_per_USD_national, weights = hh_weights, probs = 0.25),
+            y50 = wtd.quantile(carbon_intensity_kg_per_USD_national, weights = hh_weights, probs = 0.5),
+            y75 = wtd.quantile(carbon_intensity_kg_per_USD_national, weights = hh_weights, probs = 0.75),
+            y95 = wtd.quantile(carbon_intensity_kg_per_USD_national, weights = hh_weights, probs = 0.95),
+            mean = wtd.mean(carbon_intensity_kg_per_USD_national, weights = hh_weights))
+
+data_7.1.2 <- data_7.1 %>%
+  group_by(Income_Group_5)%>%
+  summarise(max_exp = max(hh_expenditures_USD_2014_pc))
+
+P.7.1.0 <- ggplot()+
+  geom_boxplot(data = data_7.1.1, aes(ymin = y5, lower = y25, middle = y50, upper = y75, ymax = y95, x = 1), 
+               stat = "identity", position = position_dodge(0.5), outlier.shape = NA, width = 0.5, size = 0.3)+
+  geom_point(data = data_7.1.1, aes(y = mean, x = 1), shape = 23, size = 2, stroke = 0.3, fill = "white")+
+  theme_bw()+
+  xlab("") + ylab(expression(paste("Carbon intensity of consumption [kg", CO[2], "/USD]", sep = "")))+
+  labs(colour = "", fill = "")+
+  coord_cartesian(ylim = c(0,5))+
+  scale_y_continuous(expand = c(0,0))+
+  scale_x_discrete(labels = "none")+
+  scale_fill_discrete(guide = "none")+
+  ggtitle("")+
+  theme(axis.text.y = element_text(size = 6), 
+        axis.text.x = element_text(size = 6),
+        axis.title  = element_text(size = 7),
+        plot.title = element_text(size = 11),
+        legend.position = "bottom",
+        strip.text = element_text(size = 7),
+        #strip.text.y = element_text(angle = 180),
+        #panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        axis.ticks = element_line(size = 0.2),
+        legend.text = element_text(size = 7),
+        legend.title = element_text(size = 7),
+        plot.margin = unit(c(0.3,0.3,0.3,0.3), "cm"),
+        panel.border = element_rect(size = 0.3))
+
+P.7.1.1 <- ggplot()+
+  geom_point(data = data_7.1, aes(x = hh_expenditures_USD_2014_pc,
+                                      y = carbon_intensity_kg_per_USD_national), 
+             alpha = 0.05, shape = 21, colour = "black", fill = "#4DBBD5FF", size = 0.5)+
+  theme_bw()+
+  xlab("Household expenditures per capita in US-$ (2014)") + ylab("")+
+  labs(colour = "", fill = "")+
+  coord_cartesian(xlim = c(0, 22000), ylim = c(0,5))+
+  scale_y_continuous(expand = c(0,0))+
+  scale_x_continuous(labels = scales::dollar_format(accuracy = 1), expand = c(0,0))+
+  scale_fill_discrete(guide = "none")+
+  ggtitle("South Africa")+
+  theme(axis.text.y = element_blank(), 
+        axis.text.x = element_text(size = 6),
+        axis.title  = element_text(size = 7),
+        plot.title = element_text(size = 11),
+        legend.position = "bottom",
+        strip.text = element_text(size = 7),
+        #strip.text.y = element_text(angle = 180),
+        #panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        axis.ticks = element_line(size = 0.2),
+        legend.text = element_text(size = 7),
+        legend.title = element_text(size = 7),
+        plot.margin = unit(c(0.3,0.3,0.3,0.3), "cm"),
+        panel.border = element_rect(size = 0.3))
+
+P.7.1.2 <- P.7.1.1 +
+  geom_smooth(data = data_7.1, 
+              aes(x = hh_expenditures_USD_2014_pc, weight = hh_weights, 
+                  y = carbon_intensity_kg_per_USD_national, group = Country),
+              level = 0.95, method = "lm", formula = y ~ x + I(x^2), colour = "#E64B35FF", 
+              fill  = "#E64B35FF", size = 0.5)
+
+P.7.1.3 <- ggplot()+
+  geom_vline(aes(xintercept = 543.4191),  size = 0.2)+
+  geom_vline(aes(xintercept = 981.5637),  size = 0.2)+
+  geom_vline(aes(xintercept = 1753.5873), size = 0.2)+
+  geom_vline(aes(xintercept = 3911.4171), size = 0.2)+
+  geom_point(data = data_7.1, aes(x = hh_expenditures_USD_2014_pc,
+                                  y = carbon_intensity_kg_per_USD_national, fill = factor(Income_Group_5)), 
+             alpha = 0.05, shape = 21, colour = "black",  size = 0.5)+
+  theme_bw()+
+  xlab("Household expenditures per capita in US-$ (2014)") + ylab("")+
+  labs(colour = "", fill = "")+
+  coord_cartesian(xlim = c(0, 22000), ylim = c(0,5))+
+  scale_y_continuous(expand = c(0,0))+
+  scale_x_continuous(labels = scales::dollar_format(accuracy = 1),  expand = c(0,0))+
+  scale_fill_discrete(guide = "none")+
+  ggtitle("South Africa")+
+  theme(axis.text.y = element_blank(), 
+        axis.text.x = element_text(size = 6),
+        axis.title  = element_text(size = 7),
+        plot.title = element_text(size = 11),
+        legend.position = "bottom",
+        strip.text = element_text(size = 7),
+        #strip.text.y = element_text(angle = 180),
+        #panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        axis.ticks = element_line(size = 0.2),
+        legend.text = element_text(size = 7),
+        legend.title = element_text(size = 7),
+        plot.margin = unit(c(0.3,0.3,0.3,0.3), "cm"),
+        panel.border = element_rect(size = 0.3))
+
+P.7.1.4 <- P.7.1.1 +
+  geom_vline(aes(xintercept = 543.4191),  size = 0.2)+
+  geom_vline(aes(xintercept = 981.5637),  size = 0.2)+
+  geom_vline(aes(xintercept = 1753.5873), size = 0.2)+
+  geom_vline(aes(xintercept = 3911.4171), size = 0.2)
+
+P.7.1.5 <- align_plots(P.7.1.0, P.7.1.1, P.7.1.2, P.7.1.3, P.7.1.4, P.7.2.1, align = "hv")
+
+P.7.1.6  <- ggdraw(P.7.1.5[[1]])
+P.7.1.7  <- ggdraw(P.7.1.5[[2]])
+P.7.1.8  <- ggdraw(P.7.1.5[[3]])
+P.7.1.9  <- ggdraw(P.7.1.5[[4]])
+P.7.1.10 <- ggdraw(P.7.1.5[[5]])
+P.7.1.11 <- ggdraw(P.7.1.5[[6]])
+
+jpeg("4_Presentations/Figures/Figure 1/Figure_1_0_%d.jpg", width = 4, height = 10, unit = "cm", res = 600)
+print(P.7.1.6)
+dev.off()
+
+jpeg("4_Presentations/Figures/Figure 1/Figure_1_a_%d.jpg", width = 10, height = 10, unit = "cm", res = 600)
+print(P.7.1.7)
+print(P.7.1.8)
+print(P.7.1.9)
+print(P.7.1.10)
+dev.off()
+
+# 7.2     Figure 2: Boxplot and friends ####
+
+data_7.2 <- data_7.1 %>%
+  group_by(Income_Group_5)%>%
+  summarise(y5  = wtd.quantile(carbon_intensity_kg_per_USD_national, weights = hh_weights, probs = 0.05),
+            y25 = wtd.quantile(carbon_intensity_kg_per_USD_national, weights = hh_weights, probs = 0.25),
+            y50 = wtd.quantile(carbon_intensity_kg_per_USD_national, weights = hh_weights, probs = 0.5),
+            y75 = wtd.quantile(carbon_intensity_kg_per_USD_national, weights = hh_weights, probs = 0.75),
+            y95 = wtd.quantile(carbon_intensity_kg_per_USD_national, weights = hh_weights, probs = 0.95),
+            mean = wtd.mean(carbon_intensity_kg_per_USD_national, weights = hh_weights))%>%
+  ungroup()%>%
+  mutate(interest = ifelse(Income_Group_5 == 1 | Income_Group_5 == 5,"1", "0"))
+
+data_7.2.1 <- data_7.2 %>%
+  summarise(min_median = min(y50),
+            max_median = max(y50))
+  
+P.7.2.1 <- ggplot(data_7.2, aes(x = as.character(Income_Group_5)))+
+  #geom_rect(aes(ymin = min_median, ymax = max_median), xmin = 0, xmax = 6, alpha = 0.2, fill = "lightblue", inherit.aes = FALSE)+
+  geom_boxplot(aes(ymin = y5, lower = y25, middle = y50, upper = y75, ymax = y95, fill = factor(Income_Group_5)), 
+               stat = "identity", position = position_dodge(0.5), outlier.shape = NA, width = 0.5, size = 0.3, alpha = 0.7) +
+  theme_bw()+
+  xlab("Expenditure quintiles")+ ylab("")+
+  geom_point(aes(y = mean), shape = 23, size = 2, stroke = 0.3, fill = "white")+
+  scale_y_continuous(expand = c(0,0))+
+  scale_x_discrete(labels = c("1 \n Poorest \n 20 Percent", "2", "3", "4", "5 \n Richest \n 20 Percent"))+
+  coord_cartesian(ylim = c(0,5))+
+  ggtitle("")+
+  scale_fill_discrete(guide = "none")+
+  theme(axis.text.y = element_blank(), 
+        axis.text.x = element_text(size = 6),
+        axis.title  = element_text(size = 7),
+        plot.title = element_text(size = 11),
+        legend.position = "bottom",
+        strip.text = element_text(size = 7),
+        #strip.text.y = element_text(angle = 180),
+        #panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        axis.ticks = element_line(size = 0.2),
+        legend.text = element_text(size = 7),
+        legend.title = element_text(size = 7),
+        plot.margin = unit(c(0.3,0.3,0.3,0.3), "cm"),
+        panel.border = element_rect(size = 0.3))
+
+jpeg("4_Presentations/Figures/Figure 2/Figure_2_a_%d.jpg", width = 8.5, height = 10, unit = "cm", res = 600)
+print(P.7.1.11)
+dev.off()
+
+P.7.2.2 <- ggplot(data_7.2, aes(x = as.character(Income_Group_5)))+
+  #geom_rect(aes(ymin = min_median, ymax = max_median), xmin = 0, xmax = 6, alpha = 0.2, fill = "lightblue", inherit.aes = FALSE)+
+  geom_boxplot(aes(ymin = y5, lower = y25, middle = y50, upper = y75, ymax = y95), 
+               stat = "identity", position = position_dodge(0.5), outlier.shape = NA, width = 0.5, size = 0.3, alpha = 1, fill = "grey") +
+  theme_bw()+
+  xlab("Expenditure quintiles")+ ylab(expression(paste("Carbon intensity of consumption [kg", CO[2], "/USD]", sep = "")))+
+  geom_point(aes(y = mean), shape = 23, size = 2, fill = "white")+
+  scale_y_continuous(expand = c(0,0))+
+  scale_x_discrete(labels = c("1 \n Poorest \n 20 Percent", "2", "3", "4", "5 \n Richest \n 20 Percent"))+
+  coord_cartesian(ylim = c(0,5))+
+  ggtitle("South Africa")+
+  scale_fill_discrete(guide = "none")+
+  theme(axis.text.y = element_text(size = 6), 
+        axis.text.x = element_text(size = 6),
+        axis.title  = element_text(size = 7),
+        plot.title = element_text(size = 11),
+        legend.position = "bottom",
+        strip.text = element_text(size = 7),
+        #strip.text.y = element_text(angle = 180),
+        #panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        axis.ticks = element_line(size = 0.2),
+        legend.text = element_text(size = 7),
+        legend.title = element_text(size = 7),
+        plot.margin = unit(c(0.3,0.3,0.3,0.3), "cm"),
+        panel.border = element_rect(size = 0.3))
+
+P.7.2.3 <- ggplot(data_7.2, aes(x = as.character(Income_Group_5)))+
+  #geom_rect(aes(ymin = min_median, ymax = max_median), xmin = 0, xmax = 6, alpha = 0.2, fill = "lightblue", inherit.aes = FALSE)+
+  geom_boxplot(aes(ymin = y5, lower = y25, middle = y50, upper = y75, ymax = y95, fill = interest, colour = interest, size = interest), 
+               stat = "identity", position = position_dodge(0.5), outlier.shape = NA, width = 0.5, alpha = 1) +
+  theme_bw()+
+  xlab("Expenditure quintiles")+ ylab(expression(paste("Carbon intensity of consumption [kg", CO[2], "/USD]", sep = "")))+
+  geom_point(aes(y = mean, colour = interest), shape = 23, size = 2, fill = "white")+
+  scale_y_continuous(expand = c(0,0))+
+  scale_x_discrete(labels = c("1 \n Poorest \n 20 Percent", "2", "3", "4", "5 \n Richest \n 20 Percent"))+
+  coord_cartesian(ylim = c(0,5))+
+  ggtitle("South Africa")+
+  scale_fill_manual(guide = "none", values = c("grey", "lightgrey"))+
+  scale_size_manual(guide = "none", values = c(0.3, 0.7))+
+  scale_colour_manual(guide = "none", values = c("black", "darkred"))+
+  theme(axis.text.y = element_text(size = 6), 
+        axis.text.x = element_text(size = 6),
+        axis.title  = element_text(size = 7),
+        plot.title = element_text(size = 11),
+        legend.position = "bottom",
+        strip.text = element_text(size = 7),
+        #strip.text.y = element_text(angle = 180),
+        #panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        axis.ticks = element_line(size = 0.2),
+        legend.text = element_text(size = 7),
+        legend.title = element_text(size = 7),
+        plot.margin = unit(c(0.3,0.3,0.3,0.3), "cm"),
+        panel.border = element_rect(size = 0.3))
+
+P.7.2.4 <- ggplot(data_7.2, aes(x = as.character(Income_Group_5)))+
+  geom_rect(data = data_7.2.1, aes(ymin = min_median, ymax = max_median), xmin = 0, xmax = 6, alpha = 0.5, fill = "#0072B5FF", inherit.aes = FALSE)+
+  geom_boxplot(aes(ymin = y5, lower = y25, middle = y50, upper = y75, ymax = y95), 
+               stat = "identity", position = position_dodge(0.5), outlier.shape = NA, width = 0.5, size = 0.3, alpha = 1, fill = "grey") +
+  theme_bw()+
+  xlab("Expenditure quintiles")+ ylab(expression(paste("Carbon intensity of consumption [kg", CO[2], "/USD]", sep = "")))+
+  geom_point(aes(y = mean), shape = 23, size = 2, fill = "white")+
+  scale_y_continuous(expand = c(0,0))+
+  scale_x_discrete(labels = c("1 \n Poorest \n 20 Percent", "2", "3", "4", "5 \n Richest \n 20 Percent"))+
+  coord_cartesian(ylim = c(0,5))+
+  ggtitle("South Africa")+
+  scale_fill_discrete(guide = "none")+
+  theme(axis.text.y = element_text(size = 6), 
+        axis.text.x = element_text(size = 6),
+        axis.title  = element_text(size = 7),
+        plot.title = element_text(size = 11),
+        legend.position = "bottom",
+        strip.text = element_text(size = 7),
+        #strip.text.y = element_text(angle = 180),
+        #panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        axis.ticks = element_line(size = 0.2),
+        legend.text = element_text(size = 7),
+        legend.title = element_text(size = 7),
+        plot.margin = unit(c(0.3,0.3,0.3,0.3), "cm"),
+        panel.border = element_rect(size = 0.3))
+
+P.7.2.5 <- ggplot(data_7.2, aes(x = as.character(Income_Group_5)))+
+  geom_rect(data = data_7.2.1, aes(ymin = min_median, ymax = max_median), xmin = 0, xmax = 6, alpha = 0.5, fill = "#0072B5FF", inherit.aes = FALSE)+
+  geom_boxplot(aes(ymin = y5, lower = y25, middle = y50, upper = y75, ymax = y95, fill = interest, colour = interest, size = interest), 
+               stat = "identity", position = position_dodge(0.5), outlier.shape = NA, width = 0.5, alpha = 1) +
+  theme_bw()+
+  xlab("Expenditure quintiles")+ ylab(expression(paste("Carbon intensity of consumption [kg", CO[2], "/USD]", sep = "")))+
+  geom_point(aes(y = mean, colour = interest), shape = 23, size = 2, fill = "white")+
+  scale_y_continuous(expand = c(0,0))+
+  scale_x_discrete(labels = c("1 \n Poorest \n 20 Percent", "2", "3", "4", "5 \n Richest \n 20 Percent"))+
+  coord_cartesian(ylim = c(0,5))+
+  ggtitle("South Africa")+
+  scale_fill_manual(guide = "none", values = c("grey", "lightgrey"))+
+  scale_size_manual(guide = "none", values = c(0.3, 0.7))+
+  scale_colour_manual(guide = "none", values = c("black", "darkred"))+
+  theme(axis.text.y = element_text(size = 6), 
+        axis.text.x = element_text(size = 6),
+        axis.title  = element_text(size = 7),
+        plot.title = element_text(size = 11),
+        legend.position = "bottom",
+        strip.text = element_text(size = 7),
+        #strip.text.y = element_text(angle = 180),
+        #panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        axis.ticks = element_line(size = 0.2),
+        legend.text = element_text(size = 7),
+        legend.title = element_text(size = 7),
+        plot.margin = unit(c(0.3,0.3,0.3,0.3), "cm"),
+        panel.border = element_rect(size = 0.3))
+
+jpeg("4_Presentations/Figures/Figure 2/Figure_2_b_%d.jpg", width = 10, height = 10, unit = "cm", res = 600)
+print(P.7.2.2)
+print(P.7.2.3)
+print(P.7.2.4)
+print(P.7.2.5)
+dev.off()
+
+rm(data_7.2, data_7.1, data_7.2.1, data_7.1.1, data_7.1.2, 
+   P.7.1.0, P.7.1.1, P.7.1.2, P.7.1.3, P.7.1.4, P.7.1.5, P.7.1.6, P.7.1.7, P.7.1.8, P.7.1.9, P.7.1.10, P.7.1.11,
+   P.7.2.1, P.7.2.2, P.7.2.3, P.7.2.4, P.7.2.5)
+
+# 7.3     Figure 3: Vertical over horizontal effects ####
+# 7.4     Figure 4: Logit-Model approach ####
+# 7.5     Figure 5: Average Marginal effects ####
+# 7.6     Figure 6: Variable Importance Plot and Partial Dependence Plots ####
+# 7.7     Figure 7: Overview of countries ####
+# 7.8     Figure 8: Classification of countries ####
+# 7.9     Figure 9: Venn-Diagram ####
+# 7.10    Figure 10: World-Map ####
+
+world <- map_data("world")
+prep <- c("Austria","Germany", "Belgium", "Bulgaria", "Cyprus", "Czech Republic", "Denmark", "Estonia", "Spain",
+          "France", "Finland", "Croatia", "Hungary", "Ireland", "Italy", "Latvia", "Lithuania", "Luxembourg", "Netherlands",
+          "Poland", "Portugal", "Romania", "Serbia", "Sweden", "Switzerland", "Slovakia", "Greece", "UK", "Norway",
+          "Argentina", "Barbados", "Bolivia", "Brazil", "Chile", "Colombia", "Costa Rica", "Dominican Republic",
+          "Ecuador", "El Salvador", "Guatemala", "Mexico", "Nicaragua", "Paraguay", "Peru", "Suriname" ,"Uruguay",
+          "Canada", "USA",
+          "Israel", "Iraq", "India", "Indonesia", "Jordan", "Philippines", "Turkey", "Bangladesh", "Vietnam", "Thailand", "Pakistan",
+          "Mongolia", "Bhutan", "Armenia", "Myanmar", "Maldives", "Cambodia", "Taiwan", "Russia", "Malaysia",
+          "Benin", "Burkina Faso", "Ethiopia", "Egypt", "Ghana", "Guinea-Bissau" ,"Ivory Coast" ,"Kenya", "Liberia", "Malawi",
+          "Mali", "Morocco", "Niger", "Nigeria", "Rwanda", "Senegal", "Serbia", "South Africa", "Switzerland", "Taiwan" ,"Tanzania", "Togo", "Tunisia", "Uganda",
+          "Georgia")
+
+not_available <- c("China", "Azerbaijan", "Sri Lanka", "Malaysia", "Qatar", "Greenland")
+
+on_radar <- c("Australia",
+              #"New Zealand", "Namibia", "Burundi", "Cameroon", "Papua New Guinea", "Zimbabwe", "Democratic Republic of the Congo", "Japan", "South Korea",
+              "Mozambique")
+
+regions <- distinct(world, region)%>%
+  mutate(Status = ifelse(region %in% prep, "Data collected",
+                         ifelse(region %in% not_available, "Data not available", 
+                                ifelse(region %in% on_radar, "Data available", NA))))
+
+regions$Status <- factor(regions$Status, levels = c("Data collected", "Data available", "Data not available"  ))
+
+world <- left_join(world, regions)%>%
+  filter(region != "Antarctica")
+
+#world$Status <- factor(world$Status, levels = c("Distributional analysis published", "Distributional analysis in preparation", ""))
+
+P.7.10 <- ggplot()+
+  geom_map(data = world, map = world, aes(map_id = region), fill = "lightgrey")+
+  geom_map(data = world, map = world,
+           aes(long, lat, map_id = region, fill = Status), colour = "black", size = 0.1)+
+  theme_bw()+
+  theme(axis.text = element_blank(),
+        axis.title = element_blank(),
+        legend.position = c(0.15,0.15),
+        legend.background = element_rect(fill = NA),
+        legend.text = element_text(size = 7),
+        plot.title = element_text(size = 9),
+        axis.ticks = element_blank(),
+        panel.grid = element_blank())+
+  guides(fill = guide_legend(override.aes = list(size = 0.1)))+
+  scale_fill_manual(values = c("#0072B5FF", "#6F99ADFF", "lightgrey"), na.translate = FALSE, na.value = "lightgrey")+
+  labs(fill = "")+
+  guides(colour = "none")+
+  ggtitle("Coverage of global carbon pricing incidence map")
+
+jpeg("4_Presentations/Figures/Figure 10/Figure_10.jpg", width = 15.5, height = 10, unit = "cm", res = 600)
+print(P.7.10)
+dev.off()
+
+rm(P.7.10, regions, world, not_available, on_radar, prep)
