@@ -2436,6 +2436,105 @@ dev.off()
 
 
 # 6.2     BRT on hardship cases (classification model) ####
+
+# 6.3     Classification exercise ####
+
+# Part I
+
+data_6.3.0 <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/VIP_Data.xlsx")
+
+data_6.3.1 <- data_6.3.0 %>%
+  mutate(Var_0 = ifelse(grepl("District", Variable), "District", 
+                        ifelse(grepl("Province", Variable), "Province", 
+                               ifelse(grepl("ISCED", Variable), "ISCED", 
+                                      ifelse(grepl("Ethnicity", Variable), "Ethnicity", 
+                                             ifelse(grepl("Religion", Variable), "Religion", 
+                                                    ifelse(Variable == "hh_expenditures_USD_2014", "HH expenditures",
+                                                           ifelse(Variable == "hh_size", "HH size",
+                                                                  ifelse(grepl("car.01", Variable), "Car own.",
+                                                                         ifelse(grepl("urban_01", Variable), "Urban",
+                                                                                ifelse(grepl("sex_hhh", Variable), "Gender HHH",
+                                                                                       ifelse(grepl("CF", Variable), "Cooking", 
+                                                                                              ifelse(grepl("HF", Variable), "Heating", 
+                                                                                                     ifelse(grepl("LF", Variable), "Lighting", 
+                                                                                                            ifelse(Variable == "electricity.access", "Electricity access", 
+                                                                                                                   ifelse(grepl("Language", Variable), "Language", 
+                                                                                                                          ifelse(grepl("Nationality", Variable), "Nationality", 
+                                                                                                                                 ifelse(Variable == "refrigerator.010", "Refrigerator", 
+                                                                                                                                        ifelse(Variable == "washing_machine.010", "Washing machine",
+                                                                                                                                               ifelse(Variable == "motorcycle.010", "Motorcycle", 
+                                                                                                                                                      ifelse(Variable == "ac.010", "AC",
+                                                                                                                                                             ifelse(grepl("tv.01", Variable), "TV", Variable))))))))))))))))))))),
+         Var_1 = ifelse(grepl("District", Variable), gsub("District?","", Variable), 
+                        ifelse(grepl("Province", Variable), gsub("Province_?","", Variable), 
+                               ifelse(grepl("ISCED", Variable), gsub("ISCED_?","", Variable),
+                                      ifelse(grepl("Ethnicity", Variable), gsub("Ethnicity_?","", Variable),
+                                             ifelse(grepl("Religion", Variable), gsub("Religion?","", Variable),
+                                                    ifelse(grepl("urban_01", Variable), gsub("urban_01?","", Variable),
+                                                           ifelse(grepl("sex_hhh", Variable), gsub("sex_hhh_?","", Variable), 
+                                                                  ifelse(grepl("car.01", Variable), gsub("car.01","", Variable), 
+                                                                         ifelse(grepl("CF_", Variable), gsub("CF_?", "", Variable), 
+                                                                                ifelse(grepl("LF_", Variable), gsub("LF_?", "", Variable), 
+                                                                                       ifelse(grepl("HF_", Variable), gsub("HF_?", "", Variable), 
+                                                                                              ifelse(Var_0 %in% c("AC", "Motorcycle", "Refrigerator", "TV", "Washing machine"), str_sub(Variable,-1,-1), 
+                                                                                                     ifelse(grepl("CF", Variable), gsub("CF?", "", Variable), 
+                                                                                                            ifelse(grepl("LF", Variable), gsub("LF?", "", Variable), 
+                                                                                                                   ifelse(grepl("HF", Variable), gsub("HF?", "", Variable), 
+                                                                                                                          ifelse(grepl("Nationality", Variable), gsub("Nationality?", "", Variable),
+                                                                                                                                 ifelse(grepl("Language", Variable), gsub("Language", "", Variable), NA))))))))))))))))))%>%
+  mutate(help_0 = ifelse(Importance < 0.01,1,0))
+
+data_6.3.2 <- data_6.3.1 %>%
+  # for now, delete later
+  filter(!Country %in% c("CHL", "IND", "ISR", "MEX", "RWA", "SUR"))%>%
+  group_by(run_ID)%>%
+  mutate(test = sum(Importance))%>%
+  ungroup()%>%
+  group_by(run_ID, Var_0)%>%
+  summarise(Importance = sum(Importance), 
+            Country    = first(Country))%>%
+  ungroup()%>%
+  pivot_wider(names_from = "Var_0", values_from = "Importance")%>%
+  # for now, delete later
+  arrange(run_ID)%>%
+  group_by(Country)%>%
+  filter(row_number() == n())%>%
+  ungroup()
+
+# Part II
+
+data_6.3.3 <- data_2 %>%
+  group_by(Country, Income_Group_5)%>%
+  summarise(median_burden_CO2_national = wtd.quantile(carbon_intensity_kg_per_USD_national, probs = 0.5, weights = hh_weights),
+            q95_burden_CO2_national    = wtd.quantile(carbon_intensity_kg_per_USD_national, probs = 0.95, weights = hh_weights),
+            q05_burden_CO2_national    = wtd.quantile(carbon_intensity_kg_per_USD_national, probs = 0.05, weights = hh_weights),
+            q20_burden_CO2_national    = wtd.quantile(carbon_intensity_kg_per_USD_national, probs = 0.20, weights = hh_weights),
+            q80_burden_CO2_national    = wtd.quantile(carbon_intensity_kg_per_USD_national, probs = 0.80, weights = hh_weights))%>%
+  ungroup()%>%
+  filter(Income_Group_5 == 1 | Income_Group_5 == 5)%>%
+  mutate(dif_q95_q05_burden_CO2_national = q95_burden_CO2_national - q05_burden_CO2_national,
+         dif_q80_q20_burden_CO2_national = q80_burden_CO2_national - q20_burden_CO2_national,)%>%
+  select(Country, Income_Group_5, dif_q95_q05_burden_CO2_national, dif_q80_q20_burden_CO2_national, median_burden_CO2_national)%>%
+  pivot_wider(names_from = Income_Group_5, values_from = c(median_burden_CO2_national, dif_q95_q05_burden_CO2_national, dif_q80_q20_burden_CO2_national))%>%
+  mutate(median_1_5    = median_burden_CO2_national_1/median_burden_CO2_national_5,
+         dif_95_05_1_5 = dif_q95_q05_burden_CO2_national_1/dif_q95_q05_burden_CO2_national_5,
+         dif_80_20_1_5 = dif_q80_q20_burden_CO2_national_1/dif_q80_q20_burden_CO2_national_5)%>%
+  select(Country, median_1_5, dif_95_05_1_5)
+
+data_6.3.4 <- data_2 %>%
+  group_by(Country)%>%
+  summarise(mean_carbon_intensity = wtd.mean(carbon_intensity_kg_per_USD_national, weights = hh_weights))%>%
+  ungroup()
+
+# Perform clustering on the following dataframe:
+
+data_6.3.5 <- left_join(data_6.3.2, data_6.3.3)%>%
+  left_join(data_6.3.4)%>%
+  select(-run_ID)%>%
+  mutate_at(vars(median_1_5, dif_95_05_1_5), ~ as.numeric(.))
+
+# Think carefully about what needs to be done here
+
 # 7       Figures Presentation ####
 # 7.1     Figure 1: Scatterplot and friends ####
 
@@ -2802,6 +2901,7 @@ jpeg("4_Presentations/Figures/Figure 2/Figure_2_c_%d.jpg", width = 10, height = 
 print(P_7.2.6)
 dev.off()
 
+rm(data_7.2.2, data_7.2.3, data_7.2.4, P_7.2.6)
 
 # 7.3     Figure 3: Vertical over horizontal effects ####
 
@@ -3858,6 +3958,134 @@ rm(data_7.6.2.1, data_7.6.2.2, data_7.6.2.3, data_7.6.2.3.test, data_7.6.2.3.tra
    data_7.6.2, data_7.6.2.3.0, P_7.6.2.2, P_7.6.2.3, pdp_7.6.2.3)
 
 # 7.7     Figure 7: Overview of countries ####
+
+data_7.7 <- data_6.3.5 %>%
+  #select(-median_1_5, -dif_95_05_1_5, -mean_carbon_intensity)%>%
+  pivot_longer(-Country, names_to = "names", values_to = "values")%>%
+  mutate(continent = countrycode(Country, origin = "iso3c", destination = "continent"))%>%
+  # For now
+  filter(continent == "Africa")
+
+# First horizontal and vertical indicators
+
+data_7.7.1 <- filter(data_7.7, names %in% c("median_1_5", "dif_95_05_1_5"))%>%
+  mutate(values_rescaled = ifelse(values > 1, values/2, values))
+
+P_7.7.1 <- ggplot(data_7.7.1)+
+  geom_point(aes(y = Country, x = names, fill = values_rescaled), shape = 22, size = 3, stroke = 0.003)+
+  theme_bw()+
+  scale_fill_gradient2(na.value = NA, limits = c(0,1.5), low = "#0072B5FF", high = "#BC3C29FF", breaks = c(0,0.5,1,1.5), labels = c(0,1,2,3),
+                       midpoint = 0.5)+
+  theme_bw()+
+  scale_y_discrete(limits = rev)+
+  scale_x_discrete(labels = c(expression(widehat(H)[r]^{1}), expression(widehat(V)[r]^{1})))+
+  xlab("")+ 
+  guides(fill = "none")+
+  ylab("Country")+
+  ggtitle("Classification")+
+  theme(axis.text.y = element_text(size = 3), 
+        axis.text.x = element_text(size = 6),
+        axis.title  = element_text(size = 7),
+        plot.title = element_text(size = 11),
+        legend.position = "bottom",
+        strip.text = element_text(size = 7),
+        #strip.text.y = element_text(angle = 180),
+        #panel.grid.major = element_blank(),
+        panel.grid.major.y = element_line(size = 0.1),
+        panel.grid.minor = element_blank(),
+        axis.ticks = element_line(size = 0.2),
+        legend.text = element_text(size = 7),
+        legend.title = element_text(size = 7),
+        plot.margin = unit(c(0.3,0.3,0.3,0.3), "cm"),
+        panel.border = element_rect(size = 0.3))
+
+# Carbon intensity of consumption 
+
+data_7.7.2 <- filter(data_7.7, names %in% c("mean_carbon_intensity"))
+
+P_7.7.2 <- ggplot(data_7.7.2)+
+  geom_point(aes(y = Country, x = names, fill = values), shape = 22, size = 3, stroke = 0.003)+
+  theme_bw()+
+  scale_fill_gradient2(na.value = NA, limits = c(0,2.2), low = "#0072B5FF", high = "#BC3C29FF", 
+                       midpoint = 0.55)+
+  theme_bw()+
+  scale_y_discrete(limits = rev)+
+  scale_x_discrete(labels = c(expression(CI[r])))+
+  xlab("")+ 
+  guides(fill = "none")+
+  ylab("")+
+  ggtitle("")+
+  theme(axis.text.y = element_blank(),
+        axis.text.x = element_text(size = 6),
+        axis.title.x  = element_text(size = 7),
+        axis.title.y = element_blank(),
+        plot.title = element_text(size = 11),
+        legend.position = "bottom",
+        strip.text = element_text(size = 7),
+        #strip.text.y = element_text(angle = 180),
+        #panel.grid.major = element_blank(),
+        panel.grid.major.y = element_line(size = 0.1),
+        panel.grid.minor = element_blank(),
+        axis.ticks = element_blank(),
+        legend.text = element_text(size = 7),
+        legend.title = element_text(size = 7),
+        plot.margin = unit(c(0.3,0.3,0.3,0.1), "cm"),
+        panel.border = element_rect(size = 0.3))
+
+# Features
+
+data_7.7.3 <- filter(data_7.7, !names %in% c("mean_carbon_intensity", "median_1_5", "dif_95_05_1_5"))%>%
+  mutate(help = ifelse(is.na(values), NA, "1"))
+
+P_7.7.3 <- ggplot(data_7.7.3)+
+  geom_point(aes(y = Country, x = names, fill = values, colour = help), shape = 22, size = 3, stroke = 0.003)+
+  theme_bw()+
+  scale_colour_manual(na.value = NA, values = c("black"))+
+  scale_fill_gradient2(na.value = NA, limits = c(0,1), low = "#0072B5FF", high = "#BC3C29FF", midpoint = 0.2)+
+  theme_bw()+
+  scale_y_discrete(limits = rev)+
+  scale_x_discrete()+
+  xlab("")+ 
+  guides(fill = "none", colour = "none")+
+  ylab("")+
+  ggtitle("")+
+  theme(axis.text.y = element_blank(),
+        axis.text.x = element_text(size = 4, angle = 90, hjust = 1, vjust = 0.5),
+        axis.title.x  = element_text(size = 7),
+        axis.title.y = element_blank(),
+        plot.title = element_text(size = 11),
+        legend.position = "bottom",
+        strip.text = element_text(size = 7),
+        #strip.text.y = element_text(angle = 180),
+        #panel.grid.major = element_blank(),
+        panel.grid.major = element_line(size = 0.1),
+        panel.grid.minor = element_blank(),
+        axis.ticks = element_blank(),
+        legend.text = element_text(size = 7),
+        legend.title = element_text(size = 7),
+        plot.margin = unit(c(0.3,0.3,0.3,0.1), "cm"),
+        panel.border = element_rect(size = 0.3))
+
+P_7.7.4 <- align_plots(P_7.7.1, P_7.7.2, P_7.7.3, align = "h")
+
+P_7.7.5 <- ggdraw(P_7.7.4[[1]])
+P_7.7.6 <- ggdraw(P_7.7.4[[2]])
+P_7.7.7 <- ggdraw(P_7.7.4[[3]])
+
+jpeg("4_Presentations/Figures/Figure 7/Figure_7_a_Africa_%d.jpg", width = 4, height = 10, unit = "cm", res = 600)
+print(P_7.7.5)
+dev.off()
+
+jpeg("4_Presentations/Figures/Figure 7/Figure_7_b_Africa_%d.jpg", width = 2, height = 10, unit = "cm", res = 600)
+print(P_7.7.6)
+dev.off()
+
+jpeg("4_Presentations/Figures/Figure 7/Figure_7_c_Africa_%d.jpg", width = 8, height = 10, unit = "cm", res = 600)
+print(P_7.7.7)
+dev.off()
+
+rm(data_7.7, data_7.7.1, data_7.7.2, data_7.7.3, P_7.7.1,  P_7.7.2,  P_7.7.3,  P_7.7.4,  P_7.7.5,  P_7.7.6,  P_7.7.7)
+
 # 7.8     Figure 8: Classification of countries ####
 # 7.9     Figure 9: Venn-Diagram ####
 
