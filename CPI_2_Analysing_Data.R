@@ -2743,6 +2743,66 @@ rm(data_7.2, data_7.1, data_7.2.1, data_7.1.1, data_7.1.2,
    P.7.1.0, P.7.1.1, P.7.1.2, P.7.1.3, P.7.1.4, P.7.1.5, P.7.1.6, P.7.1.7, P.7.1.8, P.7.1.9, P.7.1.10, P.7.1.11,
    P.7.2.1, P.7.2.2, P.7.2.3, P.7.2.4, P.7.2.5)
 
+# 7.2.1   Figure 2.1: Horizontal exceed vertical differences ####
+
+data_7.2.2 <- data_2 %>%
+  group_by(Country, Income_Group_5)%>%
+  summarise(y5  = wtd.quantile(carbon_intensity_kg_per_USD_national, weights = hh_weights, probs = 0.05),
+            y25 = wtd.quantile(carbon_intensity_kg_per_USD_national, weights = hh_weights, probs = 0.25),
+            y50 = wtd.quantile(carbon_intensity_kg_per_USD_national, weights = hh_weights, probs = 0.5),
+            y75 = wtd.quantile(carbon_intensity_kg_per_USD_national, weights = hh_weights, probs = 0.75),
+            y95 = wtd.quantile(carbon_intensity_kg_per_USD_national, weights = hh_weights, probs = 0.95),
+            mean = wtd.mean(carbon_intensity_kg_per_USD_national, weights = hh_weights))%>%
+  ungroup()%>%
+  mutate(interest = ifelse(Income_Group_5 == 1 | Income_Group_5 == 5,"1", "0"))
+
+data_7.2.3 <- data_7.2.2 %>%
+  group_by(Country)%>%
+  summarise(min_median = min(y50),
+            max_median = max(y50))%>%
+  ungroup()
+
+data_7.2.4 <- left_join(data_7.2.2, data_7.2.3)%>%
+  filter(Income_Group_5 == 1)%>%
+  sample_n(20)%>%
+  arrange(min_median)%>%
+  mutate(new_col = 1:n())
+  
+P_7.2.6 <- ggplot(data = data_7.2.4)+
+  geom_rect(aes(xmin = new_col - 0.45,
+                xmax = new_col + 0.45,
+                ymin = min_median, ymax = max_median), 
+            alpha = 0.5, fill = "#0072B5FF", inherit.aes = FALSE)+
+  geom_boxplot(aes(ymin = y5, lower = y25, middle = y50, upper = y75, ymax = y95, x = new_col, group = new_col), 
+               stat = "identity", position = position_dodge(0.5), outlier.shape = NA, width = 0.4, alpha = 0.85, fill = "grey", size = 0.2)+
+  geom_point(aes(y = mean, x = new_col), shape = 23, size = 0.5 ,fill = "white", stroke = 0.2)+
+  theme_bw()+
+  scale_y_continuous(expand = c(0,0))+
+  scale_x_continuous(expand = c(0,0), breaks = data_7.2.4$new_col, labels = data_7.2.4$Country)+
+  ylab(expression(paste("Carbon intensity of consumption [kg", CO[2], "/USD]", sep = "")))+
+  xlab("Country")+
+  coord_flip(ylim = c(0,5))+
+  ggtitle("Vertical and horizontal differences")+
+  theme(axis.text.y = element_text(size = 6), 
+        axis.text.x = element_text(size = 6),
+        axis.title  = element_text(size = 7),
+        plot.title = element_text(size = 11),
+        legend.position = "bottom",
+        strip.text = element_text(size = 7),
+        #strip.text.y = element_text(angle = 180),
+        panel.grid.major.y = element_blank(),
+        panel.grid.minor = element_blank(),
+        axis.ticks = element_line(size = 0.2),
+        legend.text = element_text(size = 7),
+        legend.title = element_text(size = 7),
+        plot.margin = unit(c(0.3,0.3,0.3,0.3), "cm"),
+        panel.border = element_rect(size = 0.3))
+
+jpeg("4_Presentations/Figures/Figure 2/Figure_2_c_%d.jpg", width = 10, height = 10, unit = "cm", res = 600)
+print(P_7.2.6)
+dev.off()
+
+
 # 7.3     Figure 3: Vertical over horizontal effects ####
 
 data_7.3.0 <- read_csv("../0_Data/9_Supplementary Data/WDI/2021_08_17_WDI.csv") %>%
