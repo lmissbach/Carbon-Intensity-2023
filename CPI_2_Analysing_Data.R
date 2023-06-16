@@ -5,7 +5,7 @@
 
 if(!require("pacman")) install.packages("pacman")
 
-p_load("boot", "broom", "countrycode", "cowplot", "DALEXtra", "fixest", "ggpubr", "ggrepel",
+p_load("boot", "broom", "countrycode", "cowplot", "DALEXtra", "eulerr","fixest", "ggpubr", "ggrepel",
        "ggsci", "Hmisc", "knitr", "kableExtra", "marginaleffects", "margins", "Metrics",
        "openxlsx", "pdp","rattle", "scales", "tidymodels", "tidyverse", "vip", "xgboost", "xtable")
 
@@ -1966,9 +1966,7 @@ rm(data_frame_5.3.2.1, data_frame_5.3.2.3, data_5.3, Type_0, i)
 
 # We wish to detect the importance of variables in modelling and non-linear relationships
 
-Country.Set.Test <- c("IND", "IDN", "MEX", )
-
-Country.Set.Test.1 <- c("CHL", "JOR", "DOM", "PER", "MLI", "EGY", "NGA", "BEN", "CIV", "MMR")
+Country.Set.Test.1 <- c("CIV", "ZAF", "IDN", "IND", "MEX")
 
 track <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_BRT.xlsx")
 
@@ -2024,8 +2022,13 @@ for (i in Country.Set.Test.1){
     
     # Splitting the sample, but no strata
     
+    prop_0 = 0.75
+    if(i == "IDN"){prop_0 <- 0.2}
+    if(i == "IND"){prop_0 <- 0.3}
+    if(i == "MEX"){prop_0 <- 0.5}
+    
     data_6.1.2 <- data_6.1.1 %>%
-      initial_split(prop = 0.75)
+      initial_split(prop = prop_0)
     
     # Data for training
     data_6.1.2.train <- data_6.1.2 %>%
@@ -2263,12 +2266,12 @@ for (i in Country.Set.Test.1){
       mutate(run_ID = run_ID)%>%
       rename()
     
-    # pdp_6.2.4 <- as_tibble(pdp_6.2.2$agr_profiles)%>%
-    #   mutate(Country = i)%>%
-    #   mutate(run_ID = run_ID)%>%
-    #   rename()
+    pdp_6.2.4 <- as_tibble(pdp_6.2.2$agr_profiles)%>%
+     mutate(Country = i)%>%
+     mutate(run_ID = run_ID)%>%
+     rename()
     
-    pdp_6.3 <- bind_rows(pdp_6.1.1, pdp_6.2.3)
+    pdp_6.3 <- bind_rows(pdp_6.1.1, pdp_6.2.3, pdp_6.2.4)
     
     pdp_data <- pdp_data %>%
       bind_rows(pdp_6.3)
@@ -2305,6 +2308,8 @@ track_1 <- track %>%
   write.xlsx(., "../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_BRT.xlsx")
 
 pdp_data_1 <- pdp_data %>%
+  #rename(x ="_x_")%>%
+  #mutate(x = ifelse(Country == "MEX", iconv(x, "UTF-8", "UTF-8",sub=''),x))%>%
   write.xlsx(., "../0_Data/9_Supplementary Data/BRT-Tracking/PDP_Data.xlsx")
 
 vip_data_1 <- vip_data %>%
@@ -2739,12 +2744,1179 @@ rm(data_7.2, data_7.1, data_7.2.1, data_7.1.1, data_7.1.2,
    P.7.2.1, P.7.2.2, P.7.2.3, P.7.2.4, P.7.2.5)
 
 # 7.3     Figure 3: Vertical over horizontal effects ####
+
+data_7.3.0 <- read_csv("../0_Data/9_Supplementary Data/WDI/2021_08_17_WDI.csv") %>%
+  rename(Country.Name = "Country Name",
+         Country.Code = "Country Code",
+         Type         = "Series Name")%>%
+  select(-'Series Code')%>%
+  rename_at(vars(ends_with("]")), list(~ str_replace(., "..YR.....", "")))%>%
+  pivot_longer(-("Country.Name":"Type"), names_to = "year", values_to = "value")%>%
+  filter(value != "..")%>%
+  mutate(value = as.numeric(value))%>%
+  filter(year == 2018 & Type == "GDP per capita (constant 2010 US$)")
+
+data_7.3 <- data_2 %>%
+  group_by(Country, Income_Group_5)%>%
+  summarise(median_burden_CO2_national = wtd.quantile(burden_CO2_national, probs = 0.5, weights = hh_weights),
+            q95_burden_CO2_national    = wtd.quantile(burden_CO2_national, probs = 0.95, weights = hh_weights),
+            q05_burden_CO2_national    = wtd.quantile(burden_CO2_national, probs = 0.05, weights = hh_weights),
+            q20_burden_CO2_national    = wtd.quantile(burden_CO2_national, probs = 0.20, weights = hh_weights),
+            q80_burden_CO2_national    = wtd.quantile(burden_CO2_national, probs = 0.80, weights = hh_weights))%>%
+  ungroup()%>%
+  filter(Income_Group_5 == 1 | Income_Group_5 == 5)%>%
+  mutate(dif_q95_q05_burden_CO2_national = q95_burden_CO2_national - q05_burden_CO2_national,
+         dif_q80_q20_burden_CO2_national = q80_burden_CO2_national - q20_burden_CO2_national,)%>%
+  select(Country, Income_Group_5, dif_q95_q05_burden_CO2_national, dif_q80_q20_burden_CO2_national, median_burden_CO2_national)%>%
+  pivot_wider(names_from = Income_Group_5, values_from = c(median_burden_CO2_national, dif_q95_q05_burden_CO2_national, dif_q80_q20_burden_CO2_national))%>%
+  mutate(median_1_5    = median_burden_CO2_national_1/median_burden_CO2_national_5,
+         dif_95_05_1_5 = dif_q95_q05_burden_CO2_national_1/dif_q95_q05_burden_CO2_national_5,
+         dif_80_20_1_5 = dif_q80_q20_burden_CO2_national_1/dif_q80_q20_burden_CO2_national_5)%>%
+  left_join(data_4.5.0, by = c("Country" = "Country.Code"))%>%
+  mutate(value = ifelse(Country == "TWN", 20388.2761, value))%>%
+  mutate(interest2 = ifelse(Country %in% c("RWA", "DEU", "ZAF", "USA", "CAN", "MWI", "LBR"),1,0.5))
+
+poly <- data.frame(g = c(1,1,1,2,2,2,2,3,3,3,4,4,4,5,5,5,5,6,6,6), x = c(0.05,0.05,0.95,
+                                                                         0.05,0.05,0.95,0.95,
+                                                                         1.05,1.05,2.95,
+                                                                         2.96,2.96,1.06,
+                                                                         2.95,1.05,1.05,2.95,
+                                                                         0.06,0.96,0.96), 
+                   y = c(0.06,0.96,0.96,
+                         1.05,2.95,2.95,1.05,
+                         1.06,2.96,2.96,
+                         2.95,1.05,1.05,
+                         0.95,0.95,0.05,0.05,
+                         0.05,0.95,0.05))%>%
+  mutate(x_1 = ifelse(g == 1,0.25,
+                      ifelse(g == 2,0.5,
+                             ifelse(g == 3,1.75,
+                                    ifelse(g == 4,2.25,
+                                           ifelse(g == 5,2,
+                                                  ifelse(g == 6,0.75,0)))))))%>%
+  mutate(y_1 = ifelse(g == 1,0.75,
+                      ifelse(g == 2,2,
+                             ifelse(g == 3,2.25,
+                                    ifelse(g == 4,1.75,
+                                           ifelse(g == 5,0.5,
+                                                  ifelse(g == 6,0.25,0)))))))%>%
+  mutate(z_1 = ifelse(g == 6 & x_1 == lag(x_1), NA,x_1),
+         z_2 = ifelse(x_1 == lead(x_1), NA, x_1))%>%
+  mutate(z_3 = ifelse(g == 6, z_1, z_2))%>%
+  mutate(z_1 = ifelse(g == 6 & y_1 == lag(y_1), NA,y_1),
+         z_2 = ifelse(y_1 == lead(y_1), NA, y_1))%>%
+  mutate(z_4 = ifelse(g == 6, z_1, z_2))%>%
+  mutate(label = ifelse(g == 1, "Regressive and homogeneous (Horizontal)",
+                        ifelse(g == 2, "Regressive and heterogeneous", 
+                               ifelse(g == 3, "Progressive and heterogeneous (Horizontal)",
+                                      ifelse(g == 4, "Progressive and heterogeneous (Vertical)",
+                                             ifelse(g == 5, "Progressive and homogeneous",
+                                                    ifelse(g == 6, "Regressive and heterogeneous (Vertical)", "FAIL")))))))
+
+poly_2 <- data.frame(g = c(1,1,1,1,
+                           2,2,2,2,
+                           3,3,3,3,
+                           4,4,4,4),
+                     y = c(0.01,0.99,0.99,0.01,
+                           1.01,3.19,3.19,1.01,
+                           1.01,3.19,3.19,1.01,
+                           0.01,0.99,0.99,0.01),
+                     x = c(0.01,0.01,0.99,0.99,
+                           0.01,0.01,0.99,0.99,
+                           1.01,1.01,3.19,3.19,
+                           1.01,1.01,3.19,3.19),
+                     label = c(rep("Progressive and more heterogeneous in IQ5",4),
+                               rep("Regressive and more heterogeneous in IQ5",4),
+                               rep("Regressive and more heterogeneous in IQ1",4),
+                               rep("Progressive and more heterogeneous in IQ1",4)),
+                     g2 = c(rep(1,4), rep(2,4), rep(1,4), rep(2,4)),
+                     label2 = c(rep("Progressive",4),  rep("Regressive",4), rep("Regressive",4), rep("Progressive",4)),
+                     label3 = c(rep("More heterogeneous in IQ5", 8), rep("More heterogeneous in IQ1", 8)))
+
+poly_3 <- data.frame(g = c(1,1,1,
+                           2,2,2),
+                     y = c(0.03,3.18,3.18,
+                           0.02,3.17,0.02),
+                     x = c(0.02,0.02,3.17,
+                           0.03,3.18,3.18))
+
+poly_4 <- data.frame(text = c("Horizontal Differences > Vertical Differences",
+                              "Vertical Differences > Horizontal Differences"),
+                     x = c(2,1),
+                     y = c(0.5,2.5))
+
+# First only figure without anything
+
+P.7.3.1 <- ggplot()+
+  geom_hline(aes(yintercept = 1))+
+  geom_vline(aes(xintercept = 1))+
+  theme_bw()+
+  coord_cartesian(xlim = c(0,3.2), ylim = c(0,3.2))+
+  scale_x_continuous(expand = c(0,0))+
+  scale_y_continuous(expand = c(0,0))+
+  ylab("Vertical Distribution Coefficient")+
+  xlab("Horizontal Distribution Coefficient")+
+  labs(fill = "")+
+  #guides(fill = guide_legend(nrow = 2))+
+  theme(axis.text.y = element_text(size = 7), 
+        axis.text.x = element_text(size = 7),
+        axis.title  = element_text(size = 7),
+        plot.title  = element_text(size = 7),
+        legend.position = "bottom",
+        strip.text = element_text(size = 7),
+        #strip.text.y = element_text(angle = 180),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        axis.ticks = element_line(size = 0.2),
+        legend.text = element_text(size = 7),
+        legend.title = element_text(size = 7),
+        plot.margin = unit(c(0.1,0.1,0,0), "cm"),
+        panel.border = element_rect(size = 0.3))
+
+P.7.3.2 <- ggplot()+
+  geom_hline(aes(yintercept = 1))+
+  geom_vline(aes(xintercept = 1))+
+  geom_polygon(data = poly_2, aes(x = x, y = y, group = g, fill = label2), alpha = 0.5)+
+  theme_bw()+
+  coord_cartesian(xlim = c(0,3.2), ylim = c(0,3.2))+
+  scale_fill_manual(values = c("#6F99ADFF", "#FFDC91FF"))+
+  scale_x_continuous(expand = c(0,0))+
+  scale_y_continuous(expand = c(0,0))+
+  ylab("Vertical Distribution Coefficient")+
+  xlab("Horizontal Distribution Coefficient")+
+  labs(fill = "")+
+  #guides(fill = "none")+
+  #guides(fill = guide_legend(nrow = 2))+
+  theme(axis.text.y = element_text(size = 7), 
+        axis.text.x = element_text(size = 7),
+        axis.title  = element_text(size = 7),
+        plot.title  = element_text(size = 7),
+        legend.position = "bottom",
+        strip.text = element_text(size = 7),
+        #strip.text.y = element_text(angle = 180),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        axis.ticks = element_line(size = 0.2),
+        legend.text = element_text(size = 7),
+        legend.title = element_text(size = 7),
+        plot.margin = unit(c(0.1,0.1,0,0), "cm"),
+        panel.border = element_rect(size = 0.3))
+
+L.7.3.2 <- ggdraw(get_legend(P.7.3.2))
+
+P.7.3.2 <- P.7.3.2 +
+  guides(fill = "none")
+
+P.7.3.3 <- ggplot()+
+  geom_hline(aes(yintercept = 1))+
+  geom_vline(aes(xintercept = 1))+
+  geom_polygon(data = poly_2, aes(x = x, y = y, group = g, fill = label3), alpha = 0.5)+
+  theme_bw()+
+  coord_cartesian(xlim = c(0,3.2), ylim = c(0,3.2))+
+  scale_fill_manual(values = c("#6F99ADFF", "#FFDC91FF"))+
+  scale_x_continuous(expand = c(0,0))+
+  scale_y_continuous(expand = c(0,0))+
+  ylab("Vertical Distribution Coefficient")+
+  xlab("Horizontal Distribution Coefficient")+
+  labs(fill = "")+
+  #guides(fill = "none")+
+  #guides(fill = guide_legend(nrow = 2))+
+  theme(axis.text.y = element_text(size = 7), 
+        axis.text.x = element_text(size = 7),
+        axis.title  = element_text(size = 7),
+        plot.title  = element_text(size = 7),
+        legend.position = "bottom",
+        strip.text = element_text(size = 7),
+        #strip.text.y = element_text(angle = 180),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        axis.ticks = element_line(size = 0.2),
+        legend.text = element_text(size = 7),
+        legend.title = element_text(size = 7),
+        plot.margin = unit(c(0.1,0.1,0,0), "cm"),
+        panel.border = element_rect(size = 0.3))
+
+L.7.3.3 <- ggdraw(get_legend(P.7.3.3))
+
+P.7.3.3 <- P.7.3.3 +
+  guides(fill = "none")
+
+P.7.3.4 <- ggplot()+
+  geom_polygon(data = poly_3, aes(x = x, y = y, group = g), colour = "black", fill = NA, size = 0.3)+
+  geom_polygon(data = poly_2, aes(x = x, y = y, group = g, fill = label), alpha = 0.5)+
+  #geom_text(data = poly_4, aes(label = text, x = x, y = y))+
+  theme_bw()+
+  coord_cartesian(xlim = c(0,3.2), ylim = c(0,3.2))+
+  scale_fill_manual(values = c("#FFDC91FF", "#6F99ADFF", "#0072B5FF", "#E18727FF"), guide = guide_legend(nrow = 2))+
+  #scale_shape_manual(values = c(15,15,15,15,17,17,17,17,18,18,18,18,19,19,19,19))+
+  scale_x_continuous(expand = c(0,0))+
+  scale_y_continuous(expand = c(0,0))+
+  ylab("Vertical Distribution Coefficient")+
+  xlab("Horizontal Distribution Coefficient")+
+  labs(fill = "")+
+  #guides(fill = "none")+
+  #guides(fill = guide_legend(nrow = 2))+
+  theme(axis.text.y = element_text(size = 7), 
+        axis.text.x = element_text(size = 7),
+        axis.title  = element_text(size = 7),
+        plot.title  = element_text(size = 7),
+        legend.position = "bottom",
+        strip.text = element_text(size = 7),
+        #strip.text.y = element_text(angle = 180),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        axis.ticks = element_line(size = 0.2),
+        legend.text = element_text(size = 7),
+        legend.title = element_text(size = 7),
+        plot.margin = unit(c(0.1,0.1,0,0), "cm"),
+        panel.border = element_rect(size = 0.3))
+
+L.7.3.4 <- ggdraw(get_legend(P.7.3.4))
+
+P.7.3.4 <- P.7.3.4 +
+  guides(fill = "none")
+
+# Just South Africa
+
+P.7.3.5 <- ggplot()+
+  geom_polygon(data = poly_3, aes(x = x, y = y, group = g), colour = "black", fill = NA, size = 0.3)+
+  geom_polygon(data = poly_2, aes(x = x, y = y, group = g, fill = label), alpha = 0.5)+
+  theme_bw()+
+  geom_point(data = filter(data_7.3, Country == "ZAF"), aes(y = median_1_5, x = dif_95_05_1_5), shape = 17, colour = "black", size = 2)+
+  geom_text_repel(data = filter(data_7.3, Country == "ZAF"), aes(label = Country, y = median_1_5, x = dif_95_05_1_5),
+                  direction = "both", size = 2, max.overlaps = 100)+
+  coord_cartesian(xlim = c(0,3.2), ylim = c(0,3.2))+
+  scale_fill_manual(values = c("#FFDC91FF", "#6F99ADFF", "#0072B5FF", "#E18727FF"), guide = guide_legend(nrow = 2))+
+  scale_x_continuous(expand = c(0,0))+
+  scale_y_continuous(expand = c(0,0))+
+  ylab("Vertical Distribution Coefficient")+
+  xlab("Horizontal Distribution Coefficient")+
+  labs(fill = "")+
+  guides(fill = "none")+
+  #guides(fill = guide_legend(nrow = 2))+
+  theme(axis.text.y = element_text(size = 7), 
+        axis.text.x = element_text(size = 7),
+        axis.title  = element_text(size = 7),
+        plot.title  = element_text(size = 7),
+        legend.position = "bottom",
+        strip.text = element_text(size = 7),
+        #strip.text.y = element_text(angle = 180),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        axis.ticks = element_line(size = 0.2),
+        legend.text = element_text(size = 7),
+        legend.title = element_text(size = 7),
+        plot.margin = unit(c(0.1,0.1,0,0), "cm"),
+        panel.border = element_rect(size = 0.3))
+
+# All countries
+
+P.7.3.6 <- ggplot()+
+  geom_polygon(data = poly_3, aes(x = x, y = y, group = g), colour = "black", fill = NA, size = 0.3)+
+  geom_polygon(data = poly_2, aes(x = x, y = y, group = g, fill = label), alpha = 0.5)+
+  theme_bw()+
+  geom_point(data = data_7.3, aes(y = median_1_5, x = dif_95_05_1_5), shape = 17, colour = "black", size = 2)+
+  #geom_text_repel(data = data_7.3, aes(label = Country, y = median_1_5, x = dif_95_05_1_5),
+  #                direction = "both", size = 2, max.overlaps = 100)+
+  coord_cartesian(xlim = c(0,3.2), ylim = c(0,3.2))+
+  scale_fill_manual(values = c("#FFDC91FF", "#6F99ADFF", "#0072B5FF", "#E18727FF"), guide = guide_legend(nrow = 2))+
+  scale_x_continuous(expand = c(0,0))+
+  scale_y_continuous(expand = c(0,0))+
+  ylab("Vertical Distribution Coefficient")+
+  xlab("Horizontal Distribution Coefficient")+
+  labs(fill = "")+
+  guides(fill = "none")+
+  #guides(fill = guide_legend(nrow = 2))+
+  theme(axis.text.y = element_text(size = 7), 
+        axis.text.x = element_text(size = 7),
+        axis.title  = element_text(size = 7),
+        plot.title  = element_text(size = 7),
+        legend.position = "bottom",
+        strip.text = element_text(size = 7),
+        #strip.text.y = element_text(angle = 180),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        axis.ticks = element_line(size = 0.2),
+        legend.text = element_text(size = 7),
+        legend.title = element_text(size = 7),
+        plot.margin = unit(c(0.1,0.1,0,0), "cm"),
+        panel.border = element_rect(size = 0.3))
+
+P.7.3.7 <- ggplot()+
+  geom_polygon(data = poly_3, aes(x = x, y = y, group = g), colour = "black", fill = NA, size = 0.3)+
+  geom_polygon(data = filter(poly_2, g == 1), aes(x = x, y = y, group = g), alpha = 0.5, fill = "#6F99ADFF")+
+  geom_polygon(data = filter(poly_2, g == 2), aes(x = x, y = y, group = g), alpha = 0.5, fill = "#E18727FF")+
+  geom_polygon(data = filter(poly_2, g == 3), aes(x = x, y = y, group = g), alpha = 0.5, fill = "#0072B5FF")+
+  geom_polygon(data = filter(poly_2, g == 4), aes(x = x, y = y, group = g), alpha = 0.5, fill = "#FFDC91FF")+
+  theme_bw()+
+  geom_point(data = data_7.3, aes(y = median_1_5, x = dif_95_05_1_5, fill = log(value)), shape = 24, colour = "black", size = 2)+
+  #geom_text_repel(data = data_7.3, aes(label = Country, y = median_1_5, x = dif_95_05_1_5),
+  #                direction = "both", size = 2, max.overlaps = 100)+
+  coord_cartesian(xlim = c(0,3.2), ylim = c(0,3.2))+
+  scale_fill_viridis_c(breaks = c(7,11), labels = c("Poorer", "Richer"))+
+  scale_x_continuous(expand = c(0,0))+
+  scale_y_continuous(expand = c(0,0))+
+  ylab("Vertical Distribution Coefficient")+
+  xlab("Horizontal Distribution Coefficient")+
+  labs(fill = "")+
+  # guides(fill = "none")+
+  #guides(fill = guide_legend(nrow = 2))+
+  theme(axis.text.y = element_text(size = 7), 
+        axis.text.x = element_text(size = 7),
+        axis.title  = element_text(size = 7),
+        plot.title  = element_text(size = 7),
+        legend.position = "bottom",
+        strip.text = element_text(size = 7),
+        #strip.text.y = element_text(angle = 180),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        axis.ticks = element_line(size = 0.2),
+        legend.text = element_text(size = 7),
+        legend.title = element_text(size = 7),
+        plot.margin = unit(c(0.1,0.1,0,0), "cm"),
+        panel.border = element_rect(size = 0.3))
+
+L.7.3.7 <- ggdraw(get_legend(P.7.3.7))
+
+P.7.3.7 <- P.7.3.7 +
+  guides(fill = "none")
+
+P.7.3.8 <- ggplot()+
+  geom_polygon(data = poly_3, aes(x = x, y = y, group = g), colour = "black", fill = NA, size = 0.3)+
+  geom_polygon(data = filter(poly_2, g == 1), aes(x = x, y = y, group = g), alpha = 0.5, fill = "#6F99ADFF")+
+  geom_polygon(data = filter(poly_2, g == 2), aes(x = x, y = y, group = g), alpha = 0.5, fill = "#E18727FF")+
+  geom_polygon(data = filter(poly_2, g == 3), aes(x = x, y = y, group = g), alpha = 0.5, fill = "#0072B5FF")+
+  geom_polygon(data = filter(poly_2, g == 4), aes(x = x, y = y, group = g), alpha = 0.5, fill = "#FFDC91FF")+
+  theme_bw()+
+  geom_point(data = data_7.3, aes(y = median_1_5, x = dif_95_05_1_5, fill = log(value), alpha = interest2), shape = 24, colour = "black", size = 2)+
+  geom_text_repel(data = filter(data_7.3, Country %in% c("RWA", "DEU", "ZAF", "USA", "CAN", "MWI", "LBR")), 
+                  aes(label = Country.Name, y = median_1_5, x = dif_95_05_1_5),
+                  direction = "both", size = 2, max.overlaps = 100)+
+  #geom_text_repel(data = data_7.3, aes(label = Country, y = median_1_5, x = dif_95_05_1_5),
+  #                direction = "both", size = 2, max.overlaps = 100)+
+  coord_cartesian(xlim = c(0,3.2), ylim = c(0,3.2))+
+  scale_fill_viridis_c(breaks = c(7,11), labels = c("Poorer", "Richer"))+
+  scale_x_continuous(expand = c(0,0))+
+  scale_y_continuous(expand = c(0,0))+
+  ylab("Vertical Distribution Coefficient")+
+  xlab("Horizontal Distribution Coefficient")+
+  labs(fill = "")+
+  guides(fill = "none", alpha = "none")+
+  #guides(fill = guide_legend(nrow = 2))+
+  theme(axis.text.y = element_text(size = 7), 
+        axis.text.x = element_text(size = 7),
+        axis.title  = element_text(size = 7),
+        plot.title  = element_text(size = 7),
+        legend.position = "bottom",
+        strip.text = element_text(size = 7),
+        #strip.text.y = element_text(angle = 180),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        axis.ticks = element_line(size = 0.2),
+        legend.text = element_text(size = 7),
+        legend.title = element_text(size = 7),
+        plot.margin = unit(c(0.1,0.1,0,0), "cm"),
+        panel.border = element_rect(size = 0.3))
+
+P.7.3.10 <- align_plots(P.7.3.1,P.7.3.2,P.7.3.3,P.7.3.4,P.7.3.5,P.7.3.6,P.7.3.7,P.7.3.8, align = "hv")
+P.7.3.11 <- ggdraw(P.7.3.10[[1]])
+P.7.3.12 <- ggdraw(P.7.3.10[[2]])
+P.7.3.13 <- ggdraw(P.7.3.10[[3]])
+P.7.3.14 <- ggdraw(P.7.3.10[[4]])
+P.7.3.15 <- ggdraw(P.7.3.10[[5]])
+P.7.3.16 <- ggdraw(P.7.3.10[[6]])
+P.7.3.17 <- ggdraw(P.7.3.10[[7]])
+P.7.3.18 <- ggdraw(P.7.3.10[[8]])
+
+jpeg("4_Presentations/Figures/Figure 3/Figure_3_%d.jpg", width = 10, height = 10, unit = "cm", res = 600)
+print(P.7.3.11)
+print(P.7.3.12)
+print(P.7.3.13)
+print(P.7.3.14)
+print(P.7.3.15)
+print(P.7.3.16)
+print(P.7.3.17)
+print(P.7.3.18)
+dev.off()
+
+jpeg("4_Presentations/Figures/Figure 3/Figure_3_Legend_a_%d.jpg", width = 12, height = 2, unit = "cm", res = 600)
+print(L.7.3.4)
+dev.off()
+
+jpeg("4_Presentations/Figures/Figure 3/Figure_3_Legend_b_%d.jpg", width = 8, height = 2, unit = "cm", res = 600)
+print(L.7.3.2)
+print(L.7.3.3)
+print(L.7.3.7)
+dev.off()
+
+rm(poly, poly_2, poly_3, poly_4, data_7.3, data_7.3.0,
+   P.7.3.1, P.7.3.2, P.7.3.3, P.7.3.4, P.7.3.5, P.7.3.6, P.7.3.7, P.7.3.8,
+   P.7.3.10, P.7.3.11, P.7.3.12, P.7.3.13, P.7.3.14, P.7.3.15, P.7.3.16, P.7.3.17, P.7.3.18, L.7.3.2, L.7.3.3, L.7.3.4, L.7.3.7)
+
 # 7.4     Figure 4: Logit-Model approach ####
+
+data_7.4 <- data_2 %>%
+  filter(Country == "ZAF")%>%
+  mutate(border_80 = wtd.quantile(carbon_intensity_kg_per_USD_national, weight = hh_weights, probs = 0.87))%>%
+  mutate(interest  = ifelse(carbon_intensity_kg_per_USD_national > border_80, "20% most carbon-intensive consumers",
+                            "80% least carbon-intensive consumers"))
+
+data_7.4.1 <- data_7.4 %>%
+  group_by(interest)%>%
+  summarise(y5  = wtd.quantile(carbon_intensity_kg_per_USD_national, weights = hh_weights, probs = 0.05),
+            y25 = wtd.quantile(carbon_intensity_kg_per_USD_national, weights = hh_weights, probs = 0.25),
+            y50 = wtd.quantile(carbon_intensity_kg_per_USD_national, weights = hh_weights, probs = 0.5),
+            y75 = wtd.quantile(carbon_intensity_kg_per_USD_national, weights = hh_weights, probs = 0.75),
+            y95 = wtd.quantile(carbon_intensity_kg_per_USD_national, weights = hh_weights, probs = 0.95),
+            mean = wtd.mean(carbon_intensity_kg_per_USD_national, weights = hh_weights))%>%
+  ungroup()
+
+P.7.4.1 <- ggplot()+
+  geom_point(data = data_7.4, aes(x = hh_expenditures_USD_2014_pc,
+                                  y = carbon_intensity_kg_per_USD_national), 
+             alpha = 0.05, shape = 21, colour = "black", fill = "#4DBBD5FF", size = 0.5)+
+  theme_bw()+
+  xlab("Household expenditures per capita in US-$ (2014)") + 
+  ylab(expression(paste("Carbon intensity of consumption [kg", CO[2], "/USD]", sep = "")))+
+  labs(colour = "", fill = "")+
+  coord_cartesian(xlim = c(0, 22000), ylim = c(0,7))+
+  scale_y_continuous(expand = c(0,0))+
+  scale_x_continuous(labels = scales::dollar_format(accuracy = 1), expand = c(0,0))+
+  scale_fill_discrete(guide = "none")+
+  ggtitle("South Africa")+
+  theme(axis.text.y = element_text(size = 6), 
+        axis.text.x = element_text(size = 6),
+        axis.title  = element_text(size = 7),
+        plot.title = element_text(size = 11),
+        legend.position = "bottom",
+        strip.text = element_text(size = 7),
+        #strip.text.y = element_text(angle = 180),
+        #panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        axis.ticks = element_line(size = 0.2),
+        legend.text = element_text(size = 7),
+        legend.title = element_text(size = 7),
+        plot.margin = unit(c(0.3,0.3,0.3,0.3), "cm"),
+        panel.border = element_rect(size = 0.3))
+
+P.7.4.2 <- ggplot()+
+  geom_point(data = data_7.4, aes(x = hh_expenditures_USD_2014_pc,
+                                  y = carbon_intensity_kg_per_USD_national,
+                                  fill = factor(interest)), 
+             alpha = 0.05, shape = 21, colour = "black", size = 0.5)+
+  geom_hline(aes(yintercept = data_7.4$border_80[1]), size = 0.5)+
+  theme_bw()+
+  xlab("Household expenditures per capita in US-$ (2014)") + 
+  ylab(expression(paste("Carbon intensity of consumption [kg", CO[2], "/USD]", sep = "")))+
+  labs(colour = "", fill = "")+
+  coord_cartesian(xlim = c(0, 22000), ylim = c(0,7))+
+  scale_y_continuous(expand = c(0,0))+
+  guides(fill = "none")+
+  scale_x_continuous(labels = scales::dollar_format(accuracy = 1), expand = c(0,0))+
+  scale_fill_manual(values = c("#BC3C29FF","#4DBBD5FF"))+
+  ggtitle("South Africa")+
+  theme(axis.text.y = element_text(size = 6), 
+        axis.text.x = element_text(size = 6),
+        axis.title  = element_text(size = 7),
+        plot.title = element_text(size = 11),
+        legend.position = "bottom",
+        strip.text = element_text(size = 7),
+        #strip.text.y = element_text(angle = 180),
+        #panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        axis.ticks = element_line(size = 0.2),
+        legend.text = element_text(size = 7),
+        legend.title = element_text(size = 7),
+        plot.margin = unit(c(0.3,0.3,0.3,0.3), "cm"),
+        panel.border = element_rect(size = 0.3))
+
+P.7.4.3 <- ggplot(data_7.4.1, aes(x = as.factor(interest)))+
+  geom_hline(aes(yintercept = data_7.4$border_80[1]), size = 0.5)+
+  #geom_rect(aes(ymin = min_median, ymax = max_median), xmin = 0, xmax = 6, alpha = 0.2, fill = "lightblue", inherit.aes = FALSE)+
+  geom_boxplot(aes(ymin = y5, lower = y25, middle = y50, upper = y75, ymax = y95, fill = factor(interest)), 
+               stat = "identity", position = position_dodge(0.5), outlier.shape = NA, width = 0.5, size = 0.3, alpha = 0.9) +
+  theme_bw()+
+  xlab("")+ ylab("")+
+  geom_point(aes(y = mean), shape = 23, size = 2, stroke = 0.3, fill = "white")+
+  scale_y_continuous(expand = c(0,0))+
+  scale_x_discrete(limits = rev, labels = c(expression(paste(HC[ZAF], "=0", sep = "")), expression(paste(HC[ZAF], "=1", sep = ""))))+
+  coord_cartesian(ylim = c(0,7))+
+  ggtitle("")+
+  guides(fill = "none")+
+  scale_fill_manual(values = c("#BC3C29FF","#4DBBD5FF"))+
+  theme(axis.text.y = element_blank(), 
+        axis.text.x = element_text(size = 6),
+        axis.title  = element_text(size = 7),
+        plot.title = element_text(size = 11),
+        legend.position = "bottom",
+        strip.text = element_text(size = 7),
+        #strip.text.y = element_text(angle = 180),
+        #panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        axis.ticks = element_line(size = 0.2),
+        legend.text = element_text(size = 7),
+        legend.title = element_text(size = 7),
+        plot.margin = unit(c(0.3,0.3,0.3,0.3), "cm"),
+        panel.border = element_rect(size = 0.3))
+
+P.7.4.4 <- align_plots(P.7.4.1, P.7.4.2, P.7.4.3, align = "h")
+
+P.7.4.5 <- ggdraw(P.7.4.4[[1]])
+P.7.4.6 <- ggdraw(P.7.4.4[[2]])
+P.7.4.7 <- ggdraw(P.7.4.4[[3]])
+
+jpeg("4_Presentations/Figures/Figure 4/Figure_4_%d.jpg", width = 10, height = 10, unit = "cm", res = 600)
+print(P.7.4.5)
+print(P.7.4.6)
+dev.off()
+
+jpeg("4_Presentations/Figures/Figure 4/Figure_4_b_%d.jpg", width = 5, height = 10, unit = "cm", res = 600)
+print(P.7.4.7)
+dev.off()
+
+rm(data_7.4, data_7.4.1, P.7.4.1, P.7.4.2, P.7.4.3, P.7.4.4, P.7.4.5, P.7.4.6, P.7.4.7)
+
 # 7.5     Figure 5: Average Marginal effects ####
+
+data_7.5.0 <- read.xlsx("1_Figures/Analysis_Logit_Models_Marginal_Effects/Average_Marginal_Effects_Logit.xlsx")%>%
+  mutate(term = ifelse((contrast == "6-8 - 2-5" | contrast == "6-8 - 0-1") & !is.na(contrast), "higher_education",
+                       ifelse(contrast == "2-5 - 0-1" & !is.na(contrast), "secondary_education", term)))
+
+# 7.5.1   Figure 5.1: Average marginal effects for South Africa ####
+
+data_7.5.1 <- data_7.5.0 %>%
+  filter(Country == "ZAF")%>%
+  filter(Type == "affected_upper_80")%>%
+  mutate(Colour_Type = ifelse(estimate > 0, "A", "B"))%>%
+  filter(term != "ISCED_0")%>%
+  arrange(estimate)%>%
+  mutate(help = c(1,2,3,4,5,8,10,6,9,7,11,12,13))%>%
+  arrange(help)%>%
+  filter(contrast != "Unknown - A_Electricity")%>%
+  mutate(Term = c("Expenditures (log)", "CF: Firewood", "CF: Other biomass", "CF: Kerosene", "CF: Coal", "CF: Gas",
+                  "Secondary \n education", "Higher \n education", "HH size", "Urban", "Car own.", "Electricity access"))
+  
+
+P_7.5.1 <- ggplot(data = data_7.5.1, aes(x = estimate, y = reorder(Term, desc(help))))+
+  geom_vline(aes(xintercept = 0))+
+  geom_errorbar(aes(xmin = conf.low, xmax = conf.high), width = 0.3, size = 0.2)+
+  geom_point(shape = 22, aes (fill = Colour_Type), size = 1.5, stroke = 0.3)+
+  theme_bw()+
+  xlab(expression(paste("Average marginal effect on probability of ", HC[ZAF], "=1", sep = "")))+ 
+  ylab("Household characteristics")+
+  labs(colour = "", fill = "")+
+  coord_cartesian(xlim = c(-0.25, 0.52))+
+  scale_x_continuous(labels = scales::percent_format(accuracy = 1),  expand = c(0,0))+
+  scale_fill_manual(guide = "none", values = c("#4DBBD5FF", "#E64B35FF"))+
+  ggtitle("South Africa")+
+  theme(axis.text.y = element_text(size = 6), 
+        axis.text.x = element_text(size = 6),
+        axis.title  = element_text(size = 7),
+        plot.title = element_text(size = 11),
+        legend.position = "bottom",
+        # strip.text = element_text(size = 7),
+        #strip.text.y = element_text(angle = 180),
+        #panel.grid.major = element_blank(),
+        panel.grid.major.y = element_blank(),
+        panel.grid.minor.y = element_blank(),
+        axis.ticks = element_line(size = 0.2),
+        legend.text = element_text(size = 7),
+        legend.title = element_text(size = 7),
+        plot.margin = unit(c(0.3,0.3,0.3,0.3), "cm"),
+        panel.border = element_rect(size = 0.3))
+
+jpeg("4_Presentations/Figures/Figure 5/Figure_5_%d.jpg", width = 10, height = 10, unit = "cm", res = 600)
+print(P_7.5.1)
+dev.off()
+
+rm(data_7.5.1, P_7.5.1)
+
+# 7.5.2   Figure 5.2: Average marginal effects for selected countries ####
+
+data_7.5.2 <- data_7.5.0 %>%
+  filter(Type == "affected_upper_80")%>%
+  filter(term == "urban_01" | term == "car.01" | (term == "CF" & (contrast == "B_LPG - A_Electricity" | contrast == "Firewood - A_Electricity")))%>%
+  mutate(Colour_Type = ifelse(estimate > 0, "A", "B"))%>%
+  arrange(estimate)%>%
+  group_by(term, contrast)%>%
+  mutate(help = 1:n())%>%
+  ungroup()
+
+# Urban/rural
+
+P_7.5.2.1 <- ggplot(data = filter(data_7.5.2, term == "urban_01"), aes(x = estimate, y = reorder(Country, desc(estimate))))+
+  geom_vline(aes(xintercept = 0))+
+  geom_errorbar(aes(xmin = conf.low, xmax = conf.high), width = 0.7, size = 0.2)+
+  geom_point(shape = 22, aes (fill = Colour_Type), size = 1, stroke = 0.3)+
+  theme_bw()+
+  xlab(expression(paste("Average marginal effect on probability of ", HC[i], "=1", sep = "")))+ 
+  ylab("Country")+
+  labs(colour = "", fill = "")+
+  coord_cartesian(xlim = c(-0.25, 0.25))+
+  scale_x_continuous(labels = scales::percent_format(accuracy = 1),  expand = c(0,0))+
+  scale_fill_manual(guide = "none", values = c("#4DBBD5FF", "#E64B35FF"))+
+  ggtitle("Urban citizenship")+
+  theme(axis.text.y = element_text(size = 4), 
+        axis.text.x = element_text(size = 6),
+        axis.title  = element_text(size = 7),
+        plot.title = element_text(size = 11),
+        legend.position = "bottom",
+        # strip.text = element_text(size = 7),
+        #strip.text.y = element_text(angle = 180),
+        #panel.grid.major = element_blank(),
+        panel.grid.major.y = element_blank(),
+        panel.grid.minor.y = element_blank(),
+        axis.ticks = element_line(size = 0.2),
+        legend.text = element_text(size = 7),
+        legend.title = element_text(size = 7),
+        plot.margin = unit(c(0.3,0.3,0.3,0.3), "cm"),
+        panel.border = element_rect(size = 0.3))
+
+# Car ownership
+
+P_7.5.2.2 <- ggplot(data = filter(data_7.5.2, term == "car.01"), aes(x = estimate, y = reorder(Country, desc(estimate))))+
+  geom_vline(aes(xintercept = 0))+
+  geom_errorbar(aes(xmin = conf.low, xmax = conf.high), width = 0.7, size = 0.2)+
+  geom_point(shape = 22, aes (fill = Colour_Type), size = 1, stroke = 0.3)+
+  theme_bw()+
+  xlab(expression(paste("Average marginal effect on probability of ", HC[i], "=1", sep = "")))+ 
+  ylab("")+
+  labs(colour = "", fill = "")+
+  coord_cartesian(xlim = c(-0.2, 0.53))+
+  scale_x_continuous(labels = scales::percent_format(accuracy = 1),  expand = c(0,0))+
+  scale_fill_manual(guide = "none", values = c("#4DBBD5FF", "#E64B35FF"))+
+  ggtitle("Car ownership")+
+  theme(axis.text.y = element_text(size = 4), 
+        axis.text.x = element_text(size = 6),
+        axis.title  = element_text(size = 7),
+        plot.title = element_text(size = 11),
+        legend.position = "bottom",
+        # strip.text = element_text(size = 7),
+        #strip.text.y = element_text(angle = 180),
+        #panel.grid.major = element_blank(),
+        panel.grid.major.y = element_blank(),
+        panel.grid.minor.y = element_blank(),
+        axis.ticks = element_line(size = 0.2),
+        legend.text = element_text(size = 7),
+        legend.title = element_text(size = 7),
+        plot.margin = unit(c(0.3,0.3,0.3,0.3), "cm"),
+        panel.border = element_rect(size = 0.3))
+
+# Cooking fuel - Firewood
+
+P_7.5.2.3 <- ggplot(data = filter(data_7.5.2, term == "CF" & contrast == "Firewood - A_Electricity"), aes(x = estimate, y = reorder(Country, desc(estimate))))+
+  geom_vline(aes(xintercept = 0))+
+  geom_errorbar(aes(xmin = conf.low, xmax = conf.high), width = 0.7, size = 0.2)+
+  geom_point(shape = 22, aes (fill = Colour_Type), size = 1, stroke = 0.3)+
+  theme_bw()+
+  xlab(expression(paste("Average marginal effect on probability of ", HC[i], "=1", sep = "")))+ 
+  ylab("")+
+  labs(colour = "", fill = "")+
+  coord_cartesian(xlim = c(-0.5, 0.5))+
+  scale_x_continuous(labels = scales::percent_format(accuracy = 1),  expand = c(0,0))+
+  scale_fill_manual(guide = "none", values = c("#4DBBD5FF", "#E64B35FF"))+
+  ggtitle("Cooking with firewood")+
+  theme(axis.text.y = element_text(size = 4), 
+        axis.text.x = element_text(size = 6),
+        axis.title  = element_text(size = 7),
+        plot.title = element_text(size = 11),
+        legend.position = "bottom",
+        # strip.text = element_text(size = 7),
+        #strip.text.y = element_text(angle = 180),
+        #panel.grid.major = element_blank(),
+        panel.grid.major.y = element_blank(),
+        panel.grid.minor.y = element_blank(),
+        axis.ticks = element_line(size = 0.2),
+        legend.text = element_text(size = 7),
+        legend.title = element_text(size = 7),
+        plot.margin = unit(c(0.3,0.3,0.3,0.3), "cm"),
+        panel.border = element_rect(size = 0.3))
+
+# Cooking fuel - LPG
+
+P_7.5.2.4 <- ggplot(data = filter(data_7.5.2, term == "CF" & contrast == "B_LPG - A_Electricity"), aes(x = estimate, y = reorder(Country, desc(estimate))))+
+  geom_vline(aes(xintercept = 0))+
+  geom_errorbar(aes(xmin = conf.low, xmax = conf.high), width = 0.7, size = 0.2)+
+  geom_point(shape = 22, aes (fill = Colour_Type), size = 1, stroke = 0.3)+
+  theme_bw()+
+  xlab(expression(paste("Average marginal effect on probability of ", HC[i], "=1", sep = "")))+ 
+  ylab("")+
+  labs(colour = "", fill = "")+
+  coord_cartesian(xlim = c(-0.5, 0.5))+
+  scale_x_continuous(labels = scales::percent_format(accuracy = 1),  expand = c(0,0))+
+  scale_fill_manual(guide = "none", values = c("#4DBBD5FF", "#E64B35FF"))+
+  ggtitle("Cooking with LPG")+
+  theme(axis.text.y = element_text(size = 4), 
+        axis.text.x = element_text(size = 6),
+        axis.title  = element_text(size = 7),
+        plot.title = element_text(size = 11),
+        legend.position = "bottom",
+        # strip.text = element_text(size = 7),
+        #strip.text.y = element_text(angle = 180),
+        #panel.grid.major = element_blank(),
+        panel.grid.major.y = element_blank(),
+        panel.grid.minor.y = element_blank(),
+        axis.ticks = element_line(size = 0.2),
+        legend.text = element_text(size = 7),
+        legend.title = element_text(size = 7),
+        plot.margin = unit(c(0.3,0.3,0.3,0.3), "cm"),
+        panel.border = element_rect(size = 0.3))
+
+jpeg("4_Presentations/Figures/Figure 5/Figure_5_2_%d.jpg", width = 7, height = 10, unit = "cm", res = 600)
+print(P_7.5.2.1)
+print(P_7.5.2.2)
+print(P_7.5.2.3)
+print(P_7.5.2.4)
+dev.off()
+
+rm(data_7.5.0, data_7.5.2, P_7.5.2.1, P_7.5.2.2, P_7.5.2.3, P_7.5.2.4)
+
 # 7.6     Figure 6: Variable Importance Plot and Partial Dependence Plots ####
+
+# 7.6.1   Figure 6.1: VIP for South Africa ####
+
+data_7.6.1 <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/VIP_Data.xlsx")%>%
+  filter(Country == "ZAF")%>%
+  mutate(Var_0 = ifelse(grepl("District", Variable), "District", 
+                        ifelse(grepl("Province", Variable), "Province", 
+                               ifelse(grepl("ISCED", Variable), "ISCED", 
+                                      ifelse(grepl("Ethnicity", Variable), "Ethnicity", 
+                                             ifelse(grepl("Religion", Variable), "Religion", 
+                                                    ifelse(Variable == "hh_expenditures_USD_2014", "HH expenditures",
+                                                           ifelse(Variable == "hh_size", "HH size",
+                                                                  ifelse(grepl("car.01", Variable), "Car own.",
+                                                                         ifelse(grepl("urban_01", Variable), "Urban",
+                                                                                ifelse(grepl("sex_hhh", Variable), "Gender HHH",
+                                                                                       ifelse(grepl("CF_", Variable), "Cooking", 
+                                                                                              ifelse(grepl("HF_", Variable), "Heating", 
+                                                                                                     ifelse(grepl("LF_", Variable), "Lighting", 
+                                                                                                            ifelse(Variable == "electricity.access", "Electricity access", Variable)))))))))))))),
+         Var_1 = ifelse(grepl("District", Variable), gsub("District?","", Variable), 
+                        ifelse(grepl("Province", Variable), gsub("Province_?","", Variable), 
+                               ifelse(grepl("ISCED", Variable), gsub("ISCED_?","", Variable),
+                                      ifelse(grepl("Ethnicity", Variable), gsub("Ethnicity_?","", Variable),
+                                             ifelse(grepl("Religion", Variable), gsub("Religion?","", Variable),
+                                                    ifelse(grepl("urban_01", Variable), gsub("urban_01?","", Variable),
+                                                           ifelse(grepl("sex_hhh", Variable), gsub("sex_hhh_?","", Variable), 
+                                                                  ifelse(grepl("car.01", Variable), gsub("car.01","", Variable), 
+                                                                         ifelse(grepl("CF_", Variable), gsub("CF_?", "", Variable), 
+                                                                                ifelse(grepl("LF_", Variable), gsub("LF_?", "", Variable), 
+                                                                                       ifelse(grepl("HF_", Variable), gsub("HF_?", "", Variable), NA))))))))))))%>%
+  mutate(help_0 = ifelse(Importance < 0.01,1,0))
+
+data_7.6.1.1 <- data_7.6.1 %>%
+  filter(help_0 == 1)%>%
+  summarise(Importance = sum(Importance))%>%
+  mutate(Var_0 = "Other features (Sum)")
+
+data_7.6.1.2 <- data_7.6.1 %>%
+  filter(help_0 == 0)%>%
+  bind_rows(data_7.6.1.1)%>%
+  arrange(desc(Importance))%>%
+  mutate(number_order = ifelse(Var_0 != "Other features (Sum)",1:n(), n()+1))%>%
+  mutate(Var_2 = ifelse(!is.na(Var_1), paste0(Var_0, ": ", Var_1), Var_0))%>%
+  mutate(Var_2 = str_remove(Var_2, "\\."))%>%
+  mutate(Var_2 = ifelse(Var_2 == "Car own: 0", "Car own.",
+                        ifelse(Var_2 == "Ethnicity: IndianAsian", "Ethnicity: Indian/Asian",
+                               ifelse(Var_2 == "washing_machine010", "Washing machine",
+                                      ifelse(Var_2 == "Urban: 0", "Urban / rural", 
+                                             ifelse(Var_2 == "Province: KwazuluNatal", "Province: Kzwazulu Natal", Var_2))))))%>%
+  mutate(help_2 = ifelse(number_order > 3,1,0))
+
+P_7.6.1 <- ggplot(data_7.6.1.2)+
+  geom_col(aes(x = Importance, y = reorder(Var_2, desc(number_order))), width = 0.7, colour = "black", fill = "#6F99ADFF", size = 0.3)+
+  theme_bw()+
+  coord_cartesian(xlim = c(0,0.52))+
+  scale_x_continuous(labels = scales::percent_format(accuracy = 1), expand = c(0,0))+
+  xlab("Variable importance")+
+  ylab("Variable")+
+  ggtitle("South Africa")+
+  theme(axis.text.y = element_text(size = 6), 
+        axis.text.x = element_text(size = 6),
+        axis.title  = element_text(size = 7),
+        plot.title = element_text(size = 11),
+        legend.position = "bottom",
+        # strip.text = element_text(size = 7),
+        #strip.text.y = element_text(angle = 180),
+        #panel.grid.major = element_blank(),
+        panel.grid.major.y = element_blank(),
+        panel.grid.minor.y = element_blank(),
+        axis.ticks = element_line(size = 0.2),
+        legend.text = element_text(size = 7),
+        legend.title = element_text(size = 7),
+        plot.margin = unit(c(0.3,0.3,0.3,0.3), "cm"),
+        panel.border = element_rect(size = 0.3))
+
+P_7.6.2 <- ggplot(data_7.6.1.2)+
+  geom_col(aes(x = Importance, y = reorder(Var_2, desc(number_order)), fill = factor(help_2)), width = 0.7, colour = "black", size = 0.3)+
+  theme_bw()+
+  coord_cartesian(xlim = c(0,0.52))+
+  scale_fill_manual(values = c("#E64B35FF","#6F99ADFF"))+
+  scale_x_continuous(labels = scales::percent_format(accuracy = 1), expand = c(0,0))+
+  guides(fill = "none")+
+  xlab("Variable importance")+
+  ylab("Variable")+
+  ggtitle("South Africa")+
+  theme(axis.text.y = element_text(size = 6), 
+        axis.text.x = element_text(size = 6),
+        axis.title  = element_text(size = 7),
+        plot.title = element_text(size = 11),
+        legend.position = "bottom",
+        # strip.text = element_text(size = 7),
+        #strip.text.y = element_text(angle = 180),
+        #panel.grid.major = element_blank(),
+        panel.grid.major.y = element_blank(),
+        panel.grid.minor.y = element_blank(),
+        axis.ticks = element_line(size = 0.2),
+        legend.text = element_text(size = 7),
+        legend.title = element_text(size = 7),
+        plot.margin = unit(c(0.3,0.3,0.3,0.3), "cm"),
+        panel.border = element_rect(size = 0.3))
+
+
+jpeg("4_Presentations/Figures/Figure 6/Figure_6_a_%d.jpg", width = 10, height = 10, unit = "cm", res = 600)
+print(P_7.6.1)
+print(P_7.6.2)
+dev.off()
+
+rm(data_7.6.1, data_7.6.1.1, data_7.6.1.2, P_7.6.1, P_7.6.2)
+
+
+# 7.6.2   Figure 6.2: PDP for South Africa ####
+
+data_7.6.2 <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/PDP_Data.xlsx")%>%
+  filter(Country == "ZAF")%>%
+  filter(run_ID == "ZAF_2")%>%
+  rename(Variable = "_vname_", label = "_label_", yhat = "_yhat_", id = "_ids_")
+
+# Expenditures 
+
+# Get other households
+
+# Filter only observations for country of interest  
+data_7.6.2.1 <- filter(data_2, Country == "ZAF")
+
+data_7.6.2.2 <- data_7.6.2.1 %>%
+  # select relevant variables
+  select(Country, hh_id, hh_weights, hh_size,
+         Province, urban_01, 
+         # District,
+         sex_hhh, ISCED, Ethnicity, Religion, Nationality, Language, religiosity,
+         electricity.access, HF, LF, CF, 
+         hh_expenditures_USD_2014, 
+         car.01, motorcycle.01, refrigerator.01, ac.01, tv.01, washing_machine.01, 
+         carbon_intensity_kg_per_USD_national)%>%
+  # remove redundant variables
+  select(-Country, -hh_id, -hh_weights)%>%
+  # include hh_weights later in the process
+  # factors instead of characters
+  mutate_if(vars(is.character(.)), list(~ as.factor(.)))%>%
+  mutate_at(vars(sex_hhh, ISCED, religiosity, urban_01, ends_with(".01"), electricity.access), list(~ as.factor(.)))
+
+data_7.6.2.3 <- data_7.6.2.2 %>%
+  initial_split(prop = 0.75)
+
+# Data for training
+data_7.6.2.3.train <- data_7.6.2.3 %>%
+  training()
+
+# Data for testing
+data_7.6.2.3.test <- data_7.6.2.3 %>%
+  testing()
+
+recipe_7.6.2.3 <- recipe(carbon_intensity_kg_per_USD_national ~ .,
+                       data = data_7.6.2.3.train)%>%
+  step_filter_missing(all_predictors(), threshold = 0)%>%
+  step_corr(all_numeric(), -all_outcomes(), threshold = 0.9)%>%
+  # should have very few unique observations for factors
+  step_other(all_nominal(), -ends_with(".01"), -ends_with("urban_01"), -ends_with("District"), -ends_with("Province"), threshold = 0.05) # %>%
+#step_novel(all_nominal(), -ends_with(".01"), -ends_with("urban_01"))%>%
+#step_dummy(all_nominal(), -ends_with(".01"), -ends_with("urban_01"))
+
+data_7.6.2.3.training <- recipe_7.6.2.3 %>%
+  prep(training = data_7.6.2.3.train)%>%
+  bake(new_data = NULL)
+
+data_7.6.2.3.testing <- recipe_7.6.2.3 %>%
+  prep(training = data_7.6.2.3.test)%>%
+  bake(new_data = NULL)
+
+track_1 <- track %>%
+  filter(number_ob == "ZAF_2")
+
+model_brt_3 <- boost_tree(
+  trees = 1000,
+  tree_depth = track_1$tree_depth_best[1],
+  learn_rate = track_1$learn_rate_best[1], # the higher the learning rate the faster - default 0.3
+  # min_n = tune(),
+  # mtry = tune(),
+  # stop_iter = tune(),
+  # sample_size = tune()
+)%>%
+  set_mode("regression")%>%
+  set_engine("xgboost")%>%
+  fit(carbon_intensity_kg_per_USD_national ~ .,
+      data = data_7.6.2.3.training)
+
+# Preparation for partial dependence plot
+
+explainer_7.6.2 <- explain_tidymodels(model_brt_3,
+                                    data = select(data_7.6.2.3.testing, - carbon_intensity_kg_per_USD_national),
+                                    y    = select(data_7.6.2.3.testing, carbon_intensity_kg_per_USD_national),
+                                    label = "BRT")
+# TBA
+pdp_7.6.2 <- model_profile(
+  explainer = explainer_7.6.2,
+  variables = c("hh_expenditures_USD_2014"),
+  #variable_type = "numerical",
+  N = NULL
+)
+
+# Aggregated profile
+
+pdp_7.6.2.1 <- as_tibble(pdp_7.6.2$agr_profiles)%>%
+  rename("hh_expenditures_USD_2014" = "_x_")%>%
+  rename(Variable = "_vname_", label = "_label_", yhat = "_yhat_", id = "_ids_")
+
+# Ceteris paribus profiles
+
+pdp_7.6.2.2 <- as_tibble(pdp_7.6.2$cp_profiles)%>%
+  rename(Variable = "_vname_", label = "_label_", yhat = "_yhat_", id = "_ids_")
+
+data_7.6.2.0 <- data_7.6.2 %>%
+  filter(Variable == "hh_expenditures_USD_2014")
+
+P_7.6.2.1 <- ggplot()+
+  geom_line(data = pdp_7.6.2.2, aes(x = hh_expenditures_USD_2014, y = yhat, group = id), colour = "lightgrey", size = 0.03)+
+  geom_line(data = pdp_7.6.2.1, aes(x = hh_expenditures_USD_2014, y = yhat), colour = "#E64B35FF", size = 0.5)+
+  #geom_line(data = data_7.6.2.0, aes(x = hh_expenditures_USD_2014, y = yhat), colour = "blue", size = 1)+
+  theme_bw()+
+  ylab(expression(paste("Prediction carbon intensity of consumption [kg", CO[2], "/USD]", sep = "")))+
+  xlab("Household expenditures in USD (2014)")+
+  coord_cartesian(xlim = c(0,32000), ylim = c(0,5))+
+  scale_x_continuous(labels = scales::dollar_format(), expand = c(0,0))+
+  scale_y_continuous(expand = c(0,0))+
+  ggtitle("Partial dependence plot for South Africa - Part A)")+
+  theme(axis.text.y = element_text(size = 6), 
+        axis.text.x = element_text(size = 6),
+        axis.title  = element_text(size = 7),
+        plot.title = element_text(size = 11),
+        legend.position = "bottom",
+        # strip.text = element_text(size = 7),
+        #strip.text.y = element_text(angle = 180),
+        #panel.grid.major = element_blank(),
+        panel.grid.major.y = element_blank(),
+        panel.grid.minor.y = element_blank(),
+        axis.ticks = element_line(size = 0.2),
+        legend.text = element_text(size = 7),
+        legend.title = element_text(size = 7),
+        plot.margin = unit(c(0.3,0.3,0.3,0.3), "cm"),
+        panel.border = element_rect(size = 0.3))
+
+# Other variables
+
+pdp_7.6.2.3 <- model_profile(
+  explainer = explainer_7.6.2,
+  variable_type = "categorical",
+  N = NULL
+)
+
+data_7.6.2.3.0 <- as_tibble(pdp_7.6.2.3$agr_profiles)%>%
+  rename(Variable = "_vname_", label = "_label_", yhat = "_yhat_", id = "_ids_", xvar = "_x_")%>%
+  filter(Variable %in% c("car.01", "electricity.access", "Ethnicity", "Province", "urban_01"))%>%
+  mutate(Variable = ifelse(Variable == "car.01", "Has car?",
+                           ifelse(Variable == "electricity.access", "Electricity?",
+                                  ifelse(Variable == "urban_01", "Urban?", Variable))))%>%
+  mutate(newvar = ifelse(Variable %in% c("Electricity?", "Has car?") & xvar == "0", "No",
+                    ifelse(Variable %in% c("Electricity?", "Has car?") & xvar == "1", "Yes",
+                           ifelse(Variable == "Urban?" & xvar == "0", "Rural",
+                                  ifelse(Variable == "Urban?" & xvar == "1", "Urban", NA)))))%>%
+  mutate(newvar = ifelse(is.na(newvar), as.character(xvar), newvar))%>%
+  mutate(newvar = ifelse(newvar == "other", "Indian/Asian", newvar))%>%
+  mutate(interest = ifelse((Variable == "Electricity?" & newvar == "Yes") | (Variable == "Has car?" & newvar == "Yes") | (newvar == "Indian/Asian"), "1", "0"))
+
+data_7.6.2.3 <- data_7.6.2 %>%
+  filter(Variable != "hh_expenditures_USD_2014")
+
+P_7.6.2.2 <- ggplot()+
+  geom_col(data = data_7.6.2.3.0, aes(x = newvar, y = yhat, fill = factor(interest)), width = 0.7, colour = "black", size = 0.3, fill = "#6F99ADFF")+
+  facet_grid(. ~ Variable, scales = "free", space = "free")+
+  coord_cartesian(ylim = c(0,4))+
+  theme_bw()+
+  ylab(expression(paste("Prediction carbon intensity of consumption [kg", CO[2], "/USD]", sep = "")))+
+  ggtitle("Partial dependence plot for South Africa - Part B)")+
+  xlab("")+
+  guides(fill = "none")+
+  scale_y_continuous(expand = c(0,0))+
+  theme(axis.text.x = element_text(size = 6, angle = 90, vjust = 0.5, hjust = 1), 
+        axis.text.y = element_text(size = 6),
+        axis.title  = element_text(size = 7),
+        plot.title = element_text(size = 11),
+        legend.position = "bottom",
+        strip.text = element_text(size = 7, angle = 90),
+        panel.grid.major.y = element_blank(),
+        panel.grid.minor.y = element_blank(),
+        axis.ticks = element_line(size = 0.2),
+        legend.text = element_text(size = 7),
+        legend.title = element_text(size = 7),
+        plot.margin = unit(c(0.3,0.3,0.3,0.3), "cm"),
+        panel.border = element_rect(size = 0.3))
+
+P_7.6.2.3 <- ggplot()+
+  geom_col(data = data_7.6.2.3.0, aes(x = newvar, y = yhat, fill = factor(interest)), width = 0.7, colour = "black", size = 0.3)+
+  facet_grid(. ~ Variable, scales = "free", space = "free")+
+  coord_cartesian(ylim = c(0,4))+
+  theme_bw()+
+  ylab(expression(paste("Prediction carbon intensity of consumption [kg", CO[2], "/USD]", sep = "")))+
+  ggtitle("Partial dependence plot for South Africa - Part B)")+
+  xlab("")+
+  guides(fill = "none")+
+  scale_fill_manual(values = c("#6F99ADFF", "#E64B35FF"))+
+  scale_y_continuous(expand = c(0,0))+
+  theme(axis.text.x = element_text(size = 6, angle = 90, vjust = 0.5, hjust = 1), 
+        axis.text.y = element_text(size = 6),
+        axis.title  = element_text(size = 7),
+        plot.title = element_text(size = 11),
+        legend.position = "bottom",
+        strip.text = element_text(size = 7, angle = 90),
+        panel.grid.major.y = element_blank(),
+        panel.grid.minor.y = element_blank(),
+        axis.ticks = element_line(size = 0.2),
+        legend.text = element_text(size = 7),
+        legend.title = element_text(size = 7),
+        plot.margin = unit(c(0.3,0.3,0.3,0.3), "cm"),
+        panel.border = element_rect(size = 0.3))
+
+
+jpeg("4_Presentations/Figures/Figure 6/Figure_6_c_%d.jpg", width = 10, height = 10, unit = "cm", res = 600)
+print(P_7.6.2.2)
+print(P_7.6.2.3)
+dev.off()
+
+rm(data_7.6.2.1, data_7.6.2.2, data_7.6.2.3, data_7.6.2.3.test, data_7.6.2.3.train, data_7.6.2.3.testing, data_7.6.2.3.training,
+   recipe_7.6.2.3, track_1, model_brt_3, explainer_7.6.2, pdp_7.6.2, pdp_7.6.2.1, pdp_7.6.2.2, P_7.6.2.1,
+   data_7.6.2, data_7.6.2.3.0, P_7.6.2.2, P_7.6.2.3, pdp_7.6.2.3)
+
 # 7.7     Figure 7: Overview of countries ####
 # 7.8     Figure 8: Classification of countries ####
 # 7.9     Figure 9: Venn-Diagram ####
+
+# For South Africa
+
+data_7.9.1 <- data_2 %>%
+  filter(Country == "ZAF")%>%
+  mutate(barrier_0 = wtd.quantile(burden_CO2_national, probs = 0.8, weights = hh_weights))%>%
+  mutate(poorest_20_percent  = ifelse(Income_Group_5 == 1,1,0),
+         access_to_transfers = ifelse((!is.na(inc_gov_cash)|!is.na(inc_gov_monetary))&(inc_gov_cash > 0 | inc_gov_monetary > 0),1,0),
+         most_affected       = ifelse(burden_CO2_national > barrier_0,1,0))%>%
+  filter(poorest_20_percent == 1 | most_affected == 1 | access_to_transfers == 1)%>%
+  select(Country, access_to_transfers, poorest_20_percent, most_affected, hh_weights) %>%
+  mutate(A = ifelse(most_affected == 1 & access_to_transfers == 0 & poorest_20_percent == 0, hh_weights,0),
+         B = ifelse(most_affected == 0 & access_to_transfers == 0 & poorest_20_percent == 1, hh_weights,0),
+         C = ifelse(most_affected == 0 & access_to_transfers == 1 & poorest_20_percent == 0, hh_weights,0),
+         
+         D = ifelse(most_affected == 1 & access_to_transfers == 0 & poorest_20_percent == 1, hh_weights,0),
+         E = ifelse(most_affected == 1 & access_to_transfers == 1 & poorest_20_percent == 0, hh_weights,0),
+         G = ifelse(most_affected == 0 & access_to_transfers == 1 & poorest_20_percent == 1, hh_weights,0),
+         
+         H = ifelse(most_affected == 1 & access_to_transfers == 1 & poorest_20_percent == 1, hh_weights,0))
+
+data_7.9.2 <- data_7.9.1 %>%
+  summarise("Most Affected"       = sum(A),
+            "The Poorest"         = sum(B),
+            "Access to Transfers" = sum(C),
+            "Most Affected&The Poorest"         = sum(D),
+            "Most Affected&Access to Transfers" = sum(E),
+            "The Poorest&Access to Transfers"   = sum(G),
+            "Most Affected&The Poorest&Access to Transfers" = sum(H))
+
+data_7.9.3 <- c(
+  "Most Affected"                                 = data_7.9.2$'Most Affected',
+  "The Poorest"                                   = data_7.9.2$'The Poorest',
+  "Access to Transfers"                           = data_7.9.2$'Access to Transfers',
+  "Most Affected&The Poorest"                     = data_7.9.2$'Most Affected&The Poorest',
+  "Most Affected&Access to Transfers"             = data_7.9.2$'Most Affected&Access to Transfers',
+  "The Poorest&Access to Transfers"               = data_7.9.2$'The Poorest&Access to Transfers',
+  "The Poorest&Access to Transfers&Most Affected" = data_7.9.2$'Most Affected&The Poorest&Access to Transfers'
+)
+
+P_9.1 <- plot(euler(data_7.9.3, shape = "ellipse"), labels = FALSE,
+               quantities = list(type = "percent", fontsize = 7), fills = list(fill = c("#BC3C29FF", "#FFDC91FF", "#6F99ADFF"), alpha = 0.8),
+               main = list(label = "South Africa", fontsize = 7)
+               #legend = list(side = "bottom", nrow = 1, ncol = 3)
+               )
+
+pop <- sum(data_7.9.1$hh_weights)
+
+data_7.9.4 <- rownames_to_column(as.data.frame(data_7.9.3))%>%
+  rename(Type = rowname, value = data_7.9.3)%>%
+  mutate(total = pop)%>%
+  mutate(percent = round(value/total,2))%>%
+  mutate(label = paste0(percent*100, "%"))
+
+P_9.1$children$canvas.grob$children$diagram.grob.1$children$tags$children$tag.number.1$children$tag.quantity.1$label <- data_7.9.4$label[data_7.9.4$Type == "Most Affected"]
+P_9.1$children$canvas.grob$children$diagram.grob.1$children$tags$children$tag.number.2$children$tag.quantity.2$label <- data_7.9.4$label[data_7.9.4$Type == "The Poorest"]
+P_9.1$children$canvas.grob$children$diagram.grob.1$children$tags$children$tag.number.3$children$tag.quantity.3$label <- data_7.9.4$label[data_7.9.4$Type == "Access to Transfers"]
+P_9.1$children$canvas.grob$children$diagram.grob.1$children$tags$children$tag.number.4$children$tag.quantity.4$label <- data_7.9.4$label[data_7.9.4$Type == "Most Affected&The Poorest"]
+P_9.1$children$canvas.grob$children$diagram.grob.1$children$tags$children$tag.number.5$children$tag.quantity.5$label <- data_7.9.4$label[data_7.9.4$Type == "Most Affected&Access to Transfers"]
+P_9.1$children$canvas.grob$children$diagram.grob.1$children$tags$children$tag.number.6$children$tag.quantity.6$label <- data_7.9.4$label[data_7.9.4$Type == "The Poorest&Access to Transfers"]
+P_9.1$children$canvas.grob$children$diagram.grob.1$children$tags$children$tag.number.7$children$tag.quantity.7$label <- data_7.9.4$label[data_7.9.4$Type == "The Poorest&Access to Transfers&Most Affected"]
+
+# Optimum
+
+data_7.9.5 <- c(
+  "Most Affected"                                 = 0,
+  "The Poorest"                                   = 0,
+  "Access to Transfers"                           = data_7.9.2$'Access to Transfers',
+  "Most Affected&The Poorest"                     = 0,
+  "Most Affected&Access to Transfers"             = data_7.9.2$'Most Affected&Access to Transfers' + data_7.9.2$'Most Affected',
+  "The Poorest&Access to Transfers"               = data_7.9.2$'The Poorest&Access to Transfers' + data_7.9.2$'The Poorest',
+  "The Poorest&Access to Transfers&Most Affected" = data_7.9.2$'Most Affected&The Poorest&Access to Transfers' + data_7.9.2$'Most Affected&The Poorest'
+)
+
+P_9.2 <- plot(euler(data_7.9.5, shape = "ellipse"), labels = FALSE,
+              quantities = list(type = "percent", fontsize = 7), fills = list(fill = c("#BC3C29FF", "#FFDC91FF", "#6F99ADFF"), alpha = 0.8),
+              main = list(label = "South Africa", fontsize = 7)
+              #legend = list(side = "bottom", nrow = 1, ncol = 3)
+)
+
+data_7.9.6 <- rownames_to_column(as.data.frame(data_7.9.5))%>%
+  rename(Type = rowname, value = data_7.9.5)%>%
+  mutate(total = pop)%>%
+  mutate(percent = round(value/total,2))%>%
+  mutate(label = paste0(percent*100, "%"))%>%
+  filter(value != 0)
+
+P_9.2$children$canvas.grob$children$diagram.grob.1$children$tags$children$tag.number.1$children$tag.quantity.1$label <- data_7.9.6$label[data_7.9.6$Type == "Access to Transfers"]
+P_9.2$children$canvas.grob$children$diagram.grob.1$children$tags$children$tag.number.2$children$tag.quantity.2$label <- data_7.9.6$label[data_7.9.6$Type == "The Poorest&Access to Transfers"]
+P_9.2$children$canvas.grob$children$diagram.grob.1$children$tags$children$tag.number.3$children$tag.quantity.3$label <- data_7.9.6$label[data_7.9.6$Type == "Most Affected&Access to Transfers"]
+P_9.2$children$canvas.grob$children$diagram.grob.1$children$tags$children$tag.number.4$children$tag.quantity.4$label <- data_7.9.6$label[data_7.9.6$Type == "The Poorest&Access to Transfers&Most Affected"]
+
+data_7.9.5 <- data.frame(A = c("20% most affected", "Access to transfers", "Poorest 20%"),
+                     B = c(1,2,3),
+                     C = c(1,2,3))
+data_7.9.5$A <- factor(data_7.9.5$A, levels = c("20% most affected", "Poorest 20%", "Access to transfers"))
+
+Legend <- ggplot(data_7.9.5, aes(x = B, y = C, fill = A))+
+  geom_point(shape = 21, alpha = 0.8, size = 2)+
+  scale_fill_manual(values = c("#BC3C29FF", "#FFDC91FF", "#6F99ADFF"))+
+  guides(fill = guide_legend(nrow = 1, override.aes = c(size = 5)))+
+  theme_bw()+
+  labs(fill = "")
+
+Legend <- ggdraw(get_legend(Legend))
+
+jpeg("4_Presentations/Figures/Figure 9/Figure_9_a_%d.jpg", width = 10, height = 10, unit = "cm", res = 600)
+print(P_9.1)
+print(P_9.2)
+dev.off()
+
+jpeg("4_Presentations/Figures/Figure 9/Figure_9_a_L.jpg", width = 10, height = 1, unit = "cm", res = 600)
+print(Legend)
+dev.off()
+
+rm(data_7.9.1, data_7.9.2, data_7.9.3, data_7.9.4, data_7.9.5, data_7.9.6, Legend, P_9.1, P_9.2, pop)
+
 # 7.10    Figure 10: World-Map ####
 
 world <- map_data("world")
