@@ -2531,9 +2531,71 @@ data_6.3.4 <- data_2 %>%
 data_6.3.5 <- left_join(data_6.3.2, data_6.3.3)%>%
   left_join(data_6.3.4)%>%
   select(-run_ID)%>%
-  mutate_at(vars(median_1_5, dif_95_05_1_5), ~ as.numeric(.))
+  mutate_at(vars(median_1_5, dif_95_05_1_5), ~ as.numeric(.))%>%
+  # possibly join direction of effects, e.g. for urban/rural
+  mutate_at(vars(-Country), ~ ifelse(is.na(.),0,.))
 
+data_6.3.5.1 <- data_6.3.5 %>%
+  # scale - debatable%>%
+  mutate_at(vars(-Country), ~ (. - mean(.))/sd(.))
+  
 # Think carefully about what needs to be done here
+
+model_6.3.0 <- kmeans(select(data_6.3.5.1, -Country), centers = 11)
+
+model_6.3.1 <- map_dbl(1:73, function(k){
+  model <- kmeans(x = select(data_6.3.5.1, -Country), centers = k)
+  model$tot.withinss
+})
+
+model_6.3.2 <- data.frame(k = 1:73,
+                          tot_withinss = model_6.3.1)
+
+ggplot(model_6.3.2, aes(x = k, y = tot_withinss))+
+  geom_line()+
+  scale_x_continuous(breaks = 1:73)
+
+data_6.3.6 <- data_6.3.5 %>%
+  mutate(cluster_kmeans_11 = model_6.3.0$cluster)
+
+data_6.3.7 <- data_6.3.6 %>%
+  group_by(cluster_kmeans_11)%>%
+  summarise_at(vars(-Country), ~ mean(.))%>%
+  ungroup()%>%
+  # potentially relevant criteria
+  rename(car_01 = "Car own.", ely = "Electricity access", exp = "HH expenditures")%>%
+  mutate(CAR         = ifelse(car_01 > 0.1, "Yes", "No"),
+         COOKING     = ifelse(Cooking > 0.1, "Yes", "No"),
+         ELECTRICITY = ifelse(ely > 0.1, "Yes", "No"),
+         EDUCATION   = ifelse(ISCED > 0.1, "Yes", "No"),
+         MOTORCYCLE  = ifelse(Motorcycle > 0.1, "Yes", "No"),
+         PROVINCE    = ifelse(Province > 0.1, "Yes", "No"),
+         URBAN       = ifelse(Urban > 0.1, "Yes", "No"),
+         LIGHTING    = ifelse(Lighting > 0.1, "Yes", "No"),
+         VERTICAL    = ifelse(median_1_5 < 1, "Progressive",
+                             ifelse(median_1_5 > 1, "Regressive", NA)),
+         HORIZONTAL  = ifelse(dif_95_05_1_5 > 1, "Heterogeneous in poor",
+                             ifelse(dif_95_05_1_5 < 1, "Heterogeneous in rich", NA)),
+         ABSOLUTE    = ifelse(mean_carbon_intensity < 0.5466049, "Less carbon intensive",
+                             ifelse(mean_carbon_intensity > 0.5466049 & mean_carbon_intensity < 1, "More carbon intensive",
+                                    ifelse(mean_carbon_intensity > 1, "Very carbon intensive", NA))),
+         EXPENDITURES = ifelse(exp < 0.2, "Less important",
+                               ifelse(exp < 0.45, "Relatively less important",
+                                      ifelse(exp > 0.45, "Relatively more important", NA))))%>%
+  left_join(summarise(group_by(data_6.3.6, cluster_kmeans_11), number = n()))%>%
+  select(cluster_kmeans_11, CAR:number)
+
+data_6.3.8 <- data_6.3.6 %>%
+  select("Car own.", "Electricity access", "HH expenditures", Cooking, ISCED, Province, Urban, Lighting, median_1_5,
+         dif_95_05_1_5, mean_carbon_intensity, cluster_kmeans_11, Country)%>%
+  group_by(cluster_kmeans_11)%>%
+  summarise_at(vars(-Country), ~ mean(.))%>%
+  ungroup()%>%
+  mutate_at(vars(-cluster_kmeans_11), ~ (. - mean(.))/sd(.))%>%
+  left_join(summarise(group_by(data_6.3.6, cluster_kmeans_11), number = n()))
+
+rm(data_6.3.0, data_6.3.1, data_6.3.2, data_6.3.3, data_6.3.4, data_6.3.5, data_6.3.5.1,
+   data_6.3.6, data_6.3.7, data_6.3.8, model_6.3.0, model_6.3.1, model_6.3.2)
 
 # 7       Figures Presentation ####
 # 7.1     Figure 1: Scatterplot and friends ####
@@ -3873,6 +3935,50 @@ P_7.6.2.1 <- ggplot()+
         plot.margin = unit(c(0.3,0.3,0.3,0.3), "cm"),
         panel.border = element_rect(size = 0.3))
 
+# With linear model included
+
+P_7.6.2.1.1 <- ggplot()+
+  geom_point(data = data_7.1, aes(x = hh_expenditures_USD_2014,
+                                  y = carbon_intensity_kg_per_USD_national), 
+             alpha = 0.05, shape = 21, colour = "black", fill = "#4DBBD5FF", size = 0.5)+
+  geom_line(data = pdp_7.6.2.1, aes(x = hh_expenditures_USD_2014, y = yhat), colour = "#E64B35FF", size = 0.5)+
+  #geom_line(data = data_7.6.2.0, aes(x = hh_expenditures_USD_2014, y = yhat), colour = "blue", size = 1)+
+  theme_bw()+
+  ylab(expression(paste("Prediction carbon intensity of consumption [kg", CO[2], "/USD]", sep = "")))+
+  xlab("Household expenditures in USD (2014)")+
+  coord_cartesian(xlim = c(0,32000), ylim = c(0,5))+
+  scale_x_continuous(labels = scales::dollar_format(), expand = c(0,0))+
+  scale_y_continuous(expand = c(0,0))+
+  ggtitle("Partial dependence plot for South Africa - Part A)")+
+  theme(axis.text.y = element_text(size = 6), 
+        axis.text.x = element_text(size = 6),
+        axis.title  = element_text(size = 7),
+        plot.title = element_text(size = 11),
+        legend.position = "bottom",
+        # strip.text = element_text(size = 7),
+        #strip.text.y = element_text(angle = 180),
+        #panel.grid.major = element_blank(),
+        panel.grid.major.y = element_blank(),
+        panel.grid.minor.y = element_blank(),
+        axis.ticks = element_line(size = 0.2),
+        legend.text = element_text(size = 7),
+        legend.title = element_text(size = 7),
+        plot.margin = unit(c(0.3,0.3,0.3,0.3), "cm"),
+        panel.border = element_rect(size = 0.3))
+
+P_7.6.2.1.2 <- P_7.6.2.1.1 +
+  geom_smooth(data = data_7.1, 
+              aes(x = hh_expenditures_USD_2014, weight = hh_weights, 
+                  y = carbon_intensity_kg_per_USD_national, group = Country),
+              level = 0.95, method = "lm", formula = y ~ x + I(x^2), colour = "#0072B5FF", 
+              fill  = "#E64B35FF", size = 0.5)
+
+jpeg("4_Presentations/Figures/Figure 6/Figure_6_b_%d.jpg", width = 10, height = 10, unit = "cm", res = 600)
+print(P_7.6.2.1)
+print(P_7.6.2.1.1)
+print(P_7.6.2.1.2)
+dev.off()
+
 # Other variables
 
 pdp_7.6.2.3 <- model_profile(
@@ -4087,6 +4193,53 @@ dev.off()
 rm(data_7.7, data_7.7.1, data_7.7.2, data_7.7.3, P_7.7.1,  P_7.7.2,  P_7.7.3,  P_7.7.4,  P_7.7.5,  P_7.7.6,  P_7.7.7)
 
 # 7.8     Figure 8: Classification of countries ####
+
+data_7.8.1 <- data_6.3.8 %>%
+  arrange(desc(number))%>%
+  mutate(cluster = 1:n())%>%
+  select(-number, - cluster_kmeans_11)%>%
+  rename("Horizontal inequality" = "dif_95_05_1_5", "Education" = ISCED, "Mean CO2 intensity" = "mean_carbon_intensity",
+         "Vertical inequality" = "median_1_5")%>%
+  pivot_longer(-cluster, names_to = "names", values_to = "values")%>%
+  mutate(names = factor(names, levels = c("Mean CO2 intensity", "Vertical inequality", "Horizontal inequality",
+                                          "HH expenditures", "Car own.", "Electricity access", "Urban", "Province",
+                                          "Cooking", "Lighting", "Education")))
+
+P_7.8.1 <- ggplot(data_7.8.1)+
+  geom_point(aes(y = factor(cluster), x = names, fill = values), shape = 22, size = 4, stroke = 0.01)+
+  theme_bw()+
+  #scale_fill_viridis_c(direction = -1)+
+  scale_fill_gradient2(na.value = NA, low = "#0072B5FF", high = "#BC3C29FF", midpoint = 0)+
+  theme_bw()+
+  scale_y_discrete(limits = rev)+
+  scale_x_discrete()+
+  xlab("Variable")+ 
+  guides(fill = "none", colour = "none")+
+  ylab("Cluster")+
+  ggtitle("Clustering of countries")+
+  theme(axis.text.y = element_text(size = 6),
+        axis.text.x = element_text(size = 6, angle = 90, hjust = 1, vjust = 0.5),
+        axis.title.x  = element_text(size = 7),
+        axis.title.y = element_text(size = 7),
+        plot.title = element_text(size = 11),
+        legend.position = "bottom",
+        strip.text = element_text(size = 7),
+        #strip.text.y = element_text(angle = 180),
+        #panel.grid.major = element_blank(),
+        panel.grid.major = element_line(size = 0.1),
+        panel.grid.minor = element_blank(),
+        axis.ticks = element_blank(),
+        legend.text = element_text(size = 7),
+        legend.title = element_text(size = 7),
+        plot.margin = unit(c(0.3,0.3,0.3,0.1), "cm"),
+        panel.border = element_rect(size = 0.3))
+
+jpeg("4_Presentations/Figures/Figure 8/Figure_8_a_%d.jpg", width = 10, height = 10, unit = "cm", res = 600)
+print(P_7.8.1)
+dev.off()
+
+rm(data_7.8.1, P_7.8.1)
+
 # 7.9     Figure 9: Venn-Diagram ####
 
 # For South Africa
