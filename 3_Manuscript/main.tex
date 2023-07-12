@@ -57,7 +57,7 @@
 
 \title{Heterogeneity in carbon intensity of consumption}
 %\author{Leonard Missbach\thanks{Mercator Research Institute on Global Commons and Climate Change, Berlin, Germany; Department Economics of Climate Change, Technische Universität Berlin, Berlin, Germany}}
-\date{May 2023}
+\date{July 2023}
 
 \begin{document}
 
@@ -76,32 +76,68 @@
 \clearpage
 \setcounter{page}{1}
 
-\section{Main} \label{sec:main}
+\section{Introduction} \label{sec:introduction}
+
+\section{Vertical and horizontal inequality of climate policy} \label{sec:literature}
+
+\section{Analyzing heterogeneity in carbon intensity of consumption} \label{sec:methods}
 
 \begin{itemize}
-  \item Policy instruments that help to combat $CO_{2}$-emissions may have strengths and weaknesses with respect to efficiency, effectiveness, tractability, institutional feasibility, but also political feasibility, which may also depend on equity and fairness.
-  \item Inequality in carbon intensity of consumption can matter for political feasibility evaluation. Different climate policy instruments affect consumers differently depending, among others, on the carbon intensity of their respective consumption. Other factors include household-specific abilities to substitute away from carbon-intensive goods and services, industries' ability to reduce sectoral carbon intensity of consumption, and household-level price elasticities of demand.
-  \item Some policy instruments are considered superior with regard to aggregate cost-effectiveness, but might require supplementary measures, such as subsidies, allowances, or transfers to address unintended distributional consequences for households.
-  \item Ex-ante economic assessments of distributional impacts of climate policy often focus on single-country and/or -policy contexts. Analyses of multiple countries often use more aggregate data, which allows for investigation of approximate trends.
-  \item Here, we construct a unique dataset on household-level carbon intensity of consumption for 1.5 million single households representative for 5 billion people in 80 countries which comprise Y\% of global GDP and X\% of global $CO_{2}$-emissions.
-  \item Granularity of data allows for detailed analysis of factors associated to country- and sector-level particularities, household-level consumption patterns and sociodemographic factors that are associated to larger or lower levels of carbon intensity of consumption.
-  \item Our analysis informs further research on potential drivers of carbon emissions and inequality in carbon-intensive consumption. It might inform policy to develop international, but also national complementary measures to combat unintended effects of effective climate mitigation policies.
-  \item We deploy multiple analysis tools to support robust conclusions.
+
+    \item Introduce carbon intensity of consumption as major indicator
+    \item Show that carbon intensity is equivalent to first-order carbon pricing incidence
+    \item Argue backwards: Carbon intensity of consumption consists of household expenditure shares and sectoral carbon intensities
+    \item Household expenditure shares: Data, cleaning, homogenizing
+    \item Sectoral carbon intensities: Data, method, intuition and shortcomings
+    \item Methodological discussion (brief)
+    \item Analysing vertical inequality
+    \item Analysing horizontal inequality
+    \item Introduce boosted regression trees
+    \item Introduce logit model as robustness check, supplementary analysis
+    \item Critical appraisal
+
 \end{itemize}
+
+\section{Results} \label{sec:results}
+
+\begin{itemize}
+    \item Summary statistics
+\end{itemize}
+
+\section{Discussion} \label{sec:discussion}
+
+\section{Conclusion} \label{sec:conclusion}
+
+
+
+\section{Main} \label{sec:main}
+
+%\begin{itemize}
+  %\item Policy instruments that help to combat $CO_{2}$-emissions may have strengths and weaknesses with respect to efficiency, effectiveness, tractability, institutional feasibility, but also political feasibility, which may also depend on equity and fairness.
+  %\item Inequality in carbon intensity of consumption can matter for political feasibility evaluation. Different climate policy instruments affect consumers differently depending, among others, on the carbon intensity of their respective consumption. Other factors include household-specific abilities to substitute away from carbon-intensive goods and services, industries' ability to reduce sectoral carbon intensity of consumption, and household-level price elasticities of demand.
+  %\item Some policy instruments are considered superior with regard to aggregate cost-effectiveness, but might require supplementary measures, such as subsidies, allowances, or transfers to address unintended distributional consequences for households.
+  %\item Ex-ante economic assessments of distributional impacts of climate policy often focus on single-country and/or -policy contexts. Analyses of multiple countries often use more aggregate data, which allows for investigation of approximate trends.
+  %\item Here, we construct a unique dataset on household-level carbon intensity of consumption for 1.5 million single households representative for 5 billion people in 80 countries which comprise Y\% of global GDP and X\% of global $CO_{2}$-emissions.
+  %\item Granularity of data allows for detailed analysis of factors associated to country- and sector-level particularities, household-level consumption patterns and sociodemographic factors that are associated to larger or lower levels of carbon intensity of consumption.
+  %\item Our analysis informs further research on potential drivers of carbon emissions and inequality in carbon-intensive consumption. It might inform policy to develop international, but also national complementary measures to combat unintended effects of effective climate mitigation policies.
+  %\item We deploy multiple analysis tools to support robust conclusions.
+%\end{itemize}
 
 % motivation and research gap
 
 \begin{itemize}
-  \item Many criteria influence the evaluation of different policy instruments. One important aspect are distributional implications. In the context of climate policy people may ask: Who loses from climate policy and why?
+  \item Many criteria influence the evaluation of different policy instruments, including efficiency, effectiveness, tractability, institutional feasibility, but also political feasibility, including equity and fairness. One important aspect are distributional implications. In the context of climate policy people may ask: Who loses from climate policy and why?
+  % Highlight discourse on public acceptance, possibly on just transitions etc.
+  \item Distributional effects of climate policy instruments hinge on many aspects, including household-specific ability to substitute away from carbon-intensive goods and services, industries' ability to reduce emissions-intensive inputs, and household-level price elasticities of demand. 
   \item One important metric that helps assessing the impacts of climate policy is the carbon intensity of consumption or production. For households, the carbon intensity expresses the amount of $CO_{2}$-emissions that link to the consumption of consumed goods and services per unit of expenditure. The carbon intensity of consumption gives an accurate approximation of the cost burden resulting from any policy instrument that directly or indirectly increases the price of $CO_{2}$-emissions.
   \item Households that consume more carbon-intensive than others spend relatively more money on carbon-intensive goods and services, such as transport fuels, heating fuels, cooking fuels, or electricity.
   \item Evidence suggests many socio-economic socio-demographic charateristics to drive or correlate with more carbon-intensive consumption.
-  \item Studies often focus on single-country contexts or aggregated cross-country analyses. What is missing is a systematic cross-country analyses with detailed household-level information.
+  \item Ex-ante economic assessments often focus on single-country or -poliy contexts or aggregated cross-country analyses. What is missing is a systematic cross-country analyses with detailed household-level information.
 \end{itemize}
 
 % research question
 
-We analyse the heterogeneity in carbon intensity of consumption within countries and compare results across countries. Transgressing traditional analyses of vertical and horizontal heterogeneity, we study country-level household characteristics that correlate with and drive the carbon intensity of consumption.
+We analyse the heterogeneity in carbon intensity of consumption within countries and compare results across countries. Transgressing traditional analyses of vertical and horizontal heterogeneity, we study country-level household characteristics that correlate with and drive the carbon intensity of consumption. To this end we construct a unique dataset on household-level carbon intensity of consumption for 1.5 million single households representative for 5 billion people in 80+ countries that comprise Y\% of global GDP and X \% of global $CO_{2}$-emissions.
 
 % answer
 
@@ -116,83 +152,90 @@ We find and confirm that households whose consumption is more carbon-intensive t
   \item more likely to be connected to the electricity grid,
   \item more likely to having had secondary and higher education,
   \item more likely to live in rural areas,
-  \item more/less likely to identify with ethnic majorities/minorities,
-  \item more/less likely to have a female household head,
-  \item more/less likely to receive income from governmental cash transfers.
+  \item more/less likely to identify with ethnic majorities/minorities depending on the country-context,
+  \item more/less likely to have a female household head depending on the country-context,
+  \item more/less likely to receive income from governmental cash transfers depending on the country-context.
 \end{itemize}
 
-On a country-level, we observe differences across space, districts, and provinces.
+On the country-level, we observe differences across space, districts, and provinces.
 
 % relevant literature
 
-Heterogeneity in carbon-intensity can be attributed to differences in observable characteristics, which have been identified extensively before.
+Heterogeneity in carbon-intensity can be attributed to differences in observable characteristics, which have been identified extensively before. Results are robust to the choice of analytical approach.
 
 % Main body of paper
 \begin{itemize}
   \item Why distributional implications of climate policy are subject to academic research.
+  % discuss also more macro-level studies of 'carbon inequality'
   \item Theory and empirical results on vertical impacts of taxes, subdidies, standards.
   \item Show differences between poor and rich households.
   \item Theory and empirical results on horizontal impacts of taxes, subsidies, standards.
   \item Show differences within poor and rich households.
   \item Discuss main arguments for single characteristics.
   \item Show results for different characteristics.
+  \item Discuss differences in instruments: electricity sector instruments, transport sector instruments, international trade policy etc.
+  \item Highlight main differences: electricity sector characteristics and electrification critical for electricity sector instruments, transport sector policies likely regressive in richer countries, progressive in poorer countries, carbon border adjustments more likely to affect people who consume more carbon-intensive and imported goods and services. Non-consumption impacts probably more severe.
 \end{itemize}
+
 % Discussion
+
+\begin{itemize}
+ \item TBD 
+\end{itemize}
 
 % conclusion
 
-
 \clearpage
 
-\section{Data and Methods} \label{sec:data_and_methods}
+% \section{Data and Methods} \label{sec:data_and_methods}
 
-\subsection{Multi-regional input-output data}
-
-% Critical discussion
-
-\subsection{Household expenditure data}
+% \subsection{Multi-regional input-output data}
 
 % Critical discussion
 
-\subsection{Microsimulation}
+% \subsection{Household expenditure data}
 
 % Critical discussion
 
-\subsection{Econometric analysis}
+% \subsection{Microsimulation}
 
 % Critical discussion
 
-\subsection{Critical appraisal}
+% \subsection{Econometric analysis}
 
 % Critical discussion
 
-\subsection{Data}
+% \subsection{Critical appraisal}
 
-\paragraph{Household-level consumption data}
+% Critical discussion
 
-\paragraph{Multi-regional input-output data}
+% \subsection{Data}
 
-\subsection{Method}
+% \paragraph{Household-level consumption data}
 
-\paragraph{Household-level expenditure shares on consumption sectors}
+% \paragraph{Multi-regional input-output data}
 
-\paragraph{Multi-regional input-output model}
+% \subsection{Method}
 
-\paragraph{Household-level carbon intensity of consumption}
+% \paragraph{Household-level expenditure shares on consumption sectors}
 
-\subsection{Econometric analysis}
+% \paragraph{Multi-regional input-output model}
 
-\paragraph{Descriptive statistics}
+% \paragraph{Household-level carbon intensity of consumption}
 
-\paragraph{OLS-regression}
+% \subsection{Econometric analysis}
 
-\paragraph{Logit-regression}
+% \paragraph{Descriptive statistics}
 
-\paragraph{Inequality decomposition}
+% \paragraph{OLS-regression}
 
-\paragraph{Boosted regression trees}
+% \paragraph{Logit-regression}
 
-\paragraph{Methodological discussion}
+% \paragraph{Inequality decomposition}
+
+% \paragraph{Boosted regression trees}
+
+% \paragraph{Methodological discussion}
 
 \clearpage
 
