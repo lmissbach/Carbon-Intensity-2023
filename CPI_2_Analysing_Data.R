@@ -1,13 +1,13 @@
-# 0     General ####
+# 0       General ####
 # Author: L. Missbach (missbach@mcc-berlin.net)
 
 # 0.1     Packages ####
 
 if(!require("pacman")) install.packages("pacman")
 
-p_load("boot", "broom", "countrycode", "cowplot", "DALEXtra", "eulerr","fixest", "ggpubr", "ggrepel",
+p_load("boot", "broom", "countrycode", "cowplot", "DALEXtra", "eulerr","facetscales","fixest", "ggpubr", "ggrepel",
        "ggsci", "Hmisc", "knitr", "kableExtra", "marginaleffects", "margins", "Metrics",
-       "openxlsx", "pdp","rattle", "scales", "tidymodels", "tidyverse", "vip", "xgboost", "xtable")
+       "openxlsx", "pdp","rattle", "scales", "SHAPforxgboost","tidymodels", "tidyverse", "vip", "xgboost", "xtable")
 
 options(scipen=999,
         dplyr.summarise.inform = FALSE)
@@ -361,6 +361,56 @@ NAs_over_obs_1 <- data_2 %>%
   select(Country, Obs, everything())
 
 write.xlsx(NAs_over_obs_1, "0_Data/9_Supplementary Information/NAs_final_dataset.xlsx")
+
+# Missing information even though codes exist
+
+codes_1 <- data.frame()
+
+for (i in Country.Set$Country_long){
+  path_0                     <- list.files("../0_Data/1_Household Data/")[grep(i, list.files("../0_Data/1_Household Data/"), ignore.case = T)][1]
+  
+  if(is.na(path_0)) print(i)
+  
+  codes_0 <- data.frame("Code_0" = list.files(sprintf("../0_Data/1_Household Data/%s/2_Codes", path_0)))%>%
+    mutate(Country = Country.Set$Country[Country.Set$Country_long == i])%>%
+    filter(str_detect(Code_0, ".csv"))%>%
+    mutate(value = "Yes")%>%
+    pivot_wider(names_from = "Code_0", values_from = "value")
+  
+  codes_1 <- bind_rows(codes_1, codes_0)
+    
+}
+
+codes_1 <- codes_1 %>%
+  bind_rows(data.frame(Country = "USA", District.Code.csv = "Yes", Education.Code.csv = "Yes", Ethnicity.Code.csv = "Yes", Gender.Code.csv = "Yes", Industry.Code.csv = "Yes", Province.Code.csv = "Yes"))%>%
+  bind_rows(data.frame(Country = "CIV", Cooking.Code.csv = "Yes", District.Code.csv = "Yes", Education.Code.csv = "Yes", Ethnicity.Code.csv = "Yes", Gender.Code.csv = "Yes", Industry.Code.csv = "Yes", Lighting.Code.csv = "Yes", Nationality.Code.csv = "Yes", Province.Code.csv = "Yes", Religion.Code.csv = "Yes", Water.Code.csv = "Yes", Toilet.Code.csv = "Yes"))%>%
+  bind_rows(data.frame(Country = "MMR", Cooking.Code.csv = "Yes", District.Code.csv = "Yes", Education.Code.csv = "Yes", Gender.Code.csv = "Yes", Industry.Code.csv = "Yes", Language.Code.csv = "Yes", Lighting.Code.csv = "Yes", Province.Code.csv = "Yes", Religion.Code.csv = "Yes", Water.Code.csv = "Yes", Toilet.Code.csv = "Yes", Village.Code.csv = "Yes"))
+
+
+NAs_over_obs_2 <- NAs_over_obs_1 %>%
+  select(Country, village, urban_01, ind_hhh, ISCED, Province, District, CF, HF, LF, TLT, WTR, Religion, Nationality, Ethnicity, Language)%>%
+  pivot_longer(-Country, names_to = "Variable", values_to = "Missing_share")%>%
+  filter(Missing_share != 0)%>%
+  left_join(mutate_at(codes_1, vars(-Country), ~ ifelse(is.na(.),"No",.)))%>%
+  mutate_at(vars(District.Code.csv, Education.Code.csv, Gender.Code.csv, Industry.Code.csv), list(~ ifelse(is.na(.), "Yes",.)))%>%
+  mutate(Error = ifelse(Variable == "village" & Village.Code.csv == "Yes", "Village + ", ""))%>%
+  mutate(Error = ifelse(Variable == "Province" & Province.Code.csv == "Yes", paste0("Province + ", Error), Error))%>%
+  mutate(Error = ifelse(Variable == "District" & District.Code.csv == "Yes", paste0("District + ", Error), Error))%>%
+  mutate(Error = ifelse(Variable == "ind_hhh"  & Industry.Code.csv == "Yes", paste0("Industry + ", Error), Error))%>%
+  mutate(Error = ifelse(Variable == "ISCED"    & Education.Code.csv == "Yes", paste0("Education + ", Error), Error))%>%
+  mutate(Error = ifelse(Variable == "CF" & Cooking.Code.csv == "Yes", paste0("Cooking + ", Error), Error))%>%
+  mutate(Error = ifelse(Variable == "HF" & Heating.Code.csv == "Yes", paste0("Heating + ", Error), Error))%>%
+  mutate(Error = ifelse(Variable == "LF" & Lighting.Code.csv == "Yes", paste0("Lighting + ", Error), Error))%>%
+  mutate(Error = ifelse(Variable == "TLT" & Toilet.Code.csv == "Yes", paste0("Toilet + ", Error), Error))%>%
+  mutate(Error = ifelse(Variable == "WTR" & Water.Code.csv == "Yes", paste0("Water + ", Error), Error))%>%
+  mutate(Error = ifelse(Variable == "Religion" & Religion.Code.csv == "Yes", paste0("Religion + ", Error), Error))%>%
+  mutate(Error = ifelse(Variable == "Nationality" & Nationality.Code.csv == "Yes", paste0("Nationality + ", Error), Error))%>%
+  mutate(Error = ifelse(Variable == "Ethnicity"   & Ethnicity.Code.csv == "Yes", paste0("Ethnicity + ", Error), Error))%>%
+  mutate(Error = ifelse(Variable == "Language"    & Language.Code.csv == "Yes", paste0("Language + ", Error), Error))%>%
+  filter(!is.na(Error) & Error != "")%>%
+  arrange(Error)
+
+write.xlsx(NAs_over_obs_2, "0_Data/9_Supplementary Information/NAs_codes_matching_final_dataset.xlsx")
 
 # 4.      Descriptive analysis ####
 
@@ -3104,8 +3154,8 @@ P.7.3.2 <- ggplot()+
   scale_fill_manual(values = c("#6F99ADFF", "#FFDC91FF"))+
   scale_x_continuous(expand = c(0,0))+
   scale_y_continuous(expand = c(0,0))+
-  ylab("Vertical Distribution Coefficient")+
-  xlab("Horizontal Distribution Coefficient")+
+  ylab("Vertical distribution Coefficient")+
+  xlab("Horizontal distribution Coefficient")+
   labs(fill = "")+
   #guides(fill = "none")+
   #guides(fill = guide_legend(nrow = 2))+
@@ -4063,6 +4113,127 @@ rm(data_7.6.2.1, data_7.6.2.2, data_7.6.2.3, data_7.6.2.3.test, data_7.6.2.3.tra
    recipe_7.6.2.3, track_1, model_brt_3, explainer_7.6.2, pdp_7.6.2, pdp_7.6.2.1, pdp_7.6.2.2, P_7.6.2.1,
    data_7.6.2, data_7.6.2.3.0, P_7.6.2.2, P_7.6.2.3, pdp_7.6.2.3)
 
+# 7.6.3   Figure 6.3: Shapley-Values for South Africa ####
+
+data_7.6.3 <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/PDP_Data.xlsx")%>%
+  filter(Country == "ZAF")%>%
+  filter(run_ID == "ZAF_2")%>%
+  rename(Variable = "_vname_", label = "_label_", yhat = "_yhat_", id = "_ids_")
+
+# Get other households
+
+# Filter only observations for country of interest  
+data_7.6.3.1 <- filter(data_2, Country == "ZAF")
+
+data_7.6.3.2 <- data_7.6.3.1 %>%
+  # select relevant variables
+  select(Country, hh_id, hh_weights, hh_size,
+         Province, urban_01, 
+         # District,
+         sex_hhh, ISCED, Ethnicity, Religion, Nationality, Language, religiosity,
+         electricity.access, HF, LF, CF, 
+         hh_expenditures_USD_2014, 
+         car.01, motorcycle.01, refrigerator.01, ac.01, tv.01, washing_machine.01, 
+         carbon_intensity_kg_per_USD_national)%>%
+  # remove redundant variables
+  select(-Country, -hh_id, -hh_weights)%>%
+  # include hh_weights later in the process
+  # factors instead of characters
+  mutate_if(vars(is.character(.)), list(~ as.factor(.)))%>%
+  mutate_at(vars(sex_hhh, ISCED, religiosity, urban_01, ends_with(".01"), electricity.access), list(~ as.factor(.)))
+
+data_7.6.3.3 <- data_7.6.3.2 %>%
+  initial_split(prop = 0.75)
+
+# Data for training
+data_7.6.3.3.train <- data_7.6.3.3 %>%
+  training()
+
+# Data for testing
+data_7.6.3.3.test <- data_7.6.3.3 %>%
+  testing()
+
+recipe_7.6.3.3 <- recipe(carbon_intensity_kg_per_USD_national ~ .,
+                         data = data_7.6.3.3.train)%>%
+  step_filter_missing(all_predictors(), threshold = 0)%>%
+  step_corr(all_numeric(), -all_outcomes(), threshold = 0.9)%>%
+  # should have very few unique observations for factors
+  step_other(all_nominal(), -ends_with(".01"), -ends_with("urban_01"), -ends_with("District"), -ends_with("Province"), threshold = 0.05)%>%
+  step_dummy(all_nominal())# %>%
+#step_novel(all_nominal(), -ends_with(".01"), -ends_with("urban_01"))%>%
+#step_dummy(all_nominal(), -ends_with(".01"), -ends_with("urban_01"))
+
+data_7.6.3.3.training <- recipe_7.6.3.3 %>%
+  prep(training = data_7.6.3.3.train)%>%
+  bake(new_data = NULL)
+
+data_7.6.3.3.testing <- recipe_7.6.3.3 %>%
+  prep(training = data_7.6.3.3.test)%>%
+  bake(new_data = NULL)
+
+track_1 <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_BRT.xlsx") %>%
+  filter(number_ob == "ZAF_2")
+
+model_brt_3 <- boost_tree(
+  trees = 1000,
+  tree_depth = track_1$tree_depth_best[1],
+  learn_rate = track_1$learn_rate_best[1], # the higher the learning rate the faster - default 0.3
+  # min_n = tune(),
+  # mtry = tune(),
+  # stop_iter = tune(),
+  # sample_size = tune()
+)%>%
+  set_mode("regression")%>%
+  set_engine("xgboost")%>%
+  fit(carbon_intensity_kg_per_USD_national ~ .,
+      data = data_7.6.3.3.training)
+
+# Preparation for shapley values plot
+
+explainer_7.6.3 <- explain_tidymodels(model_brt_3,
+                                      data = select(data_7.6.3.3.testing, - carbon_intensity_kg_per_USD_national),
+                                      y    = select(data_7.6.3.3.testing, carbon_intensity_kg_per_USD_national),
+                                      label = "BRT")
+
+# potentially required one-hot-encoding
+
+test <- data_7.6.3.3.testing %>%
+  select(-carbon_intensity_kg_per_USD_national)%>%
+  as.matrix()
+
+shap <- shap.prep(
+  xgb_model = extract_fit_engine(model_brt_3),
+  X_train = test
+)
+
+# Global feature importance.
+
+# This is what might be worth working with
+P.1 <- shap.plot.summary(shap)
+
+jpeg("4_Presentations/Figures/Figure_Test.jpg", width = 20, height = 20, unit = "cm", res = 600)
+print(P.1)
+dev.off()
+
+# Schöne Spielerei, aber eigentlich nicht hilfreich
+# shap.values1 <- shap.values(xgb_model = extract_fit_engine(model_brt_3), X_train = test)
+
+# plot <- shap.prep.stack.data(shap_contrib = shap.values1$shap_score, top_n = 6, n_groups = 10)
+
+# shap.plot.force_plot(plot)
+ 
+# This is what might be worth working with
+shap.plot.dependence(data_long = shap, x = "urban_01_X1",
+                     y = "urban_01_X1", color_feature = "urban_01_X1")
+
+test <- predict_parts(explainer = explainer_7.6.3,
+                      new_observation = data_7.6.3.3.testing,
+                      type = "shap", B = 20)
+
+rm(data_7.6.3, data_7.6.3.1, data_7.6.3.2, data_7.6.3.3,
+   data_7.6.3.3.test, data_7.6.3.3.testing, data_7.6.3.3.train, data_7.6.3.3.training, model_brt_3,
+   recipe_7.6.3.3, track, track_1)
+
 # 7.7     Figure 7: Overview of countries ####
 
 data_7.7 <- data_6.3.5 %>%
@@ -4415,3 +4586,221 @@ print(P.7.10)
 dev.off()
 
 rm(P.7.10, regions, world, not_available, on_radar, prep)
+
+# 8       Figures Publication #####
+
+# 8.1     Figure 1: Horizontal exceeds vertical differences ####
+
+data_8.1.0 <- data_2 %>%
+  group_by(Country, Income_Group_5)%>%
+  summarise(y5  = wtd.quantile(carbon_intensity_kg_per_USD_national, weights = hh_weights, probs = 0.05),
+            y25 = wtd.quantile(carbon_intensity_kg_per_USD_national, weights = hh_weights, probs = 0.25),
+            y50 = wtd.quantile(carbon_intensity_kg_per_USD_national, weights = hh_weights, probs = 0.5),
+            y75 = wtd.quantile(carbon_intensity_kg_per_USD_national, weights = hh_weights, probs = 0.75),
+            y95 = wtd.quantile(carbon_intensity_kg_per_USD_national, weights = hh_weights, probs = 0.95),
+            mean = wtd.mean(carbon_intensity_kg_per_USD_national, weights = hh_weights))%>%
+  ungroup()%>%
+  mutate(interest = ifelse(Income_Group_5 == 1 | Income_Group_5 == 5,"1", "0"))
+
+data_8.1.1 <- data_8.1.0 %>%
+  group_by(Country)%>%
+  summarise(min_median = min(y50),
+            max_median = max(y50))%>%
+  ungroup()
+
+data_8.1.2 <- left_join(data_8.1.0, data_8.1.1)%>%
+  filter(Income_Group_5 == 1)%>%
+  arrange(min_median)%>%
+  mutate(new_col = 1:n())%>%
+  mutate(new_row = c(rep(1,22), rep(2,22), rep(3,22), rep(4,21)))%>%
+  mutate(ymax    = c(rep(1,22), rep(2,22), rep(3,22), rep(5,21)))%>%
+  mutate(ymin    = c(rep(0,87)))
+
+
+P_8.1 <- ggplot(data = data_8.1.2)+
+  geom_point(aes(y = ymin, x = new_col), alpha = 0)+
+  geom_point(aes(y = ymax, x = new_col), alpha = 0)+
+  geom_rect(aes(xmin = new_col - 0.45,
+                xmax = new_col + 0.45,
+                ymin = min_median, ymax = max_median), 
+            alpha = 0.5, fill = "#0072B5FF", inherit.aes = FALSE)+
+  geom_boxplot(aes(ymin = y5, lower = y25, middle = y50, upper = y75, ymax = y95, x = new_col, group = new_col), 
+               stat = "identity", position = position_dodge(0.5), outlier.shape = NA, width = 0.4, alpha = 0.85, fill = "grey", size = 0.2)+
+  geom_point(aes(y = mean, x = new_col), shape = 23, size = 1 ,fill = "white", stroke = 0.2)+
+  theme_bw()+
+  facet_wrap(. ~ new_row, scales = "free", nrow = 1)+
+  scale_y_continuous(expand = c(0,0))+
+  scale_x_continuous(expand = c(0,0), breaks = data_8.1.2$new_col, labels = data_8.1.2$Country)+
+  ylab(expression(paste("Carbon intensity of consumption [kg", CO[2], "/USD]", sep = "")))+
+  xlab("Country")+
+  coord_flip()+
+  # ggtitle("Vertical and horizontal differences")+
+  theme(axis.text.y = element_text(size = 7), 
+        axis.text.x = element_text(size = 7),
+        axis.title  = element_text(size = 7),
+        plot.title = element_text(size = 11),
+        legend.position = "bottom",
+        strip.background = element_blank(),
+        strip.text = element_blank(),
+        panel.grid.major.x = element_line(size = 0.3),
+        panel.grid.major.y = element_blank(),
+        panel.grid.minor = element_blank(),
+        axis.ticks = element_line(size = 0.2),
+        legend.text = element_text(size = 7),
+        legend.title = element_text(size = 7),
+        plot.margin = unit(c(0.3,0.3,0.3,0.3), "cm"),
+        panel.border = element_rect(size = 0.3, fill = NA))
+
+jpeg("1_Figures/Figure 1/Figure_1.jpg", width = 15.5, height = 10, unit = "cm", res = 600)
+print(P_8.1)
+dev.off()
+
+rm(data_8.1.0, data_8.1.1, data_8.1.2, P_8.1)
+
+# 8.2     Figure 2: Horizontal vs. vertical differences ####
+
+data_8.2.0 <- read_csv("../0_Data/9_Supplementary Data/WDI/2021_08_17_WDI.csv") %>%
+  rename(Country.Name = "Country Name",
+         Country.Code = "Country Code",
+         Type         = "Series Name")%>%
+  select(-'Series Code')%>%
+  rename_at(vars(ends_with("]")), list(~ str_replace(., "..YR.....", "")))%>%
+  pivot_longer(-("Country.Name":"Type"), names_to = "year", values_to = "value")%>%
+  filter(value != "..")%>%
+  mutate(value = as.numeric(value))%>%
+  filter(year == 2018 & Type == "GDP per capita (constant 2010 US$)")
+
+data_8.2.1 <- data_2 %>%
+  group_by(Country, Income_Group_5)%>%
+  summarise(median_burden_CO2_national = wtd.quantile(burden_CO2_national, probs = 0.5, weights = hh_weights),
+            q95_burden_CO2_national    = wtd.quantile(burden_CO2_national, probs = 0.95, weights = hh_weights),
+            q05_burden_CO2_national    = wtd.quantile(burden_CO2_national, probs = 0.05, weights = hh_weights),
+            q20_burden_CO2_national    = wtd.quantile(burden_CO2_national, probs = 0.20, weights = hh_weights),
+            q80_burden_CO2_national    = wtd.quantile(burden_CO2_national, probs = 0.80, weights = hh_weights))%>%
+  ungroup()%>%
+  filter(Income_Group_5 == 1 | Income_Group_5 == 5)%>%
+  mutate(dif_q95_q05_burden_CO2_national = q95_burden_CO2_national - q05_burden_CO2_national,
+         dif_q80_q20_burden_CO2_national = q80_burden_CO2_national - q20_burden_CO2_national,)%>%
+  select(Country, Income_Group_5, dif_q95_q05_burden_CO2_national, dif_q80_q20_burden_CO2_national, median_burden_CO2_national)%>%
+  pivot_wider(names_from = Income_Group_5, values_from = c(median_burden_CO2_national, dif_q95_q05_burden_CO2_national, dif_q80_q20_burden_CO2_national))%>%
+  mutate(median_1_5    = median_burden_CO2_national_1/median_burden_CO2_national_5,
+         dif_95_05_1_5 = dif_q95_q05_burden_CO2_national_1/dif_q95_q05_burden_CO2_national_5,
+         dif_80_20_1_5 = dif_q80_q20_burden_CO2_national_1/dif_q80_q20_burden_CO2_national_5)%>%
+  left_join(data_8.2.0, by = c("Country" = "Country.Code"))%>%
+  mutate(value = ifelse(Country == "TWN", 20388.2761, value))
+  # mutate(interest2 = ifelse(Country %in% c("RWA", "DEU", "ZAF", "USA", "CAN", "MWI", "LBR"),1,0.5))
+
+poly <- data.frame(g = c(1,1,1,2,2,2,2,3,3,3,4,4,4,5,5,5,5,6,6,6), x = c(0.05,0.05,0.95,
+                                                                         0.05,0.05,0.95,0.95,
+                                                                         1.05,1.05,2.95,
+                                                                         2.96,2.96,1.06,
+                                                                         2.95,1.05,1.05,2.95,
+                                                                         0.06,0.96,0.96), 
+                   y = c(0.06,0.96,0.96,
+                         1.05,2.95,2.95,1.05,
+                         1.06,2.96,2.96,
+                         2.95,1.05,1.05,
+                         0.95,0.95,0.05,0.05,
+                         0.05,0.95,0.05))%>%
+  mutate(x_1 = ifelse(g == 1,0.25,
+                      ifelse(g == 2,0.5,
+                             ifelse(g == 3,1.75,
+                                    ifelse(g == 4,2.25,
+                                           ifelse(g == 5,2,
+                                                  ifelse(g == 6,0.75,0)))))))%>%
+  mutate(y_1 = ifelse(g == 1,0.75,
+                      ifelse(g == 2,2,
+                             ifelse(g == 3,2.25,
+                                    ifelse(g == 4,1.75,
+                                           ifelse(g == 5,0.5,
+                                                  ifelse(g == 6,0.25,0)))))))%>%
+  mutate(z_1 = ifelse(g == 6 & x_1 == lag(x_1), NA,x_1),
+         z_2 = ifelse(x_1 == lead(x_1), NA, x_1))%>%
+  mutate(z_3 = ifelse(g == 6, z_1, z_2))%>%
+  mutate(z_1 = ifelse(g == 6 & y_1 == lag(y_1), NA,y_1),
+         z_2 = ifelse(y_1 == lead(y_1), NA, y_1))%>%
+  mutate(z_4 = ifelse(g == 6, z_1, z_2))%>%
+  mutate(label = ifelse(g == 1, "Regressive and homogeneous (Horizontal)",
+                        ifelse(g == 2, "Regressive and heterogeneous", 
+                               ifelse(g == 3, "Progressive and heterogeneous (Horizontal)",
+                                      ifelse(g == 4, "Progressive and heterogeneous (Vertical)",
+                                             ifelse(g == 5, "Progressive and homogeneous",
+                                                    ifelse(g == 6, "Regressive and heterogeneous (Vertical)", NA)))))))
+
+poly_2 <- data.frame(g = c(1,1,1,1,
+                           2,2,2,2,
+                           3,3,3,3,
+                           4,4,4,4),
+                     y = c(0.01,0.99,0.99,0.01,
+                           1.01,2.5,2.5,1.01,
+                           1.01,2.5,2.5,1.01,
+                           0.01,0.99,0.99,0.01),
+                     x = c(0.01,0.01,0.99,0.99,
+                           0.01,0.01,0.99,0.99,
+                           1.01,1.01,3.19,3.19,
+                           1.01,1.01,3.19,3.19),
+                     label = c(rep("Progressive and more heterogeneous in IQ5",4),
+                               rep("Regressive and more heterogeneous in IQ5",4),
+                               rep("Regressive and more heterogeneous in IQ1",4),
+                               rep("Progressive and more heterogeneous in IQ1",4)),
+                     g2 = c(rep(1,4), rep(2,4), rep(1,4), rep(2,4)),
+                     label2 = c(rep("Progressive",4),  rep("Regressive",4), rep("Regressive",4), rep("Progressive",4)),
+                     label3 = c(rep("More heterogeneous in IQ5", 8), rep("More heterogeneous in IQ1", 8)))
+
+poly_3 <- data.frame(g = c(1,1,1,
+                           2,2,2),
+                     y = c(0.03,3.18,3.18,
+                           0.02,3.18,0.02),
+                     x = c(0.02,0.02,3.17,
+                           0.03,3.18,3.18))
+
+poly_4 <- data.frame(text = c("Horizontal differences > Vertical differences",
+                              "Vertical differences > Horizontal differences"),
+                     x = c(2.1,1.1),
+                     y = c(0.3,2.2))
+
+poly_5 <- data.frame(text = c("A", "B", "C", "D"),
+                     x = c(0.9,1.1,0.9,1.1),
+                     y = c(2.4,2.4,0.1,0.1))
+
+P_8.2 <- ggplot()+
+  geom_polygon(data = poly_3, aes(x = x, y = y, group = g), colour = "black", fill = NA, size = 0.3)+
+  geom_polygon(data = filter(poly_2, g == 1), aes(x = x, y = y, group = g), alpha = 0.5, fill = "#6F99ADFF")+
+  geom_polygon(data = filter(poly_2, g == 2), aes(x = x, y = y, group = g), alpha = 0.5, fill = "#E18727FF")+
+  geom_polygon(data = filter(poly_2, g == 3), aes(x = x, y = y, group = g), alpha = 0.5, fill = "#0072B5FF")+
+  geom_polygon(data = filter(poly_2, g == 4), aes(x = x, y = y, group = g), alpha = 0.5, fill = "#FFDC91FF")+
+  geom_label(data = poly_4, aes(label = text, x = x, y = y), alpha = 0.5, size = 2.5)+
+  geom_label(data = poly_5, aes(label = text, x = x, y = y), alpha = 0.2, size = 2.5)+
+  theme_bw()+
+  geom_point(data = data_8.2.1, aes(y = median_1_5, x = dif_95_05_1_5, fill = log(value)), shape = 21, colour = "black", size = 2.5)+
+  #geom_text_repel(data = data_7.3, aes(label = Country, y = median_1_5, x = dif_95_05_1_5),
+  #                direction = "both", size = 2, max.overlaps = 100)+
+  coord_cartesian(xlim = c(0,3.2), ylim = c(0,2.5))+
+  scale_fill_viridis_c(breaks = c(7,11), labels = c("Poorer", "Richer"))+
+  scale_x_continuous(expand = c(0,0))+
+  scale_y_continuous(expand = c(0,0), breaks = c(0,1,2))+
+  ylab("Vertical distribution coefficient")+
+  xlab("Horizontal distribution coefficient")+
+  labs(fill = "")+
+  # guides(fill = "none")+
+  #guides(fill = guide_legend(nrow = 2))+
+  theme(axis.text.y = element_text(size = 7), 
+        axis.text.x = element_text(size = 7),
+        axis.title  = element_text(size = 7),
+        plot.title  = element_text(size = 7),
+        legend.position = "right",
+        strip.text = element_text(size = 7),
+        #strip.text.y = element_text(angle = 180),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        axis.ticks = element_line(size = 0.2),
+        legend.text = element_text(size = 7),
+        legend.title = element_text(size = 7),
+        plot.margin = unit(c(0.3,0.3,0.3,0.3), "cm"),
+        panel.border = element_rect(size = 0.3))
+
+jpeg("1_Figures/Figure 2/Figure_2.jpg", width = 15.5, height = 10, unit = "cm", res = 600)
+print(P_8.2)
+dev.off()
+
+rm(data_8.2.0, data_8.2.1, poly, poly_2, poly_3, poly_4, poly_5, P_8.2)
