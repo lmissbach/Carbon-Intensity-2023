@@ -598,241 +598,306 @@ MNG,4,East,596
 MNG,2,Highlands,597
 MNG,5,Ulaanbaatar,598
 MNG,1,West,599
-MWI,NA,NA,600
-NER,1,agadez,601
-NER,2,diffa,602
-NER,3,dosso,603
-NER,4,maradi,604
-NER,8,niamey,605
-NER,5,tahoua,606
-NER,6,tillaberi,607
-NER,7,zinder,608
-NGA,1,1. Abia,609
-NGA,10,10. Delta,610
-NGA,11,11. Ebonyi,611
-NGA,12,12. Edo,612
-NGA,13,13. Ekiti,613
-NGA,14,14. Enugu,614
-NGA,15,15. Gombe,615
-NGA,16,16. Imo,616
-NGA,17,17. Jigawa,617
-NGA,18,18. Kaduna,618
-NGA,19,19. Kano,619
-NGA,2,2. Adamawa,620
-NGA,20,20. Katsina,621
-NGA,21,21. Kebbi,622
-NGA,22,22. Kogi,623
-NGA,23,23. Kwara,624
-NGA,24,24. Lagos,625
-NGA,25,25. Nasarawa,626
-NGA,26,26. Niger,627
-NGA,27,27. Ogun,628
-NGA,28,28. Ondo,629
-NGA,29,29. Osun,630
-NGA,3,3. Akwa Ibom,631
-NGA,30,30. Oyo,632
-NGA,31,31. Plateau,633
-NGA,32,32. Rivers,634
-NGA,33,33. Sokoto,635
-NGA,34,34. Taraba,636
-NGA,35,35. Yobe,637
-NGA,36,36. Zamfara,638
-NGA,37,37. FCT,639
-NGA,4,4. Anambra,640
-NGA,5,5. Bauchi,641
-NGA,6,6. Bayelsa,642
-NGA,7,7. Benue,643
-NGA,8,8. Borno,644
-NGA,9,9. Cross River,645
-NIC,4,Atlántico,646
-NIC,3,Central,647
-NIC,1,Managua,648
-NIC,2,Pacífico,649
-NLD,NA,NA,650
-NOR,4,Agder og Rogaland,651
-NOR,1,Akershus og Oslo,652
-NOR,2,Hedmark op Oppland,653
-NOR,7,Nord-Norge,654
-NOR,3,Sor-Ostlandet,655
-NOR,6,Trondelag,656
-NOR,5,Vestlandet,657
-PAK,4,balochistan,658
-PAK,1,kp,659
-PAK,2,punjab,660
-PAK,3,sindh,661
-PER,2,costa centro,662
-PER,1,costa norte,663
-PER,3,costa sur,664
-PER,8,lima metropolitana,665
-PER,7,selva,666
-PER,5,sierra centro,667
-PER,4,sierra norte,668
-PER,6,sierra sur,669
-PHL,15,ARMM,670
-PHL,5,Bicol Region,671
-PHL,2,Cagayan Valley,672
-PHL,41,Calabarzon,673
-PHL,14,CAR,674
-PHL,16,Caraga,675
-PHL,3,Central Luzon,676
-PHL,7,Central Visayas,677
-PHL,11,Davao Region,678
-PHL,8,Eastern Visayas,679
-PHL,1,Ilocos Region,680
-PHL,42,Mimaropa,681
-PHL,13,NCR,682
-PHL,10,Nothern Mindanao,683
-PHL,12,Soccsksargen,684
-PHL,6,Western Visayas,685
-PHL,9,Zasmboanga Peninsula,686
-POL,NA,NA,687
-PRT,NA,NA,688
-PRY,10,alto paraná,689
-PRY,0,asunción,690
-PRY,5,caaguazú,691
-PRY,11,central,692
-PRY,7,itapúa,693
-PRY,20,resto,694
-PRY,2,san pedro,695
-ROU,NA,NA,696
-RWA,5,Eastern Province,697
-RWA,1,Kigali City,698
-RWA,4,Northern Province,699
-RWA,2,Southern Province,700
-RWA,3,Western Province,701
-SEN,1,dakar,702
-SEN,3,diourbel,703
-SEN,9,fatick,704
-SEN,12,kaffrine,705
-SEN,6,kaolack,706
-SEN,13,kedougou,707
-SEN,10,kolda,708
-SEN,8,louga,709
-SEN,11,matam,710
-SEN,4,SAINT-LOUIS,711
-SEN,14,sedhiou,712
-SEN,5,tambacounda,713
-SEN,7,thies,714
-SEN,2,ziguinchor,715
-SLV,1,AhuachapÃ¡n,716
-SLV,9,CabaÃ±as,717
-SLV,4,Chalatenango,718
-SLV,7,CuscatlÃ¡n,719
-SLV,5,La Libertad,720
-SLV,8,La Paz,721
-SLV,14,La UniÃ³n,722
-SLV,13,MorazÃ¡n,723
-SLV,12,San Miguel,724
-SLV,6,San Salvador,725
-SLV,10,San Vicente,726
-SLV,2,Santa Ana,727
-SLV,3,Sonsonate,728
-SLV,11,UsulutÃ¡n,729
-SRB,1,Beogradski region,730
-SRB,4,Region juzne i istocne Srbije,731
-SRB,3,Region Sumadije i zapadne Srbije,732
-SRB,2,Region Vojvodine,733
-SUR,1,Great Paramaribo,734
-SUR,3,Interior,735
-SUR,2,Rest of the coastal region,736
-SVK,NA,NA,737
-SWE,NA,NA,738
-TGO,3,Centrale,739
-TGO,4,Kara,740
-TGO,6,Lomé commune,741
-TGO,1,Maritime,742
-TGO,2,Plateaux,743
-TGO,5,Savanes,744
-THA,1,1.Bangkok,745
-THA,2,2.Central(ex Bkk),746
-THA,3,3.North,747
-THA,4,4.Northeast,748
-THA,5,5.South,749
-TUR,NA,NA,750
-TWN,NA,NA,751
-UGA,NA,NA,752
-URY,02,"Interior, mas que 5000 inhabitantes",753
-URY,03,"Interior, menos que 5000 inhabitantes",754
-URY,01,Montevideo,755
-USA,3,East North Central,756
-USA,6,East South Central,757
-USA,2,Middle Atlantic,758
-USA,8,Mountain,759
-USA,1,New England,760
-USA,9,Pacific,761
-USA,5,South Atlantic,762
-USA,0,Unknown,763
-USA,4,West North Central,764
-USA,7,West South Central,765
-VNM,92,Thành phe CCn Thơ,766
-VNM,48,Thành phe Ðà N 1/2ng,767
-VNM,31,Thành phe Hải Phssng,768
-VNM,79,Thành phe Ha ChY Minh,769
-VNM,1,Thành phe Hà Nei,770
-VNM,89,TOnh An Giang,771
-VNM,24,TOnh B 3/4c Giang,772
-VNM,6,TOnh B 3/4c Kạn,773
-VNM,27,TOnh B 3/4c Ninh,774
-VNM,74,TOnh B*nh D-ơng,775
-VNM,52,TOnh B*nh ÐTHnh,776
-VNM,70,TOnh B*nh Ph-ic,777
-VNM,60,TOnh B*nh ThuEn,778
-VNM,95,TOnh Bạc Liêu,779
-VNM,77,TOnh Bà RTHa - Vong Tàu,780
-VNM,83,TOnh BOn Tre,781
-VNM,96,TOnh Cà Mau,782
-VNM,4,TOnh Cao B>>ng,783
-VNM,66,TOnh Ð 3/4k L 3/4k,784
-VNM,67,TOnh Ð 3/4k N<<ng,785
-VNM,75,TOnh Ðang Nai,786
-VNM,87,TOnh Ðang Tháp,787
-VNM,11,TOnh ÐiOn Biên,788
-VNM,64,TOnh Gia Lai,789
-VNM,33,TOnh H-ng Yên,790
-VNM,30,TOnh Hải D-ơng,791
-VNM,2,TOnh Hà Giang,792
-VNM,35,TOnh Hà Nam,793
-VNM,42,TOnh Hà TUnh,794
-VNM,93,TOnh HEu Giang,795
-VNM,17,TOnh Hoà B*nh,796
-VNM,56,TOnh Khánh Hoà,797
-VNM,91,TOnh Kiên Giang,798
-VNM,62,TOnh Kon Tum,799
-VNM,68,TOnh L(C)m Ðang,800
-VNM,20,TOnh Lạng Sơn,801
-VNM,12,TOnh Lai Ch(C)u,802
-VNM,10,TOnh Lào Cai,803
-VNM,80,TOnh Long An,804
-VNM,36,TOnh Nam ÐTHnh,805
-VNM,40,TOnh NghO An,806
-VNM,37,TOnh Ninh B*nh,807
-VNM,58,TOnh Ninh ThuEn,808
-VNM,25,TOnh Pho Tha,809
-VNM,54,TOnh Pho Yên,810
-VNM,44,TOnh Quảng B*nh,811
-VNM,49,TOnh Quảng Nam,812
-VNM,51,TOnh Quảng Ngãi,813
-VNM,22,TOnh Quảng Ninh,814
-VNM,45,TOnh Quảng TrTH,815
-VNM,94,TOnh Sac Trăng,816
-VNM,14,TOnh Sơn La,817
-VNM,72,TOnh T(C)y Ninh,818
-VNM,34,TOnh Thái B*nh,819
-VNM,19,TOnh Thái Nguyên,820
-VNM,38,TOnh Thanh Hoá,821
-VNM,46,TOnh Thoa Thiên HuO,822
-VNM,82,TOnh TiOn Giang,823
-VNM,84,TOnh Trà Vinh,824
-VNM,8,TOnh Tuyên Quang,825
-VNM,86,TOnh VUnh Long,826
-VNM,26,TOnh VUnh Phoc,827
-VNM,15,TOnh Yên Bái,828
-ZAF,2,Eastern Cape,829
-ZAF,4,Free State,830
-ZAF,7,Gauteng,831
-ZAF,5,Kwazulu Natal,832
-ZAF,9,Limpopo,833
-ZAF,8,Mpumalanga,834
-ZAF,6,North West,835
-ZAF,3,Northern Cape,836
-ZAF,1,Western Cape,837
+MOZ,1,Cabo Delgado,600
+MOZ,2,Gaza,601
+MOZ,3,Inhambane,602
+MOZ,4,Manica,603
+MOZ,5,Maputo Cidade,604
+MOZ,6,Maputo Província,605
+MOZ,7,Nampula,606
+MOZ,8,Niassa,607
+MOZ,9,Sofala,608
+MOZ,10,Tete,609
+MOZ,11,Zambézia,610
+MWI,NA,NA,611
+NER,1,agadez,612
+NER,2,diffa,613
+NER,3,dosso,614
+NER,4,maradi,615
+NER,8,niamey,616
+NER,5,tahoua,617
+NER,6,tillaberi,618
+NER,7,zinder,619
+NGA,1,1. Abia,620
+NGA,10,10. Delta,621
+NGA,11,11. Ebonyi,622
+NGA,12,12. Edo,623
+NGA,13,13. Ekiti,624
+NGA,14,14. Enugu,625
+NGA,15,15. Gombe,626
+NGA,16,16. Imo,627
+NGA,17,17. Jigawa,628
+NGA,18,18. Kaduna,629
+NGA,19,19. Kano,630
+NGA,2,2. Adamawa,631
+NGA,20,20. Katsina,632
+NGA,21,21. Kebbi,633
+NGA,22,22. Kogi,634
+NGA,23,23. Kwara,635
+NGA,24,24. Lagos,636
+NGA,25,25. Nasarawa,637
+NGA,26,26. Niger,638
+NGA,27,27. Ogun,639
+NGA,28,28. Ondo,640
+NGA,29,29. Osun,641
+NGA,3,3. Akwa Ibom,642
+NGA,30,30. Oyo,643
+NGA,31,31. Plateau,644
+NGA,32,32. Rivers,645
+NGA,33,33. Sokoto,646
+NGA,34,34. Taraba,647
+NGA,35,35. Yobe,648
+NGA,36,36. Zamfara,649
+NGA,37,37. FCT,650
+NGA,4,4. Anambra,651
+NGA,5,5. Bauchi,652
+NGA,6,6. Bayelsa,653
+NGA,7,7. Benue,654
+NGA,8,8. Borno,655
+NGA,9,9. Cross River,656
+NIC,4,Atlántico,657
+NIC,3,Central,658
+NIC,1,Managua,659
+NIC,2,Pacífico,660
+NLD,NA,NA,661
+NOR,4,Agder og Rogaland,662
+NOR,1,Akershus og Oslo,663
+NOR,2,Hedmark op Oppland,664
+NOR,7,Nord-Norge,665
+NOR,3,Sor-Ostlandet,666
+NOR,6,Trondelag,667
+NOR,5,Vestlandet,668
+PAK,4,balochistan,669
+PAK,1,kp,670
+PAK,2,punjab,671
+PAK,3,sindh,672
+PER,2,costa centro,673
+PER,1,costa norte,674
+PER,3,costa sur,675
+PER,8,lima metropolitana,676
+PER,7,selva,677
+PER,5,sierra centro,678
+PER,4,sierra norte,679
+PER,6,sierra sur,680
+PHL,15,ARMM,681
+PHL,5,Bicol Region,682
+PHL,2,Cagayan Valley,683
+PHL,41,Calabarzon,684
+PHL,14,CAR,685
+PHL,16,Caraga,686
+PHL,3,Central Luzon,687
+PHL,7,Central Visayas,688
+PHL,11,Davao Region,689
+PHL,8,Eastern Visayas,690
+PHL,1,Ilocos Region,691
+PHL,42,Mimaropa,692
+PHL,13,NCR,693
+PHL,10,Nothern Mindanao,694
+PHL,12,Soccsksargen,695
+PHL,6,Western Visayas,696
+PHL,9,Zasmboanga Peninsula,697
+POL,NA,NA,698
+PRT,NA,NA,699
+PRY,10,alto paraná,700
+PRY,0,asunción,701
+PRY,5,caaguazú,702
+PRY,11,central,703
+PRY,7,itapúa,704
+PRY,20,resto,705
+PRY,2,san pedro,706
+ROU,NA,NA,707
+RUS,84,Altaiskij Kraj: Biisk CR,708
+RUS,58,Altaiskij Kraj: Kur`inskij Rajon,709
+RUS,93,Amurskaja Oblast: Tambovskii Rajon,710
+RUS,106,Cheliabinsk,711
+RUS,107,Cheliabinsk Oblast: Krasnoarmeiskij Rajon,712
+RUS,48,Chuvashskaya ASSR: Shumerlja CR,713
+RUS,77,"Kabardino-Balkarija, Zol`skij Rajon",714
+RUS,67,Kalinin Oblast: Rzhev CR,715
+RUS,14,Kaluzhskaya Oblast: Kuibyshev Rajon,716
+RUS,105,Komi-ASSR: Syktyvkar,717
+RUS,89,Komi-ASSR: Usinsk CR (1994-2019),718
+RUS,9,Krasnodar CR,719
+RUS,129,Krasnodarskij Kraj: Kushchevskij Rajon,720
+RUS,66,Krasnojarskij Kraij: Krasnojarsk,721
+RUS,73,Krasnojarskij Kraij: Nazarovo CR,722
+RUS,46,Kurgan,723
+RUS,1,Leningrad Oblast: Volosovkij Rajon,724
+RUS,72,Lipetskaya Oblast: Lipetsk CR,725
+RUS,138,Moscow City,726
+RUS,139,Moscow City,727
+RUS,142,Moscow Oblast,728
+RUS,140,New Moscow City,729
+RUS,116,Nizhegorodskaja Oblast: Nizhnij Novgorod,730
+RUS,161,Novosibirskaya Oblast: Berdsk City & Raion (2003-present),731
+RUS,47,Orenburg Oblast: Orsk,732
+RUS,117,Penzenskaya Oblast: Zemetchinskij Rajon,733
+RUS,12,Perm Territory: Solikamsk City & Rajon,734
+RUS,137,Rostov Oblast: Batajsk,735
+RUS,70,Saratov CR,736
+RUS,100,Saratov Oblast: Volskij Gorosovet & Rajon,737
+RUS,135,Smolensk CR,738
+RUS,141,St. Petersburg City,739
+RUS,52,Stavropolskij Kraj: Georgievskij CR,740
+RUS,33,Tambov Oblast: Uvarovo CR,741
+RUS,45,Tatarskaja ASSR: Kazan,742
+RUS,71,Tomsk,743
+RUS,136,Tulskaja Oblast: Tula,744
+RUS,10,Udmurt ASSR: Glasov CR,745
+RUS,92,Vladivostok,746
+RUS,39,Volgograd Oblast: Rudnjanskij Rajon,747
+RWA,5,Eastern Province,748
+RWA,1,Kigali City,749
+RWA,4,Northern Province,750
+RWA,2,Southern Province,751
+RWA,3,Western Province,752
+SEN,1,dakar,753
+SEN,3,diourbel,754
+SEN,9,fatick,755
+SEN,12,kaffrine,756
+SEN,6,kaolack,757
+SEN,13,kedougou,758
+SEN,10,kolda,759
+SEN,8,louga,760
+SEN,11,matam,761
+SEN,4,SAINT-LOUIS,762
+SEN,14,sedhiou,763
+SEN,5,tambacounda,764
+SEN,7,thies,765
+SEN,2,ziguinchor,766
+SLV,1,AhuachapÃ¡n,767
+SLV,9,CabaÃ±as,768
+SLV,4,Chalatenango,769
+SLV,7,CuscatlÃ¡n,770
+SLV,5,La Libertad,771
+SLV,8,La Paz,772
+SLV,14,La UniÃ³n,773
+SLV,13,MorazÃ¡n,774
+SLV,12,San Miguel,775
+SLV,6,San Salvador,776
+SLV,10,San Vicente,777
+SLV,2,Santa Ana,778
+SLV,3,Sonsonate,779
+SLV,11,UsulutÃ¡n,780
+SRB,1,Beogradski region,781
+SRB,4,Region juzne i istocne Srbije,782
+SRB,3,Region Sumadije i zapadne Srbije,783
+SRB,2,Region Vojvodine,784
+SUR,1,Great Paramaribo,785
+SUR,3,Interior,786
+SUR,2,Rest of the coastal region,787
+SVK,NA,NA,788
+SWE,NA,NA,789
+TGO,3,Centrale,790
+TGO,4,Kara,791
+TGO,6,Lomé commune,792
+TGO,1,Maritime,793
+TGO,2,Plateaux,794
+TGO,5,Savanes,795
+THA,1,1.Bangkok,796
+THA,2,2.Central(ex Bkk),797
+THA,3,3.North,798
+THA,4,4.Northeast,799
+THA,5,5.South,800
+TUR,NA,NA,801
+TWN,NA,NA,802
+UGA,1,0,803
+UGA,2,1,804
+UGA,11,10,805
+UGA,12,11,806
+UGA,13,12,807
+UGA,14,13,808
+UGA,15,14,809
+UGA,3,2,810
+UGA,4,3,811
+UGA,5,4,812
+UGA,6,5,813
+UGA,7,6,814
+UGA,8,7,815
+UGA,9,8,816
+UGA,10,9,817
+URY,02,"Interior, mas que 5000 inhabitantes",818
+URY,03,"Interior, menos que 5000 inhabitantes",819
+URY,01,Montevideo,820
+USA,3,East North Central,821
+USA,6,East South Central,822
+USA,2,Middle Atlantic,823
+USA,8,Mountain,824
+USA,1,New England,825
+USA,9,Pacific,826
+USA,5,South Atlantic,827
+USA,0,Unknown,828
+USA,4,West North Central,829
+USA,7,West South Central,830
+VNM,92,Thành phe CCn Thơ,831
+VNM,48,Thành phe Ðà N 1/2ng,832
+VNM,31,Thành phe Hải Phssng,833
+VNM,79,Thành phe Ha ChY Minh,834
+VNM,1,Thành phe Hà Nei,835
+VNM,89,TOnh An Giang,836
+VNM,24,TOnh B 3/4c Giang,837
+VNM,6,TOnh B 3/4c Kạn,838
+VNM,27,TOnh B 3/4c Ninh,839
+VNM,74,TOnh B*nh D-ơng,840
+VNM,52,TOnh B*nh ÐTHnh,841
+VNM,70,TOnh B*nh Ph-ic,842
+VNM,60,TOnh B*nh ThuEn,843
+VNM,95,TOnh Bạc Liêu,844
+VNM,77,TOnh Bà RTHa - Vong Tàu,845
+VNM,83,TOnh BOn Tre,846
+VNM,96,TOnh Cà Mau,847
+VNM,4,TOnh Cao B>>ng,848
+VNM,66,TOnh Ð 3/4k L 3/4k,849
+VNM,67,TOnh Ð 3/4k N<<ng,850
+VNM,75,TOnh Ðang Nai,851
+VNM,87,TOnh Ðang Tháp,852
+VNM,11,TOnh ÐiOn Biên,853
+VNM,64,TOnh Gia Lai,854
+VNM,33,TOnh H-ng Yên,855
+VNM,30,TOnh Hải D-ơng,856
+VNM,2,TOnh Hà Giang,857
+VNM,35,TOnh Hà Nam,858
+VNM,42,TOnh Hà TUnh,859
+VNM,93,TOnh HEu Giang,860
+VNM,17,TOnh Hoà B*nh,861
+VNM,56,TOnh Khánh Hoà,862
+VNM,91,TOnh Kiên Giang,863
+VNM,62,TOnh Kon Tum,864
+VNM,68,TOnh L(C)m Ðang,865
+VNM,20,TOnh Lạng Sơn,866
+VNM,12,TOnh Lai Ch(C)u,867
+VNM,10,TOnh Lào Cai,868
+VNM,80,TOnh Long An,869
+VNM,36,TOnh Nam ÐTHnh,870
+VNM,40,TOnh NghO An,871
+VNM,37,TOnh Ninh B*nh,872
+VNM,58,TOnh Ninh ThuEn,873
+VNM,25,TOnh Pho Tha,874
+VNM,54,TOnh Pho Yên,875
+VNM,44,TOnh Quảng B*nh,876
+VNM,49,TOnh Quảng Nam,877
+VNM,51,TOnh Quảng Ngãi,878
+VNM,22,TOnh Quảng Ninh,879
+VNM,45,TOnh Quảng TrTH,880
+VNM,94,TOnh Sac Trăng,881
+VNM,14,TOnh Sơn La,882
+VNM,72,TOnh T(C)y Ninh,883
+VNM,34,TOnh Thái B*nh,884
+VNM,19,TOnh Thái Nguyên,885
+VNM,38,TOnh Thanh Hoá,886
+VNM,46,TOnh Thoa Thiên HuO,887
+VNM,82,TOnh TiOn Giang,888
+VNM,84,TOnh Trà Vinh,889
+VNM,8,TOnh Tuyên Quang,890
+VNM,86,TOnh VUnh Long,891
+VNM,26,TOnh VUnh Phoc,892
+VNM,15,TOnh Yên Bái,893
+ZAF,2,Eastern Cape,894
+ZAF,4,Free State,895
+ZAF,7,Gauteng,896
+ZAF,5,Kwazulu Natal,897
+ZAF,9,Limpopo,898
+ZAF,8,Mpumalanga,899
+ZAF,6,North West,900
+ZAF,3,Northern Cape,901
+ZAF,1,Western Cape,902

@@ -117,73 +117,75 @@ MLI,s,7,115
 MLI,Togo,8,116
 MMR,NA,NA,117
 MNG,NA,NA,118
-MWI,NA,NA,119
-NER,Benin,1,120
-NER,Autre Afrique,11,121
-NER,Cameroun,13,122
-NER,Tchad,14,123
-NER,Burkina Faso,2,124
-NER,Côte d'Ivoire,3,125
-NER,Mali,5,126
-NER,Niger,6,127
-NER,Sénégal,7,128
-NER,Togo,8,129
-NER,Nigéria,9,130
-NGA,NA,NA,131
-NIC,NA,NA,132
-NLD,NA,NA,133
-NOR,NA,NA,134
-PAK,NA,NA,135
-PER,NA,NA,136
-PHL,NA,NA,137
-POL,NA,NA,138
-PRT,NA,NA,139
-PRY,NA,NA,140
-ROU,NA,NA,141
-RWA,Rwandese,60,142
-RWA,Burundian,61,143
-RWA,Congolese,62,144
-RWA,Ugandan,63,145
-RWA,Kenyan,65,146
-RWA,Other African,66,147
-SEN,Autre CEDEAO,10,148
-SEN,Autre Afrique,11,149
-SEN,Autre pays hors Afrique,12,150
-SEN,Burkina Faso,2,151
-SEN,Guinée Bissau,4,152
-SEN,Mali,5,153
-SEN,Niger,6,154
-SEN,Sénégal,7,155
-SEN,Togo,8,156
-SEN,Nigéria,9,157
-SLV,NA,NA,158
-SRB,Republic of Serbia,1,159
-SRB,EU-National,2,160
-SRB,Non-EU National,3,161
-SUR,Suriname,1,162
-SUR,The Netherlands,2,163
-SUR,Guyana,3,164
-SUR,Brasil,4,165
-SUR,French Guyana,5,166
-SUR,China,6,167
-SUR,Other,7,168
-SVK,NA,NA,169
-SWE,NA,NA,170
-TGO,Benin,1,171
-TGO,Autre CEDEAO,10,172
-TGO,Autre Afrique,11,173
-TGO,Burkina Faso,2,174
-TGO,Côte d'Ivoire,3,175
-TGO,Guinée Bissau,4,176
-TGO,Mali,5,177
-TGO,Niger,6,178
-TGO,Togo,8,179
-TGO,Nigéria,9,180
-THA,NA,NA,181
-TUR,NA,NA,182
-TWN,NA,NA,183
-UGA,NA,NA,184
-URY,NA,NA,185
-USA,NA,NA,186
-VNM,NA,NA,187
-ZAF,NA,NA,188
+MOZ,NA,NA,119
+MWI,NA,NA,120
+NER,Benin,1,121
+NER,Autre Afrique,11,122
+NER,Cameroun,13,123
+NER,Tchad,14,124
+NER,Burkina Faso,2,125
+NER,Côte d'Ivoire,3,126
+NER,Mali,5,127
+NER,Niger,6,128
+NER,Sénégal,7,129
+NER,Togo,8,130
+NER,Nigéria,9,131
+NGA,NA,NA,132
+NIC,NA,NA,133
+NLD,NA,NA,134
+NOR,NA,NA,135
+PAK,NA,NA,136
+PER,NA,NA,137
+PHL,NA,NA,138
+POL,NA,NA,139
+PRT,NA,NA,140
+PRY,NA,NA,141
+ROU,NA,NA,142
+RUS,NA,NA,143
+RWA,Rwandese,60,144
+RWA,Burundian,61,145
+RWA,Congolese,62,146
+RWA,Ugandan,63,147
+RWA,Kenyan,65,148
+RWA,Other African,66,149
+SEN,Autre CEDEAO,10,150
+SEN,Autre Afrique,11,151
+SEN,Autre pays hors Afrique,12,152
+SEN,Burkina Faso,2,153
+SEN,Guinée Bissau,4,154
+SEN,Mali,5,155
+SEN,Niger,6,156
+SEN,Sénégal,7,157
+SEN,Togo,8,158
+SEN,Nigéria,9,159
+SLV,NA,NA,160
+SRB,Republic of Serbia,1,161
+SRB,EU-National,2,162
+SRB,Non-EU National,3,163
+SUR,Suriname,1,164
+SUR,The Netherlands,2,165
+SUR,Guyana,3,166
+SUR,Brasil,4,167
+SUR,French Guyana,5,168
+SUR,China,6,169
+SUR,Other,7,170
+SVK,NA,NA,171
+SWE,NA,NA,172
+TGO,Benin,1,173
+TGO,Autre CEDEAO,10,174
+TGO,Autre Afrique,11,175
+TGO,Burkina Faso,2,176
+TGO,Côte d'Ivoire,3,177
+TGO,Guinée Bissau,4,178
+TGO,Mali,5,179
+TGO,Niger,6,180
+TGO,Togo,8,181
+TGO,Nigéria,9,182
+THA,NA,NA,183
+TUR,NA,NA,184
+TWN,NA,NA,185
+UGA,NA,NA,186
+URY,NA,NA,187
+USA,NA,NA,188
+VNM,NA,NA,189
+ZAF,NA,NA,190
