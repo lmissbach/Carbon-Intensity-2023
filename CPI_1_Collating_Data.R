@@ -13,15 +13,13 @@ options(scipen=999)
 
 # 1     Loading Data ####
 
-Country.Set <- c("Argentina", "Armenia", "Austria","Bangladesh", "Barbados", "Benin","Bolivia", "Brazil", "Burkina Faso", "Cambodia", "Canada", "Chile",
-                 "Colombia", "Costa Rica", "Cote dIvoire", "Dominican Republic", "Ecuador", "Egypt", "El Salvador", "Ethiopia", 
+Country.Set <- c("Argentina", "Armenia", "Austria","Bangladesh", "Barbados", "Benin","Bolivia", "Brazil", "Burkina Faso", 
+                 "Cambodia", "Canada", "Chile", "Colombia", "Costa Rica", "Cote dIvoire", "Dominican Republic", "Ecuador", "Egypt", "El Salvador", "Ethiopia", 
                  "Europe", 
-                 "Georgia","Ghana","Guatemala", 
-                 "Guinea-Bissau", "India", "Indonesia", "Iraq", "Israel", "Jordan","Kenya", "Liberia", "Malawi", "Maldives", "Mali", 
-                 "Mexico", "Mongolia", "Morocco", "Myanmar", "Nicaragua", "Niger", "Nigeria", "Norway", "Pakistan", "Paraguay", 
-                 "Peru", "Philippines", "Rwanda", "Senegal", "Serbia","South Africa", "Suriname", "Switzerland",
-                 "Taiwan", "Thailand", "Togo", "Turkey", "Uganda", 
-                 "United Kingdom","Uruguay", "USA","Vietnam")
+                 "Georgia","Ghana","Guatemala", "Guinea-Bissau", "India", "Indonesia", "Iraq", "Israel", "Jordan", "Kenya", "Liberia", "Malawi", "Maldives", "Mali", 
+                 "Mexico", "Mongolia", "Morocco", "Mozambique", "Myanmar", "Nicaragua", "Niger", "Nigeria", "Norway", "Pakistan", "Paraguay", 
+                 "Peru", "Philippines", "Russia", "Rwanda", "Senegal", "Serbia","South Africa", "Suriname", "Switzerland",
+                 "Taiwan", "Thailand", "Togo", "Turkey", "Uganda", "United Kingdom","Uruguay", "USA","Vietnam")
 
 data_joint_0 <- data.frame()
 data_joint_pre <- data.frame()
@@ -334,11 +332,11 @@ Lighting.Codes.All.1 <- Lighting.Codes.All %>%
   mutate(Lighting_Fuel = iconv(Lighting_Fuel, "UTF-8", "UTF-8", sub = ''))%>%
   mutate(LF = ifelse(is.na(LF) & Lighting_Fuel %in% c("Charcoal", "3. Charcoal", "charcoal", "CHARCOAL", "3. CHARCOAL"), "Charcoal", LF))%>%
   mutate(LF = ifelse(is.na(LF) & Lighting_Fuel %in% c("Electricity","Electricidad", "electricity", "electricity?", "Publicly-provided electricity/City Power", "Household generator", "9. Electricity", "10. Solar energy", "Electricity form public network", "Electricity from shared generator", "Electricity from private generator", "ELECTRICITY", "16. ELECTRIC", "Electricity from EUCL", "Other electricity distributors", "Solar panel", "Batteries+ Bulb", "Torch/Phone", "Rechargeable battery", "Other source of electricity", "Solar energy system", "Electricity-National grid", "Electricity- Solar", "Electricity- Personal Generator", "Electricity Community/ thermal plant", "Energía eléctrica", "Generator", "5. SOLAR", "Solar energy", "Electric", "Electricity  Community/ thermal plant", "Solar",
-                                                      "Electricité (générateur)","ConexiÃ³n elÃ©ctrica del vecino(a)", "Electricité réseau", "Plaque solaire", "Publicly-provided electricity/City power", "Electricity (public)", "Electricity (private)", "Solar Panel", "1. Electricity meter - private", "2. Electricity meter - shared", "3. Electricity from generator", "4. Solar energy", "Panel solar","Generador elÃ©ctrico","Eletricidade da rede", "Electricidade (gerador)", "PLN electricity with meter", "PLN electricity without meter", "Non PLN electricity", "Electricity connection from Mains", "Solar Energy", "Electricit", "Electricity directle from EBS", "Electricity directly from the government (NH/RO)", "Electricity through the neighbor's dwelling", "Other Source of Electricitcy", "Solar system energy", "Placa solar", "Power Plant", "Public network", "Private"), "Electricity", LF))%>%
+                                                      "Electricité (générateur)","ConexiÃ³n elÃ©ctrica del vecino(a)", "Electricité réseau", "Plaque solaire", "Publicly-provided electricity/City power", "Electricity (public)", "Electricity (private)", "Solar Panel", "1. Electricity meter - private", "2. Electricity meter - shared", "3. Electricity from generator", "4. Solar energy", "Panel solar","Generador elÃ©ctrico","Eletricidade da rede", "Electricidade (gerador)", "PLN electricity with meter", "PLN electricity without meter", "Non PLN electricity", "Electricity connection from Mains", "Solar Energy", "Electricit", "Electricity directle from EBS", "Electricity directly from the government (NH/RO)", "Electricity through the neighbor's dwelling", "Other Source of Electricitcy", "Solar system energy", "Placa solar", "Power Plant", "Public network", "Private", "Battery or generator"), "Electricity", LF))%>%
   mutate(LF = ifelse(is.na(LF) & Lighting_Fuel %in% c("Mains gas?", "Bulk gas (zeppelin)?", "Gas in tube?", "Gas", "11. Bio gas", "Gobar gas", "Gas por cañería", "Bio Gas", "GAS", "City gas", "biogas", "15. PIPED NATURAL GAS", "13. BIOGAS", "Biogas", "Natural Gas", "Natural gas", "Biogas", "5. Bio gas", "Gas Lamp", "Gas lamp"), "Gas", LF))%>%
   mutate(LF = ifelse(is.na(LF) & Lighting_Fuel %in% c("Gas in a carafe?", "Liquefied petroleum gas LPG", "LPG", "8. Butane / gas", "Supergás", "Gasl", "LIQUIFIED PETROLUM", "Liquid gas cylinders", "LPG 3 kg", "LPG 12 kg", "Elpiji 5.5 kg / blue gaz", "14. LPG/ COOKING GAS", "Liquified  petroleum  gas (LPG)", "LPG (bottled gas)", "LPG & Coal", "Gas (Propan)"), "LPG", LF))%>%
   mutate(LF = ifelse(is.na(LF) & Lighting_Fuel %in% c("kerosene / firewood / charcoal ?", "Kerosene", "7. Kerosene", "Paraffin-Stove", "Queroseno", "Paraffin", "kerosene", "Kerosine", "PARAFFIN", "1. KEROSENE", "Kerosene / firewood / charcoal?", "Paraffine/Bois/Planche",
-                                                      "Kerosene lamp", "Kerosene (gas)", "9. Kerosene light lamp (imported)", "10. Kerosene lamp (local kuraz)", "Kerosene Lamp", "Parafina/Lenha/Madeira", "Paraffin Lantern", "ParaffinTin lamp", "Paraffin Pressure Lamp", "Paraffin lantern", "Paraffin Tadooba", "Supergás o queroseno"), "Kerosene", LF))%>%
+                                                      "Kerosene lamp", "Kerosene (gas)", "9. Kerosene light lamp (imported)", "10. Kerosene lamp (local kuraz)", "Kerosene Lamp", "Parafina/Lenha/Madeira", "Paraffin Lantern", "ParaffinTin lamp", "Paraffin Pressure Lamp", "Paraffin lantern", "Paraffin Tadooba", "Supergás o queroseno", "Gas or oil lamps"), "Kerosene", LF))%>%
   mutate(LF = ifelse(is.na(LF) & Lighting_Fuel %in% c("other ?", "Other", "Unknown", "None/donâ€™t cook", "Other (Specify)", "", "Does not cook", "Ninguno", "12. None", "13. Other specify", "Others","No cooking arrangement", "Don't cook at home", "OTHER (SPECIFY)", "Not stated", "OTHER(specify)", "Otro Cuál?","No cocinan","N/S","Ignorado", "18. OTHER (SPECIFY)", "ninguno no cocina", "nr", "No Cooking", "Other _specify_", "Ninguna", "17. GARBAGE/PLASTIC", "other?", "None,No Cooking", "Other (specify)", "Other Fuel", "Other, specify", "None", "Unspecified", "No cooking", "No Fuel",
                                                       "Autre", "OTHER(SPECIFY)", "Outros", "missing", "No lighting", "Not electricity", "No type of lighting"), "Unknown", LF))%>%
   mutate(LF = ifelse(is.na(LF) & Lighting_Fuel %in% c("Firewood", "1. Collecting fire wood", "2. Purchase fire wood", "Wood", "Firewood and chips", "Leña", "firewood", "COLLECTED FIREWOOD", "PURCHASED FIREWOOD", "4. WOOD", "Wood/Charcoal", "Firewood of Coal", "Firewood, LPG, Coal", "Firewood & LPG", "Firewood & Coal", "Firewood & Kerosene", "Firewood or Coal", "12. Fire wood", "Fuel wood"), "Firewood", LF))%>%
@@ -402,6 +400,8 @@ data_joint_1 <- data_joint_0 %>%
   # Confirmed for ARG, BGD, BRA, DOM, GHA, GTM, IND, MNG, NGA, NIC, PAK, PER, PRY, RWA, URY, ZAF
   mutate(exp_s_other_energy = ifelse(is.na(exp_s_other_energy), 0, exp_s_other_energy))%>%
   mutate_at(vars(starts_with("exp_USD_")), list(~ ifelse(is.na(.),0,.)))%>%
+  # For Russia exclusively
+  mutate(exp_s_Electricity = ifelse(is.na(exp_s_Electricity),0,exp_s_Electricity))%>%
   # Remove 13 households from Nigeria without information on hh_weights
   filter(!is.na(hh_weights))%>%
   # Adjust incorrect weights for Czech Republic 
