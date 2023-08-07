@@ -90,6 +90,7 @@
   \item Evidence suggests many socio-economic socio-demographic characteristics to drive or correlate with more carbon-intensive consumption.
   % One paragraph outlining the research gap
   \item Ex-ante economic assessments often focus on single-country or -policy contexts or aggregated cross-country analyses. What is missing is a systematic cross-country analyses with detailed household-level information.
+  \item Systematization of differences to motivate revenue recycling schemes. Cross-country learning, policy learning. Systematizing to enable interpretation.
 \end{itemize}
 
 % One paragraph stating the research question
@@ -109,34 +110,96 @@ In this study, we analyze the heterogeneity in carbon intensity of consumption w
 
 \begin{itemize}
   \item Introducing vertical and horizontal inequality
-  \item Three paragraphs on distributional impacts of climate policy (theoretical arguments, one on broad relevance, one on price-based policies, one on standards, subsidies, behavioural interventions)
-  \item Two paragraphs on distributional impacts of climate policy (empirical studies, mainly on price-based policies, also on standards, subsidies, behavioural interventions)
-  \item One paragraph on macro-level studies on carbon inequality (within countries)
+  \item Three paragraphs on distributional impacts of climate/environmental policy (theoretical arguments (Sandmo, Cremer), one on broad relevance (acceptance?), one on price-based policies, one on standards, subsidies, behavioural interventions)
+  \item Hänsel, van der Ploeg, Rausch 2011, Farrell 2017, Cronin 2019, Feindt 2021, Fischer and Pizer 2019 
+  \item Two paragraphs on distributional impacts of climate policy (empirical studies, mainly on price-based policies (Ohlendorf), also on standards (Mattauch), subsidies, behavioural interventions, can be short)
+  \item One paragraph on compensation: Transfers, tax breaks (Goulder 1995, Bento 2018), in-kind transfers or financing public goods (Franks).
+  \item One paragraph on macro-level studies on carbon inequality (within countries, Chancel)
 
 \end{itemize}
 
 \section{Analyzing heterogeneity in carbon intensity of consumption} \label{sec:methods}
 
-\begin{itemize}
+% Introduce carbon intensity of consumption as major indicator
 
-    \item Introduce carbon intensity of consumption as major indicator
-    \item Show that carbon intensity is equivalent to first-order carbon pricing incidence
-    \item Show that sector-specific carbon intensities can help to learn about other policies
-    \item Argue backwards: Carbon intensity of consumption consists of household expenditure shares and sectoral carbon intensities
-    \item Household expenditure shares: Data, cleaning, homogenizing and shortcomings
-    \item Sectoral carbon intensities: Data, method, intuition and shortcomings
+The carbon intensity of consumption of household \textit{i}, denoted by $e_{i}$, reflects the amount of $CO_{2}$-emissions $E_{i}$ that one can reasonably attribute to production, transportation and retail of all goods and services purchased in household \textit{i}, over total consumption $C_{i}$. We express $e_{i}$ in $\frac{kgCO_{2}}{US-\$}$. More specifically, the carbon intensity of consumption represents carbon intensities of different sectors, weighted by expenditure shares in household \textit{i} for goods and services from each sector \textit{s}:
+
+% Argue backwards: Carbon intensity of consumption consists of household expenditure shares and sectoral carbon intensities
+
+\begin{equation} \label{eq:Ci}
+e_{i} = \frac{E_{i}}{C_{i}} = \frac{\sum_{s} e_{s}*C_{i,s}}{\sum_{s} C_{i,s}}
+\end{equation}
+
+% Show that carbon intensity is equivalent to first-order carbon pricing incidence (Detailed analysis in Appendix)
+% Show that sector-specific carbon intensities can help to learn about other policies (to be continued in discussion)
+
+The carbon intensity of consumption $e_{i}$ is the variable of interest in this study. Analyzing heterogeneity in the carbon intensity of consumption can help to learn about heterogeneous impacts of climate policy on consumption costs: Assume household \textit{A's} consumption is twice as carbon-intensive as the consumption of household \textit{B}, then climate policy will lead to costs twice as high for household \textit{A} compared to household \textit{B}, in comparison to total expenditures \footnote{This holds under the assumption that climate policy increases supply-side input prices according to associated $CO_{2}$-emissions and that firms cannot react to changing input prices in the short-term. Output prices for consumer goods and services would increase in equivalence to embedded (direct and indirect) $CO_{2}$-emissions. See also Appendix \ref{sec:policysimulation}}. The household-level carbon intensity for different sectors \textit{s}, denoted $e_{i,s}$, allows for understanding heterogeneous impacts of different policies, for example of policies in the transport or electricity sector or of trade policies, such as carbon border adjustments.
+
+%  Household expenditure shares: Data, cleaning, homogenizing and shortcomings
+\paragraph{Sectoral expenditure shares} We collect information on sectoral expenditure shares at the household-level ($\frac{C_{i,s}}{\sum_{s}C_{i,s}}$) from household budget surveys. In such surveys, households report expenditures on goods and services on the item-level, from which we compute sectoral expenditure shares\footnote{We match consumption items to sectors with the help of matching tables. All matching tables can be found at a stable online data repository.}. Datasets were eligible for inclusion in our study, if they were surveying a nationally representative sample , included item-level expenditure information and were conducted between 2010 and 2019. Our harmonized \footnote{Appendix \ref{sec:cleaning} lists details on cleaning and harmonization.} dataset contains information on 1.5 million households representative for 5 billion people from 87 countries that comprise 68\% of global GDP and 52\% of global $CO_{2}$-emissions. 
+
+Beyond expenditure shares, we include total household expenditures as a surrogate for household income data because total consumption expenditures are a meaningful proxy for lifetime income and because wage data from such surveys are often unreliable.
+
+We also include socio-demographic information about household members (such as education, occupation, gender, self-identified ethnicity or age of household representatives), detailed spatial information (such as province, district or village of households) and on energy use (main fuels used for cooking, lighting and heating) or asset ownership. Such household-level information (including total household expenditures) forms a set of variables $X_{i}^{'}$ that allows for analysing differences between households with different characteristics.
+
+% Sectoral carbon intensities: Data, method, intuition and shortcomings
+
+\paragraph{Sectoral carbon intensities}
+
+\begin{itemize}
     \item Methodological discussion (brief)
     \item Analyzing vertical inequality
     \item Analyzing horizontal inequality
     \item Introduce boosted regression trees
     \item Introduce logit model as robustness check, supplementary analysis
     \item Critical appraisal
-
 \end{itemize}
 
-\section{Results} \label{sec:results}
+
+Describe sectoral carbon intensity
+
+\begin{equation}
+    e_{s} = \frac{E_{s}^{direct}+E_{s}^{indirect}}{\sum_{i} C_{i,s}}
+\end{equation}
+
+Describe indirect carbon emissions
+
+\begin{equation}
+    E_{s}^{indirect} = \sum_{r'} \sum_{s'} e_{r',s'} L_{r',s'}^{r,s} C_{s}
+\end{equation}
+
+with L being the Leontief-inverse. (Show regional and sectoral carbon intensities in Appendix).
+
+Core assumption of this analysis:
+
+\begin{equation}
+    e_{i} \sim X_{i}
+\end{equation}
+
+Appendix: Distribution of carbon intensity across countries
+
+About here: Figure 1 - vertical vs. horizontal distribution of carbon intensity in first quintiles, all countries
+
+About here: Figure 2 - vertical vs. horizontal distribution of carbon intensity across all countries (Figure 2 Latin America)
+
+If within-quintile differences exceed between-quintile differences relying on differences in income as a main indicator is insufficient.
+
+Which criteria should be included in modelling and why?
+
+Introduce boosted regression trees and highlight benefits. Describe "feature engineering" in the Appendix. Describe evaluation of model outcomes.
+
+Motivate and describe clustering algorithm.
+
+Shap values in Appendix (?)
+
+Logit-model for easier visualization, de facto robustness check
+
+\section{Results: Heterogeneity of carbon intensity of consumption} \label{sec:results}
 
 \begin{itemize}
+\item Cluster-figure
+\item "Machine-learning results" figure
+\item Pro Cluster das größte Land, ggf. SHAP oder Logit-model (TBD Entscheidungskriterium). Shap values to appendix. Marginal effects of logit-models per country for easier visualization. Across countries to Appendix.
   \item Summary statistics
   \item Show differences between poor and rich households.
   \item Show differences within poor and rich households.
@@ -152,15 +215,15 @@ In this study, we analyze the heterogeneity in carbon intensity of consumption w
   \item One figure: Comparing marginal effects from Logit-model across countries
   \item More carbon-intensive households are more likely to own (and use) a car, more likely to use fossil fuels for cooking, such as coal, gas, or LPG, less likely to use firewood, charcoal or biomass for cooking, compared to households cooking with electricity. More likely connected to the electricity grid, more likely to have secondary or higher education, more likely to live in rural areas (in richer countries). Discuss differences in space, across provinces and districts. Depending on the country-context, they are more/less likely to identify with ethnic majorities or minorities.
   \item Comparing model outcomes across countries. One figure: A: Show classification for single countries with colour codes (order in clusters). B: Show clustering of countries with colour codes.
-  \item Discuss differences in instruments: electricity sector instruments, transport sector instruments, international trade policy etc. Highlight main differences: electricity sector characteristics and electrification critical for electricity sector instruments, transport sector policies likely regressive in richer countries, progressive in poorer countries, carbon border adjustments more likely to affect people who consume more carbon-intensive and imported goods and services. Non-consumption impacts probably more severe. (If anything, possibly also Appendix. I suggest the figure comparing vertical and horizontal aspects here).
+  \item Discuss differences in instruments: electricity sector instruments, transport sector instruments, international trade policy etc. Highlight main differences: electricity sector characteristics and electrification critical for electricity sector instruments, transport sector policies likely regressive in richer countries, progressive in poorer countries, carbon border adjustments more likely to affect people who consume more carbon-intensive and imported goods and services. Non-consumption impacts probably more severe. (If anything, possibly also Appendix. I suggest the figure comparing vertical and horizontal aspects here - in Appendix).
 \end{itemize}
 
 \section{Discussion} \label{sec:discussion}
 
 \begin{itemize}
- \item Discuss role of findings for design of different policies (standards, subsidies, brief)
- \item Discuss role of findings for design of transfers
- \item Discuss ``value chain of climate policy implementation''. Discuss literature on public acceptance. Highlight research gaps: Which distributional implications matter to households and why? How could compensation increase public support? Public support of which groups matter for people with political power?
+  \item Discuss role of findings for design of transfers. What is being discussed? LST, tax breaks, infrastructure access. Which transfer tool is applicable in which context?
+\item Discuss ``value chain of climate policy implementation''. Discuss literature on public acceptance. Highlight research gaps: Which distributional implications matter to households and why? How could compensation increase public support? Public support of which groups matter for people with political power?
+ \item Discuss role of findings for design of different policies (standards, subsidies, brief ?)
  \item Discuss dynamic effects and inaccuracies in modeling approach (tax pass-through, short- vs. medium-term, technological path dependencies/barriers on household-level)
  \item Distinguish results from analyses about climate policy on labour, wealth, impacts, adaptation, co-benefits, co-costs.
 \end{itemize}
@@ -175,58 +238,6 @@ In this study, we analyze the heterogeneity in carbon intensity of consumption w
 
 \clearpage
 
-% \section{Data and Methods} \label{sec:data_and_methods}
-
-% \subsection{Multi-regional input-output data}
-
-% Critical discussion
-
-% \subsection{Household expenditure data}
-
-% Critical discussion
-
-% \subsection{Microsimulation}
-
-% Critical discussion
-
-% \subsection{Econometric analysis}
-
-% Critical discussion
-
-% \subsection{Critical appraisal}
-
-% Critical discussion
-
-% \subsection{Data}
-
-% \paragraph{Household-level consumption data}
-
-% \paragraph{Multi-regional input-output data}
-
-% \subsection{Method}
-
-% \paragraph{Household-level expenditure shares on consumption sectors}
-
-% \paragraph{Multi-regional input-output model}
-
-% \paragraph{Household-level carbon intensity of consumption}
-
-% \subsection{Econometric analysis}
-
-% \paragraph{Descriptive statistics}
-
-% \paragraph{OLS-regression}
-
-% \paragraph{Logit-regression}
-
-% \paragraph{Inequality decomposition}
-
-% \paragraph{Boosted regression trees}
-
-% \paragraph{Methodological discussion}
-
-\clearpage
-
 \printbibliography
 
 \clearpage
@@ -235,13 +246,29 @@ In this study, we analyze the heterogeneity in carbon intensity of consumption w
 
 \section{Appendix} \label{sec:appendix}
 
-\subsection{Data cleaning}
+\subsection{Data cleaning} \label{sec:cleaning}
+
+We describe our approach to collecting, cleaning and homogenizing microdata and to feature engineering for machine learning modelling. 
+
+\subsubsection{Collecting household data}
+
+
+
+\subsubsection{Cleaning and homogenizing household data}
 
 % tracking and documenting removals
 
-% transfer schemes ?
+\subsubsection{Feature engineering}
 
-% Electriciy generation
+\subsection{Policy simulation}\label{sec:policysimulation}
+
+We show that heterogeneity in household-level carbon intensity of consumption is equivalent to heterogeneity in household-level carbon pricing incidence, assuming that producers pass-on carbon prices to consumers and that the carbon pricing incidence reflects over-night costs to households without demand responses.
+
+\begin{equation}
+    CPI_{i} = \frac{E_{i}*\tau}{C_{i}}
+\end{equation}
+
+Tau proportionaler Faktor. Ausdruck in \% as $\frac{USD_{\tau}}{USD_{i}}$ or in $\frac{kgCO_{2}}{USD_{i}}$ with $\tau$ in $\frac{USD}{kgCO_{2}}$.
 
 \clearpage
 
