@@ -5,7 +5,7 @@
 
 if(!require("pacman")) install.packages("pacman")
 
-p_load("boot", "broom", "countrycode", "cowplot", "DALEXtra", "eulerr","facetscales","fixest", "ggpubr", "ggrepel",
+p_load("boot", "broom", "countrycode", "cowplot", "DALEXtra", "eulerr","fixest", "ggpubr", "ggrepel",
        "ggsci", "Hmisc", "knitr", "kableExtra", "marginaleffects", "margins", "Metrics",
        "openxlsx", "pdp","rattle", "scales", "SHAPforxgboost","tidymodels", "tidyverse", "vip", "xgboost", "xtable")
 
@@ -2012,11 +2012,189 @@ for (Type_0 in c("affected_lower_80", "affected_upper_80")){
 rm(data_frame_5.3.2.1, data_frame_5.3.2.3, data_5.3, Type_0, i)
 
 # 6       ML-supported analysis ####
-# 6.1     BRT on carbon intensity of consumption (regression model) ####
+
+# 6.1     Boosted Regression trees on carbon intensity of consumption ####
+
+Country.Set.Test.1 <- c("ISR")
+
+track <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_BRT.xlsx")
+
+set.seed(2023)
+
+options(warn = 1)
+
+for (i in Country.Set.Test.1){
+  tryCatch({
+    
+    track_0 <- data.frame(Country = i, date = date())
+    
+    run_ID <- if(i %in% track$Country) paste0(i, "_", max(track$number[track$Country == i])+1) else paste0(i, "_",1)
+    
+    print(paste0("Start ", i, ": ", run_ID))
+    
+    # Filter only observations for country of interest  
+    data_6.1 <- filter(data_2, Country == i)
+    
+    track_0$observations_sample = nrow(data_6.1)
+    
+    # Feature engineering - Step 1 (with dplyr)
+    
+    data_6.1.1 <- data_6.1 %>%
+      # select relevant variables
+      select(Country, hh_id, hh_weights, hh_size,
+             Province, urban_01, District,
+             sex_hhh, ISCED, Ethnicity, Religion, Nationality, Language, religiosity,
+             electricity.access, HF, LF, CF, 
+             hh_expenditures_USD_2014, 
+             car.01, motorcycle.01, refrigerator.01, ac.01, tv.01, washing_machine.01, 
+             carbon_intensity_kg_per_USD_national)%>%
+      # remove redundant variables
+      select(-Country, -hh_id, -hh_weights)%>%
+      # can be included for "sanity check"
+      # mutate(noise = rnorm(n(),0,1))%>%
+      # include hh_weights later in the process
+      # factors instead of characters
+      mutate_if(vars(is.character(.)), list(~ as.factor(.)))%>%
+      mutate_at(vars(sex_hhh, ISCED, religiosity, urban_01, ends_with(".01"), electricity.access), list(~ as.factor(.)))
+    
+    # Country-specific edits 
+    if(i == "SWE"){data_6.1.1 <- select(data_6.1.1, -ISCED, -sex_hhh)}
+    if(i == "NLD"){data_6.1.1 <- select(data_6.1.1, -ISCED)}
+    if(!i %in% c("ARG", "ARM", "AUT", "BEL", "BOL", "CHE", "DEU", "ESP", "FIN", "FRA",
+                 "GRC", "HUN", "ITA", "JOR", "NLD", "POL", "PRT", "ROU", "SUR", "SWE")){data_6.1.1 <- select(data_6.1.1, -District)}
+    
+    rm(data_6.1)
+    
+    # Splitting the sample, but no strata
+    
+    prop_0 = 0.75
+    if(i == "IDN"){prop_0 <- 0.2}
+    if(i == "IND"){prop_0 <- 0.3}
+    if(i == "MEX"){prop_0 <- 0.5}
+    
+    data_6.1.2 <- data_6.1.1 %>%
+      initial_split(prop = prop_0)
+    
+    # Data for training
+    data_6.1.2.train <- data_6.1.2 %>%
+      training()
+    
+    # Data for testing
+    data_6.1.2.test <- data_6.1.2 %>%
+      testing()
+    
+    rm(data_6.1.1, data_6.1.2)
+    
+    # Feature engineering - Step 2 (with recipe)
+    
+    recipe_6.1.0 <- recipe(carbon_intensity_kg_per_USD_national ~ .,
+                           data = data_6.1.2.train)%>%
+      # Deletes all columns with any NA
+      step_filter_missing(all_predictors(), threshold = 0)%>%
+      # Remove minimum number of columns such that correlations are less than 0.9
+      step_corr(all_numeric(), -all_outcomes(), threshold = 0.9)%>%
+      # should have very few unique observations for factors
+      step_other(all_nominal(), -ends_with(".01"), -ends_with("urban_01"), -ends_with("District"), -ends_with("Province"), threshold = 0.05)
+    
+    data_6.1.2.training <- recipe_6.1.0 %>%
+      prep(training = data_6.1.2.train)%>%
+      bake(new_data = NULL)
+    
+    data_6.1.2.testing <- recipe_6.1.0 %>%
+      prep(training = data_6.1.2.test)%>%
+      bake(new_data = NULL) 
+    
+    # Five-fold cross-validation
+    
+    folds_6.1 <- vfold_cv(data_6.1.2.training, v = 5)
+    
+    # Setup model to be tuned
+    
+    model_brt <- boost_tree(
+      trees         = 1000,
+      tree_depth    = tune(), # maximum depth of tree
+      learn_rate    = tune(), # the higher the learning rate the faster - default 0.3
+      # min_n       = tune(),
+      mtry          = tune(), # fraction of features to be selected for each tree (0.5/0.7/1)
+      # stop_iter   = tune(),
+      # sample_size = tune()
+    )%>%
+      set_mode("regression")%>%
+      set_engine("xgboost")
+    
+    # Create a tuning grid - 16 different models for the tuning space
+    
+    grid_0 <- grid_latin_hypercube(
+      tree_depth(),
+      learn_rate(c(-3,-0.5)),# tuning parameters
+      mtry(c(round((ncol(data_6.1.2.training)-1)/2,0), ncol(data_6.1.2.training)-1)),
+      size = 15)%>%
+      # default parameters
+      bind_rows(data.frame(tree_depth = 6, learn_rate = 0.3, mtry = ncol(data_6.1.2.training)-1))
+    
+    # Tune the model - cover the entire parameter space without running every combination
+    
+    doParallel::registerDoParallel()
+    
+    time_1 <- Sys.time()
+    
+    model_brt_1 <- tune_grid(model_brt,
+                             carbon_intensity_kg_per_USD_national ~ .,
+                             resamples = folds_6.1,
+                             grid      = grid_0,
+                             metrics   = metric_set(mae, rmse, rsq))
+    
+    time_2 <- Sys.time()
+    
+    track_0$tuning_time <- as.integer(difftime(time_1, time_2, units = "min"))
+    
+    # Collect metrics of tuned models
+    
+    metrics_1 <- collect_metrics(model_brt_1)
+    
+    model_brt_1.1 <- select_best(model_brt_1, metric = "mae")
+    
+    metrics_1.1 <- metrics_1 %>%
+      filter(.config == model_brt_1.1$.config[1])
+    
+    # Output: best model after tuning
+    track_0 <- bind_cols(track_0, model_brt_1.1)%>%
+      rename(tree_depth_best = tree_depth, learn_rate_best = learn_rate, mtry_best = mtry)%>%
+      select(-.config)%>%
+      mutate(mae_mean_cv_5_train  = metrics_1.1$mean[metrics_1.1$.metric == "mae"],
+             rmse_mean_cv_5_train = metrics_1.1$mean[metrics_1.1$.metric == "rmse"],
+             rsq_mean_cv_5_train  = metrics_1.1$mean[metrics_1.1$.metric == "rsq"])
+    
+    track <- track %>%
+      bind_rows(track_0)
+    
+    rm(track_0, run_ID, time_1, time_2, grid_0,
+       model_brt, model_brt_1, model_brt_1.1, metrics_1.1, metrics_1,
+       data_6.1.2.test, data_6.1.2.testing, data_6.1.2.train, data_6.1.2.training,
+       folds_6.1, recipe_6.1.0)
+    
+    gc()
+    
+    print(paste0("End: ", i, " ", Sys.time()))
+    
+  }, error=function(e){cat("ERROR :",conditionMessage(e), "\n")})
+}
+
+track_1 <- track %>%
+  group_by(Country)%>%
+  mutate(number = 1:n())%>%
+  ungroup()%>%
+  mutate(number_ob = paste0(Country, "_", number))%>%
+  select(number_ob, everything())%>%
+  write.xlsx(., "../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_BRT.xlsx")
+
+rm(track)
+
+# 6.1.X   BRT on carbon intensity of consumption (regression model) ####
 
 # We wish to detect the importance of variables in modelling and non-linear relationships
 
-Country.Set.Test.1 <- c("CIV", "ZAF", "IDN", "IND", "MEX")
+Country.Set.Test.1 <- c("ITA", "ESP", "GRC", "RUS", "MOZ", "VNM")
 
 track <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_BRT.xlsx")
 
@@ -2060,7 +2238,8 @@ for (i in Country.Set.Test.1){
       # include hh_weights later in the process
       # factors instead of characters
       mutate_if(vars(is.character(.)), list(~ as.factor(.)))%>%
-      mutate_at(vars(sex_hhh, ISCED, religiosity, urban_01, ends_with(".01")), list(~ as.factor(.)))
+      mutate_at(vars(sex_hhh, ISCED, religiosity, urban_01, ends_with(".01")), list(~ as.factor(.)))%>%
+      mutate(noise = rnorm(n(),0,1))
     # dataset should have no NA
     #select_if(~ !any(is.na(.)))
     
@@ -2181,10 +2360,10 @@ for (i in Country.Set.Test.1){
     
     model_brt_3 <- boost_tree(
       trees = 1000,
-      tree_depth = tune(),
+      tree_depth = tune(), # maximum depth of tree - tuning not necessarily necessariy
       learn_rate = tune(), # the higher the learning rate the faster - default 0.3
       # min_n = tune(),
-      # mtry = tune(),
+      mtry = tune(), # possibly 1/0.7/0.5
       # stop_iter = tune(),
       # sample_size = tune()
     )%>%
@@ -2232,6 +2411,12 @@ for (i in Country.Set.Test.1){
       fit(carbon_intensity_kg_per_USD_national ~ ., 
           data = data_6.1.2.training)
     
+    # With testing data
+    
+    model_brt_3.1.3 <- finalize_model(model_brt_3, model_brt_3.1.1)%>%
+      fit(carbon_intensity_kg_per_USD_national ~ .,
+          data = data_6.1.2.testing)
+    
     predictions_6.2.1 <- augment(model_brt_3.1.2, new_data = data_6.1.2.training)
     
     mae_predictions_6.2.1 <- mae(predictions_6.2.1, truth = carbon_intensity_kg_per_USD_national, estimate = .pred)
@@ -2263,12 +2448,19 @@ for (i in Country.Set.Test.1){
     
     vi_3.2 <- vi(model_brt_3.1.2)%>%
       mutate(Country = i)%>%
-      mutate(run_ID = run_ID)
+      mutate(run_ID = run_ID)%>%
+      mutate(Type = "Training")
+    
+    vi_3.3 <- vi(model_brt_3.1.3)%>%
+      mutate(Country = i)%>%
+      mutate(run_ID = run_ID)%>%
+      mutate(Type = "Testing")
     
     vip_data <- vip_data %>%
-      bind_rows(vi_3.2)
+      bind_rows(vi_3.2) %>%
+      bind_rows(vi_3.3)
     
-    rm(vi_3.2)
+    rm(vi_3.2, vi_3.3)
     
     # Preparation for partial dependence plot
     
@@ -2319,15 +2511,15 @@ for (i in Country.Set.Test.1){
     pdp_6.2.4 <- as_tibble(pdp_6.2.2$agr_profiles)%>%
      mutate(Country = i)%>%
      mutate(run_ID = run_ID)%>%
-     rename()
+     rename("numeric" = "_x_")
     
     pdp_6.3 <- bind_rows(pdp_6.1.1, pdp_6.2.3, pdp_6.2.4)
     
     pdp_data <- pdp_data %>%
       bind_rows(pdp_6.3)
     
-    rm(explainer_6.1, pdp_6.1, data_6.1.2.testing, data_6.1.2.training, pdp_6.2.1, pdp_6.2.2, pdp_6.2.3, 
-       pdp_6.1.1, pdp_6.3, model_brt_3.1.2, data_6.1.2.test, data_6.1.2.train, recipe_6.1.0)
+    rm(explainer_6.1, pdp_6.1, data_6.1.2.testing, data_6.1.2.training, pdp_6.2.1, pdp_6.2.2, pdp_6.2.3, pdp_6.2.4,
+       pdp_6.1.1, pdp_6.3, model_brt_3.1.2, model_brt_3.1.3, data_6.1.2.test, data_6.1.2.train, recipe_6.1.0)
     
     # SHAP-values: TBA
     
@@ -2551,7 +2743,7 @@ data_6.3.2 <- data_6.3.1 %>%
   filter(row_number() == n())%>%
   ungroup()
 
-# Part II
+# Part II: Vertical vs. horizontal inequality
 
 data_6.3.3 <- data_2 %>%
   group_by(Country, Income_Group_5)%>%
@@ -2570,6 +2762,8 @@ data_6.3.3 <- data_2 %>%
          dif_95_05_1_5 = dif_q95_q05_burden_CO2_national_1/dif_q95_q05_burden_CO2_national_5,
          dif_80_20_1_5 = dif_q80_q20_burden_CO2_national_1/dif_q80_q20_burden_CO2_national_5)%>%
   select(Country, median_1_5, dif_95_05_1_5)
+
+# Part III: Carbon intensity of consumption
 
 data_6.3.4 <- data_2 %>%
   group_by(Country)%>%
@@ -4190,10 +4384,14 @@ model_brt_3 <- boost_tree(
 
 # Preparation for shapley values plot
 
-explainer_7.6.3 <- explain_tidymodels(model_brt_3,
-                                      data = select(data_7.6.3.3.testing, - carbon_intensity_kg_per_USD_national),
-                                      y    = select(data_7.6.3.3.testing, carbon_intensity_kg_per_USD_national),
-                                      label = "BRT")
+# explainer_7.6.3 <- explain_tidymodels(model_brt_3,
+#                                       data = select(data_7.6.3.3.testing, - carbon_intensity_kg_per_USD_national),
+#                                       y    = select(data_7.6.3.3.testing, carbon_intensity_kg_per_USD_national),
+#                                       label = "BRT")
+# 
+# test_shap <- predict_parts(explainer = explainer_7.6.3,
+#                            new_observation = data_7.6.3.3.testing,
+#                            type = "shap")
 
 # potentially required one-hot-encoding
 
@@ -4201,12 +4399,31 @@ test <- data_7.6.3.3.testing %>%
   select(-carbon_intensity_kg_per_USD_national)%>%
   as.matrix()
 
+# better
+
+shap_contrib = predict(extract_fit_engine(model_brt_3), test, predcontrib = TRUE, approxcontrib = F)
+
+test <- as_tibble(shap_contrib)%>%
+  summarise_all(~ mean(abs(.)))%>%
+  select(-BIAS)%>%
+  pivot_longer(everything(),names_to = "variable", values_to = "contribution")
+
 shap <- shap.prep(
   xgb_model = extract_fit_engine(model_brt_3),
   X_train = test
 )
 
-# Global feature importance.
+shap1 <- shap.values(
+  xgb_model = extract_fit_engine(model_brt_3),
+  X_train = test
+)
+
+shap.test <- shap %>%
+  distinct(variable, mean_value)%>%
+  mutate(sum_value = sum(mean_value))%>%
+  mutate(share_shap = mean_value/sum_value)
+
+# Global feature importance. --> Could be rebuild from package documentation: https://github.com/liuyanguu/SHAPforxgboost/blob/master/R/SHAP_funcs.R
 
 # This is what might be worth working with
 P.1 <- shap.plot.summary(shap)
@@ -4224,7 +4441,9 @@ dev.off()
  
 # This is what might be worth working with
 shap.plot.dependence(data_long = shap, x = "urban_01_X1",
-                     y = "urban_01_X1", color_feature = "urban_01_X1")
+                     y = "urban_01_X1", color_feature = "value")
+
+shap.plot.dependence(data_long = shap, x = "hh_expenditures_USD_2014", color_feature = "hh_expenditures_USD_2014")
 
 test <- predict_parts(explainer = explainer_7.6.3,
                       new_observation = data_7.6.3.3.testing,
@@ -4804,3 +5023,194 @@ print(P_8.2)
 dev.off()
 
 rm(data_8.2.0, data_8.2.1, poly, poly_2, poly_3, poly_4, poly_5, P_8.2)
+
+# 8.3     Figure 3: Clustering and features ####
+
+data_8.3.0 <- data_6.3.8 %>%
+  arrange(desc(number))%>%
+  mutate(cluster = LETTERS[1:n()])%>%
+  select(-number, - cluster_kmeans_11)%>%
+  rename("Horizontal inequality" = "dif_95_05_1_5", "Education" = ISCED, "Mean carbon intensity" = "mean_carbon_intensity",
+         "Vertical inequality" = "median_1_5")%>%
+  pivot_longer(-cluster, names_to = "names", values_to = "values")%>%
+  mutate(names = factor(names, levels = c("Mean carbon intensity", "Vertical inequality", "Horizontal inequality",
+                                          "HH expenditures", "Car own.", "Electricity access", "Urban", "Province",
+                                          "Cooking", "Lighting", "Education")))
+
+P_8.3 <- ggplot(data_8.3.0)+
+  geom_point(aes(y = factor(cluster), x = names, fill = values), shape = 22, size = 5, stroke = 0.01)+
+  theme_bw()+
+  #scale_fill_viridis_c(direction = -1)+
+  scale_fill_gradient2(na.value = NA, low = "#0072B5FF", high = "#BC3C29FF", midpoint = 0, breaks = c(-1,2), labels = c("Negative", "Positive"))+
+  theme_bw()+
+  scale_y_discrete(limits = rev)+
+  scale_x_discrete()+
+  xlab("Variable/feature")+ 
+  guides(colour = "none")+
+  labs(fill = "")+
+  ylab("Country cluster")+
+  #ggtitle("Clustering of countries")+
+  theme(axis.text.y = element_text(size = 6),
+        axis.text.x = element_text(size = 6, angle = 90, hjust = 1, vjust = 0.5),
+        axis.title.x  = element_text(size = 7),
+        axis.title.y = element_text(size = 7),
+        plot.title = element_text(size = 11),
+        legend.position = "right",
+        strip.text = element_text(size = 7),
+        #strip.text.y = element_text(angle = 180),
+        #panel.grid.major = element_blank(),
+        panel.grid.major = element_line(size = 0.1),
+        panel.grid.minor = element_blank(),
+        axis.ticks = element_blank(),
+        legend.text = element_text(size = 7),
+        legend.title = element_text(size = 7),
+        plot.margin = unit(c(0.3,0.3,0.3,0.3), "cm"),
+        panel.border = element_rect(size = 0.3))
+
+jpeg("1_Figures/Figure 3/Figure_3.jpg", width = 15.5, height = 11, unit = "cm", res = 600)
+print(P_8.3)
+dev.off()
+
+rm(data_8.3.0, P_8.3)
+
+# 8.4     Figure 4: Country-level feature importance and clusters ####
+
+data_8.4.0 <- data_6.3.5 %>%
+  #select(-median_1_5, -dif_95_05_1_5, -mean_carbon_intensity)%>%
+  pivot_longer(-Country, names_to = "names", values_to = "values")%>%
+  mutate(continent = countrycode(Country, origin = "iso3c", destination = "continent"))%>%
+  left_join(select(data_6.3.6, Country, cluster_kmeans_11))
+
+# First horizontal and vertical indicators
+
+data_8.4.1 <- filter(data_8.4.0, names %in% c("median_1_5", "dif_95_05_1_5"))%>%
+  # The following should be useless
+  mutate(values_rescaled = ifelse(values > 1, values/2, values))
+
+P_8.4.1 <- ggplot(data_8.4.1)+
+  geom_point(aes(y = Country, x = names, fill = values), shape = 22, size = 3, stroke = 0.003)+
+  theme_bw()+
+  scale_fill_gradient2(na.value = NA, low = "#0072B5FF", high = "#BC3C29FF", midpoint = 1)+
+  #scale_fill_gradient2(na.value = NA, limits = c(0,1.5), low = "#0072B5FF", high = "#BC3C29FF", breaks = c(0,0.5,1,1.5), labels = c(0,1,2,3),
+  #                     midpoint = 0.5)+
+  theme_bw()+
+  facet_grid(cluster_kmeans_11 ~ ., scales = "free", space = "free")+
+  scale_y_discrete(limits = rev)+
+  scale_x_discrete(labels = c(expression(widehat(H)[r]^{1}), expression(widehat(V)[r]^{1})))+
+  xlab("")+ 
+  guides(fill = "none")+
+  ylab("Country")+
+  ggtitle("")+
+  theme(axis.text.y = element_text(size = 3), 
+        axis.text.x = element_text(size = 6),
+        axis.title  = element_text(size = 7),
+        plot.title = element_text(size = 11),
+        legend.position = "bottom",
+        strip.text = element_blank(),
+        strip.background = element_blank(),
+        #strip.text.y = element_text(angle = 180),
+        #panel.grid.major = element_blank(),
+        panel.grid.major.y = element_line(size = 0.1),
+        panel.grid.minor = element_blank(),
+        axis.ticks = element_line(size = 0.2),
+        legend.text = element_text(size = 7),
+        legend.title = element_text(size = 7),
+        plot.margin = unit(c(0.3,0.3,0.3,0.3), "cm"),
+        panel.border = element_rect(size = 0.3))
+
+# Carbon intensity of consumption 
+
+data_8.4.2 <- filter(data_8.4.0, names %in% c("mean_carbon_intensity"))%>%
+  mutate(value = (values - mean(values))/sd(values))
+
+P_8.4.2 <- ggplot(data_8.4.2)+
+  geom_point(aes(y = Country, x = names, fill = value), shape = 22, size = 3, stroke = 0.003)+
+  theme_bw()+
+  scale_fill_gradient2(na.value = NA, low = "#0072B5FF", high = "#BC3C29FF", midpoint = 0)+
+  theme_bw()+
+  facet_grid(cluster_kmeans_11 ~ ., scales = "free", space = "free")+
+  scale_y_discrete(limits = rev)+
+  scale_x_discrete(labels = c(expression(CI[r])))+
+  xlab("")+ 
+  guides(fill = "none")+
+  ylab("")+
+  ggtitle("")+
+  theme(axis.text.y = element_blank(),
+        axis.text.x = element_text(size = 6),
+        axis.title.x  = element_text(size = 7),
+        axis.title.y = element_blank(),
+        plot.title = element_text(size = 11),
+        legend.position = "bottom",
+        strip.text = element_blank(),
+        strip.background = element_blank(),
+        #strip.text.y = element_text(angle = 180),
+        #panel.grid.major = element_blank(),
+        panel.grid.major.y = element_line(size = 0.1),
+        panel.grid.minor = element_blank(),
+        axis.ticks = element_blank(),
+        legend.text = element_text(size = 7),
+        legend.title = element_text(size = 7),
+        plot.margin = unit(c(0.3,0.3,0.3,0.1), "cm"),
+        panel.border = element_rect(size = 0.3))
+
+# Features
+
+# Here we could show NAs as missings
+
+data_8.4.3 <- filter(data_8.4.0, !names %in% c("mean_carbon_intensity", "median_1_5", "dif_95_05_1_5"))%>%
+  mutate(help = ifelse(is.na(values), NA, "1"))%>%
+  mutate(values = ifelse(values == 0, NA, values))%>%
+  mutate(help = ifelse(is.na(values), NA, "1"))
+
+P_8.4.3 <- ggplot(data_8.4.3)+
+  geom_point(aes(y = Country, x = names, fill = values, colour = help), shape = 22, size = 3, stroke = 0.003)+
+  theme_bw()+
+  scale_colour_manual(na.value = NA, values = c("black"))+
+  scale_fill_gradient2(na.value = NA, limits = c(0,1), low = "#0072B5FF", high = "#BC3C29FF", midpoint = 0.2)+
+  theme_bw()+
+  facet_grid(cluster_kmeans_11 ~ ., scales = "free", space = "free")+
+  scale_y_discrete(limits = rev)+
+  scale_x_discrete()+
+  xlab("")+ 
+  guides(fill = "none", colour = "none")+
+  ylab("")+
+  ggtitle("")+
+  theme(axis.text.y = element_blank(),
+        axis.text.x = element_text(size = 4, angle = 90, hjust = 1, vjust = 0.5),
+        axis.title.x  = element_text(size = 7),
+        axis.title.y = element_blank(),
+        plot.title = element_text(size = 11),
+        legend.position = "bottom",
+        strip.text = element_blank(),
+        strip.background = element_blank(),
+        #strip.text.y = element_text(angle = 180),
+        #panel.grid.major = element_blank(),
+        panel.grid.major = element_line(size = 0.1),
+        panel.grid.minor = element_blank(),
+        axis.ticks = element_blank(),
+        legend.text = element_text(size = 7),
+        legend.title = element_text(size = 7),
+        plot.margin = unit(c(0.3,0.3,0.3,0.1), "cm"),
+        panel.border = element_rect(size = 0.3))
+
+P_8.4.4 <- align_plots(P_8.4.1, P_8.4.2, P_8.4.3, align = "h")
+
+test <- ggarrange(P_8.4.1, P_8.4.2, P_8.4.3, nrow = 1, align = "h", widths = c(2,1,6))
+
+# P_7.7.5 <- ggdraw(P_7.7.4[[1]])
+# P_7.7.6 <- ggdraw(P_7.7.4[[2]])
+# P_7.7.7 <- ggdraw(P_7.7.4[[3]])
+# 
+# jpeg("4_Presentations/Figures/Figure 7/Figure_7_a_Africa_%d.jpg", width = 4, height = 10, unit = "cm", res = 600)
+# print(P_7.7.5)
+# dev.off()
+# 
+# jpeg("4_Presentations/Figures/Figure 7/Figure_7_b_Africa_%d.jpg", width = 2, height = 10, unit = "cm", res = 600)
+# print(P_7.7.6)
+# dev.off()
+# 
+# jpeg("4_Presentations/Figures/Figure 7/Figure_7_c_Africa_%d.jpg", width = 8, height = 10, unit = "cm", res = 600)
+# print(P_7.7.7)
+# dev.off()
+# 
+# rm(data_7.7, data_7.7.1, data_7.7.2, data_7.7.3, P_7.7.1,  P_7.7.2,  P_7.7.3,  P_7.7.4,  P_7.7.5,  P_7.7.6,  P_7.7.7)
