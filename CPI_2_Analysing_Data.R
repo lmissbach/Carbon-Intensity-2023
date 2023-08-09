@@ -2190,6 +2190,176 @@ track_1 <- track %>%
 
 rm(track)
 
+# 6.1.1   Calculate model evaluation and SHAP-values ####
+
+# SHAP expresses feature importance based on the marginal contribution of each predictor for each observation. Has local explanation and consistency.
+
+Country.Set.Test.2 <- c("ISR")
+
+track <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_BRT.xlsx") %>%
+  filter(Country == i)%>%
+  dplyr::slice(which.min(mae_mean_cv_5_train))
+
+for (i in Country.Set.Test.1){
+  tryCatch({
+
+    data_6.1 <- filter(data_2, Country == i)
+    
+    # Feature engineering - Part I
+    
+    data_6.1.1 <- data_6.1 %>%
+      # select relevant variables
+      select(Country, hh_id, hh_weights, hh_size,
+             Province, urban_01, District,
+             sex_hhh, ISCED, Ethnicity, Religion, Nationality, Language, religiosity,
+             electricity.access, HF, LF, CF, 
+             hh_expenditures_USD_2014, 
+             car.01, motorcycle.01, refrigerator.01, ac.01, tv.01, washing_machine.01, 
+             carbon_intensity_kg_per_USD_national)%>%
+      # remove redundant variables
+      select(-Country, -hh_id, -hh_weights)%>%
+      # can be included for "sanity check"
+      # mutate(noise = rnorm(n(),0,1))%>%
+      # include hh_weights later in the process
+      # factors instead of characters
+      mutate_if(vars(is.character(.)), list(~ as.factor(.)))%>%
+      mutate_at(vars(sex_hhh, ISCED, religiosity, urban_01, ends_with(".01"), electricity.access), list(~ as.factor(.)))
+    
+    # Country-specific edits 
+    if(i == "SWE"){data_6.1.1 <- select(data_6.1.1, -ISCED, -sex_hhh)}
+    if(i == "NLD"){data_6.1.1 <- select(data_6.1.1, -ISCED)}
+    if(!i %in% c("ARG", "ARM", "AUT", "BEL", "BOL", "CHE", "DEU", "ESP", "FIN", "FRA",
+                 "GRC", "HUN", "ITA", "JOR", "NLD", "POL", "PRT", "ROU", "SUR", "SWE")){data_6.1.1 <- select(data_6.1.1, -District)}
+    
+    rm(data_6.1)
+    
+    # Splitting the sample, but no strata
+    
+    prop_0 = 0.75
+    if(i == "IDN"){prop_0 <- 0.2}
+    if(i == "IND"){prop_0 <- 0.3}
+    if(i == "MEX"){prop_0 <- 0.5}
+    
+    data_6.1.2 <- data_6.1.1 %>%
+      initial_split(prop = prop_0)
+    
+    # Data for training
+    data_6.1.2.train <- data_6.1.2 %>%
+      training()
+    
+    # Data for testing
+    data_6.1.2.test <- data_6.1.2 %>%
+      testing()
+    
+    rm(data_6.1.2)
+    
+    # Feature engineering - Step 2 (with recipe) - with dummification
+    
+    recipe_6.1.0 <- recipe(carbon_intensity_kg_per_USD_national ~ .,
+                           data = data_6.1.2.train)%>%
+      # Deletes all columns with any NA
+      step_filter_missing(all_predictors(), threshold = 0)%>%
+      # Remove minimum number of columns such that correlations are less than 0.9
+      step_corr(all_numeric(), -all_outcomes(), threshold = 0.9)%>%
+      # should have very few unique observations for factors
+      step_other(all_nominal(), -ends_with(".01"), -ends_with("urban_01"), -ends_with("District"), -ends_with("Province"), threshold = 0.05)%>%
+      # including dummification
+      step_dummy(all_nominal())
+    
+    # Training dataset
+    data_6.1.2.training <- recipe_6.1.0 %>%
+      prep(training = data_6.1.2.train)%>%
+      bake(new_data = NULL)
+    
+    # Testing dataset
+    data_6.1.2.testing <- recipe_6.1.0 %>%
+      prep(training = data_6.1.2.test)%>%
+      bake(new_data = NULL) 
+    
+    # Entire dataset
+    data_6.1.2.all <- recipe_6.1.0 %>%
+      prep(training = data_6.1.2.train)%>%
+      bake(new_data = data_6.1.1)
+    
+    # Model to be tuned
+    model_brt <- boost_tree(
+      trees         = 1000,
+      tree_depth    = track$tree_depth_best[1],
+      learn_rate    = track$learn_rate_best[1], # the higher the learning rate the faster - default 0.3
+      mtry          = track$mtry_best[1]
+    )%>%
+      set_mode("regression")%>%
+      set_engine("xgboost")
+    
+    model_brt_1 <- model_brt %>%
+      fit(carbon_intensity_kg_per_USD_national ~ .,
+          data = data_6.1.2.training)
+    
+    # Evaluation on training dataset 
+    predictions_6.1.1 <- augment(model_brt_1, new_data = data_6.1.2.training)
+    mae_6.1.1  <- mae(predictions_6.1.1,  truth = carbon_intensity_kg_per_USD_national, estimate = .pred)
+    rmse_6.1.1 <- rmse(predictions_6.1.1, truth = carbon_intensity_kg_per_USD_national, estimate = .pred)
+    rsq_6.1.1  <- rsq(predictions_6.1.1,  truth = carbon_intensity_kg_per_USD_national, estimate = .pred)
+    eval_6.1.1 <- bind_rows(mae_6.1.1, rmse_6.1.1, rsq_6.1.1)%>%
+      mutate(Type = "Training")
+    # Evalutation on testing dataset
+    predictions_6.1.2 <- augment(model_brt_1, new_data = data_6.1.2.testing)
+    mae_6.1.2  <- mae(predictions_6.1.2,  truth = carbon_intensity_kg_per_USD_national, estimate = .pred)
+    rmse_6.1.2 <- rmse(predictions_6.1.2, truth = carbon_intensity_kg_per_USD_national, estimate = .pred)
+    rsq_6.1.2  <- rsq(predictions_6.1.2,  truth = carbon_intensity_kg_per_USD_national, estimate = .pred)
+    eval_6.1.2 <- bind_rows(mae_6.1.2, rmse_6.1.2, rsq_6.1.2)%>%
+      mutate(Type = "Testing")
+    # Evaluation on entire dataset
+    predictions_6.1.3 <- augment(model_brt_1, new_data = data_6.1.2.all)
+    mae_6.1.3  <- mae(predictions_6.1.3,  truth = carbon_intensity_kg_per_USD_national, estimate = .pred)
+    rmse_6.1.3 <- rmse(predictions_6.1.3, truth = carbon_intensity_kg_per_USD_national, estimate = .pred)
+    rsq_6.1.3  <- rsq(predictions_6.1.3,  truth = carbon_intensity_kg_per_USD_national, estimate = .pred)
+    eval_6.1.3 <- bind_rows(mae_6.1.3, rmse_6.1.3, rsq_6.1.3)%>%
+      mutate(Type = "All")
+    
+    eval_6.1.0 <- bind_rows(eval_6.1.1, eval_6.1.2, eval_6.1.3)%>%
+      arrange(.metric)%>%
+      mutate(number_ob = track$number_ob[1])
+    
+    # Output: --> eval_6.1.0
+    # TBD
+    
+    rm(predictions_6.1.1, mae_6.1.1, rmse_6.1.1, rsq_6.1.1, eval_6.1.1,
+       predictions_6.1.2, mae_6.1.2, rmse_6.1.2, rsq_6.1.2, eval_6.1.2,
+       predictions_6.1.3, mae_6.1.3, rmse_6.1.3, rsq_6.1.3, eval_6.1.3)
+    
+    # SHAP - use testing data for evaluation
+    
+    data_6.1.2.testing_matrix <- data_6.1.2.testing %>%
+      select(-carbon_intensity_kg_per_USD_national)%>%
+      as.matrix()
+    
+    shap_6.1.2 <- predict(extract_fit_engine(model_brt_1),
+                          data_6.1.2.testing_matrix,
+                          predcontrib = TRUE,
+                          approxcontrib = FALSE)
+    
+    shap_6.1.2_1 <- shap_6.1.2 %>%
+      as_tibble()%>%
+      summarise_all(~ mean(abs(.)))%>%
+      select(-BIAS)%>%
+      pivot_longer(everything(), names_to = "variable", values_to = "SHAP_contribution")%>%
+      arrange(desc(SHAP_contribution))%>%
+      mutate(tot_contribution = sum(SHAP_contribution))%>%
+      mutate(share_SHAP       = SHAP_contribution/tot_contribution)%>%
+      select(-tot_contribution)
+    
+    # Edit variable names 
+    
+    # Sum up and aggregate for output
+    
+    # Select top five disaggregated criteria for individual plots
+    # With expenditures as colour
+    
+    
+  }, error=function(e){cat("ERROR :",conditionMessage(e), "\n")})
+}
+
 # 6.1.X   BRT on carbon intensity of consumption (regression model) ####
 
 # We wish to detect the importance of variables in modelling and non-linear relationships
@@ -2670,12 +2840,8 @@ jpeg("1_Figures/Test/PDP_Test_2.jpg", width = 30, height = 16, unit = "cm", res 
 print(plot_6.1.2.2)
 dev.off()
 
-# 6.1.3   Measure of models ####
-# 6.1.4   SHAP-Values - TBA ####
-# Combines variable importance and partial dependence plots
-# measuring feature importance based on the marginal contribution of each predictor for each observation
-# Main advantages: local explanation and consistency
-
+# 6.1.X   Measure of models ####
+# 6.1.X   SHAP-Values - TBA ####
 
 # 6.2     BRT on hardship cases (classification model) ####
 
@@ -4395,13 +4561,13 @@ model_brt_3 <- boost_tree(
 
 # potentially required one-hot-encoding
 
-test <- data_7.6.3.3.testing %>%
+test <- data_7.6.3.3.training %>%
   select(-carbon_intensity_kg_per_USD_national)%>%
   as.matrix()
 
 # better
 
-shap_contrib = predict(extract_fit_engine(model_brt_3), test, predcontrib = TRUE, approxcontrib = F)
+shap_contrib <- predict(extract_fit_engine(model_brt_3), test, predcontrib = TRUE, approxcontrib = F)
 
 test <- as_tibble(shap_contrib)%>%
   summarise_all(~ mean(abs(.)))%>%
