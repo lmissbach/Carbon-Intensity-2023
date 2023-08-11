@@ -2196,14 +2196,20 @@ rm(track)
 
 Country.Set.Test.2 <- c("ISR")
 
-track <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_BRT.xlsx") %>%
-  filter(Country == i)%>%
-  dplyr::slice(which.min(mae_mean_cv_5_train))
+eval_0 <- data.frame()
+
+shap_0 <- data.frame() # later: read from .xlsx
+shap_1 <- data.frame() # later: read from .xlsx
 
 for (i in Country.Set.Test.1){
   tryCatch({
 
+    track <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_BRT.xlsx") %>%
+      filter(Country == i)%>%
+      dplyr::slice(which.min(mae_mean_cv_5_train))
+    
     data_6.1 <- filter(data_2, Country == i)
+    # data_6.1 <- read_csv("C:/Users/misl/Desktop/Israel_Test_Set.csv")
     
     # Feature engineering - Part I
     
@@ -2319,18 +2325,27 @@ for (i in Country.Set.Test.1){
     
     eval_6.1.0 <- bind_rows(eval_6.1.1, eval_6.1.2, eval_6.1.3)%>%
       arrange(.metric)%>%
-      mutate(number_ob = track$number_ob[1])
+      mutate(number_ob = track$number_ob[1])%>%
+      select(-.estimator)%>%
+      pivot_wider(names_from = "Type", values_from = ".estimate", names_prefix = "Sample_")%>%
+      mutate(Country = i)%>%
+      select(Country, number_ob, .metric, Sample_Testing, Sample_Training, Sample_All)
     
     # Output: --> eval_6.1.0
-    # TBD
+
+    eval_0 <- bind_rows(eval_0, eval_6.1.0)
     
     rm(predictions_6.1.1, mae_6.1.1, rmse_6.1.1, rsq_6.1.1, eval_6.1.1,
        predictions_6.1.2, mae_6.1.2, rmse_6.1.2, rsq_6.1.2, eval_6.1.2,
-       predictions_6.1.3, mae_6.1.3, rmse_6.1.3, rsq_6.1.3, eval_6.1.3)
+       predictions_6.1.3, mae_6.1.3, rmse_6.1.3, rsq_6.1.3, eval_6.1.3, eval_6.1.0)
     
     # SHAP - use testing data for evaluation
     
     data_6.1.2.testing_matrix <- data_6.1.2.testing %>%
+      select(-carbon_intensity_kg_per_USD_national)%>%
+      as.matrix()
+    
+    data_6.1.2.all_matrix <- data_6.1.2.all %>%
       select(-carbon_intensity_kg_per_USD_national)%>%
       as.matrix()
     
@@ -2339,7 +2354,7 @@ for (i in Country.Set.Test.1){
                           predcontrib = TRUE,
                           approxcontrib = FALSE)
     
-    shap_6.1.2_1 <- shap_6.1.2 %>%
+    shap_6.1.2.1 <- shap_6.1.2 %>%
       as_tibble()%>%
       summarise_all(~ mean(abs(.)))%>%
       select(-BIAS)%>%
@@ -2351,11 +2366,229 @@ for (i in Country.Set.Test.1){
     
     # Edit variable names 
     
+    shap_6.1.2.2 <- shap_6.1.2.1 %>%
+      mutate(var_1 = ifelse(variable %in% c("hh_size", "hh_expenditures_USD_2014") | grepl("sex_hhh", variable) | grepl(".01", variable), NA, str_remove(variable, "^[^_]*")))%>%
+      mutate(var_1 = str_remove(var_1, "_X"))%>%
+      mutate(var_1 = str_remove(var_1, "_"))%>%
+      mutate(var_1 = str_replace_all(var_1, "\\.", " "))%>%
+      mutate(var_0 = ifelse(variable %in% c("hh_size", "hh_expenditures_USD_2014") | grepl("sex_hhh", variable) | grepl(".01", variable), str_remove(variable, "_X."), str_remove(variable, "_.*")))%>%
+      select(var_0, var_1, everything(), -variable)%>%
+      rename(Variable = var_0)%>%
+      mutate(Var_0 = ifelse(grepl("District", Variable), "District", 
+                            ifelse(grepl("Province", Variable), "Province", 
+                                   ifelse(grepl("ISCED", Variable), "ISCED", 
+                                          ifelse(grepl("Ethnicity", Variable), "Ethnicity", 
+                                                 ifelse(grepl("Religion", Variable), "Religion", 
+                                                        ifelse(Variable == "hh_expenditures_USD_2014", "HH expenditures",
+                                                               ifelse(Variable == "hh_size", "HH size",
+                                                                      ifelse(grepl("car.01", Variable), "Car own.",
+                                                                             ifelse(grepl("urban_01", Variable), "Urban",
+                                                                                    ifelse(grepl("sex_hhh", Variable), "Gender HHH",
+                                                                                           ifelse(grepl("CF_", Variable), "Cooking", 
+                                                                                                  ifelse(grepl("HF_", Variable), "Heating", 
+                                                                                                         ifelse(grepl("LF_", Variable), "Lighting", 
+                                                                                                                ifelse(Variable == "electricity.access", "Electricity access", Variable)))))))))))))))%>%
+      mutate(Var_0 = ifelse(Var_0 == "religiosity", "Religiosity",
+                            ifelse(Var_0 %in% c("refrigerator.01", "ac.01", "tv.01", "washing_machine.01"), "Appliance own.", 
+                                   ifelse(Var_0 == "motorcycle.01", "Motorcycle own.", Var_0))))%>%
+      mutate(order_number = 1:n())%>%
+      group_by(Var_0)%>%
+      mutate(order_number_2 = min(order_number))%>%
+      ungroup()%>%
+      arrange(order_number_2, order_number)%>%
+      mutate(var_1 = ifelse(Variable == "refrigerator.01", "Refrigerator",
+                            ifelse(Variable == "washing_machine.01", "Washing machine",
+                                   ifelse(Variable == "ac.01", "AC",
+                                          ifelse(Variable == "tv.01", "TV", 
+                                                 ifelse(Variable == "sex_hhh", "Female HHH",
+                                                        ifelse(Variable == "motorcycle.01", NA, var_1)))))))%>%
+      rename(Var_1 = var_1)%>%
+      select(Var_0, Var_1, everything(), - Variable)%>%
+      select(-order_number, -order_number_2)%>%
+      mutate(Country = i)%>%
+      mutate(number_ob = track$number_ob[1])
+    
+    shap_0 <- shap_0 %>%
+      bind_rows(shap_6.1.2.2)
+    
     # Sum up and aggregate for output
     
-    # Select top five disaggregated criteria for individual plots
-    # With expenditures as colour
+    shap_6.1.2.3 <- shap_6.1.2.2 %>%
+      group_by(Var_0)%>%
+      summarise_at(vars(share_SHAP), ~ sum(.))%>%
+      ungroup()%>%
+      mutate(help_0 = ifelse(share_SHAP < 0.03,1,0))%>%
+      arrange(share_SHAP)
+
+    shap_6.1.2.3.1 <- shap_6.1.2.3 %>%
+      filter(help_0 == 1)%>%
+      summarise(share_SHAP = sum(share_SHAP))%>%
+      mutate(Var_0 = "Other features (Sum)")
     
+    shap_6.1.2.3.2 <- shap_6.1.2.3 %>%
+      filter(help_0 == 0)%>%
+      arrange(desc(share_SHAP))%>%
+      bind_rows(shap_6.1.2.3.1)%>%
+      select(-help_0)%>%
+      mutate(Country = i)%>%
+      select(Country, everything())
+    
+    shap_1 <- shap_1 %>%
+      bind_rows(shap_6.1.2.3.2)
+    
+    # Output directly as Overleaf-Table
+    
+    shap_6.1.2.4 <- shap_6.1.2 %>% # SHAP hh_expenditures_USD_2014
+      as_tibble()%>%
+      select(hh_expenditures_USD_2014)%>%
+      rename(SHAP_hh_expenditures_USD_2014 = hh_expenditures_USD_2014)%>%
+      bind_cols(select(data_6.1.2.testing, hh_expenditures_USD_2014))%>%
+      mutate(Country = i)%>%
+      mutate(id = 1:n())%>%
+      select(Country, id, everything())
+    
+    # shap_6.1.2.4 as expenditure figure
+    
+    VOI <- shap_6.1.2.3.2 %>%
+      slice_head(n = 4)%>%
+      filter(Var_0 != "HH expenditures")
+    
+    shap_6.1.2.5 <- shap_6.1.2 %>%
+      as_tibble()%>%
+      pivot_longer(everything(), names_to = "variable", values_to = "SHAP")%>%
+      mutate(var_1 = ifelse(variable %in% c("hh_size", "hh_expenditures_USD_2014") | grepl("sex_hhh", variable) | grepl(".01", variable), NA, str_remove(variable, "^[^_]*")))%>%
+      mutate(var_1 = str_remove(var_1, "_X"))%>%
+      mutate(var_1 = str_remove(var_1, "_"))%>%
+      mutate(var_1 = str_replace_all(var_1, "\\.", " "))%>%
+      mutate(var_0 = ifelse(variable %in% c("hh_size", "hh_expenditures_USD_2014") | grepl("sex_hhh", variable) | grepl(".01", variable), str_remove(variable, "_X."), str_remove(variable, "_.*")))%>%
+      select(var_0, var_1, everything(), -variable)%>%
+      rename(Variable = var_0)%>%
+      mutate(Var_0 = ifelse(grepl("District", Variable), "District", 
+                            ifelse(grepl("Province", Variable), "Province", 
+                                   ifelse(grepl("ISCED", Variable), "ISCED", 
+                                          ifelse(grepl("Ethnicity", Variable), "Ethnicity", 
+                                                 ifelse(grepl("Religion", Variable), "Religion", 
+                                                        ifelse(Variable == "hh_expenditures_USD_2014", "HH expenditures",
+                                                               ifelse(Variable == "hh_size", "HH size",
+                                                                      ifelse(grepl("car.01", Variable), "Car own.",
+                                                                             ifelse(grepl("urban_01", Variable), "Urban",
+                                                                                    ifelse(grepl("sex_hhh", Variable), "Gender HHH",
+                                                                                           ifelse(grepl("CF_", Variable), "Cooking", 
+                                                                                                  ifelse(grepl("HF_", Variable), "Heating", 
+                                                                                                         ifelse(grepl("LF_", Variable), "Lighting", 
+                                                                                                                ifelse(Variable == "electricity.access", "Electricity access", Variable)))))))))))))))%>%
+      mutate(Var_0 = ifelse(Var_0 == "religiosity", "Religiosity",
+                            ifelse(Var_0 %in% c("refrigerator.01", "ac.01", "tv.01", "washing_machine.01"), "Appliance own.", 
+                                   ifelse(Var_0 == "motorcycle.01", "Motorcycle own.", Var_0))))%>%
+      mutate(var_1 = ifelse(Variable == "refrigerator.01", "Refrigerator",
+                            ifelse(Variable == "washing_machine.01", "Washing machine",
+                                   ifelse(Variable == "ac.01", "AC",
+                                          ifelse(Variable == "tv.01", "TV", 
+                                                 ifelse(Variable == "sex_hhh", "Female HHH",
+                                                        ifelse(Variable == "motorcycle.01", NA, var_1)))))))%>%
+      rename(Var_1 = var_1)%>%
+      select(Var_0, Var_1, everything(), - Variable)%>%
+      filter(Var_0 %in% VOI$Var_0)
+    
+    shap_6.1.2.6 <- data.frame(id = 1:nrow(data_6.1.2.testing))
+    
+    # Binaere bzw. numerische Variablen
+    
+    for(j in c("HH size", "Urban", "Car own.", "Motorcycle own.")){
+      
+      if(j %in% VOI$Var_0){
+        shap_6.1.2.5.1 <- shap_6.1.2.5 %>%
+          filter(Var_0 == j)%>%
+          select(-Var_1)%>%
+          mutate(id      = 1:n())%>%
+          pivot_wider(names_from = "Var_0", values_from = "SHAP", names_prefix = "SHAP_")
+        
+        if(j == "HH size"){
+          shap_6.1.2.5.1 <- bind_cols(shap_6.1.2.5.1, select(data_6.1.2.testing, hh_size))
+        }
+        
+        if(j == "Urban"){
+          shap_6.1.2.5.1 <- bind_cols(shap_6.1.2.5.1, select(data_6.1.2.testing, urban_01))%>%
+            rename(urban_01_X1 = urban_01)
+        }
+        
+        if(j == "Car own."){
+          shap_6.1.2.5.1 <- bind_cols(shap_6.1.2.5.1, select(data_6.1.2.testing, car.01_X1))%>%
+            rename(car.01 = car.01_X1)
+        }
+        
+        if(j == "Motorcycle own."){
+          shap_6.1.2.5.1 <- bind_cols(shap_6.1.2.5.1, select(data_6.1.2.testing, motorcycle.01_X1))%>%
+            rename(motorcycle.01 = motorcycle.01_X1)
+        }
+        
+        shap_6.1.2.6 <- left_join(shap_6.1.2.6, shap_6.1.2.5.1, by = "id")
+      }
+    }
+    
+    # Kategorische Variablen / Faktorvariablen
+    
+    shap_6.1.2.7 <- data.frame(id = 1:nrow(data_6.1.2.testing))
+    
+    for(k in c("Province")){
+      if(k %in% VOI$Var_0){
+        shap_6.1.2.5.2 <- shap_6.1.2.5 %>%
+          filter(Var_0 == k)%>%
+          mutate(id = rep(1:nrow(data_6.1.2.testing), each = n()/nrow(data_6.1.2.testing), length.out = nrow(.)))
+        
+        if(k == "Province"){
+          if(i == "ISR"){
+            data_6.1.2.test <- data_6.1.2.test %>%
+              mutate(Province = str_replace(Province, "\\(", " "))%>%
+              mutate(Province = str_replace(Province, "\\)"," "))
+          }
+          
+          shap_6.1.2.5.3 <- select(data_6.1.2.test, starts_with(k))%>%
+            mutate(id = 1:n())%>%
+            left_join(shap_6.1.2.5.2)%>%
+            filter(Province == Var_1)%>%
+            select(-Var_0, -Var_1)%>%
+            rename(SHAP_Province = SHAP)%>%
+            select(id, everything())
+          
+          shap_6.1.2.5.4 <- select(data_6.1.2.test, starts_with(k))%>%
+            mutate(id = 1:n())%>%
+            filter(!id %in% shap_6.1.2.5.3$id)%>%
+            distinct(Province) # Default value that is dropped
+          # Requires export
+          
+          shap_6.1.2.5.5 <- left_join(data.frame(id = 1:nrow(data_6.1.2.testing)), shap_6.1.2.5.3, by = "id") %>%
+            mutate(Province = ifelse(is.na(Province), shap_6.1.2.5.4$Province[1], Province))
+        }
+        
+        shap_6.1.2.7 <- left_join(shap_6.1.2.7, shap_6.1.2.5.5, by = "id")
+      }
+    }
+    
+    shap_6.1.2.8 <- shap_6.1.2.4 %>%
+      select(Country, id, ends_with("hh_expenditures_USD_2014"))%>%
+      mutate(sd_exp   = sd(hh_expenditures_USD_2014),
+             mean_exp = mean(hh_expenditures_USD_2014))%>%
+      mutate(z_score_exp = (hh_expenditures_USD_2014-mean_exp)/sd_exp)%>%
+      filter(z_score_exp < 5)%>%
+      select(id, z_score_exp)
+    
+    # Working with the following dataframe
+    
+    shap_6.1.2.9 <- shap_6.1.2.6 %>%
+      left_join(shap_6.1.2.7)%>%
+      left_join(shap_6.1.2.8)%>%
+      mutate(Country = i)
+    
+    # to be exported
+
+    write_rds(shap_6.1.2.9, sprintf("../0_Data/9_Supplementary Data/BRT-Tracking/SHAP-Values en detail/SHAP_wide_%s.rds", i))
+    
+    # removals to be updated
+    rm(shap_6.1.2.1, shap_6.1.2.2, shap_6.1.2.3,
+       shap_6.1.2.3.1, shap_6.1.2.3.2, shap_6.1.2.4, shap_6.1.2.5,
+       shap_6.1.2.5.1, shap_6.1.2.5.2, shap_6.1.2.5.3, shap_6.1.2.5.4, shap_6.1.2.5.5,
+       shap_6.1.2.6, shap_6.1.2.7, shap_6.1.2.8, shap_6.1.2.9)
     
   }, error=function(e){cat("ERROR :",conditionMessage(e), "\n")})
 }
@@ -5380,3 +5613,156 @@ test <- ggarrange(P_8.4.1, P_8.4.2, P_8.4.3, nrow = 1, align = "h", widths = c(2
 # dev.off()
 # 
 # rm(data_7.7, data_7.7.1, data_7.7.2, data_7.7.3, P_7.7.1,  P_7.7.2,  P_7.7.3,  P_7.7.4,  P_7.7.5,  P_7.7.6,  P_7.7.7)
+
+# 8.5.1   Figure 5a: Feature importance (SHAP) on the country-level ####
+
+# Introduce for-loop for each country that loads in shap_1
+
+data_8.5.0 <- shap_1 %>%
+  mutate(order = ifelse(Var_0 == "Other features (Sum)", n(), 1))%>%
+  arrange(order, desc(share_SHAP))%>%
+  mutate(order = ifelse(order == 1, 1:n(),order))%>%
+  mutate(help_0 = ifelse(order < 5,1,0))
+
+P_8.5 <- ggplot(data_8.5.0)+
+  geom_col(aes(x = share_SHAP, y = reorder(Var_0, desc(order)), fill = factor(help_0)), width = 0.7, colour = "black", size = 0.3)+
+  theme_bw()+
+  coord_cartesian(xlim = c(0,min(max(data_8.5.0$share_SHAP)*1.2,1)))+
+  scale_fill_manual(values = c("#E64B35FF","#6F99ADFF"))+
+  scale_x_continuous(labels = scales::percent_format(accuracy = 1), expand = c(0,0))+
+  guides(fill = "none")+
+  xlab("Feature importance (SHAP)")+
+  ylab("Feature")+
+  ggtitle("Country")+
+  theme(axis.text.y = element_text(size = 6), 
+        axis.text.x = element_text(size = 6),
+        axis.title  = element_text(size = 7),
+        plot.title = element_text(size = 11),
+        legend.position = "bottom",
+        # strip.text = element_text(size = 7),
+        #strip.text.y = element_text(angle = 180),
+        #panel.grid.major = element_blank(),
+        panel.grid.major.y = element_blank(),
+        panel.grid.minor.y = element_blank(),
+        axis.ticks = element_line(size = 0.2),
+        legend.text = element_text(size = 7),
+        legend.title = element_text(size = 7),
+        plot.margin = unit(c(0.3,0.3,0.3,0.3), "cm"),
+        panel.border = element_rect(size = 0.3))
+
+
+jpeg(sprintf("Figure_5a_%i.jpg", i), width = 10, height = 10, unit = "cm", res = 600)
+print(P_8.5)
+dev.off()
+
+rm(P_8.5, data_8.5.0)
+
+# 8.5.2   Figure 5b: Partial dependence plots ####
+
+# Can think about creating a new dataframe for shap-values
+
+data_8.5.2.1 <- shap_6.1.2.4 %>% # needs to be loaded in
+  select(Country, id, ends_with("hh_expenditures_USD_2014"))%>%
+  mutate(sd_exp   = sd(hh_expenditures_USD_2014),
+         mean_exp = mean(hh_expenditures_USD_2014))%>%
+  mutate(z_score_exp = (hh_expenditures_USD_2014-mean_exp)/sd_exp)%>%
+  filter(z_score_exp < 5)
+
+P_8.5.2.1 <- ggplot(data_8.5.2.1)+
+  geom_hline(aes(yintercept = 0))+
+  geom_smooth(aes(x     = hh_expenditures_USD_2014,
+                  y     = SHAP_hh_expenditures_USD_2014),
+              method = "loess", color = "black", size = 0.15, se = FALSE)+
+  geom_point(aes(x     = hh_expenditures_USD_2014,
+                 y     = SHAP_hh_expenditures_USD_2014,
+                 colour = z_score_exp),
+             size = 0.4, alpha = 0.6, shape = ".")+
+  theme_bw()+
+  scale_colour_viridis_c()+ # potentially option magma
+  # scale_color_gradient(low="#FFCC33", high="#6600CC") +
+  guides(colour = "none")+
+  ggtitle("TBA")+
+  coord_cartesian(xlim = c(0,max(data_8.5.2.1$hh_expenditures_USD_2014)))+ # TBA
+  scale_x_continuous(labels = scales::dollar_format(), expand = c(0,0))+
+  xlab("Household expenditures in US-$ (2014)")+
+  ylab("SHAP value for household expenditures")+
+  theme(axis.text.y = element_text(size = 6), 
+        axis.text.x = element_text(size = 6),
+        axis.title  = element_text(size = 7),
+        plot.title = element_text(size = 11),
+        legend.position = "bottom",
+        # strip.text = element_text(size = 7),
+        #strip.text.y = element_text(angle = 180),
+        #panel.grid.major = element_blank(),
+        panel.grid.major.y = element_blank(),
+        panel.grid.minor.y = element_blank(),
+        axis.ticks = element_line(size = 0.2),
+        legend.text = element_text(size = 7),
+        legend.title = element_text(size = 7),
+        plot.margin = unit(c(0.3,0.3,0.3,0.3), "cm"),
+        panel.border = element_rect(size = 0.3))
+
+jpeg(sprintf("Figure_5b_%s.jpg", "ISRAEL"), width = 10, height = 10, unit = "cm", res = 2000, antialias = "none")
+print(P_8.5.2.1)
+dev.off()
+
+data_8.5.2.2 <- shap_6.1.2.9 %>% # to be loaded in from somewhere
+  rename_if(str_detect(names(.), "SHAP_HH size"), ~paste0("SHAP_hh_size"))%>%
+  rename_if(str_detect(names(.), "SHAP_Car own."), ~paste0("SHAP_car.01"))
+
+for(k in c("Province", "car.01", "hh_size")){
+  
+  data_8.5.2.3 <- data_8.5.2.2 %>%
+    select(Country, id, z_score_exp, ends_with(k))%>%
+    rename(Variable = k)%>%
+    rename_if(str_detect(names(.), "SHAP"), ~paste0("SHAP"))%>%
+    filter(!is.na(SHAP))
+  
+  if(k == "car.01"){
+    data_8.5.2.3 <- data_8.5.2.3 %>%
+      mutate(Variable = ifelse(Variable == 0, "No car", "Owns a car"))
+  }
+  
+  # TBD 
+  
+  P_8.5.2.2 <- ggplot(data_8.5.2.3)+
+    geom_hline(aes(yintercept = 0))+
+    geom_violin(aes(x = as.factor(Variable),
+                    y = SHAP),
+                size = 0.1)+
+    geom_jitter(aes(
+      x = as.factor(Variable),
+      y = SHAP,
+      colour = z_score_exp
+    ),
+    size = 0.3, maxwidth = 1, alpha = 0.5, height = 0, width = 0.3)+
+    theme_bw()+
+    scale_colour_viridis_c()+ # potentially option magma
+    # scale_color_gradient(low="#FFCC33", high="#6600CC") +
+    guides(colour = "none")+
+    ggtitle("TBA")+
+    #scale_x_continuous(expand = c(0,0))+
+    xlab("TBD")+
+    ylab("SHAP value for household expenditures")+
+    theme(axis.text.y = element_text(size = 6), 
+          axis.text.x = element_text(size = 6),
+          axis.title  = element_text(size = 7),
+          plot.title = element_text(size = 11),
+          legend.position = "bottom",
+          # strip.text = element_text(size = 7),
+          #strip.text.y = element_text(angle = 180),
+          #panel.grid.major = element_blank(),
+          panel.grid.major.y = element_blank(),
+          panel.grid.minor.y = element_blank(),
+          axis.ticks = element_line(size = 0.2),
+          legend.text = element_text(size = 7),
+          legend.title = element_text(size = 7),
+          plot.margin = unit(c(0.3,0.3,0.3,0.3), "cm"),
+          panel.border = element_rect(size = 0.3))
+  
+  jpeg(sprintf("Figure_5b_%s_%s.jpg", "ISRAEL", k), width = 10, height = 10, unit = "cm", res = 2000, antialias = "none")
+  print(P_8.5.2.2)
+  dev.off()
+  
+}
+
