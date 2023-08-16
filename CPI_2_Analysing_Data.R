@@ -2195,7 +2195,9 @@ rm(track)
 
 # SHAP expresses feature importance based on the marginal contribution of each predictor for each observation. Has local explanation and consistency.
 
-Country.Set.Test.2 <- c(filter(Country.Set, !Country %in% c("IND", "IDN", "GEO", "ARG", "CHE", "LBR"))$Country)
+Country.Set.Test.2 <- c("IND", "IDN", "MEX")
+
+Country.Set.Test.3 <- c("GEO", "ARG", "CHE")
 
 eval_0 <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_SHAP_Evaluation.xlsx")
 
@@ -2204,7 +2206,7 @@ shap_1 <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_SHAP_C
 
 track_0 <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_BRT.xlsx")
 
-for (i in Country.Set.Test.2){
+for (i in Country.Set.Test.3){
   tryCatch({
     
     print(paste0("Start: ", i, " ", Sys.time()))
@@ -2274,9 +2276,23 @@ for (i in Country.Set.Test.2){
       # Remove minimum number of columns such that correlations are less than 0.9
       step_corr(all_numeric(), -all_outcomes(), threshold = 0.9)%>%
       # should have very few unique observations for factors
-      step_other(all_nominal(), -ends_with(".01"), -ends_with("urban_01"), -ends_with("District"), -ends_with("Province"), -ends_with("electricity.access"), threshold = 0.05)%>%
+      step_other(all_nominal(), -ends_with(".01"), -ends_with("urban_01"), -ends_with("District"), -ends_with("Province"), -ends_with("electricity.access"), -ends_with("ISCED"), threshold = 0.05)%>%
       # including dummification
       step_dummy(all_nominal())
+    
+    if(i %in% c("MMR", "GHA", "CIV", "PER", "GTM", "BRB")){
+      recipe_6.1.0 <- recipe(carbon_intensity_kg_per_USD_national ~ .,
+                             data = data_6.1.2.train)%>%
+        # Deletes all columns with any NA
+        step_filter_missing(all_predictors(), threshold = 0)%>%
+        # Remove minimum number of columns such that correlations are less than 0.9
+        step_corr(all_numeric(), -all_outcomes(), threshold = 0.9)%>%
+        # should have very few unique observations for factors
+        step_other(all_nominal(), -ends_with(".01"), -ends_with("urban_01"), -ends_with("District"), -ends_with("Province"), -ends_with("electricity.access"), -ends_with("ISCED"), threshold = 0.1)%>%
+        # including dummification
+        step_dummy(all_nominal())
+    }
+    
     
     # Training dataset
     data_6.1.2.training <- recipe_6.1.0 %>%
@@ -2347,7 +2363,11 @@ for (i in Country.Set.Test.2){
     
     # SHAP - use testing data for evaluation
     
+    fraction <- nrow(data_6.1.2.testing)
+    #if(i == "IDN"){fraction <- 40000}
+    
     data_6.1.2.testing_matrix <- data_6.1.2.testing %>%
+      #sample_n(fraction)%>%
       select(-carbon_intensity_kg_per_USD_national)%>%
       as.matrix()
     
@@ -2355,12 +2375,19 @@ for (i in Country.Set.Test.2){
       select(-carbon_intensity_kg_per_USD_national)%>%
       as.matrix()
     
-    doParallel::registerDoParallel()
+    # doParallel::registerDoParallel()
+    
+    t1 <- Sys.time()
     
     shap_6.1.2 <- predict(extract_fit_engine(model_brt_1),
                           data_6.1.2.testing_matrix,
                           predcontrib = TRUE,
                           approxcontrib = FALSE)
+    
+    t2 <- Sys.time()
+    t2-t1
+    
+    # doParallel::stopImplicitCluster()
     
     shap_6.1.2.1 <- shap_6.1.2 %>%
       as_tibble()%>%
@@ -2517,8 +2544,8 @@ for (i in Country.Set.Test.2){
         }
         
         if(j == "Urban"){
-          shap_6.1.2.5.1 <- bind_cols(shap_6.1.2.5.1, select(data_6.1.2.testing, urban_01))%>%
-            rename(urban_01_X1 = urban_01)
+          shap_6.1.2.5.1 <- bind_cols(shap_6.1.2.5.1, select(data_6.1.2.testing, urban_01_X1))%>%
+            rename(urban_01 = urban_01_X1)
         }
         
         if(j == "Car own."){
@@ -2737,7 +2764,7 @@ for (i in Country.Set.Test.2){
     # removals to be updated
     rm(shap_6.1.2.1, shap_6.1.2.2, shap_6.1.2.3,
        shap_6.1.2.3.1, shap_6.1.2.3.2, shap_6.1.2.4, shap_6.1.2.5,
-       shap_6.1.2.5.1, shap_6.1.2.5.2, shap_6.1.2.5.3, shap_6.1.2.5.4, shap_6.1.2.5.5,
+       shap_6.1.2.5.1, shap_6.1.2.5.2, shap_6.1.2.5.3, shap_6.1.2.5.5,
        shap_6.1.2.6, shap_6.1.2.7, shap_6.1.2.8, shap_6.1.2.9,
        data_6.1.1, data_6.1.2.all, data_6.1.2.all_matrix,
        data_6.1.2.test, data_6.1.2.testing, data_6.1.2.train, data_6.1.2.training, data_6.1.2.testing_matrix,
@@ -2764,6 +2791,204 @@ shap_0.1 <- shap_0 %>%
 
 shap_1.1 <- shap_1 %>%
   write.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_SHAP_Classification.xlsx")
+
+# Part b: Output of tables
+
+eval_1 <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_SHAP_Evaluation.xlsx")
+
+eval_1.1 <- eval_1 %>%
+  left_join(Country.Set)%>%
+  select(Country_long, .metric, starts_with("Sample"), Country)%>%
+  mutate_at(vars(starts_with("Sample")), ~ round(., 2))%>%
+  arrange(Country_long)%>%
+  group_by(Country_long, .metric)%>%
+  mutate(number = 1:n())%>%
+  filter(number == max(number))%>%
+  ungroup()%>%
+  select(-number)%>%
+  pivot_wider(names_from = ".metric", values_from = c("Sample_Testing", "Sample_Training", "Sample_All"))
+
+eval_1.2 <- data_2 %>%
+  group_by(Country)%>%
+  summarise(mean_carbon_intensity = wtd.mean(carbon_intensity_kg_per_USD_national, hh_weights))%>%
+  ungroup()%>%
+  mutate(mean_carbon_intensity = round(mean_carbon_intensity, 2))
+
+eval_1.3 <- left_join(eval_1.1, eval_1.2)%>%
+  select(Country_long, mean_carbon_intensity, everything(), -Country)
+
+colnames(eval_1.3) <- c("Country", "Mean", rep(c("MAE", "RMSE", "R_{2}"),3))
+
+kbl(eval_1.3, format = "latex", caption = "Evaluation of boosted regression tree models", booktabs = T, align = "l|r|rrr|rrr|rrr", vline = "", format.args = list(big.mark = ",", scientific = FALSE), linesep = "",
+    longtable = T)%>%
+  kable_styling(position = "center", latex_options = c("HOLD_position", "repeat_header"), font_size = 8)%>%
+  #column_spec(1, width = "3.15 cm")%>%
+  # add_header_above(c("Country" = 1, rep(c("MAE", "RMSE", "R^{2}"),3) ))%>%
+  add_header_above(c(" " = 1, "Test sample" = 3, "Training sample" = 3, "Entire sample"))%>%
+  footnote(general = "This table shows performance metrics for boosted regression tree models. MAE is the mean absolute error of predictions; RMSE is the root mean squared error of predictions; R^{2} is the squared correlation of prediction errors. Unit of MAE and RMSE is kgCO_{2} per US-$. We show MAE, RMSE and R^{2} for predictions on the testing set, on the training set and on the entire dataset. ", threeparttable = T)%>%
+  save_kable(., "2_Tables/Table_SHAP_Summary.tex")
+
+# 6.2     Classification exercise ####
+
+# Part I
+
+data_6.3.0 <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_SHAP_Detail.xlsx")
+
+data_6.3.1 <- data_6.3.0 %>%
+  mutate(Var_0 = ifelse(grepl("District", Variable), "District", 
+                        ifelse(grepl("Province", Variable), "Province", 
+                               ifelse(grepl("ISCED", Variable), "ISCED", 
+                                      ifelse(grepl("Ethnicity", Variable), "Ethnicity", 
+                                             ifelse(grepl("Religion", Variable), "Religion", 
+                                                    ifelse(Variable == "hh_expenditures_USD_2014", "HH expenditures",
+                                                           ifelse(Variable == "hh_size", "HH size",
+                                                                  ifelse(grepl("car.01", Variable), "Car own.",
+                                                                         ifelse(grepl("urban_01", Variable), "Urban",
+                                                                                ifelse(grepl("sex_hhh", Variable), "Gender HHH",
+                                                                                       ifelse(grepl("CF", Variable), "Cooking", 
+                                                                                              ifelse(grepl("HF", Variable), "Heating", 
+                                                                                                     ifelse(grepl("LF", Variable), "Lighting", 
+                                                                                                            ifelse(Variable == "electricity.access", "Electricity access", 
+                                                                                                                   ifelse(grepl("Language", Variable), "Language", 
+                                                                                                                          ifelse(grepl("Nationality", Variable), "Nationality", 
+                                                                                                                                 ifelse(Variable == "refrigerator.010", "Refrigerator", 
+                                                                                                                                        ifelse(Variable == "washing_machine.010", "Washing machine",
+                                                                                                                                               ifelse(Variable == "motorcycle.010", "Motorcycle", 
+                                                                                                                                                      ifelse(Variable == "ac.010", "AC",
+                                                                                                                                                             ifelse(grepl("tv.01", Variable), "TV", Variable))))))))))))))))))))),
+         Var_1 = ifelse(grepl("District", Variable), gsub("District?","", Variable), 
+                        ifelse(grepl("Province", Variable), gsub("Province_?","", Variable), 
+                               ifelse(grepl("ISCED", Variable), gsub("ISCED_?","", Variable),
+                                      ifelse(grepl("Ethnicity", Variable), gsub("Ethnicity_?","", Variable),
+                                             ifelse(grepl("Religion", Variable), gsub("Religion?","", Variable),
+                                                    ifelse(grepl("urban_01", Variable), gsub("urban_01?","", Variable),
+                                                           ifelse(grepl("sex_hhh", Variable), gsub("sex_hhh_?","", Variable), 
+                                                                  ifelse(grepl("car.01", Variable), gsub("car.01","", Variable), 
+                                                                         ifelse(grepl("CF_", Variable), gsub("CF_?", "", Variable), 
+                                                                                ifelse(grepl("LF_", Variable), gsub("LF_?", "", Variable), 
+                                                                                       ifelse(grepl("HF_", Variable), gsub("HF_?", "", Variable), 
+                                                                                              ifelse(Var_0 %in% c("AC", "Motorcycle", "Refrigerator", "TV", "Washing machine"), str_sub(Variable,-1,-1), 
+                                                                                                     ifelse(grepl("CF", Variable), gsub("CF?", "", Variable), 
+                                                                                                            ifelse(grepl("LF", Variable), gsub("LF?", "", Variable), 
+                                                                                                                   ifelse(grepl("HF", Variable), gsub("HF?", "", Variable), 
+                                                                                                                          ifelse(grepl("Nationality", Variable), gsub("Nationality?", "", Variable),
+                                                                                                                                 ifelse(grepl("Language", Variable), gsub("Language", "", Variable), NA))))))))))))))))))%>%
+  mutate(help_0 = ifelse(Importance < 0.01,1,0))
+
+data_6.3.2 <- data_6.3.1 %>%
+  # for now, delete later
+  filter(!Country %in% c("CHL", "IND", "ISR", "MEX", "RWA", "SUR"))%>%
+  group_by(run_ID)%>%
+  mutate(test = sum(Importance))%>%
+  ungroup()%>%
+  group_by(run_ID, Var_0)%>%
+  summarise(Importance = sum(Importance), 
+            Country    = first(Country))%>%
+  ungroup()%>%
+  pivot_wider(names_from = "Var_0", values_from = "Importance")%>%
+  # for now, delete later
+  arrange(run_ID)%>%
+  group_by(Country)%>%
+  filter(row_number() == n())%>%
+  ungroup()
+
+# Part II: Vertical vs. horizontal inequality
+
+data_6.3.3 <- data_2 %>%
+  group_by(Country, Income_Group_5)%>%
+  summarise(median_burden_CO2_national = wtd.quantile(carbon_intensity_kg_per_USD_national, probs = 0.5, weights = hh_weights),
+            q95_burden_CO2_national    = wtd.quantile(carbon_intensity_kg_per_USD_national, probs = 0.95, weights = hh_weights),
+            q05_burden_CO2_national    = wtd.quantile(carbon_intensity_kg_per_USD_national, probs = 0.05, weights = hh_weights),
+            q20_burden_CO2_national    = wtd.quantile(carbon_intensity_kg_per_USD_national, probs = 0.20, weights = hh_weights),
+            q80_burden_CO2_national    = wtd.quantile(carbon_intensity_kg_per_USD_national, probs = 0.80, weights = hh_weights))%>%
+  ungroup()%>%
+  filter(Income_Group_5 == 1 | Income_Group_5 == 5)%>%
+  mutate(dif_q95_q05_burden_CO2_national = q95_burden_CO2_national - q05_burden_CO2_national,
+         dif_q80_q20_burden_CO2_national = q80_burden_CO2_national - q20_burden_CO2_national,)%>%
+  select(Country, Income_Group_5, dif_q95_q05_burden_CO2_national, dif_q80_q20_burden_CO2_national, median_burden_CO2_national)%>%
+  pivot_wider(names_from = Income_Group_5, values_from = c(median_burden_CO2_national, dif_q95_q05_burden_CO2_national, dif_q80_q20_burden_CO2_national))%>%
+  mutate(median_1_5    = median_burden_CO2_national_1/median_burden_CO2_national_5,
+         dif_95_05_1_5 = dif_q95_q05_burden_CO2_national_1/dif_q95_q05_burden_CO2_national_5,
+         dif_80_20_1_5 = dif_q80_q20_burden_CO2_national_1/dif_q80_q20_burden_CO2_national_5)%>%
+  select(Country, median_1_5, dif_95_05_1_5)
+
+# Part III: Carbon intensity of consumption
+
+data_6.3.4 <- data_2 %>%
+  group_by(Country)%>%
+  summarise(mean_carbon_intensity = wtd.mean(carbon_intensity_kg_per_USD_national, weights = hh_weights))%>%
+  ungroup()
+
+# Perform clustering on the following dataframe:
+
+data_6.3.5 <- left_join(data_6.3.2, data_6.3.3)%>%
+  left_join(data_6.3.4)%>%
+  select(-run_ID)%>%
+  mutate_at(vars(median_1_5, dif_95_05_1_5), ~ as.numeric(.))%>%
+  # possibly join direction of effects, e.g. for urban/rural
+  mutate_at(vars(-Country), ~ ifelse(is.na(.),0,.))
+
+data_6.3.5.1 <- data_6.3.5 %>%
+  # scale - debatable%>%
+  mutate_at(vars(-Country), ~ (. - mean(.))/sd(.))
+
+# Think carefully about what needs to be done here
+
+model_6.3.0 <- kmeans(select(data_6.3.5.1, -Country), centers = 11)
+
+model_6.3.1 <- map_dbl(1:73, function(k){
+  model <- kmeans(x = select(data_6.3.5.1, -Country), centers = k)
+  model$tot.withinss
+})
+
+model_6.3.2 <- data.frame(k = 1:73,
+                          tot_withinss = model_6.3.1)
+
+ggplot(model_6.3.2, aes(x = k, y = tot_withinss))+
+  geom_line()+
+  scale_x_continuous(breaks = 1:73)
+
+data_6.3.6 <- data_6.3.5 %>%
+  mutate(cluster_kmeans_11 = model_6.3.0$cluster)
+
+data_6.3.7 <- data_6.3.6 %>%
+  group_by(cluster_kmeans_11)%>%
+  summarise_at(vars(-Country), ~ mean(.))%>%
+  ungroup()%>%
+  # potentially relevant criteria
+  rename(car_01 = "Car own.", ely = "Electricity access", exp = "HH expenditures")%>%
+  mutate(CAR         = ifelse(car_01 > 0.1, "Yes", "No"),
+         COOKING     = ifelse(Cooking > 0.1, "Yes", "No"),
+         ELECTRICITY = ifelse(ely > 0.1, "Yes", "No"),
+         EDUCATION   = ifelse(ISCED > 0.1, "Yes", "No"),
+         MOTORCYCLE  = ifelse(Motorcycle > 0.1, "Yes", "No"),
+         PROVINCE    = ifelse(Province > 0.1, "Yes", "No"),
+         URBAN       = ifelse(Urban > 0.1, "Yes", "No"),
+         LIGHTING    = ifelse(Lighting > 0.1, "Yes", "No"),
+         VERTICAL    = ifelse(median_1_5 < 1, "Progressive",
+                              ifelse(median_1_5 > 1, "Regressive", NA)),
+         HORIZONTAL  = ifelse(dif_95_05_1_5 > 1, "Heterogeneous in poor",
+                              ifelse(dif_95_05_1_5 < 1, "Heterogeneous in rich", NA)),
+         ABSOLUTE    = ifelse(mean_carbon_intensity < 0.5466049, "Less carbon intensive",
+                              ifelse(mean_carbon_intensity > 0.5466049 & mean_carbon_intensity < 1, "More carbon intensive",
+                                     ifelse(mean_carbon_intensity > 1, "Very carbon intensive", NA))),
+         EXPENDITURES = ifelse(exp < 0.2, "Less important",
+                               ifelse(exp < 0.45, "Relatively less important",
+                                      ifelse(exp > 0.45, "Relatively more important", NA))))%>%
+  left_join(summarise(group_by(data_6.3.6, cluster_kmeans_11), number = n()))%>%
+  select(cluster_kmeans_11, CAR:number)
+
+data_6.3.8 <- data_6.3.6 %>%
+  select("Car own.", "Electricity access", "HH expenditures", Cooking, ISCED, Province, Urban, Lighting, median_1_5,
+         dif_95_05_1_5, mean_carbon_intensity, cluster_kmeans_11, Country)%>%
+  group_by(cluster_kmeans_11)%>%
+  summarise_at(vars(-Country), ~ mean(.))%>%
+  ungroup()%>%
+  mutate_at(vars(-cluster_kmeans_11), ~ (. - mean(.))/sd(.))%>%
+  left_join(summarise(group_by(data_6.3.6, cluster_kmeans_11), number = n()))
+
+rm(data_6.3.0, data_6.3.1, data_6.3.2, data_6.3.3, data_6.3.4, data_6.3.5, data_6.3.5.1,
+   data_6.3.6, data_6.3.7, data_6.3.8, model_6.3.0, model_6.3.1, model_6.3.2)
 
 # 6.1.X   BRT on carbon intensity of consumption (regression model) ####
 
@@ -3245,170 +3470,7 @@ jpeg("1_Figures/Test/PDP_Test_2.jpg", width = 30, height = 16, unit = "cm", res 
 print(plot_6.1.2.2)
 dev.off()
 
-# 6.2     TBA: BRT on hardship cases (classification model) ####
-
-# 6.3     Classification exercise ####
-
-# Part I
-
-data_6.3.0 <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/VIP_Data.xlsx")
-
-data_6.3.1 <- data_6.3.0 %>%
-  mutate(Var_0 = ifelse(grepl("District", Variable), "District", 
-                        ifelse(grepl("Province", Variable), "Province", 
-                               ifelse(grepl("ISCED", Variable), "ISCED", 
-                                      ifelse(grepl("Ethnicity", Variable), "Ethnicity", 
-                                             ifelse(grepl("Religion", Variable), "Religion", 
-                                                    ifelse(Variable == "hh_expenditures_USD_2014", "HH expenditures",
-                                                           ifelse(Variable == "hh_size", "HH size",
-                                                                  ifelse(grepl("car.01", Variable), "Car own.",
-                                                                         ifelse(grepl("urban_01", Variable), "Urban",
-                                                                                ifelse(grepl("sex_hhh", Variable), "Gender HHH",
-                                                                                       ifelse(grepl("CF", Variable), "Cooking", 
-                                                                                              ifelse(grepl("HF", Variable), "Heating", 
-                                                                                                     ifelse(grepl("LF", Variable), "Lighting", 
-                                                                                                            ifelse(Variable == "electricity.access", "Electricity access", 
-                                                                                                                   ifelse(grepl("Language", Variable), "Language", 
-                                                                                                                          ifelse(grepl("Nationality", Variable), "Nationality", 
-                                                                                                                                 ifelse(Variable == "refrigerator.010", "Refrigerator", 
-                                                                                                                                        ifelse(Variable == "washing_machine.010", "Washing machine",
-                                                                                                                                               ifelse(Variable == "motorcycle.010", "Motorcycle", 
-                                                                                                                                                      ifelse(Variable == "ac.010", "AC",
-                                                                                                                                                             ifelse(grepl("tv.01", Variable), "TV", Variable))))))))))))))))))))),
-         Var_1 = ifelse(grepl("District", Variable), gsub("District?","", Variable), 
-                        ifelse(grepl("Province", Variable), gsub("Province_?","", Variable), 
-                               ifelse(grepl("ISCED", Variable), gsub("ISCED_?","", Variable),
-                                      ifelse(grepl("Ethnicity", Variable), gsub("Ethnicity_?","", Variable),
-                                             ifelse(grepl("Religion", Variable), gsub("Religion?","", Variable),
-                                                    ifelse(grepl("urban_01", Variable), gsub("urban_01?","", Variable),
-                                                           ifelse(grepl("sex_hhh", Variable), gsub("sex_hhh_?","", Variable), 
-                                                                  ifelse(grepl("car.01", Variable), gsub("car.01","", Variable), 
-                                                                         ifelse(grepl("CF_", Variable), gsub("CF_?", "", Variable), 
-                                                                                ifelse(grepl("LF_", Variable), gsub("LF_?", "", Variable), 
-                                                                                       ifelse(grepl("HF_", Variable), gsub("HF_?", "", Variable), 
-                                                                                              ifelse(Var_0 %in% c("AC", "Motorcycle", "Refrigerator", "TV", "Washing machine"), str_sub(Variable,-1,-1), 
-                                                                                                     ifelse(grepl("CF", Variable), gsub("CF?", "", Variable), 
-                                                                                                            ifelse(grepl("LF", Variable), gsub("LF?", "", Variable), 
-                                                                                                                   ifelse(grepl("HF", Variable), gsub("HF?", "", Variable), 
-                                                                                                                          ifelse(grepl("Nationality", Variable), gsub("Nationality?", "", Variable),
-                                                                                                                                 ifelse(grepl("Language", Variable), gsub("Language", "", Variable), NA))))))))))))))))))%>%
-  mutate(help_0 = ifelse(Importance < 0.01,1,0))
-
-data_6.3.2 <- data_6.3.1 %>%
-  # for now, delete later
-  filter(!Country %in% c("CHL", "IND", "ISR", "MEX", "RWA", "SUR"))%>%
-  group_by(run_ID)%>%
-  mutate(test = sum(Importance))%>%
-  ungroup()%>%
-  group_by(run_ID, Var_0)%>%
-  summarise(Importance = sum(Importance), 
-            Country    = first(Country))%>%
-  ungroup()%>%
-  pivot_wider(names_from = "Var_0", values_from = "Importance")%>%
-  # for now, delete later
-  arrange(run_ID)%>%
-  group_by(Country)%>%
-  filter(row_number() == n())%>%
-  ungroup()
-
-# Part II: Vertical vs. horizontal inequality
-
-data_6.3.3 <- data_2 %>%
-  group_by(Country, Income_Group_5)%>%
-  summarise(median_burden_CO2_national = wtd.quantile(carbon_intensity_kg_per_USD_national, probs = 0.5, weights = hh_weights),
-            q95_burden_CO2_national    = wtd.quantile(carbon_intensity_kg_per_USD_national, probs = 0.95, weights = hh_weights),
-            q05_burden_CO2_national    = wtd.quantile(carbon_intensity_kg_per_USD_national, probs = 0.05, weights = hh_weights),
-            q20_burden_CO2_national    = wtd.quantile(carbon_intensity_kg_per_USD_national, probs = 0.20, weights = hh_weights),
-            q80_burden_CO2_national    = wtd.quantile(carbon_intensity_kg_per_USD_national, probs = 0.80, weights = hh_weights))%>%
-  ungroup()%>%
-  filter(Income_Group_5 == 1 | Income_Group_5 == 5)%>%
-  mutate(dif_q95_q05_burden_CO2_national = q95_burden_CO2_national - q05_burden_CO2_national,
-         dif_q80_q20_burden_CO2_national = q80_burden_CO2_national - q20_burden_CO2_national,)%>%
-  select(Country, Income_Group_5, dif_q95_q05_burden_CO2_national, dif_q80_q20_burden_CO2_national, median_burden_CO2_national)%>%
-  pivot_wider(names_from = Income_Group_5, values_from = c(median_burden_CO2_national, dif_q95_q05_burden_CO2_national, dif_q80_q20_burden_CO2_national))%>%
-  mutate(median_1_5    = median_burden_CO2_national_1/median_burden_CO2_national_5,
-         dif_95_05_1_5 = dif_q95_q05_burden_CO2_national_1/dif_q95_q05_burden_CO2_national_5,
-         dif_80_20_1_5 = dif_q80_q20_burden_CO2_national_1/dif_q80_q20_burden_CO2_national_5)%>%
-  select(Country, median_1_5, dif_95_05_1_5)
-
-# Part III: Carbon intensity of consumption
-
-data_6.3.4 <- data_2 %>%
-  group_by(Country)%>%
-  summarise(mean_carbon_intensity = wtd.mean(carbon_intensity_kg_per_USD_national, weights = hh_weights))%>%
-  ungroup()
-
-# Perform clustering on the following dataframe:
-
-data_6.3.5 <- left_join(data_6.3.2, data_6.3.3)%>%
-  left_join(data_6.3.4)%>%
-  select(-run_ID)%>%
-  mutate_at(vars(median_1_5, dif_95_05_1_5), ~ as.numeric(.))%>%
-  # possibly join direction of effects, e.g. for urban/rural
-  mutate_at(vars(-Country), ~ ifelse(is.na(.),0,.))
-
-data_6.3.5.1 <- data_6.3.5 %>%
-  # scale - debatable%>%
-  mutate_at(vars(-Country), ~ (. - mean(.))/sd(.))
-  
-# Think carefully about what needs to be done here
-
-model_6.3.0 <- kmeans(select(data_6.3.5.1, -Country), centers = 11)
-
-model_6.3.1 <- map_dbl(1:73, function(k){
-  model <- kmeans(x = select(data_6.3.5.1, -Country), centers = k)
-  model$tot.withinss
-})
-
-model_6.3.2 <- data.frame(k = 1:73,
-                          tot_withinss = model_6.3.1)
-
-ggplot(model_6.3.2, aes(x = k, y = tot_withinss))+
-  geom_line()+
-  scale_x_continuous(breaks = 1:73)
-
-data_6.3.6 <- data_6.3.5 %>%
-  mutate(cluster_kmeans_11 = model_6.3.0$cluster)
-
-data_6.3.7 <- data_6.3.6 %>%
-  group_by(cluster_kmeans_11)%>%
-  summarise_at(vars(-Country), ~ mean(.))%>%
-  ungroup()%>%
-  # potentially relevant criteria
-  rename(car_01 = "Car own.", ely = "Electricity access", exp = "HH expenditures")%>%
-  mutate(CAR         = ifelse(car_01 > 0.1, "Yes", "No"),
-         COOKING     = ifelse(Cooking > 0.1, "Yes", "No"),
-         ELECTRICITY = ifelse(ely > 0.1, "Yes", "No"),
-         EDUCATION   = ifelse(ISCED > 0.1, "Yes", "No"),
-         MOTORCYCLE  = ifelse(Motorcycle > 0.1, "Yes", "No"),
-         PROVINCE    = ifelse(Province > 0.1, "Yes", "No"),
-         URBAN       = ifelse(Urban > 0.1, "Yes", "No"),
-         LIGHTING    = ifelse(Lighting > 0.1, "Yes", "No"),
-         VERTICAL    = ifelse(median_1_5 < 1, "Progressive",
-                             ifelse(median_1_5 > 1, "Regressive", NA)),
-         HORIZONTAL  = ifelse(dif_95_05_1_5 > 1, "Heterogeneous in poor",
-                             ifelse(dif_95_05_1_5 < 1, "Heterogeneous in rich", NA)),
-         ABSOLUTE    = ifelse(mean_carbon_intensity < 0.5466049, "Less carbon intensive",
-                             ifelse(mean_carbon_intensity > 0.5466049 & mean_carbon_intensity < 1, "More carbon intensive",
-                                    ifelse(mean_carbon_intensity > 1, "Very carbon intensive", NA))),
-         EXPENDITURES = ifelse(exp < 0.2, "Less important",
-                               ifelse(exp < 0.45, "Relatively less important",
-                                      ifelse(exp > 0.45, "Relatively more important", NA))))%>%
-  left_join(summarise(group_by(data_6.3.6, cluster_kmeans_11), number = n()))%>%
-  select(cluster_kmeans_11, CAR:number)
-
-data_6.3.8 <- data_6.3.6 %>%
-  select("Car own.", "Electricity access", "HH expenditures", Cooking, ISCED, Province, Urban, Lighting, median_1_5,
-         dif_95_05_1_5, mean_carbon_intensity, cluster_kmeans_11, Country)%>%
-  group_by(cluster_kmeans_11)%>%
-  summarise_at(vars(-Country), ~ mean(.))%>%
-  ungroup()%>%
-  mutate_at(vars(-cluster_kmeans_11), ~ (. - mean(.))/sd(.))%>%
-  left_join(summarise(group_by(data_6.3.6, cluster_kmeans_11), number = n()))
-
-rm(data_6.3.0, data_6.3.1, data_6.3.2, data_6.3.3, data_6.3.4, data_6.3.5, data_6.3.5.1,
-   data_6.3.6, data_6.3.7, data_6.3.8, model_6.3.0, model_6.3.1, model_6.3.2)
-
+# 6.X     TBA: BRT on hardship cases (classification model) ####
 # 7       Figures Presentation ####
 # 7.1     Figure 1: Scatterplot and friends ####
 
@@ -5787,44 +5849,67 @@ test <- ggarrange(P_8.4.1, P_8.4.2, P_8.4.3, nrow = 1, align = "h", widths = c(2
 
 # Introduce for-loop for each country that loads in shap_1
 
-data_8.5.0 <- shap_1 %>%
+data_8.5.1 <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_SHAP_Classification.xlsx")%>%
+  group_by(number_ob, Var_0)%>%
+  mutate(number = 1:n())%>%
+  filter(number == max(number))%>%
+  ungroup()%>%
+  filter(Country != "SRB" | Var_0 != "Province")%>%
+  group_by(number_ob)%>%
+  mutate(test = sum(share_SHAP))%>%
+  ungroup()%>%
+  select(Country, Var_0, share_SHAP)%>%
+  arrange(Country)%>%
   mutate(order = ifelse(Var_0 == "Other features (Sum)", n(), 1))%>%
-  arrange(order, desc(share_SHAP))%>%
+  arrange(Country, order, desc(share_SHAP))%>%
   mutate(order = ifelse(order == 1, 1:n(),order))%>%
-  mutate(help_0 = ifelse(order < 5,1,0))
+  group_by(Country)%>%
+  mutate(order_new = 1:n())%>%
+  ungroup()%>%
+  mutate(help_0 = ifelse(order_new < 5,1,0))%>%
+  filter(share_SHAP > 0)%>%
+  mutate(Var_0 = ifelse(Var_0 == "ISCED", "Education",
+                        ifelse(Var_0 == "HF", "Heating fuel",
+                               ifelse(Var_0 == "LF", "Lighting fuel",
+                                      ifelse(Var_0 == "CF", "Cooking fuel", Var_0)))))
 
-P_8.5 <- ggplot(data_8.5.0)+
-  geom_col(aes(x = share_SHAP, y = reorder(Var_0, desc(order)), fill = factor(help_0)), width = 0.7, colour = "black", size = 0.3)+
-  theme_bw()+
-  coord_cartesian(xlim = c(0,min(max(data_8.5.0$share_SHAP)*1.2,1)))+
-  scale_fill_manual(values = c("#E64B35FF","#6F99ADFF"))+
-  scale_x_continuous(labels = scales::percent_format(accuracy = 1), expand = c(0,0))+
-  guides(fill = "none")+
-  xlab("Feature importance (SHAP)")+
-  ylab("Feature")+
-  ggtitle("Country")+
-  theme(axis.text.y = element_text(size = 6), 
-        axis.text.x = element_text(size = 6),
-        axis.title  = element_text(size = 7),
-        plot.title = element_text(size = 11),
-        legend.position = "bottom",
-        # strip.text = element_text(size = 7),
-        #strip.text.y = element_text(angle = 180),
-        #panel.grid.major = element_blank(),
-        panel.grid.major.y = element_blank(),
-        panel.grid.minor.y = element_blank(),
-        axis.ticks = element_line(size = 0.2),
-        legend.text = element_text(size = 7),
-        legend.title = element_text(size = 7),
-        plot.margin = unit(c(0.3,0.3,0.3,0.3), "cm"),
-        panel.border = element_rect(size = 0.3))
+for(i in Country.Set$Country){
+  data_8.5.2 <- data_8.5.1 %>%
+    filter(Country == i)
+  
+  P_8.5 <- ggplot(data_8.5.2)+
+    geom_col(aes(x = share_SHAP, y = reorder(Var_0, desc(order)), fill = factor(help_0)), width = 0.7, colour = "black", size = 0.3)+
+    theme_bw()+
+    coord_cartesian(xlim = c(0,signif(max(data_8.5.2$share_SHAP) + 0.1,1)))+
+    scale_fill_manual(values = c("#E64B35FF","#6F99ADFF"))+
+    scale_x_continuous(labels = scales::percent_format(accuracy = 1), expand = c(0,0))+
+    guides(fill = "none")+
+    xlab("Feature importance (SHAP)")+
+    ylab("Feature")+
+    ggtitle(Country.Set$Country_long[Country.Set$Country == i])+
+    theme(axis.text.y = element_text(size = 6), 
+          axis.text.x = element_text(size = 6),
+          axis.title  = element_text(size = 7),
+          plot.title = element_text(size = 11),
+          legend.position = "bottom",
+          # strip.text = element_text(size = 7),
+          #strip.text.y = element_text(angle = 180),
+          #panel.grid.major = element_blank(),
+          panel.grid.major.y = element_blank(),
+          panel.grid.minor.y = element_blank(),
+          axis.ticks = element_line(size = 0.2),
+          legend.text = element_text(size = 7),
+          legend.title = element_text(size = 7),
+          plot.margin = unit(c(0.3,0.3,0.3,0.3), "cm"),
+          panel.border = element_rect(size = 0.3))
+  
+  jpeg(sprintf("1_Figures/Figure 5a/Figure_5a_%s.jpg", i), width = 10, height = 10, unit = "cm", res = 200)
+  print(P_8.5)
+  dev.off()
+  
+}
 
-
-jpeg(sprintf("Figure_5a_%i.jpg", i), width = 10, height = 10, unit = "cm", res = 600)
-print(P_8.5)
-dev.off()
-
-rm(P_8.5, data_8.5.0)
+rm(P_8.5, data_8.5.1, data_8.5.2)
 
 # 8.5.2   Figure 5b: Partial dependence plots ####
 
