@@ -122,7 +122,7 @@ In this study, we analyze the heterogeneity in carbon intensity of consumption w
 
 % Introduce carbon intensity of consumption as major indicator
 
-The carbon intensity of consumption of household \textit{i}, denoted by $e_{i}$, reflects the amount of $CO_{2}$-emissions $E_{i}$ that one can reasonably attribute to production, transportation and retail of all goods and services purchased in household \textit{i}, over total consumption $C_{i}$. We express $e_{i}$ in $\frac{kgCO_{2}}{US-\$}$. More specifically, the carbon intensity of consumption represents carbon intensities of different sectors, weighted by expenditure shares in household \textit{i} for goods and services from each sector \textit{s}:
+The carbon intensity of consumption of household \textit{i}, denoted by $e_{i}$, reflects the amount of $CO_{2}$-emissions $E_{i}$ that one can reasonably attribute to production, transportation and retail of all goods and services purchased in household \textit{i}, over total consumption $C_{i}$. We express $e_{i}$ in $\frac{kgCO_{2}}{US-\$}$. More specifically, the carbon intensity of consumption represents carbon intensities of different sectors ($e_{s}$), weighted by expenditure shares in household \textit{i} for goods and services from each sector \textit{s}:
 
 % Argue backwards: Carbon intensity of consumption consists of household expenditure shares and sectoral carbon intensities
 
@@ -136,69 +136,149 @@ e_{i} = \frac{E_{i}}{C_{i}} = \frac{\sum_{s} e_{s}*C_{i,s}}{\sum_{s} C_{i,s}}
 The carbon intensity of consumption $e_{i}$ is the variable of interest in this study. Analyzing heterogeneity in the carbon intensity of consumption can help to learn about heterogeneous impacts of climate policy on consumption costs: Assume household \textit{A's} consumption is twice as carbon-intensive as the consumption of household \textit{B}, then climate policy will lead to costs twice as high for household \textit{A} compared to household \textit{B}, in comparison to total expenditures \footnote{This holds under the assumption that climate policy increases supply-side input prices according to associated $CO_{2}$-emissions and that firms cannot react to changing input prices in the short-term. Output prices for consumer goods and services would increase in equivalence to embedded (direct and indirect) $CO_{2}$-emissions. See also Appendix \ref{sec:policysimulation}}. The household-level carbon intensity for different sectors \textit{s}, denoted $e_{i,s}$, allows for understanding heterogeneous impacts of different policies, for example of policies in the transport or electricity sector or of trade policies, such as carbon border adjustments.
 
 %  Household expenditure shares: Data, cleaning, homogenizing and shortcomings
-\paragraph{Sectoral expenditure shares} We collect information on sectoral expenditure shares at the household-level ($\frac{C_{i,s}}{\sum_{s}C_{i,s}}$) from household budget surveys. In such surveys, households report expenditures on goods and services on the item-level, from which we compute sectoral expenditure shares\footnote{We match consumption items to sectors with the help of matching tables. All matching tables can be found at a stable online data repository.}. Datasets were eligible for inclusion in our study, if they were surveying a nationally representative sample , included item-level expenditure information and were conducted between 2010 and 2019. Our harmonized \footnote{Appendix \ref{sec:cleaning} lists details on cleaning and harmonization.} dataset contains information on 1.5 million households representative for 5 billion people from 87 countries that comprise 68\% of global GDP and 52\% of global $CO_{2}$-emissions. 
+\paragraph{Sectoral expenditure shares} We collect information on sectoral expenditure shares at the household-level ($\frac{C_{i,s}}{\sum_{s}C_{i,s}}$) from household budget surveys. In such surveys, households report expenditures on goods and services on the item-level, from which we compute sectoral expenditure shares\footnote{We match consumption items to sectors with the help of matching tables. We share all matching tables through a stable online data repository.}. Survey 
+datasets are eligible for inclusion in our study, if they cover a nationally representative sample, include item-level expenditure information and were conducted between 2010 and 2019 \footnote{We exclude more recent survey data to account for potential biases induced by large economic shocks, such as measures in the context of Covid-19.}. Our harmonized \footnote{Appendix \ref{sec:cleaning} lists details on cleaning and harmonization.} dataset contains information on 1.5 million households representative for 5 billion people from 87 countries that comprise 68\% of global GDP and 52\% of global $CO_{2}$-emissions. 
 
 Beyond expenditure shares, we include total household expenditures as a surrogate for household income data because total consumption expenditures are a meaningful proxy for lifetime income and because wage data from such surveys are often unreliable.
 
 We also include socio-demographic information about household members (such as education, occupation, gender, self-identified ethnicity or age of household representatives), detailed spatial information (such as province, district or village of households) and on energy use (main fuels used for cooking, lighting and heating) or asset ownership. Such household-level information (including total household expenditures) forms a set of variables $X_{i}^{'}$ that allows for analysing differences between households with different characteristics.
 
-% Sectoral carbon intensities: Data, method, intuition and shortcomings
-
-\paragraph{Sectoral carbon intensities}
-
 \begin{itemize}
-    \item Methodological discussion (brief)
-    \item Analyzing vertical inequality
-    \item Analyzing horizontal inequality
-    \item Introduce boosted regression trees
-    \item Introduce logit model as robustness check, supplementary analysis
-    \item Critical appraisal
+    \item Methodological discussion and shortcomings (brief)
 \end{itemize}
 
+% Sectoral carbon intensities: Data, method, intuition and shortcomings
 
-Describe sectoral carbon intensity
+\paragraph{Sectoral carbon intensities} Country- and sector-level carbon intensities $e_{s,r}$ represent $CO_{2}$-emissions that can directly or indirectly be attributed to one unit of output from sector \textit{s}.
 
 \begin{equation}
-    e_{s} = \frac{E_{s}^{direct}+E_{s}^{indirect}}{\sum_{i} C_{i,s}}
+    e_{s,r} = \frac{E_{s,r}^{direct}+E_{s,r}^{indirect}}{\sum_{i} C_{i,s,r}}
 \end{equation}
 
-Describe indirect carbon emissions
+We derive total sectoral output ($\sum_{i} C_{i,s,r}$), direct ($E_{s}^{direct}$) and indirect ($E_{s}^{indirect}$) $CO_{2}$-emissions from and with the help of multi-regional input-output (MRIO) data. This approach is popular in the literature as it accomodates trade flows between different countries and regions, but features sufficient detail for high sectoral resolution. We build on trade data from the GTAP database (REF AGUIAR) which we transform to MRIO data (REF PETERS) capturing input-output relationships between 65 sectors \textit{s} in 141 countries \textit{r}. We subsequently compute the \textit{Leontief}-inverse $L_{r',s'}^{r,s}$ that gives information about required inputs from each sector \textit{s'} and region \textit{r'} for production of one unit of output in each sector \textit{s} and region \textit{r}. We derive indirect $CO_{2}$-emissions $E_{s}^{indirect}$ as follows\footnote{See REF, REF, REF, REF or REF for a detailed description of this approach.} \footnote{Simulation of different sectoral policies is possible through exclusion of different sectors \textit{s} or countries \textit{r}. In our main analysis we focus on national carbon intensities, i.e., how many emissions resulting from production in each country can be attributed to one unit of output. This would be equivalent to zero-carbon carbon intensities of imported products, but re-imported emissions would be included.}:
 
 \begin{equation}
     E_{s}^{indirect} = \sum_{r'} \sum_{s'} e_{r',s'} L_{r',s'}^{r,s} C_{s}
 \end{equation}
 
-with L being the Leontief-inverse. (Show regional and sectoral carbon intensities in Appendix).
+The GTAP database includes information on direct $CO_{2}$-emissions $E_{s}^{direct}$. It captures $CO_{2}$-emissions resulting from household-level use of fossil fuels, such as gasoline, natural gas, LPG or hard coal.
+Our resulting dataset contains information on the carbon intensity of output $e_{s,r}$ for 65 sectors \textit{s}, 141 countries \textit{r} \footnote{We show country- and sector-level carbon intensities in Appendix Figures \ref{fig:B1} to \ref{fig:B2}.}.
 
-Core assumption of this analysis:
+\begin{itemize}
+    \item Methodological discussion and shortcomings (brief)
+\end{itemize}
+
+\paragraph{Analysis of heterogeneity in carbon intensity of consumption} Analyses of distributional impacts of climate policy often focus on comparing average (or median) costs of policies for different income groups of households. One frequent approach is to assign households to income (or expenditure) quintiles to infer about vertical differences, i.e., differences between poorer and richer households. Often, researchers also compute measures for within-group heterogeneity, such as the $25^{th}$ or $75^{th}$ quantile within each expenditure quintile. Comparing such quantile costs across expenditure quintiles can help to infer about horizontal differences.
+
+Figure \ref{fig:fig_1} displays the distribution of carbon intensity of consumption among the poorest 20\% of households in all countries of our sample with the help of boxplots. Boxes and whiskers contain 90\% of all households in these groups. Blue bars show the difference between the lowest and the highest median carbon intensity across all quintiles for each country.
+
+\begin{figure}[ht!]
+    \centering
+    \includegraphics{Figure 1/Figure_1}
+    \caption{Vertical differences and distribution of carbon intensity within poorest quintiles}
+    \label{fig:fig_1}
+    \begin{subcaption}
+    Boxplots display the distribution of household-level carbon intensity within the poorest quintile in each of 87 countries: The boxes display the $25^{th}$ and $75^{th}$ percentile; whiskers display the $5^{th}$ and $95^{th}$ percentile, respectively. Rhombuses display the mean. Blue bars represent the vertical difference in household-level carbon intensity, i.e., the difference between the highest and the lowest median carbon intensity across quintiles.
+    \end{subcaption}
+\end{figure}
+
+Figure \ref{fig:fig_1} illustrates that within-quintile heterogeneity exceeds between-quintile differences in all countries \footnote{See FIGURE REF MISSING for country-level comparisons across all expenditure quintiles}. This underlines that analysis building on differences in income to explain differences in carbon intensity of consumption (or the impact of climate policy) might be insufficient since it falls short of accouting for differences in carbon intensity at similar levels of income. Instead, we propose including household-level characteristics beyond income in such an analysis to paint a more nuanced picture of which households' consumption is especially carbon-intensive. 
+
+This is also warranted, because - as we show in Figure \ref{fig:fig_2} - within-quintile differences are different across quintiles. To facilitate comparison across countries, we compute two coefficients in the spirit of REF MISSBACH: The vertical distribution coefficient $\overline{V_{r}}$ compares median carbon intensity of the poorest and the richest expenditure quintile: 
 
 \begin{equation}
-    e_{i} \sim X_{i}
+    \widehat{V_{r}} = \frac{\overline{e_{EQ1}}}{\overline{e_{EQ5}}}
 \end{equation}
 
-Appendix: Distribution of carbon intensity across countries
+If median carbon intensity among poorer households exceeds (is smaller than) the median carbon intensity of richer households, $\widehat{V_{r}}>1$ ($\widehat{V_{r}}<1$) and climate policy would likely lead to \textit{regressive} (\textit{progressive}) outcomes. 
 
-About here: Figure 1 - vertical vs. horizontal distribution of carbon intensity in first quintiles, all countries
+The horizontal distribution coefficient $\overline{H_{r}}$ compares within-quintile differences of the poorest and the richest expenditure quintile:
 
-About here: Figure 2 - vertical vs. horizontal distribution of carbon intensity across all countries (Figure 2 Latin America)
+\begin{equation}
+    \widehat{H_{r}} = \frac{e_{EQ1}^{95} - e_{EQ1}^{5}}{e_{EQ5}^{95} - e_{EQ5}^{5}}
+\end{equation}
 
-If within-quintile differences exceed between-quintile differences relying on differences in income as a main indicator is insufficient.
+$H_{r}>1$ would indicate that within-quintile differences are larger in the poorest among poorer compared to richer households.
 
-Which criteria should be included in modelling and why?
+Figure \ref{fig:fig_2} illustrates that the average carbon intensity of consumption is larger among the poorest quintile in X out of 87 countries compared to the richest quintile. These countries have a higher GDP per capita than others: We observe $\widehat{V_{r}}>1$ for Y out of 20 countries in our sample with the highest GDP per capita. In these countries, climate policies (such as carbon pricing) are likely to have regressive effects. Similarly, carbon intensity is higher for richer quintiles compared to poorer quintiles ($\widehat{V_{r}}>1$ ) in Z out of 20 countries in our sample with the lowest GDP per capita. This is in line with inverse-U-shaped Engel curves for carbon-intensive goods and services across countries and income quintiles (REF Dorband). %Interestingly, this does not necessarily hold in each single country.
 
-Introduce boosted regression trees and highlight benefits. Describe "feature engineering" in the Appendix. Describe evaluation of model outcomes.
+\begin{figure}[ht!]
+    \centering
+    \includegraphics{Figure 2/Figure_2}
+    \caption{Vertical and horizontal distribution coefficient}
+    \label{fig:fig_2}
+    \begin{subcaption}
+    The vertical distribution coefficient compares the median carbon intensity of the richest to the poorest quintile. The horizontal distribution coefficient compares the within-quintile differences ($5^{th}$ to $95_{th}$ percentile within quintiles) of the richest to the poorest quintile. Rectangles (A) and (B) indicate higher carbon intensity (at the median) among the poorest quintile compared to the richest quintile; rectangles (C) and (D) indicate lower carbon intensity (at the median) among the poorest quintile compared to the richest quintile. Rectangles (A) and (C) indicate smaller within-quintile differences of carbon intensity among the richest quintile compared to the poorest quintile; rectangles (B) and (D) indicate larger within-quintile differences of carbon intensity among the richest quintile compared to the poorest quintile. Colours of points indicate GDP per capita for 2018 (in log-transformed constant 2010 US-\$).
+    \end{subcaption}
+\end{figure}
 
-Motivate and describe clustering algorithm.
+In Y countries, within-quintile variation (expressed as the difference between the $5^{th}$ and the $95^{th}$ quantile within quintiles) is larger in the poorest quintile compared to the richest quintile. Horizontal differences, i.e., within-quintile heterogeneity, exceeds vertical differences, i.e., between-quintile heterogeneity in Z countries, emphasizing the need for detailed investigation of household characteristics associated to higher levels of carbon intensity of consumption. 
 
-Shap values in Appendix (?)
+In response, one core assumption of this study is that $e_{i}$, the carbon intensity of household \textit{i}, correlates with observable household characteristics $X_{i}^{'}$:
 
-Logit-model for easier visualization, de facto robustness check
+\begin{equation}
+    e_{i} \sim X_{i}^{'}
+\end{equation}
+
+%Which criteria should be included in modelling and why?
+
+We analyse which household characteristics are associated to higher levels of carbon intensity of consumption with the help of two modelling approaches, namely boosted regression trees (BRT) and a logit-model.
+
+\paragraph{Boosted regression trees} Boosted regression trees (BRT) (REF ELITH) is a supervised machine learning method allowing for detection of non-linear relationships and interaction effects between an outcome and many predictor variables. As an extension to regression trees, the BRT algorithm (XGBoost) fits many regression trees giving higher weights to observations with larger predicting errors. This leads to large predictive power, also if compared to more frequently used random forest algorithms. Nevertheless, BRT are more computationally intensive and  more difficult to interpret. % Why BRT is helpful here.
+
+Deploying BRT serves the purpose of our analysis, because it is a priori ambiguous which household characteristics to include in a model. BRT-modelling is well suited to help identifying important predictors and potentially non-linear effect sizes. Out-of-sample predictive power
+
+We build BRT-models on the country-level to investigate characteristics associated to heterogeneous levels of carbon intensities within single countries. The carbon intensity $e_{i}$ is the outcome variable. For each country-level model we use the entire set of observable household-level characteristics $X_{i}^{'}$ as possible features and perform several feature engineering steps (see also Appendix \ref{sec:featureengineering}).
+
+To avoid overfitting, we randomly split country-level data into a training and a test sample with the training sample comprising 75\% of all observations\footnote{For countries with many observations, such as Indonesia, India or Mexico, we use 20\%, 30\% and 50\% of the available data for training.}. We use the training dataset to train the model; we use the testing dataset (i.e., the remaining 25\% of observations) for evaluation of the model. We evaluate our model with the help of mean absolute error (MAE), root mean squared error (RMSE) and $R^{2}$ and show predictive performance of our models based on the testing dataset.
+
+BRT-models include a number of hyperparameters that we optimize for best predictive performance. We use five-fold cross-validation on the training dataset to fit 1,000 trees along with 16 different combinations of learning rate ($\eta \in [0.001,0.3]$, the maximum depth of trees ([1,15]) and a fraction of possible features included in each tree(\{0.5,0.7,1\}). For each country, we select those hyperparameters that minimize mean average error.
+
+We evaluate the relative importance of each feature with the help of SHAP-values and based on the testing dataset. (LUNDBERG et al.) WHY SHAP-values are GREAT. For each feature, we calculate the mean absolute contribution to model outcomes and calculate the share of contribution for each feature to allow for better comparability of feature contributions across countries. We also show partial dependence plots and the distribution of SHAP-values for the most important features.
+
+\paragraph{Logit-model} We also fit a logit-model to identify households whose consumption is relatively carbon-intensive compared to the entire population. We construct a binary variable $e_{i}^{80}$ for each household \textit{i} indicating whether the household is among the most carbon-intensive 20\% of households in each country:
+
+\begin{equation}
+    e_{i}^{80} =
+    \begin{cases}
+    1, & \text{for }  e_{i} \geq e^{80} \\
+    0, & \text{for }  e_{i} < e^{80}
+    \end{cases}
+\end{equation}
+
+Subsequently, be $P_{e_{i}^{80}}$ the probability of household \textit{i} to consume more carbon-intensively than 80\% of the population in each country. We are interested in the coefficients $\beta^{'}$ of the following logit-model:
+
+\begin{equation}
+    log \left( \frac{P_{e_{i}^{80}}}{1 - P_{e_{i}^{80}}} \right) = \alpha_{0} + \beta^{'} X_{i}^{'} + \varepsilon_{i}
+\end{equation}
+
+Estimating a logit-model serves as a robustness check for results from BRT-models. It also allows for investigation of characteristics associated to "hardship-case" households including a more accessible interpretation of results and parameters. We show results from logit-models with the help of regression tables and visualize average marginal effects for each independent variable.
+
+\paragraph{Clustering} Country-level analyses can be meaningful to identify country-specific household characteristics associated to higher levels of carbon intensity of consumption. In fact, the relationship between household-level characteristics and carbon intensity of consumption is unique for each country, but also contingent on availability of granular data. To learn more about which characteristics are more important in many countries we perform k-means clustering algorithm on country-level model outcomes. For each country, we extract the share of mean absolute SHAP-values for each feature. If features are missing in the data, we assume its share of contribution is zero. We also include $\widehat{V_{r}}$ and $\widehat{H_{r}}$ as measures for vertical and horizontal heterogeneity and the average carbon intensity of consumption $\overline{e_{r}}$ across all households. We normalize all variables to allow for comparison across variables.
+
+K-means clustering helps to analyze clusters of observations which are most similar in many variables within each cluster and least similar in many variables across clusters (MacQueen 1967). We inspect the optimal number of clusters with the help of the total sum of squares within clusters. Our approach yields $k = X$ to be the number of clusters minimizing total sum of squares with least clusters necessary \footnote{See Appendix X for visualization.}.
+
+For each country-cluster, we compute average values for each variable to allow for investigation of differences between countries in different clusters. We also investigate which country is most likely to all other countries in each cluster minimizing distance to cluster-centroids within each cluster and use it to demonstrate cluster-level characteristics. It is important to note that our clustering approach hinges substantially on the availability of variables in the data. If a variable, for example cooking fuel use, remains unobserved for one country, the country may end up in a cluster with countries in which cooking fuel use has little explanatory power, even though it may have in reality. Our approach might nevertheless be warranted under the assumption that policy formulation (for example on optimal targeting of compensation measures) can naturally only center on observable characteristics, if targeting errors should be minimized. 
+
+
+\begin{itemize}
+    \item Methodological discussion (brief)
+    %\item Analyzing vertical inequality
+    %\item Analyzing horizontal inequality
+    %\item Introduce boosted regression trees
+    %\item Introduce logit model as robustness check, supplementary analysis
+    \item Critical appraisal
+\end{itemize}
+
+\clearpage
 
 \section{Results: Heterogeneity of carbon intensity of consumption} \label{sec:results}
 
 \begin{itemize}
 \item Cluster-figure
 \item "Machine-learning results" figure
+\item Pro Cluster ein Land. Dazu den Feature Importance Plot, sowie SHAP-based Figures für die wichtigsten Kriterien, ggf. Expenditures (immer) und dazu ein Kriterium. Ggf. auch PDP mit Expenditures.
+\item (Tendenziell ginge auch out-of-sample prediction mit detaillierter Auflösung, wie einzelne features (SHAP) zur gesamten Prediction beitragen.
 \item Pro Cluster das größte Land, ggf. SHAP oder Logit-model (TBD Entscheidungskriterium). Shap values to appendix. Marginal effects of logit-models per country for easier visualization. Across countries to Appendix.
   \item Summary statistics
   \item Show differences between poor and rich households.
@@ -256,9 +336,31 @@ We describe our approach to collecting, cleaning and homogenizing microdata and 
 
 \subsubsection{Cleaning and homogenizing household data}
 
+Building on raw microdata from household budget surveys we perform several cleaning steps in order to homogenize datasets across countries.
+
+\begin{itemize}
+    \item We address outliers of household expenditures at the item-level. We consider any observation an outlier if it it in the $99^{th}$ quantile of all non-zero expenditures. We replace this observation with item-level median expenditures.
+    \item We remove observations if expenditures are negative, for example, if households sell items.
+    \item We remove duplicates from our sample. We check separately for duplicates at the level of household-level information, but also at the level of item expenditures: We consider households spending the same amount of money on the same items duplicates.
+    \item We remove all households from our sample if aggregate expenditures exceed mean expenditures by five standard deviations ($z>5$).
+    \item We use inflation rates from IMF and exchange rates from the World Bank to convert all local currencies to US-\$ for the year 2014. Expenditures from surveys conducted before 2014 are inflated; expenditures from surveys after 2014 are deflated. This ensures consistency with calculated $CO_{2}$-emissions as they refer to the year 2014. This approach does however neglect that expenditure shares may change with inflation.
+    \item We create matching tables to assign country-level expenditure items to 65 aggregate sectors and to four broad expenditure categories (energy, food, goods, services). Items, that are difficult to match to a specific sector or to a specific category, e.g., 'other expenses', are matched to artificial sectors and categories labelled 'other'. We delete observations for items indicating aggregate categories, if this would lead to double-counting of single expenditures. We delete observations for items indicating taxes, since including them would prove inaccurate to calculate expenditure shares and because items indicating tax payments are not available in each country. We also identify items indicating energy use and create separate columns listing expenditures for different energy items, such as electricity, gasoline, diesel, kerosene, LPG, natural gas, charcoal, hard coal, firewood and other biomass. All matching tables are available through a separate stable online repository (INSERT LINK).
+\end{itemize}
+
 % tracking and documenting removals
 
-\subsubsection{Feature engineering}
+\subsubsection{Feature engineering} \label{sec:featureengineering}
+
+Building on our homogenized dataset, we perform feature engineering on our variables (features) before performing analyses with BRT.
+
+\begin{itemize}
+    \item We exclude any feature with missing variation (for four countries).
+    \item We exclude categorical feature with high granularity (such as district-level identifiers).
+    \item We exclude any feature with missing values-
+    \item We remove the minimum number of features necessary to avoid high levels of correlation ($r>0.9$) between features.
+    \item We code observations as "other" for each feature (except province-level, district-level and urban-/rural-identifiers) which account for less than 5\% of all observations.
+    \item All country-level feature sets include total household expenditures (in US-\$ 2014) and household size. The minimum number of included features is X (for Y) and the maximum number of included feature is X (for Z).
+\end{itemize}
 
 \subsection{Policy simulation}\label{sec:policysimulation}
 
