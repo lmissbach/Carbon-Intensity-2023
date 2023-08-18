@@ -2198,7 +2198,7 @@ rm(track)
 
 Country.Set.Test.2 <- c("IND", "IDN", "MEX")
 
-Country.Set.Test.3 <- c("IND")
+Country.Set.Test.3 <- c("IDN")
 
 eval_0 <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_SHAP_Evaluation.xlsx")
 
@@ -2748,8 +2748,7 @@ for (i in Country.Set.Test.3){
       mutate(sd_exp   = sd(hh_expenditures_USD_2014),
              mean_exp = mean(hh_expenditures_USD_2014))%>%
       mutate(z_score_exp = (hh_expenditures_USD_2014-mean_exp)/sd_exp)%>%
-      filter(z_score_exp < 5)%>%
-      select(id, z_score_exp)
+      select(-mean_exp, -sd_exp)
     
     # Working with the following dataframe
     
@@ -6171,6 +6170,12 @@ for(i in Country.Set$Country){
 rm(P_8.5, data_8.5.1, data_8.5.2)
 
 # 8.5.2   Figure 5b: Partial dependence plots ####
+
+# for (i in c("ISR")){
+  
+  data_8.5.2.0 <- read_rds(sprintf("../0_Data/9_Supplementary Data/BRT-Tracking/SHAP-Values en detail/SHAP_wide_%s.rds",i))
+  
+#}
 
 # Can think about creating a new dataframe for shap-values
 
