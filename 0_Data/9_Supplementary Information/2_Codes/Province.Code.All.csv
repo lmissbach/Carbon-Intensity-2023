@@ -1,903 +1,903 @@
-Country,province,Province,Province_code
-ARG,6,Buenos Aires,1
-ARG,10,Catamarca,2
-ARG,22,Chaco,3
-ARG,26,Chubut,4
-ARG,2,Ciudad Autónoma de Buenos Aires,5
-ARG,14,Córdoba,6
-ARG,18,Corrientes,7
-ARG,30,Entre Ríos,8
-ARG,34,Formosa,9
-ARG,38,Jujuy,10
-ARG,42,La Pampa,11
-ARG,46,La Rioja,12
-ARG,50,Mendoza,13
-ARG,54,Misiones,14
-ARG,58,Neuquén,15
-ARG,62,Río Negro,16
-ARG,66,Salta,17
-ARG,70,San Juan,18
-ARG,74,San Luis,19
-ARG,78,Santa Cruz,20
-ARG,82,Santa Fe,21
-ARG,86,Santiago del Estero,22
-ARG,94,Tierra del Fuego,23
-ARG,90,Tucumán,24
-ARM,NA,NA,25
-AUT,1,Ostösterreich,26
-AUT,2,Südösterreich,27
-AUT,3,Westösterreich,28
-BEL,NA,NA,29
-BEN,1,alibori,30
-BEN,2,atacora,31
-BEN,3,atlantique,32
-BEN,4,borgou,33
-BEN,5,collines,34
-BEN,6,couffo,35
-BEN,7,donga,36
-BEN,8,littoral,37
-BEN,9,mono,38
-BEN,10,oueme,39
-BEN,11,plateau,40
-BEN,12,zou,41
-BFA,1,Boucle du Mouhoun,42
-BFA,2,Cascades,43
-BFA,3,Centre,44
-BFA,4,Centre-Est,45
-BFA,5,Centre-Nord,46
-BFA,6,Centre-Ouest,47
-BFA,7,Centre-Sud,48
-BFA,8,Est,49
-BFA,9,Hauts Bassins,50
-BFA,10,Nord,51
-BFA,11,Plateau-Central,52
-BFA,12,Sahel,53
-BFA,13,Sud-Ouest,54
-BGD,10,Barisal,55
-BGD,20,Chittagong,56
-BGD,30,Dhaka,57
-BGD,40,Khulna,58
-BGD,50,Rajshani,59
-BGD,55,Rajshani/Sylhet,60
-BGD,60,Sylhet,61
-BGR,NA,NA,62
-BOL,NA,NA,63
-BRA,12,Acre,64
-BRA,27,Alagoas,65
-BRA,16,Amapá,66
-BRA,13,Amazonas,67
-BRA,29,Bahia,68
-BRA,23,Ceará,69
-BRA,53,Distrito Federal,70
-BRA,32,Espírito Santo,71
-BRA,52,Goiás,72
-BRA,21,Maranhão,73
-BRA,51,Mato Grosso,74
-BRA,50,Mato Grosso do Sul,75
-BRA,31,Minas Gerais,76
-BRA,15,Pará,77
-BRA,25,Paraíba,78
-BRA,41,Paraná,79
-BRA,26,Pernambuco,80
-BRA,22,Piauí,81
-BRA,33,Rio de Janeiro,82
-BRA,24,Rio Grande do Norte,83
-BRA,43,Rio Grande Do Sul,84
-BRA,11,Rondônia,85
-BRA,14,Roraima,86
-BRA,42,Santa Catarina,87
-BRA,35,São Paulo,88
-BRA,28,Sergipe,89
-BRA,17,Tocantins,90
-BRB,2,Christ Church,91
-BRB,9,St. Andrew,92
-BRB,4,St. George,93
-BRB,5,St. James,94
-BRB,7,St. John,95
-BRB,8,St. Joseph,96
-BRB,11,St. Lucy,97
-BRB,1,St. Michael,98
-BRB,10,St. Peter,99
-BRB,3,St. Philip,100
-BRB,6,St. Thomas,101
-CAN,48,Alberta,102
-CAN,14,Atlantic provinces,103
-CAN,59,British Columbia,104
-CAN,46,Manitoba,105
-CAN,35,Ontario,106
-CAN,24,Quebec,107
-CAN,47,Saskatchewan,108
-CAN,63,Territoral capitals,109
-CHE,2,Espace Mittelland,110
-CHE,1,Genferseeregion,111
-CHE,3,Nordwestschweiz,112
-CHE,5,Ostschweiz,113
-CHE,7,Tessin,114
-CHE,6,Zentralschweiz,115
-CHE,4,Zürich,116
-CHL,1,Gran Santiago,117
-CHL,2,Other,118
-CIV,16,AGNEBY-TIASSA,119
-CIV,1,AUTONOME D'ABIDJAN,120
-CIV,19,bafing,121
-CIV,20,bagoue,122
-CIV,21,belier,123
-CIV,22,bere,124
-CIV,23,bounkani,125
-CIV,18,cavally,126
-CIV,24,folon,127
-CIV,4,gbeke,128
-CIV,25,gbÔkle,129
-CIV,17,gÔh,130
-CIV,8,gontougo,131
-CIV,26,GRANDS-PONTS,132
-CIV,27,guemon,133
-CIV,28,hambol,134
-CIV,2,HAUT-SASSANDRA,135
-CIV,29,iffou,136
-CIV,5,INDENIE-DJUABLIN,137
-CIV,10,kabadougou,138
-CIV,30,LA ME,139
-CIV,15,LÔH-DJIBOUA,140
-CIV,12,marahoue,141
-CIV,33,moronou,142
-CIV,11,N'ZI,143
-CIV,31,nawa,144
-CIV,3,poro,145
-CIV,9,SAN-PEDRO,146
-CIV,13,SUD-COMOE,147
-CIV,32,tchologo,148
-CIV,6,tonkpi,149
-CIV,14,worodougou,150
-CIV,7,yamoussoukro,151
-COL,1,ATLÁNTICA,152
-COL,2,BOGOTÁ,153
-COL,3,CENTRAL,154
-COL,4,NUEVO DEPARTAMENTOS,155
-COL,5,ORIENTAL,156
-COL,6,PACÍFICA,157
-COL,7,SAN ANDRÉS,158
-CRI,4,Brunca,159
-CRI,1,Central,160
-CRI,2,Chorotega,161
-CRI,5,Huetar Atlántico,162
-CRI,6,Huetar Norte,163
-CRI,3,Pacífico Central,164
-CYP,NA,NA,165
-CZE,NA,NA,166
-DEU,NA,NA,167
-DNK,NA,NA,168
-DOM,2,AZUA,169
-DOM,3,BAHORUCO,170
-DOM,4,BARAHONA,171
-DOM,5,DAJABON,172
-DOM,1,DISTRITO NACIONAL,173
-DOM,6,DUARTE,174
-DOM,8,EL SEIBO,175
-DOM,7,ELIAS PIÑA,176
-DOM,9,ESPAILLAT,177
-DOM,30,HATO MAYOR,178
-DOM,10,INDEPENDENCIA,179
-DOM,11,LA ALTAGRACIA,180
-DOM,12,LA ROMANA,181
-DOM,13,LA VEGA,182
-DOM,14,MARIA TRINIDAD SANCHEZ,183
-DOM,28,MONSEÑOR NOUEL,184
-DOM,15,MONTE CRISTI,185
-DOM,29,MONTE PLATA,186
-DOM,16,PEDERNALES,187
-DOM,17,PERAVIA,188
-DOM,18,PUERTO PLATA,189
-DOM,19,SALCEDO,190
-DOM,20,SAMANA,191
-DOM,21,SAN CRISTOBAL,192
-DOM,31,SAN JOSE DE OCOA,193
-DOM,22,SAN JUAN,194
-DOM,23,SAN PEDRO DE MACORIS,195
-DOM,24,SANCHEZ RAMIREZ,196
-DOM,25,SANTIAGO,197
-DOM,26,SANTIAGO RODRIGUEZ,198
-DOM,32,SANTO DOMINGO,199
-DOM,27,VALVERDE,200
-ECU,2,Cuenca,201
-ECU,3,Guayaquil,202
-ECU,4,Machala,203
-ECU,1,No ciudad,204
-ECU,5,Quito,205
-EGY,41,Frontier Governorates,206
-EGY,3,Rural Lower Egypt,207
-EGY,5,Rural Upper Egypt,208
-EGY,1,Urban Governorates,209
-EGY,2,Urban Lower Egypt,210
-EGY,4,Urban Upper Egypt,211
-ESP,NA,NA,212
-EST,NA,NA,213
-ETH,14,ADDIS ABABA,214
-ETH,2,AFAR,215
-ETH,3,AMHARA,216
-ETH,6,BENISHANGUL GUMUZ,217
-ETH,15,DIRE DAWA,218
-ETH,12,GAMBELA,219
-ETH,13,HARAR,220
-ETH,4,OROMIA,221
-ETH,7,SNNP,222
-ETH,5,SOMALI,223
-ETH,1,TIGRAY,224
-FIN,NA,NA,225
-FRA,NA,NA,226
-GBR,4,East Midlands,227
-GBR,6,Eastern,228
-GBR,7,London,229
-GBR,1,North East,230
-GBR,2,North West and Merseyside,231
-GBR,12,Northern Ireland,232
-GBR,11,Scotland,233
-GBR,8,South East,234
-GBR,9,South West,235
-GBR,10,Wales,236
-GBR,5,West Midlands,237
-GBR,3,Yorkshire and the Humber,238
-GEO,7,Adjara A.R.,239
-GEO,8,Guria,240
-GEO,10,Imereti,241
-GEO,0,Kakheti,242
-GEO,3,Kvemo Kartli,243
-GEO,11,Mtskheta-Mtianeti,244
-GEO,13,Racha-Lechkhumi and Kvemo Svaneti,245
-GEO,9,Samegrelo-Zemo Svaneti,246
-GEO,5,Samtskhe-Javakheti,247
-GEO,2,Shida Kartli,248
-GEO,1,Tbilisi,249
-GHA,6,Ashanti,250
-GHA,7,Brong Ahafo,251
-GHA,2,Central,252
-GHA,5,Eastern,253
-GHA,3,Greater Accra,254
-GHA,8,Northern,255
-GHA,9,Upper East,256
-GHA,10,Upper West,257
-GHA,4,Volta,258
-GHA,1,Western,259
-GNB,6,bafata,260
-GNB,4,biombo,261
-GNB,5,BOLAMA_BIJAGOS,262
-GNB,8,cacheu,263
-GNB,7,gabu,264
-GNB,3,oio,265
-GNB,2,quinara,266
-GNB,9,sab,267
-GNB,1,tombali,268
-GRC,NA,NA,269
-GTM,1,I. METROPOLITANA,270
-GTM,2,II. NORTE,271
-GTM,3,III. NORORIENTAL,272
-GTM,4,IV SURORIENTAL,273
-GTM,5,V. CENTRAL,274
-GTM,6,VI. SUROCCIDENTAL,275
-GTM,7,VII. NOROCCIDENTAL,276
-GTM,8,VIII. PETEN,277
-HRV,NA,NA,278
-HUN,NA,NA,279
-IDN,11,Aceh,280
-IDN,51,Bali,281
-IDN,36,Banten,282
-IDN,17,Bengkulu,283
-IDN,34,DI Yogyakarta,284
-IDN,31,DKI Jakarta,285
-IDN,75,Gorontalo,286
-IDN,15,Jambi,287
-IDN,32,Jawa Barat,288
-IDN,33,Jawa Tengah,289
-IDN,35,Jawa Timur,290
-IDN,61,Kalimantan Barat,291
-IDN,63,Kalimantan Selatan,292
-IDN,62,Kalimantan Tengah,293
-IDN,64,Kalimantan Timur,294
-IDN,65,Kalimantan Utara,295
-IDN,19,Kepulauan Bangka Belitung,296
-IDN,21,Kepulauan Riau,297
-IDN,18,Lampung,298
-IDN,81,Maluku,299
-IDN,82,Maluku Utara,300
-IDN,52,Nusa Tenggara Barat,301
-IDN,53,Nusa Tenggara Timur,302
-IDN,94,Papua,303
-IDN,91,Papua Barat,304
-IDN,14,Riau,305
-IDN,76,Sulawesi Barat,306
-IDN,73,Sulawesi Selatan,307
-IDN,72,Sulawesi Tengah,308
-IDN,74,Sulawesi Tenggara,309
-IDN,71,Sulawesi Utara,310
-IDN,13,Sumatera Barat,311
-IDN,16,Sumatera Selatan,312
-IDN,12,Sumatera Utara,313
-IND,01,01,314
-IND,02,02,315
-IND,03,03,316
-IND,04,04,317
-IND,05,05,318
-IND,06,06,319
-IND,07,07,320
-IND,08,08,321
-IND,09,09,322
-IND,10,10,323
-IND,11,11,324
-IND,12,12,325
-IND,13,13,326
-IND,14,14,327
-IND,15,15,328
-IND,16,16,329
-IND,17,17,330
-IND,18,18,331
-IND,19,19,332
-IND,20,20,333
-IND,21,21,334
-IND,22,22,335
-IND,23,23,336
-IND,24,24,337
-IND,25,25,338
-IND,26,26,339
-IND,27,27,340
-IND,28,28,341
-IND,29,29,342
-IND,30,30,343
-IND,31,31,344
-IND,32,32,345
-IND,33,33,346
-IND,34,34,347
-IND,35,35,348
-IRL,NA,NA,349
-IRQ,NA,NA,350
-ISR,12,Ashdod,351
-ISR,15,Beer Sheva,352
-ISR,4,Cities (100k to 200k),353
-ISR,7,Cities (10k to 20k),354
-ISR,6,Cities (20k to 50k),355
-ISR,8,Cities (2k to 10k),356
-ISR,5,Cities (50k to 100k),357
-ISR,3,Haifa,358
-ISR,1,Jerusalem,359
-ISR,14,Netanya,360
-ISR,13,Petah Tikva,361
-ISR,0,Rishon Lezion,362
-ISR,10,Rural,363
-ISR,2,Tel Aviv,364
-ISR,9,Urban,365
-ITA,NA,NA,366
-JOR,13,Ain Al Basha,367
-JOR,39,Al-Aghwar al-Janubiyya,368
-JOR,47,Al-Betra,369
-JOR,45,Al-Hasa,370
-JOR,17,Al-Hashimiyah,371
-JOR,49,Al-Husanyniyya,372
-JOR,4,Al-Jamiah,373
-JOR,7,Al-Jiza,374
-JOR,37,Al-Mazar al-Janubiyya,375
-JOR,8,Al-Mwwqqar,376
-JOR,38,Al-Qasr,377
-JOR,42,Al-Qatraneh,378
-JOR,51,Al-Quairah,379
-JOR,3,AlQuesmah,380
-JOR,16,Ar-Rusayfah,381
-JOR,32,Ar-Ruwayshid,382
-JOR,21,Ar Ramtha,383
-JOR,48,Ash-Shibek,384
-JOR,40,Ayy,385
-JOR,31,Badiah Gharbiyah,386
-JOR,30,Badiah Shamaliyah,387
-JOR,23,Bani Knana,388
-JOR,25,Bani Obeid,389
-JOR,44,Birsayra,390
-JOR,12,Dair Alla,391
-JOR,19,Dhiban,392
-JOR,41,Faqqu,393
-JOR,20,Irbid,394
-JOR,35,Kofranjah,395
-JOR,22,Kora,396
-JOR,14,Mahis and Fuheis,397
-JOR,2,Marka,398
-JOR,26,Mazar Shamaliyyeh,399
-JOR,9,Naoor,400
-JOR,34,Qasabah Ajlun,401
-JOR,50,Qasabah Al-Aqabah,402
-JOR,36,Qasabah Al-Karak,403
-JOR,29,Qasabah Al-Mafraq,404
-JOR,43,Qasabah Al-Tafila,405
-JOR,1,Qasabah Amman,406
-JOR,10,Qasabah As-Salt,407
-JOR,15,Qasabah Az-Zarqa,408
-JOR,33,Qasabah Jerash,409
-JOR,46,Qasabah Maan,410
-JOR,18,Qasabah Madaba,411
-JOR,6,Sahab,412
-JOR,11,Shuna Al-Janibiyya,413
-JOR,24,Shuna Shamaliyyeh,414
-JOR,27,Tayybeh,415
-JOR,5,Wadi al-Sayr,416
-JOR,28,Wastiyyeh,417
-KEN,30,Baringo,418
-KEN,36,Bomet,419
-KEN,39,Bungoma,420
-KEN,40,Busia,421
-KEN,28,Elgeyo Marakwet,422
-KEN,14,Embu,423
-KEN,7,Garissa,424
-KEN,43,Homa Bay,425
-KEN,11,Isiolo,426
-KEN,34,Kajiado,427
-KEN,37,Kakamega,428
-KEN,35,Kericho,429
-KEN,22,Kiambu,430
-KEN,3,Kilifi,431
-KEN,20,Kirinyaga,432
-KEN,45,Kisii,433
-KEN,42,Kisumu,434
-KEN,15,Kitui,435
-KEN,2,Kwale,436
-KEN,31,Laikipia,437
-KEN,5,Lamu,438
-KEN,16,Machakos,439
-KEN,17,Makueni,440
-KEN,9,Mandera,441
-KEN,10,Marsabit,442
-KEN,12,Meru,443
-KEN,44,Migori,444
-KEN,1,Mombasa,445
-KEN,21,Muranga,446
-KEN,47,Nairobi,447
-KEN,32,Nakuru,448
-KEN,29,Nandi,449
-KEN,33,Narok,450
-KEN,46,Nyamira,451
-KEN,18,Nyandarua,452
-KEN,19,Nyeri,453
-KEN,25,Samburu,454
-KEN,41,Siaya,455
-KEN,6,Taita Taveta,456
-KEN,4,Tana River,457
-KEN,13,Tharaka Nithi,458
-KEN,26,Trans Nzoia,459
-KEN,23,Turkana,460
-KEN,27,Uasin Gishu,461
-KEN,38,Vihiga,462
-KEN,8,Wajir,463
-KEN,24,West Pokot,464
-KHM,1,Banteay Meanchey,465
-KHM,2,Battambang,466
-KHM,3,Kampong Cham,467
-KHM,4,Kampong Chhnang,468
-KHM,5,Kampong Speu,469
-KHM,6,Kampong Thom,470
-KHM,7,Kampot,471
-KHM,8,Kandal,472
-KHM,9,Koh Kong,473
-KHM,10,Kratie,474
-KHM,11,Mondul Kiri,475
-KHM,22,Otdar Meanchey,476
-KHM,24,Pailin,477
-KHM,12,Phnom Penh,478
-KHM,18,Preah Sihanouk,479
-KHM,13,Preah Vihear,480
-KHM,14,Prey Veng,481
-KHM,15,Pursat,482
-KHM,16,Ratanak Kiri,483
-KHM,17,Siemreap,484
-KHM,19,Stung Treng,485
-KHM,20,Svay Rieng,486
-KHM,21,Takeo,487
-KHM,25,Tboung Khmum,488
-LBR,1,Bomi,489
-LBR,2,Bong,490
-LBR,15,Gbarpolu,491
-LBR,3,Grand Bassa,492
-LBR,4,Grand Cape Mount,493
-LBR,5,Grand Gedeh,494
-LBR,6,Grand Kru,495
-LBR,7,Lofa,496
-LBR,8,Margibi,497
-LBR,9,Maryland,498
-LBR,10,Montserrado,499
-LBR,11,Nimba,500
-LBR,12,River Cess,501
-LBR,14,River Gee,502
-LBR,13,Sinoe,503
-LTU,NA,NA,504
-LUX,NA,NA,505
-LVA,NA,NA,506
-MAR,5,Béni Mellal-Khénifra,507
-MAR,6,Casablanca-Settat,508
-MAR,12,Dakhla-Oued Ed Dahab,509
-MAR,8,Drâa-Tafilalet,510
-MAR,3,Fès-Meknès,511
-MAR,10,Guelmim-Oued Noun,512
-MAR,11,Laâyoune-Sakia El Hamra,513
-MAR,7,Marrakech-Safi,514
-MAR,2,Oriental,515
-MAR,4,Rabat-Salé-Kénitra,516
-MAR,9,Souss-Massa,517
-MAR,1,Tanger-Tétouan-Al Hoceïma,518
-MDV,28,AA,519
-MDV,29,ADh,520
-MDV,25,B,521
-MDV,33,Dh,522
-MDV,32,F,523
-MDV,36,GA,524
-MDV,37,GDh,525
-MDV,20,HA,526
-MDV,21,HDh,527
-MDV,27,K,528
-MDV,35,L,529
-MDV,26,Lh,530
-MDV,10,Male',531
-MDV,24,R,532
-MDV,39,S,533
-MDV,22,Sh,534
-MDV,34,Th,535
-MDV,30,V,536
-MEX,01,Aguascalientes,537
-MEX,02,Baja California,538
-MEX,03,Baja California Sur,539
-MEX,04,Campeche,540
-MEX,07,Chiapas,541
-MEX,08,Chihuahua,542
-MEX,09,Ciudad de M�xico,543
-MEX,05,Coahuila de Zaragoza,544
-MEX,06,Colima,545
-MEX,10,Durango,546
-MEX,11,Guanajuato,547
-MEX,12,Guerrero,548
-MEX,13,Hidalgo,549
-MEX,14,Jalisco,550
-MEX,15,M�xico,551
-MEX,16,Michoac�n de Ocampo,552
-MEX,17,Morelos,553
-MEX,18,Nayarit,554
-MEX,19,Nuevo Le�n,555
-MEX,20,Oaxaca,556
-MEX,21,Puebla,557
-MEX,22,Quer�taro,558
-MEX,23,Quintana Roo,559
-MEX,24,San Luis Potos�,560
-MEX,25,Sinaloa,561
-MEX,26,Sonora,562
-MEX,27,Tabasco,563
-MEX,28,Tamaulipas,564
-MEX,29,Tlaxcala,565
-MEX,30,Veracruz de Ignacio de la Llave,566
-MEX,31,Yucat�n,567
-MEX,32,Zacatecas,568
-MLI,9,Bamako,569
-MLI,7,Gao,570
-MLI,1,Kayes,571
-MLI,8,Kidal,572
-MLI,2,Koulikoro,573
-MLI,11,Menaka,574
-MLI,5,Mopti,575
-MLI,4,Ségou,576
-MLI,3,Sikasso,577
-MLI,10,Taoudénit,578
-MLI,6,Tombouctou,579
-MMR,14,Ayeyarwaddy,580
-MMR,7,Bago,581
-MMR,4,Chin,582
-MMR,1,Kachin,583
-MMR,2,Kayah,584
-MMR,3,Kayin,585
-MMR,8,Magway,586
-MMR,9,Mandalay,587
-MMR,10,Mon,588
-MMR,15,NayPyitaw,589
-MMR,11,Rakhine,590
-MMR,5,Sagaing,591
-MMR,13,Shan,592
-MMR,6,Taninthayi,593
-MMR,12,Yangon,594
-MNG,3,Central,595
-MNG,4,East,596
-MNG,2,Highlands,597
-MNG,5,Ulaanbaatar,598
-MNG,1,West,599
-MOZ,1,Cabo Delgado,600
-MOZ,2,Gaza,601
-MOZ,3,Inhambane,602
-MOZ,4,Manica,603
-MOZ,5,Maputo Cidade,604
-MOZ,6,Maputo Província,605
-MOZ,7,Nampula,606
-MOZ,8,Niassa,607
-MOZ,9,Sofala,608
-MOZ,10,Tete,609
-MOZ,11,Zambézia,610
-MWI,NA,NA,611
-NER,1,agadez,612
-NER,2,diffa,613
-NER,3,dosso,614
-NER,4,maradi,615
-NER,8,niamey,616
-NER,5,tahoua,617
-NER,6,tillaberi,618
-NER,7,zinder,619
-NGA,1,1. Abia,620
-NGA,10,10. Delta,621
-NGA,11,11. Ebonyi,622
-NGA,12,12. Edo,623
-NGA,13,13. Ekiti,624
-NGA,14,14. Enugu,625
-NGA,15,15. Gombe,626
-NGA,16,16. Imo,627
-NGA,17,17. Jigawa,628
-NGA,18,18. Kaduna,629
-NGA,19,19. Kano,630
-NGA,2,2. Adamawa,631
-NGA,20,20. Katsina,632
-NGA,21,21. Kebbi,633
-NGA,22,22. Kogi,634
-NGA,23,23. Kwara,635
-NGA,24,24. Lagos,636
-NGA,25,25. Nasarawa,637
-NGA,26,26. Niger,638
-NGA,27,27. Ogun,639
-NGA,28,28. Ondo,640
-NGA,29,29. Osun,641
-NGA,3,3. Akwa Ibom,642
-NGA,30,30. Oyo,643
-NGA,31,31. Plateau,644
-NGA,32,32. Rivers,645
-NGA,33,33. Sokoto,646
-NGA,34,34. Taraba,647
-NGA,35,35. Yobe,648
-NGA,36,36. Zamfara,649
-NGA,37,37. FCT,650
-NGA,4,4. Anambra,651
-NGA,5,5. Bauchi,652
-NGA,6,6. Bayelsa,653
-NGA,7,7. Benue,654
-NGA,8,8. Borno,655
-NGA,9,9. Cross River,656
-NIC,4,Atlántico,657
-NIC,3,Central,658
-NIC,1,Managua,659
-NIC,2,Pacífico,660
-NLD,NA,NA,661
-NOR,4,Agder og Rogaland,662
-NOR,1,Akershus og Oslo,663
-NOR,2,Hedmark op Oppland,664
-NOR,7,Nord-Norge,665
-NOR,3,Sor-Ostlandet,666
-NOR,6,Trondelag,667
-NOR,5,Vestlandet,668
-PAK,4,balochistan,669
-PAK,1,kp,670
-PAK,2,punjab,671
-PAK,3,sindh,672
-PER,2,costa centro,673
-PER,1,costa norte,674
-PER,3,costa sur,675
-PER,8,lima metropolitana,676
-PER,7,selva,677
-PER,5,sierra centro,678
-PER,4,sierra norte,679
-PER,6,sierra sur,680
-PHL,15,ARMM,681
-PHL,5,Bicol Region,682
-PHL,2,Cagayan Valley,683
-PHL,41,Calabarzon,684
-PHL,14,CAR,685
-PHL,16,Caraga,686
-PHL,3,Central Luzon,687
-PHL,7,Central Visayas,688
-PHL,11,Davao Region,689
-PHL,8,Eastern Visayas,690
-PHL,1,Ilocos Region,691
-PHL,42,Mimaropa,692
-PHL,13,NCR,693
-PHL,10,Nothern Mindanao,694
-PHL,12,Soccsksargen,695
-PHL,6,Western Visayas,696
-PHL,9,Zasmboanga Peninsula,697
-POL,NA,NA,698
-PRT,NA,NA,699
-PRY,10,alto paraná,700
-PRY,0,asunción,701
-PRY,5,caaguazú,702
-PRY,11,central,703
-PRY,7,itapúa,704
-PRY,20,resto,705
-PRY,2,san pedro,706
-ROU,NA,NA,707
-RUS,84,Altaiskij Kraj: Biisk CR,708
-RUS,58,Altaiskij Kraj: Kur`inskij Rajon,709
-RUS,93,Amurskaja Oblast: Tambovskii Rajon,710
-RUS,106,Cheliabinsk,711
-RUS,107,Cheliabinsk Oblast: Krasnoarmeiskij Rajon,712
-RUS,48,Chuvashskaya ASSR: Shumerlja CR,713
-RUS,77,"Kabardino-Balkarija, Zol`skij Rajon",714
-RUS,67,Kalinin Oblast: Rzhev CR,715
-RUS,14,Kaluzhskaya Oblast: Kuibyshev Rajon,716
-RUS,105,Komi-ASSR: Syktyvkar,717
-RUS,89,Komi-ASSR: Usinsk CR (1994-2019),718
-RUS,9,Krasnodar CR,719
-RUS,129,Krasnodarskij Kraj: Kushchevskij Rajon,720
-RUS,66,Krasnojarskij Kraij: Krasnojarsk,721
-RUS,73,Krasnojarskij Kraij: Nazarovo CR,722
-RUS,46,Kurgan,723
-RUS,1,Leningrad Oblast: Volosovkij Rajon,724
-RUS,72,Lipetskaya Oblast: Lipetsk CR,725
-RUS,138,Moscow City,726
-RUS,139,Moscow City,727
-RUS,142,Moscow Oblast,728
-RUS,140,New Moscow City,729
-RUS,116,Nizhegorodskaja Oblast: Nizhnij Novgorod,730
-RUS,161,Novosibirskaya Oblast: Berdsk City & Raion (2003-present),731
-RUS,47,Orenburg Oblast: Orsk,732
-RUS,117,Penzenskaya Oblast: Zemetchinskij Rajon,733
-RUS,12,Perm Territory: Solikamsk City & Rajon,734
-RUS,137,Rostov Oblast: Batajsk,735
-RUS,70,Saratov CR,736
-RUS,100,Saratov Oblast: Volskij Gorosovet & Rajon,737
-RUS,135,Smolensk CR,738
-RUS,141,St. Petersburg City,739
-RUS,52,Stavropolskij Kraj: Georgievskij CR,740
-RUS,33,Tambov Oblast: Uvarovo CR,741
-RUS,45,Tatarskaja ASSR: Kazan,742
-RUS,71,Tomsk,743
-RUS,136,Tulskaja Oblast: Tula,744
-RUS,10,Udmurt ASSR: Glasov CR,745
-RUS,92,Vladivostok,746
-RUS,39,Volgograd Oblast: Rudnjanskij Rajon,747
-RWA,5,Eastern Province,748
-RWA,1,Kigali City,749
-RWA,4,Northern Province,750
-RWA,2,Southern Province,751
-RWA,3,Western Province,752
-SEN,1,dakar,753
-SEN,3,diourbel,754
-SEN,9,fatick,755
-SEN,12,kaffrine,756
-SEN,6,kaolack,757
-SEN,13,kedougou,758
-SEN,10,kolda,759
-SEN,8,louga,760
-SEN,11,matam,761
-SEN,4,SAINT-LOUIS,762
-SEN,14,sedhiou,763
-SEN,5,tambacounda,764
-SEN,7,thies,765
-SEN,2,ziguinchor,766
-SLV,1,AhuachapÃ¡n,767
-SLV,9,CabaÃ±as,768
-SLV,4,Chalatenango,769
-SLV,7,CuscatlÃ¡n,770
-SLV,5,La Libertad,771
-SLV,8,La Paz,772
-SLV,14,La UniÃ³n,773
-SLV,13,MorazÃ¡n,774
-SLV,12,San Miguel,775
-SLV,6,San Salvador,776
-SLV,10,San Vicente,777
-SLV,2,Santa Ana,778
-SLV,3,Sonsonate,779
-SLV,11,UsulutÃ¡n,780
-SRB,1,Beogradski region,781
-SRB,4,Region juzne i istocne Srbije,782
-SRB,3,Region Sumadije i zapadne Srbije,783
-SRB,2,Region Vojvodine,784
-SUR,1,Great Paramaribo,785
-SUR,3,Interior,786
-SUR,2,Rest of the coastal region,787
-SVK,NA,NA,788
-SWE,NA,NA,789
-TGO,3,Centrale,790
-TGO,4,Kara,791
-TGO,6,Lomé commune,792
-TGO,1,Maritime,793
-TGO,2,Plateaux,794
-TGO,5,Savanes,795
-THA,1,1.Bangkok,796
-THA,2,2.Central(ex Bkk),797
-THA,3,3.North,798
-THA,4,4.Northeast,799
-THA,5,5.South,800
-TUR,NA,NA,801
-TWN,NA,NA,802
-UGA,1,0,803
-UGA,2,1,804
-UGA,11,10,805
-UGA,12,11,806
-UGA,13,12,807
-UGA,14,13,808
-UGA,15,14,809
-UGA,3,2,810
-UGA,4,3,811
-UGA,5,4,812
-UGA,6,5,813
-UGA,7,6,814
-UGA,8,7,815
-UGA,9,8,816
-UGA,10,9,817
-URY,02,"Interior, mas que 5000 inhabitantes",818
-URY,03,"Interior, menos que 5000 inhabitantes",819
-URY,01,Montevideo,820
-USA,3,East North Central,821
-USA,6,East South Central,822
-USA,2,Middle Atlantic,823
-USA,8,Mountain,824
-USA,1,New England,825
-USA,9,Pacific,826
-USA,5,South Atlantic,827
-USA,0,Unknown,828
-USA,4,West North Central,829
-USA,7,West South Central,830
-VNM,92,Thành phe CCn Thơ,831
-VNM,48,Thành phe Ðà N 1/2ng,832
-VNM,31,Thành phe Hải Phssng,833
-VNM,79,Thành phe Ha ChY Minh,834
-VNM,1,Thành phe Hà Nei,835
-VNM,89,TOnh An Giang,836
-VNM,24,TOnh B 3/4c Giang,837
-VNM,6,TOnh B 3/4c Kạn,838
-VNM,27,TOnh B 3/4c Ninh,839
-VNM,74,TOnh B*nh D-ơng,840
-VNM,52,TOnh B*nh ÐTHnh,841
-VNM,70,TOnh B*nh Ph-ic,842
-VNM,60,TOnh B*nh ThuEn,843
-VNM,95,TOnh Bạc Liêu,844
-VNM,77,TOnh Bà RTHa - Vong Tàu,845
-VNM,83,TOnh BOn Tre,846
-VNM,96,TOnh Cà Mau,847
-VNM,4,TOnh Cao B>>ng,848
-VNM,66,TOnh Ð 3/4k L 3/4k,849
-VNM,67,TOnh Ð 3/4k N<<ng,850
-VNM,75,TOnh Ðang Nai,851
-VNM,87,TOnh Ðang Tháp,852
-VNM,11,TOnh ÐiOn Biên,853
-VNM,64,TOnh Gia Lai,854
-VNM,33,TOnh H-ng Yên,855
-VNM,30,TOnh Hải D-ơng,856
-VNM,2,TOnh Hà Giang,857
-VNM,35,TOnh Hà Nam,858
-VNM,42,TOnh Hà TUnh,859
-VNM,93,TOnh HEu Giang,860
-VNM,17,TOnh Hoà B*nh,861
-VNM,56,TOnh Khánh Hoà,862
-VNM,91,TOnh Kiên Giang,863
-VNM,62,TOnh Kon Tum,864
-VNM,68,TOnh L(C)m Ðang,865
-VNM,20,TOnh Lạng Sơn,866
-VNM,12,TOnh Lai Ch(C)u,867
-VNM,10,TOnh Lào Cai,868
-VNM,80,TOnh Long An,869
-VNM,36,TOnh Nam ÐTHnh,870
-VNM,40,TOnh NghO An,871
-VNM,37,TOnh Ninh B*nh,872
-VNM,58,TOnh Ninh ThuEn,873
-VNM,25,TOnh Pho Tha,874
-VNM,54,TOnh Pho Yên,875
-VNM,44,TOnh Quảng B*nh,876
-VNM,49,TOnh Quảng Nam,877
-VNM,51,TOnh Quảng Ngãi,878
-VNM,22,TOnh Quảng Ninh,879
-VNM,45,TOnh Quảng TrTH,880
-VNM,94,TOnh Sac Trăng,881
-VNM,14,TOnh Sơn La,882
-VNM,72,TOnh T(C)y Ninh,883
-VNM,34,TOnh Thái B*nh,884
-VNM,19,TOnh Thái Nguyên,885
-VNM,38,TOnh Thanh Hoá,886
-VNM,46,TOnh Thoa Thiên HuO,887
-VNM,82,TOnh TiOn Giang,888
-VNM,84,TOnh Trà Vinh,889
-VNM,8,TOnh Tuyên Quang,890
-VNM,86,TOnh VUnh Long,891
-VNM,26,TOnh VUnh Phoc,892
-VNM,15,TOnh Yên Bái,893
-ZAF,2,Eastern Cape,894
-ZAF,4,Free State,895
-ZAF,7,Gauteng,896
-ZAF,5,Kwazulu Natal,897
-ZAF,9,Limpopo,898
-ZAF,8,Mpumalanga,899
-ZAF,6,North West,900
-ZAF,3,Northern Cape,901
-ZAF,1,Western Cape,902
+Country,province,Province_code,Province
+ARG,6,1,Buenos Aires
+ARG,10,2,Catamarca
+ARG,22,3,Chaco
+ARG,26,4,Chubut
+ARG,2,5,Ciudad Autónoma de Buenos Aires
+ARG,14,6,Córdoba
+ARG,18,7,Corrientes
+ARG,30,8,Entre Ríos
+ARG,34,9,Formosa
+ARG,38,10,Jujuy
+ARG,42,11,La Pampa
+ARG,46,12,La Rioja
+ARG,50,13,Mendoza
+ARG,54,14,Misiones
+ARG,58,15,Neuquén
+ARG,62,16,Río Negro
+ARG,66,17,Salta
+ARG,70,18,San Juan
+ARG,74,19,San Luis
+ARG,78,20,Santa Cruz
+ARG,82,21,Santa Fe
+ARG,86,22,Santiago del Estero
+ARG,94,23,Tierra del Fuego
+ARG,90,24,Tucumán
+ARM,NA,25,NA
+AUT,1,26,Ostösterreich
+AUT,2,27,Südösterreich
+AUT,3,28,Westösterreich
+BEL,NA,29,NA
+BEN,1,30,alibori
+BEN,2,31,atacora
+BEN,3,32,atlantique
+BEN,4,33,borgou
+BEN,5,34,collines
+BEN,6,35,couffo
+BEN,7,36,donga
+BEN,8,37,littoral
+BEN,9,38,mono
+BEN,10,39,oueme
+BEN,11,40,plateau
+BEN,12,41,zou
+BFA,1,42,Boucle du Mouhoun
+BFA,2,43,Cascades
+BFA,3,44,Centre
+BFA,4,45,Centre-Est
+BFA,5,46,Centre-Nord
+BFA,6,47,Centre-Ouest
+BFA,7,48,Centre-Sud
+BFA,8,49,Est
+BFA,9,50,Hauts Bassins
+BFA,10,51,Nord
+BFA,11,52,Plateau-Central
+BFA,12,53,Sahel
+BFA,13,54,Sud-Ouest
+BGD,10,55,Barisal
+BGD,20,56,Chittagong
+BGD,30,57,Dhaka
+BGD,40,58,Khulna
+BGD,50,59,Rajshani
+BGD,55,60,Rajshani/Sylhet
+BGD,60,61,Sylhet
+BGR,NA,62,NA
+BOL,NA,63,NA
+BRA,12,64,Acre
+BRA,27,65,Alagoas
+BRA,16,66,Amapá
+BRA,13,67,Amazonas
+BRA,29,68,Bahia
+BRA,23,69,Ceará
+BRA,53,70,Distrito Federal
+BRA,32,71,Espírito Santo
+BRA,52,72,Goiás
+BRA,21,73,Maranhão
+BRA,51,74,Mato Grosso
+BRA,50,75,Mato Grosso do Sul
+BRA,31,76,Minas Gerais
+BRA,15,77,Pará
+BRA,25,78,Paraíba
+BRA,41,79,Paraná
+BRA,26,80,Pernambuco
+BRA,22,81,Piauí
+BRA,33,82,Rio de Janeiro
+BRA,24,83,Rio Grande do Norte
+BRA,43,84,Rio Grande Do Sul
+BRA,11,85,Rondônia
+BRA,14,86,Roraima
+BRA,42,87,Santa Catarina
+BRA,35,88,São Paulo
+BRA,28,89,Sergipe
+BRA,17,90,Tocantins
+BRB,2,91,Christ Church
+BRB,9,92,St. Andrew
+BRB,4,93,St. George
+BRB,5,94,St. James
+BRB,7,95,St. John
+BRB,8,96,St. Joseph
+BRB,11,97,St. Lucy
+BRB,1,98,St. Michael
+BRB,10,99,St. Peter
+BRB,3,100,St. Philip
+BRB,6,101,St. Thomas
+CAN,48,102,Alberta
+CAN,14,103,Atlantic provinces
+CAN,59,104,British Columbia
+CAN,46,105,Manitoba
+CAN,35,106,Ontario
+CAN,24,107,Quebec
+CAN,47,108,Saskatchewan
+CAN,63,109,Territoral capitals
+CHE,2,110,Espace Mittelland
+CHE,1,111,Genferseeregion
+CHE,3,112,Nordwestschweiz
+CHE,5,113,Ostschweiz
+CHE,7,114,Tessin
+CHE,6,115,Zentralschweiz
+CHE,4,116,Zürich
+CHL,1,117,Gran Santiago
+CHL,2,118,Other
+CIV,16,119,AGNEBY-TIASSA
+CIV,1,120,AUTONOME D'ABIDJAN
+CIV,19,121,bafing
+CIV,20,122,bagoue
+CIV,21,123,belier
+CIV,22,124,bere
+CIV,23,125,bounkani
+CIV,18,126,cavally
+CIV,24,127,folon
+CIV,4,128,gbeke
+CIV,25,129,gbÔkle
+CIV,17,130,gÔh
+CIV,8,131,gontougo
+CIV,26,132,GRANDS-PONTS
+CIV,27,133,guemon
+CIV,28,134,hambol
+CIV,2,135,HAUT-SASSANDRA
+CIV,29,136,iffou
+CIV,5,137,INDENIE-DJUABLIN
+CIV,10,138,kabadougou
+CIV,30,139,LA ME
+CIV,15,140,LÔH-DJIBOUA
+CIV,12,141,marahoue
+CIV,33,142,moronou
+CIV,11,143,N'ZI
+CIV,31,144,nawa
+CIV,3,145,poro
+CIV,9,146,SAN-PEDRO
+CIV,13,147,SUD-COMOE
+CIV,32,148,tchologo
+CIV,6,149,tonkpi
+CIV,14,150,worodougou
+CIV,7,151,yamoussoukro
+COL,1,152,ATLÁNTICA
+COL,2,153,BOGOTÁ
+COL,3,154,CENTRAL
+COL,4,155,NUEVO DEPARTAMENTOS
+COL,5,156,ORIENTAL
+COL,6,157,PACÍFICA
+COL,7,158,SAN ANDRÉS
+CRI,4,159,Brunca
+CRI,1,160,Central
+CRI,2,161,Chorotega
+CRI,5,162,Huetar Atlántico
+CRI,6,163,Huetar Norte
+CRI,3,164,Pacífico Central
+CYP,NA,165,NA
+CZE,NA,166,NA
+DEU,NA,167,NA
+DNK,NA,168,NA
+DOM,2,169,AZUA
+DOM,3,170,BAHORUCO
+DOM,4,171,BARAHONA
+DOM,5,172,DAJABON
+DOM,1,173,DISTRITO NACIONAL
+DOM,6,174,DUARTE
+DOM,8,175,EL SEIBO
+DOM,7,176,ELIAS PIÑA
+DOM,9,177,ESPAILLAT
+DOM,30,178,HATO MAYOR
+DOM,10,179,INDEPENDENCIA
+DOM,11,180,LA ALTAGRACIA
+DOM,12,181,LA ROMANA
+DOM,13,182,LA VEGA
+DOM,14,183,MARIA TRINIDAD SANCHEZ
+DOM,28,184,MONSEÑOR NOUEL
+DOM,15,185,MONTE CRISTI
+DOM,29,186,MONTE PLATA
+DOM,16,187,PEDERNALES
+DOM,17,188,PERAVIA
+DOM,18,189,PUERTO PLATA
+DOM,19,190,SALCEDO
+DOM,20,191,SAMANA
+DOM,21,192,SAN CRISTOBAL
+DOM,31,193,SAN JOSE DE OCOA
+DOM,22,194,SAN JUAN
+DOM,23,195,SAN PEDRO DE MACORIS
+DOM,24,196,SANCHEZ RAMIREZ
+DOM,25,197,SANTIAGO
+DOM,26,198,SANTIAGO RODRIGUEZ
+DOM,32,199,SANTO DOMINGO
+DOM,27,200,VALVERDE
+ECU,2,201,Cuenca
+ECU,3,202,Guayaquil
+ECU,4,203,Machala
+ECU,1,204,No ciudad
+ECU,5,205,Quito
+EGY,41,206,Frontier Governorates
+EGY,3,207,Rural Lower Egypt
+EGY,5,208,Rural Upper Egypt
+EGY,1,209,Urban Governorates
+EGY,2,210,Urban Lower Egypt
+EGY,4,211,Urban Upper Egypt
+ESP,NA,212,NA
+EST,NA,213,NA
+ETH,14,214,ADDIS ABABA
+ETH,2,215,AFAR
+ETH,3,216,AMHARA
+ETH,6,217,BENISHANGUL GUMUZ
+ETH,15,218,DIRE DAWA
+ETH,12,219,GAMBELA
+ETH,13,220,HARAR
+ETH,4,221,OROMIA
+ETH,7,222,SNNP
+ETH,5,223,SOMALI
+ETH,1,224,TIGRAY
+FIN,NA,225,NA
+FRA,NA,226,NA
+GBR,4,227,East Midlands
+GBR,6,228,Eastern
+GBR,7,229,London
+GBR,1,230,North East
+GBR,2,231,North West and Merseyside
+GBR,12,232,Northern Ireland
+GBR,11,233,Scotland
+GBR,8,234,South East
+GBR,9,235,South West
+GBR,10,236,Wales
+GBR,5,237,West Midlands
+GBR,3,238,Yorkshire and the Humber
+GEO,7,239,Adjara A.R.
+GEO,8,240,Guria
+GEO,10,241,Imereti
+GEO,0,242,Kakheti
+GEO,3,243,Kvemo Kartli
+GEO,11,244,Mtskheta-Mtianeti
+GEO,13,245,Racha-Lechkhumi and Kvemo Svaneti
+GEO,9,246,Samegrelo-Zemo Svaneti
+GEO,5,247,Samtskhe-Javakheti
+GEO,2,248,Shida Kartli
+GEO,1,249,Tbilisi
+GHA,6,250,Ashanti
+GHA,7,251,Brong Ahafo
+GHA,2,252,Central
+GHA,5,253,Eastern
+GHA,3,254,Greater Accra
+GHA,8,255,Northern
+GHA,9,256,Upper East
+GHA,10,257,Upper West
+GHA,4,258,Volta
+GHA,1,259,Western
+GNB,6,260,bafata
+GNB,4,261,biombo
+GNB,5,262,BOLAMA_BIJAGOS
+GNB,8,263,cacheu
+GNB,7,264,gabu
+GNB,3,265,oio
+GNB,2,266,quinara
+GNB,9,267,sab
+GNB,1,268,tombali
+GRC,NA,269,NA
+GTM,1,270,I. METROPOLITANA
+GTM,2,271,II. NORTE
+GTM,3,272,III. NORORIENTAL
+GTM,4,273,IV SURORIENTAL
+GTM,5,274,V. CENTRAL
+GTM,6,275,VI. SUROCCIDENTAL
+GTM,7,276,VII. NOROCCIDENTAL
+GTM,8,277,VIII. PETEN
+HRV,NA,278,NA
+HUN,NA,279,NA
+IDN,11,280,Aceh
+IDN,51,281,Bali
+IDN,36,282,Banten
+IDN,17,283,Bengkulu
+IDN,34,284,DI Yogyakarta
+IDN,31,285,DKI Jakarta
+IDN,75,286,Gorontalo
+IDN,15,287,Jambi
+IDN,32,288,Jawa Barat
+IDN,33,289,Jawa Tengah
+IDN,35,290,Jawa Timur
+IDN,61,291,Kalimantan Barat
+IDN,63,292,Kalimantan Selatan
+IDN,62,293,Kalimantan Tengah
+IDN,64,294,Kalimantan Timur
+IDN,65,295,Kalimantan Utara
+IDN,19,296,Kepulauan Bangka Belitung
+IDN,21,297,Kepulauan Riau
+IDN,18,298,Lampung
+IDN,81,299,Maluku
+IDN,82,300,Maluku Utara
+IDN,52,301,Nusa Tenggara Barat
+IDN,53,302,Nusa Tenggara Timur
+IDN,94,303,Papua
+IDN,91,304,Papua Barat
+IDN,14,305,Riau
+IDN,76,306,Sulawesi Barat
+IDN,73,307,Sulawesi Selatan
+IDN,72,308,Sulawesi Tengah
+IDN,74,309,Sulawesi Tenggara
+IDN,71,310,Sulawesi Utara
+IDN,13,311,Sumatera Barat
+IDN,16,312,Sumatera Selatan
+IDN,12,313,Sumatera Utara
+IND,01,314,01
+IND,02,315,02
+IND,03,316,03
+IND,04,317,04
+IND,05,318,05
+IND,06,319,06
+IND,07,320,07
+IND,08,321,08
+IND,09,322,09
+IND,10,323,10
+IND,11,324,11
+IND,12,325,12
+IND,13,326,13
+IND,14,327,14
+IND,15,328,15
+IND,16,329,16
+IND,17,330,17
+IND,18,331,18
+IND,19,332,19
+IND,20,333,20
+IND,21,334,21
+IND,22,335,22
+IND,23,336,23
+IND,24,337,24
+IND,25,338,25
+IND,26,339,26
+IND,27,340,27
+IND,28,341,28
+IND,29,342,29
+IND,30,343,30
+IND,31,344,31
+IND,32,345,32
+IND,33,346,33
+IND,34,347,34
+IND,35,348,35
+IRL,NA,349,NA
+IRQ,NA,350,NA
+ISR,12,351,Ashdod
+ISR,15,352,Beer Sheva
+ISR,4,353,Cities (100k to 200k)
+ISR,7,354,Cities (10k to 20k)
+ISR,6,355,Cities (20k to 50k)
+ISR,8,356,Cities (2k to 10k)
+ISR,5,357,Cities (50k to 100k)
+ISR,3,358,Haifa
+ISR,1,359,Jerusalem
+ISR,14,360,Netanya
+ISR,13,361,Petah Tikva
+ISR,0,362,Rishon Lezion
+ISR,10,363,Rural
+ISR,2,364,Tel Aviv
+ISR,9,365,Urban
+ITA,NA,366,NA
+JOR,13,367,Ain Al Basha
+JOR,39,368,Al-Aghwar al-Janubiyya
+JOR,47,369,Al-Betra
+JOR,45,370,Al-Hasa
+JOR,17,371,Al-Hashimiyah
+JOR,49,372,Al-Husanyniyya
+JOR,4,373,Al-Jamiah
+JOR,7,374,Al-Jiza
+JOR,37,375,Al-Mazar al-Janubiyya
+JOR,8,376,Al-Mwwqqar
+JOR,38,377,Al-Qasr
+JOR,42,378,Al-Qatraneh
+JOR,51,379,Al-Quairah
+JOR,3,380,AlQuesmah
+JOR,16,381,Ar-Rusayfah
+JOR,32,382,Ar-Ruwayshid
+JOR,21,383,Ar Ramtha
+JOR,48,384,Ash-Shibek
+JOR,40,385,Ayy
+JOR,31,386,Badiah Gharbiyah
+JOR,30,387,Badiah Shamaliyah
+JOR,23,388,Bani Knana
+JOR,25,389,Bani Obeid
+JOR,44,390,Birsayra
+JOR,12,391,Dair Alla
+JOR,19,392,Dhiban
+JOR,41,393,Faqqu
+JOR,20,394,Irbid
+JOR,35,395,Kofranjah
+JOR,22,396,Kora
+JOR,14,397,Mahis and Fuheis
+JOR,2,398,Marka
+JOR,26,399,Mazar Shamaliyyeh
+JOR,9,400,Naoor
+JOR,34,401,Qasabah Ajlun
+JOR,50,402,Qasabah Al-Aqabah
+JOR,36,403,Qasabah Al-Karak
+JOR,29,404,Qasabah Al-Mafraq
+JOR,43,405,Qasabah Al-Tafila
+JOR,1,406,Qasabah Amman
+JOR,10,407,Qasabah As-Salt
+JOR,15,408,Qasabah Az-Zarqa
+JOR,33,409,Qasabah Jerash
+JOR,46,410,Qasabah Maan
+JOR,18,411,Qasabah Madaba
+JOR,6,412,Sahab
+JOR,11,413,Shuna Al-Janibiyya
+JOR,24,414,Shuna Shamaliyyeh
+JOR,27,415,Tayybeh
+JOR,5,416,Wadi al-Sayr
+JOR,28,417,Wastiyyeh
+KEN,30,418,Baringo
+KEN,36,419,Bomet
+KEN,39,420,Bungoma
+KEN,40,421,Busia
+KEN,28,422,Elgeyo Marakwet
+KEN,14,423,Embu
+KEN,7,424,Garissa
+KEN,43,425,Homa Bay
+KEN,11,426,Isiolo
+KEN,34,427,Kajiado
+KEN,37,428,Kakamega
+KEN,35,429,Kericho
+KEN,22,430,Kiambu
+KEN,3,431,Kilifi
+KEN,20,432,Kirinyaga
+KEN,45,433,Kisii
+KEN,42,434,Kisumu
+KEN,15,435,Kitui
+KEN,2,436,Kwale
+KEN,31,437,Laikipia
+KEN,5,438,Lamu
+KEN,16,439,Machakos
+KEN,17,440,Makueni
+KEN,9,441,Mandera
+KEN,10,442,Marsabit
+KEN,12,443,Meru
+KEN,44,444,Migori
+KEN,1,445,Mombasa
+KEN,21,446,Muranga
+KEN,47,447,Nairobi
+KEN,32,448,Nakuru
+KEN,29,449,Nandi
+KEN,33,450,Narok
+KEN,46,451,Nyamira
+KEN,18,452,Nyandarua
+KEN,19,453,Nyeri
+KEN,25,454,Samburu
+KEN,41,455,Siaya
+KEN,6,456,Taita Taveta
+KEN,4,457,Tana River
+KEN,13,458,Tharaka Nithi
+KEN,26,459,Trans Nzoia
+KEN,23,460,Turkana
+KEN,27,461,Uasin Gishu
+KEN,38,462,Vihiga
+KEN,8,463,Wajir
+KEN,24,464,West Pokot
+KHM,1,465,Banteay Meanchey
+KHM,2,466,Battambang
+KHM,3,467,Kampong Cham
+KHM,4,468,Kampong Chhnang
+KHM,5,469,Kampong Speu
+KHM,6,470,Kampong Thom
+KHM,7,471,Kampot
+KHM,8,472,Kandal
+KHM,9,473,Koh Kong
+KHM,10,474,Kratie
+KHM,11,475,Mondul Kiri
+KHM,22,476,Otdar Meanchey
+KHM,24,477,Pailin
+KHM,12,478,Phnom Penh
+KHM,18,479,Preah Sihanouk
+KHM,13,480,Preah Vihear
+KHM,14,481,Prey Veng
+KHM,15,482,Pursat
+KHM,16,483,Ratanak Kiri
+KHM,17,484,Siemreap
+KHM,19,485,Stung Treng
+KHM,20,486,Svay Rieng
+KHM,21,487,Takeo
+KHM,25,488,Tboung Khmum
+LBR,1,489,Bomi
+LBR,2,490,Bong
+LBR,15,491,Gbarpolu
+LBR,3,492,Grand Bassa
+LBR,4,493,Grand Cape Mount
+LBR,5,494,Grand Gedeh
+LBR,6,495,Grand Kru
+LBR,7,496,Lofa
+LBR,8,497,Margibi
+LBR,9,498,Maryland
+LBR,10,499,Montserrado
+LBR,11,500,Nimba
+LBR,12,501,River Cess
+LBR,14,502,River Gee
+LBR,13,503,Sinoe
+LTU,NA,504,NA
+LUX,NA,505,NA
+LVA,NA,506,NA
+MAR,5,507,Béni Mellal-Khénifra
+MAR,6,508,Casablanca-Settat
+MAR,12,509,Dakhla-Oued Ed Dahab
+MAR,8,510,Drâa-Tafilalet
+MAR,3,511,Fès-Meknès
+MAR,10,512,Guelmim-Oued Noun
+MAR,11,513,Laâyoune-Sakia El Hamra
+MAR,7,514,Marrakech-Safi
+MAR,2,515,Oriental
+MAR,4,516,Rabat-Salé-Kénitra
+MAR,9,517,Souss-Massa
+MAR,1,518,Tanger-Tétouan-Al Hoceïma
+MDV,28,519,AA
+MDV,29,520,ADh
+MDV,25,521,B
+MDV,33,522,Dh
+MDV,32,523,F
+MDV,36,524,GA
+MDV,37,525,GDh
+MDV,20,526,HA
+MDV,21,527,HDh
+MDV,27,528,K
+MDV,35,529,L
+MDV,26,530,Lh
+MDV,10,531,Male'
+MDV,24,532,R
+MDV,39,533,S
+MDV,22,534,Sh
+MDV,34,535,Th
+MDV,30,536,V
+MEX,01,537,Aguascalientes
+MEX,02,538,Baja California
+MEX,03,539,Baja California Sur
+MEX,04,540,Campeche
+MEX,07,541,Chiapas
+MEX,08,542,Chihuahua
+MEX,09,543,Ciudad de M�xico
+MEX,05,544,Coahuila de Zaragoza
+MEX,06,545,Colima
+MEX,10,546,Durango
+MEX,11,547,Guanajuato
+MEX,12,548,Guerrero
+MEX,13,549,Hidalgo
+MEX,14,550,Jalisco
+MEX,15,551,M�xico
+MEX,16,552,Michoac�n de Ocampo
+MEX,17,553,Morelos
+MEX,18,554,Nayarit
+MEX,19,555,Nuevo Le�n
+MEX,20,556,Oaxaca
+MEX,21,557,Puebla
+MEX,22,558,Quer�taro
+MEX,23,559,Quintana Roo
+MEX,24,560,San Luis Potos�
+MEX,25,561,Sinaloa
+MEX,26,562,Sonora
+MEX,27,563,Tabasco
+MEX,28,564,Tamaulipas
+MEX,29,565,Tlaxcala
+MEX,30,566,Veracruz de Ignacio de la Llave
+MEX,31,567,Yucat�n
+MEX,32,568,Zacatecas
+MLI,9,569,Bamako
+MLI,7,570,Gao
+MLI,1,571,Kayes
+MLI,8,572,Kidal
+MLI,2,573,Koulikoro
+MLI,11,574,Menaka
+MLI,5,575,Mopti
+MLI,4,576,Ségou
+MLI,3,577,Sikasso
+MLI,10,578,Taoudénit
+MLI,6,579,Tombouctou
+MMR,14,580,Ayeyarwaddy
+MMR,7,581,Bago
+MMR,4,582,Chin
+MMR,1,583,Kachin
+MMR,2,584,Kayah
+MMR,3,585,Kayin
+MMR,8,586,Magway
+MMR,9,587,Mandalay
+MMR,10,588,Mon
+MMR,15,589,NayPyitaw
+MMR,11,590,Rakhine
+MMR,5,591,Sagaing
+MMR,13,592,Shan
+MMR,6,593,Taninthayi
+MMR,12,594,Yangon
+MNG,3,595,Central
+MNG,4,596,East
+MNG,2,597,Highlands
+MNG,5,598,Ulaanbaatar
+MNG,1,599,West
+MOZ,1,600,Cabo Delgado
+MOZ,2,601,Gaza
+MOZ,3,602,Inhambane
+MOZ,4,603,Manica
+MOZ,5,604,Maputo Cidade
+MOZ,6,605,Maputo Província
+MOZ,7,606,Nampula
+MOZ,8,607,Niassa
+MOZ,9,608,Sofala
+MOZ,10,609,Tete
+MOZ,11,610,Zambézia
+MWI,NA,611,NA
+NER,1,612,agadez
+NER,2,613,diffa
+NER,3,614,dosso
+NER,4,615,maradi
+NER,8,616,niamey
+NER,5,617,tahoua
+NER,6,618,tillaberi
+NER,7,619,zinder
+NGA,1,620,1. Abia
+NGA,10,621,10. Delta
+NGA,11,622,11. Ebonyi
+NGA,12,623,12. Edo
+NGA,13,624,13. Ekiti
+NGA,14,625,14. Enugu
+NGA,15,626,15. Gombe
+NGA,16,627,16. Imo
+NGA,17,628,17. Jigawa
+NGA,18,629,18. Kaduna
+NGA,19,630,19. Kano
+NGA,2,631,2. Adamawa
+NGA,20,632,20. Katsina
+NGA,21,633,21. Kebbi
+NGA,22,634,22. Kogi
+NGA,23,635,23. Kwara
+NGA,24,636,24. Lagos
+NGA,25,637,25. Nasarawa
+NGA,26,638,26. Niger
+NGA,27,639,27. Ogun
+NGA,28,640,28. Ondo
+NGA,29,641,29. Osun
+NGA,3,642,3. Akwa Ibom
+NGA,30,643,30. Oyo
+NGA,31,644,31. Plateau
+NGA,32,645,32. Rivers
+NGA,33,646,33. Sokoto
+NGA,34,647,34. Taraba
+NGA,35,648,35. Yobe
+NGA,36,649,36. Zamfara
+NGA,37,650,37. FCT
+NGA,4,651,4. Anambra
+NGA,5,652,5. Bauchi
+NGA,6,653,6. Bayelsa
+NGA,7,654,7. Benue
+NGA,8,655,8. Borno
+NGA,9,656,9. Cross River
+NIC,4,657,Atlántico
+NIC,3,658,Central
+NIC,1,659,Managua
+NIC,2,660,Pacífico
+NLD,NA,661,NA
+NOR,4,662,Agder og Rogaland
+NOR,1,663,Akershus og Oslo
+NOR,2,664,Hedmark op Oppland
+NOR,7,665,Nord-Norge
+NOR,3,666,Sor-Ostlandet
+NOR,6,667,Trondelag
+NOR,5,668,Vestlandet
+PAK,4,669,balochistan
+PAK,1,670,kp
+PAK,2,671,punjab
+PAK,3,672,sindh
+PER,2,673,costa centro
+PER,1,674,costa norte
+PER,3,675,costa sur
+PER,8,676,lima metropolitana
+PER,7,677,selva
+PER,5,678,sierra centro
+PER,4,679,sierra norte
+PER,6,680,sierra sur
+PHL,15,681,ARMM
+PHL,5,682,Bicol Region
+PHL,2,683,Cagayan Valley
+PHL,41,684,Calabarzon
+PHL,14,685,CAR
+PHL,16,686,Caraga
+PHL,3,687,Central Luzon
+PHL,7,688,Central Visayas
+PHL,11,689,Davao Region
+PHL,8,690,Eastern Visayas
+PHL,1,691,Ilocos Region
+PHL,42,692,Mimaropa
+PHL,13,693,NCR
+PHL,10,694,Nothern Mindanao
+PHL,12,695,Soccsksargen
+PHL,6,696,Western Visayas
+PHL,9,697,Zasmboanga Peninsula
+POL,NA,698,NA
+PRT,NA,699,NA
+PRY,10,700,alto paraná
+PRY,0,701,asunción
+PRY,5,702,caaguazú
+PRY,11,703,central
+PRY,7,704,itapúa
+PRY,20,705,resto
+PRY,2,706,san pedro
+ROU,NA,707,NA
+RUS,84,708,Altaiskij Kraj: Biisk CR
+RUS,58,709,Altaiskij Kraj: Kur`inskij Rajon
+RUS,93,710,Amurskaja Oblast: Tambovskii Rajon
+RUS,106,711,Cheliabinsk
+RUS,107,712,Cheliabinsk Oblast: Krasnoarmeiskij Rajon
+RUS,48,713,Chuvashskaya ASSR: Shumerlja CR
+RUS,77,714,"Kabardino-Balkarija, Zol`skij Rajon"
+RUS,67,715,Kalinin Oblast: Rzhev CR
+RUS,14,716,Kaluzhskaya Oblast: Kuibyshev Rajon
+RUS,105,717,Komi-ASSR: Syktyvkar
+RUS,89,718,Komi-ASSR: Usinsk CR (1994-2019)
+RUS,9,719,Krasnodar CR
+RUS,129,720,Krasnodarskij Kraj: Kushchevskij Rajon
+RUS,66,721,Krasnojarskij Kraij: Krasnojarsk
+RUS,73,722,Krasnojarskij Kraij: Nazarovo CR
+RUS,46,723,Kurgan
+RUS,1,724,Leningrad Oblast: Volosovkij Rajon
+RUS,72,725,Lipetskaya Oblast: Lipetsk CR
+RUS,138,726,Moscow City
+RUS,139,727,Moscow City
+RUS,142,728,Moscow Oblast
+RUS,140,729,New Moscow City
+RUS,116,730,Nizhegorodskaja Oblast: Nizhnij Novgorod
+RUS,161,731,Novosibirskaya Oblast: Berdsk City & Raion (2003-present)
+RUS,47,732,Orenburg Oblast: Orsk
+RUS,117,733,Penzenskaya Oblast: Zemetchinskij Rajon
+RUS,12,734,Perm Territory: Solikamsk City & Rajon
+RUS,137,735,Rostov Oblast: Batajsk
+RUS,70,736,Saratov CR
+RUS,100,737,Saratov Oblast: Volskij Gorosovet & Rajon
+RUS,135,738,Smolensk CR
+RUS,141,739,St. Petersburg City
+RUS,52,740,Stavropolskij Kraj: Georgievskij CR
+RUS,33,741,Tambov Oblast: Uvarovo CR
+RUS,45,742,Tatarskaja ASSR: Kazan
+RUS,71,743,Tomsk
+RUS,136,744,Tulskaja Oblast: Tula
+RUS,10,745,Udmurt ASSR: Glasov CR
+RUS,92,746,Vladivostok
+RUS,39,747,Volgograd Oblast: Rudnjanskij Rajon
+RWA,5,748,Eastern Province
+RWA,1,749,Kigali City
+RWA,4,750,Northern Province
+RWA,2,751,Southern Province
+RWA,3,752,Western Province
+SEN,1,753,dakar
+SEN,3,754,diourbel
+SEN,9,755,fatick
+SEN,12,756,kaffrine
+SEN,6,757,kaolack
+SEN,13,758,kedougou
+SEN,10,759,kolda
+SEN,8,760,louga
+SEN,11,761,matam
+SEN,4,762,SAINT-LOUIS
+SEN,14,763,sedhiou
+SEN,5,764,tambacounda
+SEN,7,765,thies
+SEN,2,766,ziguinchor
+SLV,1,767,AhuachapÃ¡n
+SLV,9,768,CabaÃ±as
+SLV,4,769,Chalatenango
+SLV,7,770,CuscatlÃ¡n
+SLV,5,771,La Libertad
+SLV,8,772,La Paz
+SLV,14,773,La UniÃ³n
+SLV,13,774,MorazÃ¡n
+SLV,12,775,San Miguel
+SLV,6,776,San Salvador
+SLV,10,777,San Vicente
+SLV,2,778,Santa Ana
+SLV,3,779,Sonsonate
+SLV,11,780,UsulutÃ¡n
+SRB,1,781,Beogradski region
+SRB,4,782,Region juzne i istocne Srbije
+SRB,3,783,Region Sumadije i zapadne Srbije
+SRB,2,784,Region Vojvodine
+SUR,1,785,Great Paramaribo
+SUR,3,786,Interior
+SUR,2,787,Rest of the coastal region
+SVK,NA,788,NA
+SWE,NA,789,NA
+TGO,3,790,Centrale
+TGO,4,791,Kara
+TGO,6,792,Lomé commune
+TGO,1,793,Maritime
+TGO,2,794,Plateaux
+TGO,5,795,Savanes
+THA,1,796,1.Bangkok
+THA,2,797,2.Central(ex Bkk)
+THA,3,798,3.North
+THA,4,799,4.Northeast
+THA,5,800,5.South
+TUR,NA,801,NA
+TWN,NA,802,NA
+UGA,1,803,0
+UGA,2,804,1
+UGA,11,805,10
+UGA,12,806,11
+UGA,13,807,12
+UGA,14,808,13
+UGA,15,809,14
+UGA,3,810,2
+UGA,4,811,3
+UGA,5,812,4
+UGA,6,813,5
+UGA,7,814,6
+UGA,8,815,7
+UGA,9,816,8
+UGA,10,817,9
+URY,02,818,"Interior, mas que 5000 inhabitantes"
+URY,03,819,"Interior, menos que 5000 inhabitantes"
+URY,01,820,Montevideo
+USA,3,821,East North Central
+USA,6,822,East South Central
+USA,2,823,Middle Atlantic
+USA,8,824,Mountain
+USA,1,825,New England
+USA,9,826,Pacific
+USA,5,827,South Atlantic
+USA,0,828,Unknown
+USA,4,829,West North Central
+USA,7,830,West South Central
+VNM,92,831,Tinh Can Tho
+VNM,48,832,Thanh pho Da Nang
+VNM,31,833,Thanh pho Hai Phong
+VNM,79,834,Thanh pho Ho Chi Minh
+VNM,1,835,Thanh pho Ha Noi
+VNM,89,836,Tinh An Giang
+VNM,24,837,Ting Bac Giang
+VNM,6,838,Tinh Bac Kann
+VNM,27,839,Tinh Bac Ninh
+VNM,74,840,Tinh Binh Duong
+VNM,52,841,Tinh Binh Dinh
+VNM,70,842,Tinh Binh Phuoc
+VNM,60,843,Tinh Binh Thuan
+VNM,95,844,Tinh Bac Lieu
+VNM,77,845,Tinh Ba Ria - Vung Tau
+VNM,83,846,Tinh Ben Tre
+VNM,96,847,Tinh Ca Mau
+VNM,4,848,Tinh Cao Bang
+VNM,66,849,Tinh Dak Lak
+VNM,67,850,Tinh Dak Nong
+VNM,75,851,Tinh Dong Nai
+VNM,87,852,Tinh Dong Thap
+VNM,11,853,Tinh Dien Bien
+VNM,64,854,Tinh Gia Lai
+VNM,33,855,Tinh Hung Yen
+VNM,30,856,Tinh Hai Duong
+VNM,2,857,Tinh Ha Giang
+VNM,35,858,Tinh Ha Nam
+VNM,42,859,Tinh Ha Tinh
+VNM,93,860,Tinh Hau Giang
+VNM,17,861,Tinh Hoa Binh
+VNM,56,862,Tinh Khanh Hoa
+VNM,91,863,Tinh Kein Giang
+VNM,62,864,Tinh Kon Tum
+VNM,68,865,Ting Lam Dong
+VNM,20,866,Tinh Lang Son
+VNM,12,867,Tinh Lai Chau
+VNM,10,868,Tinh Lao Cai
+VNM,80,869,Tinh Long An
+VNM,36,870,Tinh Nam Dinh
+VNM,40,871,Tinh Nghe An
+VNM,37,872,Tinh Ninh Binh
+VNM,58,873,Tinh Ninh Thuan
+VNM,25,874,Tinh Phu Tho
+VNM,54,875,Tinh Phu Yen
+VNM,44,876,Tinh Quang Binh
+VNM,49,877,Tinh Quang Nam
+VNM,51,878,Tinh Quang Ngai
+VNM,22,879,Tinh Quang Ninh
+VNM,45,880,Tinh Quang Tri
+VNM,94,881,Tinh Soc Trang
+VNM,14,882,Tinh Son La
+VNM,72,883,Tinh Tay Ninh
+VNM,34,884,Tinh Thai Binh
+VNM,19,885,Tinh Thai Nguyen
+VNM,38,886,Tinh Thanh Hoa
+VNM,46,887,Tinh Thua Thien Hue
+VNM,82,888,Tinh Tien Giang
+VNM,84,889,Tinh Tra Vinh
+VNM,8,890,Tinh Tuyen Quang
+VNM,86,891,Tinh Vinh Long
+VNM,26,892,Tinh Vinh Phuc
+VNM,15,893,Tinh Yen Bai
+ZAF,2,894,Eastern Cape
+ZAF,4,895,Free State
+ZAF,7,896,Gauteng
+ZAF,5,897,Kwazulu Natal
+ZAF,9,898,Limpopo
+ZAF,8,899,Mpumalanga
+ZAF,6,900,North West
+ZAF,3,901,Northern Cape
+ZAF,1,902,Western Cape

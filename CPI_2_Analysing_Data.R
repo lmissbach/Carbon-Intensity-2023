@@ -2198,7 +2198,7 @@ rm(track)
 
 # SHAP expresses feature importance based on the marginal contribution of each predictor for each observation. Has local explanation and consistency.
 
-Country.Set.Test.2 <- c("NGA", "MAR")
+Country.Set.Test.2 <- c("VNM")
 
 Country.Set.Test.3 <- c("IDN", Country.Set$Country[Country.Set$Country != "IDN"])
 
@@ -2621,9 +2621,9 @@ for (i in Country.Set.Test.2){
               mutate(Province = str_replace(Province, "\\.", " "))
           }
           
-          if(i == "MAR" | i == "GEO"){
+          if(i == "MAR" | i == "GEO" | i == "JOR"){
             data_6.1.2.test <- data_6.1.2.test %>%
-              mutate(Province = str_replace(Province, "-", " "))
+              mutate(Province = str_replace_all(Province, "-", " "))
           }
           
           shap_6.1.2.5.3 <- select(data_6.1.2.test, starts_with(k))%>%
@@ -2763,7 +2763,8 @@ for (i in Country.Set.Test.2){
           
           if(i == "ARG" | i == "JOR"){
             data_6.1.2.test <- data_6.1.2.test %>%
-              mutate(District = str_replace(District, "\\.", " "))
+              mutate(District = str_replace(District, "\\.", " "))%>%
+              mutate(District = str_replace_all(District, "-", " "))
             
             shap_6.1.2.5.3 <- select(data_6.1.2.test, starts_with(k))%>%
               mutate(id = 1:n())%>%
@@ -6105,8 +6106,8 @@ rm(data_8.3.0, data_8.3.1, data_8.3.2, data_8.3.3,
 
 for(i in c(1,2)){
   if(i == 1){
-    cluster_0 <- c("A", "B", "C")
-  } else {cluster_0 <- c("D", "E", "F", "G", "H", "I", "J", "K", "L", "M")}
+    cluster_0 <- c("A", "B", "C", "D")
+  } else {cluster_0 <- c("E", "F", "G", "H", "I", "J", "K", "L", "M", "N")}
   
   # First horizontal and vertical indicators - scaling not necessary
   
@@ -6408,7 +6409,7 @@ data_8.5.2.D <- data_8.5.2.B %>%
 
 list_all <- list()
 
- for (i in c("ARG", "JOR")){
+ for (i in c(Country.Set$Country)){
   
   data_8.5.2.A.1 <- data_8.5.2.A %>%
     filter(Country == i)%>%
@@ -6868,16 +6869,17 @@ P_8.5.2.5.E <- list_all[[data_8.5.2.C$Country[data_8.5.2.C$cluster == "E" & data
 P_8.5.2.5.F <- list_all[[data_8.5.2.C$Country[data_8.5.2.C$cluster == "F" & data_8.5.2.C$best_fit == 1]]]
 P_8.5.2.5.G <- list_all[[data_8.5.2.C$Country[data_8.5.2.C$cluster == "G" & data_8.5.2.C$best_fit == 1]]]
 P_8.5.2.5.H <- list_all[[data_8.5.2.C$Country[data_8.5.2.C$cluster == "H" & data_8.5.2.C$best_fit == 1]]]
-P_8.5.2.7 <- ggarrange(P_8.5.2.5.E,P_8.5.2.5.F,P_8.5.2.5.G,P_8.5.2.5.H, align = "v", ncol = 1)
+P_8.5.2.5.I <- list_all[[data_8.5.2.C$Country[data_8.5.2.C$cluster == "I" & data_8.5.2.C$best_fit == 1]]]
+P_8.5.2.7 <- ggarrange(P_8.5.2.5.E,P_8.5.2.5.F,P_8.5.2.5.G,P_8.5.2.5.H,P_8.5.2.5.I, align = "v", ncol = 1)
 
 # Groups IJKLMN
 
-P_8.5.2.5.I <- list_all[[data_8.5.2.C$Country[data_8.5.2.C$cluster == "I" & data_8.5.2.C$best_fit == 1]]]
 P_8.5.2.5.J <- list_all[[data_8.5.2.C$Country[data_8.5.2.C$cluster == "J" & data_8.5.2.C$best_fit == 1]]]
 P_8.5.2.5.K <- list_all[[data_8.5.2.C$Country[data_8.5.2.C$cluster == "K" & data_8.5.2.C$best_fit == 1]]]
 P_8.5.2.5.L <- list_all[[data_8.5.2.C$Country[data_8.5.2.C$cluster == "L" & data_8.5.2.C$best_fit == 1]]]
 P_8.5.2.5.M <- list_all[[data_8.5.2.C$Country[data_8.5.2.C$cluster == "M" & data_8.5.2.C$best_fit == 1]]]
-P_8.5.2.8 <- ggarrange(P_8.5.2.5.I, P_8.5.2.5.J, P_8.5.2.5.K, P_8.5.2.5.L, P_8.5.2.5.M, align = "v", ncol = 1)
+P_8.5.2.5.N <- list_all[[data_8.5.2.C$Country[data_8.5.2.C$cluster == "N" & data_8.5.2.C$best_fit == 1]]]
+P_8.5.2.8 <- ggarrange(P_8.5.2.5.J, P_8.5.2.5.K, P_8.5.2.5.L, P_8.5.2.5.M, P_8.5.2.5.N, align = "v", ncol = 1)
 
 jpeg("1_Figures/Figure 5b/Figures_joint_%d.jpg", width = 30, height = 30, unit = "cm", res = 500)
 print(P_8.5.2.6)
