@@ -2016,7 +2016,7 @@ rm(data_frame_5.3.2.1, data_frame_5.3.2.3, data_5.3, Type_0, i)
 
 # 6.1     Boosted Regression trees on carbon intensity of consumption ####
 
-Country.Set.Test.1 <- c("ARG")
+Country.Set.Test.1 <- c(Country.Set$Country)
 
 track <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_BRT.xlsx")
 
@@ -2070,9 +2070,9 @@ for (i in Country.Set.Test.1){
     # Splitting the sample, but no strata
     
     prop_0 = 0.75
-    if(i == "IDN"){prop_0 <- 0.2}
-    if(i == "IND"){prop_0 <- 0.3}
-    if(i == "MEX"){prop_0 <- 0.5}
+    # if(i == "IDN"){prop_0 <- 0.2}
+    # if(i == "IND"){prop_0 <- 0.3}
+    # if(i == "MEX"){prop_0 <- 0.5}
     
     data_6.1.2 <- data_6.1.1 %>%
       initial_split(prop = prop_0)
@@ -2148,6 +2148,8 @@ for (i in Country.Set.Test.1){
     
     time_2 <- Sys.time()
     
+    doParallel::stopImplicitCluster()
+    
     track_0$tuning_time <- as.integer(difftime(time_1, time_2, units = "min"))
     
     # Collect metrics of tuned models
@@ -2196,9 +2198,9 @@ rm(track)
 
 # SHAP expresses feature importance based on the marginal contribution of each predictor for each observation. Has local explanation and consistency.
 
-Country.Set.Test.2 <- c("BEN", "MNG", "MWI")
+Country.Set.Test.2 <- c("LBR", "TGO")
 
-Country.Set.Test.3 <- c("IDN")
+Country.Set.Test.3 <- c("IDN", Country.Set$Country[Country.Set$Country != "IDN"])
 
 eval_0 <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_SHAP_Evaluation.xlsx")
 
@@ -2215,6 +2217,13 @@ for (i in Country.Set.Test.2){
     track <- track_0 %>%
       filter(Country == i)%>%
       dplyr::slice(which.min(mae_mean_cv_5_train))
+    
+    if(i %in% c("MEX", "IND", "IDN")){
+      track <- track_0 %>%
+        filter(Country == i)%>%
+        filter(number == max(number))%>%
+        ungroup()
+    }
     
     data_6.1 <- filter(data_2, Country == i)
     # data_6.1 <- read_csv("C:/Users/misl/Desktop/Israel_Test_Set.csv")
@@ -2251,9 +2260,9 @@ for (i in Country.Set.Test.2){
     # Splitting the sample, but no strata
     
     prop_0 = 0.75
-    if(i == "IDN"){prop_0 <- 0.2}
-    if(i == "IND"){prop_0 <- 0.3}
-    if(i == "MEX"){prop_0 <- 0.5}
+    # if(i == "IDN"){prop_0 <- 0.2}
+    # if(i == "IND"){prop_0 <- 0.3}
+    # if(i == "MEX"){prop_0 <- 0.5}
     
     data_6.1.2 <- data_6.1.1 %>%
       initial_split(prop = prop_0)
@@ -2281,7 +2290,7 @@ for (i in Country.Set.Test.2){
       # including dummification
       step_dummy(all_nominal())
     
-    if(i %in% c("MMR", "GHA", "CIV", "PER", "GTM", "BRB")){
+    if(i %in% c("MMR", "GHA", "CIV", "PER", "GTM", "BRB", "TGO")){
       recipe_6.1.0 <- recipe(carbon_intensity_kg_per_USD_national ~ .,
                              data = data_6.1.2.train)%>%
         # Deletes all columns with any NA
@@ -2908,11 +2917,28 @@ rm(eval_1, eval_1.1, eval_1.2, eval_1.3)
 
 # 6.2     Classification exercise ####
 
+# Pick best-fitting model
+
+eval_6.2 <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_SHAP_Evaluation.xlsx")
+
+eval_6.2.1 <- eval_6.2 %>%
+  filter(.metric == "mae")%>%
+  group_by(Country, number_ob)%>%
+  mutate(number = 1:n())%>%
+  filter(number == max(number))%>%
+  ungroup()%>%
+  group_by(Country)%>%
+  filter(Sample_Testing == min(Sample_Testing))%>%
+  ungroup()%>%
+  arrange(Country)%>%
+  select(Country, number_ob)
+
 # Part I: Normalized SHAP values
 
 data_6.2.0 <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_SHAP_Detail.xlsx")
 
 data_6.2.1 <- data_6.2.0 %>%
+  filter(number_ob %in% eval_6.2.1$number_ob)%>%
   group_by(Country, Var_0, Var_1)%>%
   mutate(number = 1:n())%>%
   ungroup()%>%
@@ -2981,7 +3007,7 @@ set.seed(2023)
 data_6.2.5 <- data.frame()
 
 for(k in 2:40){
-  model_6.2.0 <- kmeans(data_6.2.4, centers = k, nstart = 50)
+  model_6.2.0 <- kmeans(data_6.2.4, centers = k, nstart = 100)
   
   # total within-cluster sum of squares
   
@@ -3043,9 +3069,9 @@ jpeg("1_Figures/Figures_Appendix/Figure_Silhouette.jpg", width = 12, height = 10
 print(P_6.2.5.1)
 dev.off()
 
-# Silhouette-method gives 13 clusters as best
+# Silhouette-method gives 14 clusters as best
 
-model_6.2.1 <- kmeans(data_6.2.4, centers = 13, nstart = 500)
+model_6.2.1 <- kmeans(data_6.2.4, centers = 14, nstart = 500)
 
 silhouette_6.2.1 <- cluster::silhouette(model_6.2.1$cluster, dist(data_6.2.4))[,3]
 
@@ -3093,7 +3119,7 @@ P_6.2.5.2 <- ggplot(data_6.2.6)+
   scale_fill_viridis_d()+
   ylab("Silhouette width")+
   xlab("Country")+
-  ggtitle("Silhouette plot for 13 clusters")+
+  ggtitle("Silhouette plot for 14 clusters")+
   coord_flip()+
   theme_bw()+
   guides(fill = "none")+
@@ -3169,7 +3195,8 @@ data_6.2.8 <- data_6.2.4.0 %>%
 rm(data_6.2.0, data_6.2.1, data_6.2.2, data_6.2.3, data_6.2.4, 
    data_6.2.4.0, data_6.2.5, data_6.2.5.1,
    data_6.2.6, data_6.2.6.1, data_6.2.6.2, 
-   data_6.2.8, model_6.2.0, model_6.2.1, P_6.2.5.1, P_6.2.5.2, k, silhouette_1, silhouette_6.2.1, tot_within_ss)
+   data_6.2.8, model_6.2.0, model_6.2.1, P_6.2.5.1, P_6.2.5.2, k, silhouette_1, silhouette_6.2.1, tot_within_ss,
+   eval_6.2, eval_6.2.1)
 
 # 6.1.X   BRT on carbon intensity of consumption (regression model) ####
 
