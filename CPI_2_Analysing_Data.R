@@ -2016,7 +2016,7 @@ rm(data_frame_5.3.2.1, data_frame_5.3.2.3, data_5.3, Type_0, i)
 
 # 6.1     Boosted Regression trees on carbon intensity of consumption ####
 
-Country.Set.Test.1 <- c(Country.Set$Country)
+Country.Set.Test.1 <- c("BEL", "NOR", "LBR")
 
 track <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_BRT.xlsx")
 
@@ -2198,7 +2198,7 @@ rm(track)
 
 # SHAP expresses feature importance based on the marginal contribution of each predictor for each observation. Has local explanation and consistency.
 
-Country.Set.Test.2 <- c("LBR", "TGO")
+Country.Set.Test.2 <- c("NGA", "MAR")
 
 Country.Set.Test.3 <- c("IDN", Country.Set$Country[Country.Set$Country != "IDN"])
 
@@ -2221,6 +2221,14 @@ for (i in Country.Set.Test.2){
     if(i %in% c("MEX", "IND", "IDN")){
       track <- track_0 %>%
         filter(Country == i)%>%
+        filter(number == max(number))%>%
+        ungroup()
+    }
+    
+    if(i %in% c("BEL", "NOR", "LBR")){
+      track <- track_0 %>%
+        filter(Country == i)%>%
+        filter(tree_depth_best != 1)%>%
         filter(number == max(number))%>%
         ungroup()
     }
@@ -2595,7 +2603,7 @@ for (i in Country.Set.Test.2){
     
     shap_6.1.2.7 <- data.frame(id = 1:nrow(data_6.1.2.testing))
     
-    for(k in c("Province", "CF", "Appliance own.", "District", "ISCED", "Ethnicity", "Gender HHH", "LF", "HF")){
+    for(k in c("Province", "CF", "Appliance own.", "District", "ISCED", "Ethnicity", "Gender HHH", "LF", "HF", "Religion", "Nationality")){
       if(k %in% VOI$Var_0){
         shap_6.1.2.5.2 <- shap_6.1.2.5 %>%
           filter(Var_0 == k)%>%
@@ -2608,9 +2616,14 @@ for (i in Country.Set.Test.2){
               mutate(Province = str_replace(Province, "\\)"," "))
           }
           
-          if(i == "BRB"){
+          if(i == "BRB" | i == "NGA"){
             data_6.1.2.test <- data_6.1.2.test %>%
               mutate(Province = str_replace(Province, "\\.", " "))
+          }
+          
+          if(i == "MAR" | i == "GEO"){
+            data_6.1.2.test <- data_6.1.2.test %>%
+              mutate(Province = str_replace(Province, "-", " "))
           }
           
           shap_6.1.2.5.3 <- select(data_6.1.2.test, starts_with(k))%>%
@@ -2724,27 +2737,51 @@ for (i in Country.Set.Test.2){
         
         if(k == "District"){
 
-          shap_6.1.2.5.3 <- select(data_6.1.2.testing, starts_with(k))%>%
-            mutate(id = 1:n())%>%
-            left_join(shap_6.1.2.5.2)%>%
-            pivot_longer(starts_with("District_"), names_to = "District", values_to = "values", names_prefix = "District_")%>%
-            filter(values == 1)%>%
-            filter(District == Var_1)%>%
-            select(-Var_0, -Var_1, - values)%>%
-            rename(SHAP_District = SHAP)%>%
-            select(id, everything())%>%
-            mutate(District = as.character(District))
+          if(i != "ARG" & i != "JOR"){
+            shap_6.1.2.5.3 <- select(data_6.1.2.test, starts_with(k))%>%
+              mutate(id = 1:n())%>%
+              left_join(shap_6.1.2.5.2)%>%
+              pivot_longer(starts_with("District_"), names_to = "District", values_to = "values", names_prefix = "District_")%>%
+              filter(values == 1)%>%
+              filter(District == Var_1)%>%
+              select(-Var_0, -Var_1, - values)%>%
+              rename(SHAP_District = SHAP)%>%
+              select(id, everything())%>%
+              mutate(District = as.character(District))
+            
+            # shap_6.1.2.5.4 <- select(data_6.1.2.test, starts_with(k))%>%
+            #   mutate(id = 1:n())%>%
+            #   filter(!id %in% shap_6.1.2.5.3$id)%>%
+            #   distinct(District)%>%
+            #   mutate(District = as.character(District))
+            
+            shap_6.1.2.5.5 <- left_join(data.frame(id = 1:nrow(data_6.1.2.testing)), shap_6.1.2.5.3, by = "id") %>%
+              bind_cols(transmute(select(data_6.1.2.test, District), District_0 = as.character(District)))%>%
+              mutate(District = ifelse(is.na(District), District_0, District))%>%
+              select(-District_0)
+          }
           
-          # shap_6.1.2.5.4 <- select(data_6.1.2.test, starts_with(k))%>%
-          #   mutate(id = 1:n())%>%
-          #   filter(!id %in% shap_6.1.2.5.3$id)%>%
-          #   distinct(District)%>%
-          #   mutate(District = as.character(District))
+          if(i == "ARG" | i == "JOR"){
+            data_6.1.2.test <- data_6.1.2.test %>%
+              mutate(District = str_replace(District, "\\.", " "))
+            
+            shap_6.1.2.5.3 <- select(data_6.1.2.test, starts_with(k))%>%
+              mutate(id = 1:n())%>%
+              left_join(shap_6.1.2.5.2)%>%
+              filter(District == Var_1)%>%
+              select(-Var_0, -Var_1)%>%
+              rename(SHAP_District = SHAP)%>%
+              select(id, everything())%>%
+              mutate(District = as.character(District))
+            
+            shap_6.1.2.5.5 <- left_join(data.frame(id = 1:nrow(data_6.1.2.testing)), shap_6.1.2.5.3, by = "id") %>%
+              bind_cols(transmute(select(data_6.1.2.test, District), District_0 = as.character(District)))%>%
+              mutate(District = ifelse(is.na(District), District_0, District))%>%
+              select(-District_0)
+            
+          }
           
-          shap_6.1.2.5.5 <- left_join(data.frame(id = 1:nrow(data_6.1.2.testing)), shap_6.1.2.5.3, by = "id") %>%
-            bind_cols(transmute(select(data_6.1.2.test, District), District_0 = as.character(District)))%>%
-            mutate(District = ifelse(is.na(District), District_0, District))%>%
-            select(-District_0)
+          
         }
         
         if(k == "ISCED"){
@@ -2801,6 +2838,48 @@ for (i in Country.Set.Test.2){
             mutate(Ethnicity = ifelse(is.na(Ethnicity), Ethnicity_0, Ethnicity))%>%
             select(-Ethnicity_0)
             
+        }
+        
+        if(k == "Religion"){
+
+          shap_6.1.2.5.3 <- select(data_6.1.2.testing, starts_with(k))%>%
+            mutate(id = 1:n())%>%
+            left_join(shap_6.1.2.5.2)%>%
+            pivot_longer(starts_with("Religion_"), names_to = "Religion", values_to = "values", names_prefix = "Religion_")%>%
+            mutate(Religion = str_replace_all(Religion, "\\.", " "))%>%
+            mutate(Religion = str_remove(Religion, "X"))%>%
+            filter(values == 1)%>%
+            filter(Religion == Var_1)%>%
+            select(-Religion, -Var_0, -values)%>%
+            rename(SHAP_Religion = SHAP, Religion = Var_1)%>%
+            select(id, everything())%>%
+            mutate(Religion = as.character(Religion))
+          
+          shap_6.1.2.5.5 <- left_join(data.frame(id = 1:nrow(data_6.1.2.testing)), shap_6.1.2.5.3, by = "id") %>%
+            bind_cols(transmute(select(data_6.1.2.test, Religion), Religion_0 = as.character(Religion)))%>%
+            mutate(Religion = ifelse(is.na(Religion), Religion_0, Religion))%>%
+            select(-Religion_0)
+          
+        }
+        
+        if(k == "Nationality"){
+          
+          shap_6.1.2.5.3 <- select(data_6.1.2.testing, starts_with(k))%>%
+            mutate(id = 1:n())%>%
+            left_join(shap_6.1.2.5.2)%>%
+            pivot_longer(starts_with("Nationality_"), names_to = "Nationality", values_to = "values", names_prefix = "Nationality_")%>%
+            filter(values == 1)%>%
+            filter(Nationality == Var_1)%>%
+            select(-Nationality, -Var_0, -values)%>%
+            rename(SHAP_Nationality = SHAP, Nationality = Var_1)%>%
+            select(id, everything())%>%
+            mutate(Nationality = as.character(Nationality))
+          
+          shap_6.1.2.5.5 <- left_join(data.frame(id = 1:nrow(data_6.1.2.testing)), shap_6.1.2.5.3, by = "id") %>%
+            bind_cols(transmute(select(data_6.1.2.test, Nationality), Nationality_0 = as.character(Nationality)))%>%
+            mutate(Nationality = ifelse(is.na(Nationality), Nationality_0, Nationality))%>%
+            select(-Nationality_0)
+          
         }
         
         if(k == "Gender HHH"){
@@ -2931,7 +3010,9 @@ eval_6.2.1 <- eval_6.2 %>%
   filter(Sample_Testing == min(Sample_Testing))%>%
   ungroup()%>%
   arrange(Country)%>%
-  select(Country, number_ob)
+  select(Country, number_ob)%>%
+  mutate(number_ob = ifelse(Country == "MEX", "MEX_3", 
+                            ifelse(Country == "NOR", "NOR_4", number_ob)))
 
 # Part I: Normalized SHAP values
 
@@ -2948,7 +3029,6 @@ data_6.2.1 <- data_6.2.0 %>%
   group_by(Country)%>%
   filter(number_2 == max(number_2))%>%
   ungroup()%>%
-  filter(number_ob != "CZE_2" | (number_ob == "CZE_2" & number == 2))%>%
   arrange(Country)%>%
   select(-number, -number_2)%>%
   mutate(Var_0 = ifelse(Var_0 == "ISCED", "Education",
@@ -3007,7 +3087,7 @@ set.seed(2023)
 data_6.2.5 <- data.frame()
 
 for(k in 2:40){
-  model_6.2.0 <- kmeans(data_6.2.4, centers = k, nstart = 100)
+  model_6.2.0 <- kmeans(data_6.2.4, centers = k, nstart = 200)
   
   # total within-cluster sum of squares
   
@@ -6208,9 +6288,26 @@ rm(P_8.4.4, P_8.4.3, P_8.4.2, P_8.4.1,
 
 # 8.5.1   Figure 5a: Feature importance (SHAP) on the country-level ####
 
+eval_8.5 <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_SHAP_Evaluation.xlsx")
+
+eval_8.5.1 <- eval_8.5 %>%
+  filter(.metric == "mae")%>%
+  group_by(Country, number_ob)%>%
+  mutate(number = 1:n())%>%
+  filter(number == max(number))%>%
+  ungroup()%>%
+  group_by(Country)%>%
+  filter(Sample_Testing == min(Sample_Testing))%>%
+  ungroup()%>%
+  arrange(Country)%>%
+  select(Country, number_ob)%>%
+  mutate(number_ob = ifelse(Country == "MEX", "MEX_3", 
+                            ifelse(Country == "NOR", "NOR_4", number_ob)))
+
 # Introduce for-loop for each country that loads in shap_1
 
 data_8.5.1 <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_SHAP_Classification.xlsx")%>%
+  filter(number_ob %in% eval_8.5.1$number_ob)%>%
   group_by(number_ob, Var_0)%>%
   mutate(number = 1:n())%>%
   filter(number == max(number))%>%
@@ -6275,6 +6372,7 @@ rm(P_8.5, data_8.5.1, data_8.5.2)
 # 8.5.2   Figure 5b: Partial dependence plots (SHAP) ####
 
 data_8.5.2.A <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_SHAP_Classification.xlsx")%>%
+  filter(number_ob %in% eval_8.5.1$number_ob)%>%
   mutate(lag_country = ifelse(Country != lag(Country), 1:n(),NA))%>%
   fill(lag_country)%>%
   mutate(lag_country = ifelse(is.na(lag_country),1,lag_country))%>%
@@ -6283,13 +6381,13 @@ data_8.5.2.A <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_
   group_by(Country, Var_0)%>%
   mutate(number = 1:n())%>%
   ungroup()%>%
-  filter(Country != "CZE" | number != 1)%>%
   arrange(Country, desc(share_SHAP))%>%
   group_by(Country)%>%
   slice_head(n = 4)%>%
   ungroup()
 
 data_8.5.2.B <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_SHAP_Detail.xlsx")%>%
+  filter(number_ob %in% eval_8.5.1$number_ob)%>%
   mutate(lag_country = ifelse(Country != lag(Country), 1:n(),NA))%>%
   fill(lag_country)%>%
   mutate(lag_country = ifelse(is.na(lag_country),1,lag_country))%>%
@@ -6298,7 +6396,6 @@ data_8.5.2.B <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_
   group_by(Country, Var_0, Var_1)%>%
   mutate(number = 1:n())%>%
   ungroup()%>%
-  filter(Country != "CZE" | number != 1)%>%
   arrange(Country, desc(share_SHAP))
 
 data_8.5.2.C <- read_csv("../0_Data/9_Supplementary Data/BRT-Tracking/Clusters_Normalized.csv", show_col_types = FALSE)
@@ -6311,7 +6408,7 @@ data_8.5.2.D <- data_8.5.2.B %>%
 
 list_all <- list()
 
- for (i in c("BRB", "LVA", "MWI", "USA", "LTU", "PHL", "ESP", "SUR", "PRY", "UGA", "MNG", "TUR", "BEN")){
+ for (i in c("ARG", "JOR")){
   
   data_8.5.2.A.1 <- data_8.5.2.A %>%
     filter(Country == i)%>%
@@ -6535,7 +6632,7 @@ list_all <- list()
 
   # Other variables
   
-  for(j in c("District", "Province", "Ethnicity", "ISCED", "nationality", "religion")){
+  for(j in c("District", "Province", "Ethnicity", "ISCED", "Nationality", "Religion")){
     if(j %in% colnames(data_8.5.2.0)){
       data_8.5.2.2 <- data_8.5.2.0 %>%
         #rename_if(str_detect(names(.), "SHAP_HH size"), ~paste0("SHAP_hh_size"))%>%
@@ -6562,13 +6659,18 @@ list_all <- list()
         slice_head(n = 5)
       
       data_8.5.2.3 <- data_8.5.2.2 %>%
+        mutate(Variable = str_replace(Variable, "-"," "))%>%
+        mutate(Variable = str_replace(Variable, "\\."," "))%>%
         mutate(Var_imp = ifelse(Variable %in% data_8.5.2.B.1$Var_1, "1","0"),
                Var_big = ifelse(Variable %in% data_8.5.2.B.2$Variable, "1","0"))%>%
         left_join(select(data_8.5.2.B.1, Var_1, share_SHAP, order_no), by = c("Variable" = "Var_1"))%>%
         arrange(desc(share_SHAP))%>%
         mutate(Variable = ifelse(i == "SUR" & Variable == "Mixed", "other", Variable))%>%
         mutate(order_no = ifelse(Var_imp == "0",1,order_no+1))%>%
-        mutate(Variable = ifelse(Var_imp == "0" & max(order_no)>5 & i != "SUR", "Other", Variable))
+        group_by(Variable)%>%
+        mutate(var_ID = cur_group_id())%>%
+        ungroup()%>%
+        mutate(Variable = ifelse((Var_imp == "0" & max(order_no)>5 & i != "SUR") | (Var_imp == "0" & max(var_ID)>5 & i != "SUR"), "Other", Variable))
       
       P_8.5.2.3 <- ggplot(data_8.5.2.3)+
         geom_hline(aes(yintercept = 0))+
@@ -6768,7 +6870,7 @@ P_8.5.2.5.G <- list_all[[data_8.5.2.C$Country[data_8.5.2.C$cluster == "G" & data
 P_8.5.2.5.H <- list_all[[data_8.5.2.C$Country[data_8.5.2.C$cluster == "H" & data_8.5.2.C$best_fit == 1]]]
 P_8.5.2.7 <- ggarrange(P_8.5.2.5.E,P_8.5.2.5.F,P_8.5.2.5.G,P_8.5.2.5.H, align = "v", ncol = 1)
 
-# Groups IJKLM
+# Groups IJKLMN
 
 P_8.5.2.5.I <- list_all[[data_8.5.2.C$Country[data_8.5.2.C$cluster == "I" & data_8.5.2.C$best_fit == 1]]]
 P_8.5.2.5.J <- list_all[[data_8.5.2.C$Country[data_8.5.2.C$cluster == "J" & data_8.5.2.C$best_fit == 1]]]
