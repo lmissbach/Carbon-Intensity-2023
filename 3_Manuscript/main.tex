@@ -57,7 +57,7 @@
 
 \title{Heterogeneity in carbon intensity of consumption}
 %\author{Leonard Missbach\thanks{Mercator Research Institute on Global Commons and Climate Change, Berlin, Germany; Department Economics of Climate Change, Technische Universität Berlin, Berlin, Germany}}
-\date{July 2023}
+\date{August 2023}
 
 \begin{document}
 
@@ -168,7 +168,11 @@ Our resulting dataset contains information on the carbon intensity of output $e_
     \item Methodological discussion and shortcomings (brief)
 \end{itemize}
 
-\paragraph{Analysis of heterogeneity in carbon intensity of consumption} Analyses of distributional impacts of climate policy often focus on comparing average (or median) costs of policies for different income groups of households. One frequent approach is to assign households to income (or expenditure) quintiles to infer about vertical differences, i.e., differences between poorer and richer households. Often, researchers also compute measures for within-group heterogeneity, such as the $25^{th}$ or $75^{th}$ quantile within each expenditure quintile. Comparing such quantile costs across expenditure quintiles can help to infer about horizontal differences.
+\paragraph{Analysis of heterogeneity in carbon intensity of consumption} 
+
+% Summary statistics missing
+
+Analyses of distributional impacts of climate policy often focus on comparing average (or median) costs of policies for different income groups of households. One frequent approach is to assign households to income (or expenditure) quintiles to infer about vertical differences, i.e., differences between poorer and richer households. Often, researchers also compute measures for within-group heterogeneity, such as the $25^{th}$ or $75^{th}$ quantile within each expenditure quintile. Comparing such quantile costs across expenditure quintiles can help to infer about horizontal differences.
 
 Figure \ref{fig:fig_1} displays the distribution of carbon intensity of consumption among the poorest 20\% of households in all countries of our sample with the help of boxplots. Boxes and whiskers contain 90\% of all households in these groups. Blue bars show the difference between the lowest and the highest median carbon intensity across all quintiles for each country.
 
@@ -208,7 +212,7 @@ Figure \ref{fig:fig_2} illustrates that the average carbon intensity of consumpt
     \caption{Vertical and horizontal distribution coefficient}
     \label{fig:fig_2}
     \begin{subcaption}
-    The vertical distribution coefficient compares the median carbon intensity of the richest to the poorest quintile. The horizontal distribution coefficient compares the within-quintile differences ($5^{th}$ to $95_{th}$ percentile within quintiles) of the richest to the poorest quintile. Rectangles (A) and (B) indicate higher carbon intensity (at the median) among the poorest quintile compared to the richest quintile; rectangles (C) and (D) indicate lower carbon intensity (at the median) among the poorest quintile compared to the richest quintile. Rectangles (A) and (C) indicate smaller within-quintile differences of carbon intensity among the richest quintile compared to the poorest quintile; rectangles (B) and (D) indicate larger within-quintile differences of carbon intensity among the richest quintile compared to the poorest quintile. Colours of points indicate GDP per capita for 2018 (in log-transformed constant 2010 US-\$).
+    The vertical distribution coefficient compares the median carbon intensity of the richest to the poorest quintile. The horizontal distribution coefficient compares the within-quintile differences ($5^{th}$ to $95_{th}$ percentile within quintiles) of the richest to the poorest quintile. Rectangles (A) and (B) indicate higher carbon intensity (at the median) among the poorest quintile compared to the richest quintile; rectangles (C) and (D) indicate lower carbon intensity (at the median) among the poorest quintile compared to the richest quintile. Rectangles (A) and (C) indicate smaller within-quintile differences of carbon intensity among the richest quintile compared to the poorest quintile; rectangles (B) and (D) indicate larger within-quintile differences of carbon intensity among the richest quintile compared to the poorest quintile. Colours of points indicate GDP per capita for 2018 (in log-transformed constant 2010 US-\$). See also Table \ref{tab:A7}.
     \end{subcaption}
 \end{figure}
 
@@ -220,21 +224,22 @@ In response, one core assumption of this study is that $e_{i}$, the carbon inten
     e_{i} \sim X_{i}^{'}
 \end{equation}
 
-%Which criteria should be included in modelling and why?
+% Which criteria should be included in modelling and why?
+% Discuss main arguments for single characteristics (possibly already in methods section).
 
 We analyse which household characteristics are associated to higher levels of carbon intensity of consumption with the help of two modelling approaches, namely boosted regression trees (BRT) and a logit-model.
 
-\paragraph{Boosted regression trees} Boosted regression trees (BRT) (REF ELITH) is a supervised machine learning method allowing for detection of non-linear relationships and interaction effects between an outcome and many predictor variables. As an extension to regression trees, the BRT algorithm (XGBoost) fits many regression trees giving higher weights to observations with larger predicting errors. This leads to large predictive power, also if compared to more frequently used random forest algorithms. Nevertheless, BRT are more computationally intensive and  more difficult to interpret. % Why BRT is helpful here.
+\paragraph{Boosted regression trees} Fitting boosted regression trees (BRT) (REF ELITH) is a supervised machine learning method allowing for detection of non-linear relationships and interaction effects between an outcome and many predictor variables (features). As an extension to regression trees, the BRT algorithm (XGBoost) fits many regression trees giving higher weights to observations with larger predicting errors. This leads to large predictive power, also if compared to more frequently used random forest algorithms. Nevertheless, BRT are usually more computationally intensive and  more difficult to interpret. % Why BRT is helpful here.
 
-Deploying BRT serves the purpose of our analysis, because it is a priori ambiguous which household characteristics to include in a model. BRT-modelling is well suited to help identifying important predictors and potentially non-linear effect sizes. Out-of-sample predictive power
+Deploying BRT serves the purpose of our analysis, because it is a priori ambiguous which household characteristics to include in a model. BRT-modelling is well suited to help identifying important predictors and potentially non-linear effect sizes.
 
 We build BRT-models on the country-level to investigate characteristics associated to heterogeneous levels of carbon intensities within single countries. The carbon intensity $e_{i}$ is the outcome variable. For each country-level model we use the entire set of observable household-level characteristics $X_{i}^{'}$ as possible features and perform several feature engineering steps (see also Appendix \ref{sec:featureengineering}).
 
-To avoid overfitting, we randomly split country-level data into a training and a test sample with the training sample comprising 75\% of all observations\footnote{For countries with many observations, such as Indonesia, India or Mexico, we use 20\%, 30\% and 50\% of the available data for training.}. We use the training dataset to train the model; we use the testing dataset (i.e., the remaining 25\% of observations) for evaluation of the model. We evaluate our model with the help of mean absolute error (MAE), root mean squared error (RMSE) and $R^{2}$ and show predictive performance of our models based on the testing dataset.
+To avoid overfitting, we randomly split country-level data into a training and a test sample with the training sample comprising 75\% of all observations. We use the training dataset to train the model; we use the testing dataset (i.e., the remaining 25\% of observations) for evaluation of the model. We evaluate model performance with the help of mean absolute error (MAE), root mean squared error (RMSE) and $R^{2}$ and show predictive performance of our models based on the testing dataset.
 
-BRT-models include a number of hyperparameters that we optimize for best predictive performance. We use five-fold cross-validation on the training dataset to fit 1,000 trees along with 16 different combinations of learning rate ($\eta \in [0.001,0.3]$, the maximum depth of trees ([1,15]) and a fraction of possible features included in each tree(\{0.5,0.7,1\}). For each country, we select those hyperparameters that minimize mean average error.
+BRT-models include a number of hyperparameters that we optimize for best predictive performance. We use five-fold cross-validation on the training dataset to fit 1,000 trees along with 16 different combinations of learning rate ($\eta \in [0.001,0.3]$, the maximum depth of trees (\textit{max\_depth} $\in \{x \in \mathbb{N} \mid 1  \leq x \leq 15 \}$) and a fraction of possible features included in each tree (\textit{mtry} $\in \{0.5,0.7,1\}$). For each country, we select those hyperparameters that minimize mean average error across the training set.
 
-We evaluate the relative importance of each feature with the help of SHAP-values and based on the testing dataset. (LUNDBERG et al.) WHY SHAP-values are GREAT. For each feature, we calculate the mean absolute contribution to model outcomes and calculate the share of contribution for each feature to allow for better comparability of feature contributions across countries. We also show partial dependence plots and the distribution of SHAP-values for the most important features.
+Building on selected hyperparameters, we fit out model to the test dataset and evaluate the relative importance of each feature with the help of SHAP-values. (LUNDBERG et al.) SHAP-values represent the contribution of each feature to each individual prediction. SHAP-values have recently been established as a more suitable means to interpret outcomes of machine learning models compared to other approaches. We also calculate the mean absolute contribution of each feature across all individual predictions and calculate the feature importance for each feature as a share of contribution (in \%) to allow for better comparability of feature importance across countries. We also show partial dependence plots, i.e.,  the distribution of SHAP-values for the most important features in each country over feature values:
 
 \paragraph{Logit-model} We also fit a logit-model to identify households whose consumption is relatively carbon-intensive compared to the entire population. We construct a binary variable $e_{i}^{80}$ for each household \textit{i} indicating whether the household is among the most carbon-intensive 20\% of households in each country:
 
@@ -254,11 +259,11 @@ Subsequently, be $P_{e_{i}^{80}}$ the probability of household \textit{i} to con
 
 Estimating a logit-model serves as a robustness check for results from BRT-models. It also allows for investigation of characteristics associated to "hardship-case" households including a more accessible interpretation of results and parameters. We show results from logit-models with the help of regression tables and visualize average marginal effects for each independent variable.
 
-\paragraph{Clustering} Country-level analyses can be meaningful to identify country-specific household characteristics associated to higher levels of carbon intensity of consumption. In fact, the relationship between household-level characteristics and carbon intensity of consumption is unique for each country, but also contingent on availability of granular data. To learn more about which characteristics are more important in many countries we perform k-means clustering algorithm on country-level model outcomes. For each country, we extract the share of mean absolute SHAP-values for each feature. If features are missing in the data, we assume its share of contribution is zero. We also include $\widehat{V_{r}}$ and $\widehat{H_{r}}$ as measures for vertical and horizontal heterogeneity and the average carbon intensity of consumption $\overline{e_{r}}$ across all households. We normalize all variables to allow for comparison across variables.
+\paragraph{Clustering} Country-level analyses can be meaningful to identify country-specific household characteristics associated to higher levels of carbon intensity of consumption. In fact, the relationship between household-level characteristics and carbon intensity of consumption is unique for each country, but also contingent on availability of granular data. To learn more about which characteristics are more important in many countries we perform k-means clustering algorithm on country-level model outcomes. For each country, we extract the average feature importance (in \% of normalized average absolute SHAP-values). If features are missing in the data, we assume its share of contribution is zero. We also include $\widehat{V_{r}}$ and $\widehat{H_{r}}$ as measures for vertical and horizontal heterogeneity and the average carbon intensity of consumption $\overline{e_{r}}$ across all households. We normalize all variables to allow for comparison across variables. If one feature is more (less) important in one country compared to all other countries, the processed feature value will be relatively high (low). If one feature is equally important across all countries, processed feature values will be close to zero. 
 
-K-means clustering helps to analyze clusters of observations which are most similar in many variables within each cluster and least similar in many variables across clusters (MacQueen 1967). We inspect the optimal number of clusters with the help of the total sum of squares within clusters. Our approach yields $k = X$ to be the number of clusters minimizing total sum of squares with least clusters necessary \footnote{See Appendix X for visualization.}.
+K-means clustering helps to analyze clusters of observations which are most similar in many variables within each cluster and least similar in many variables across clusters (REF MacQueen 1967). We inspect the optimal number of clusters with the help of average silhouette widths for each cluster. The silhouette width represents the average distance of each observation to all other observations within its cluster and the average distance to observations from the nearest neighbouring cluster. Silhouettes closer to $1$ indicate a good fit of an observation to its cluster and silhouettes closer to $-1$ indicate a poor fit. The average silhouette width expresses how well each observations fits to each cluster. Our approach yields $k = 14$ to be the number of clusters maximizing average silhouette width\footnote{See Appendix X for visualization.}.
 
-For each country-cluster, we compute average values for each variable to allow for investigation of differences between countries in different clusters. We also investigate which country is most likely to all other countries in each cluster minimizing distance to cluster-centroids within each cluster and use it to demonstrate cluster-level characteristics. It is important to note that our clustering approach hinges substantially on the availability of variables in the data. If a variable, for example cooking fuel use, remains unobserved for one country, the country may end up in a cluster with countries in which cooking fuel use has little explanatory power, even though it may have in reality. Our approach might nevertheless be warranted under the assumption that policy formulation (for example on optimal targeting of compensation measures) can naturally only center on observable characteristics, if targeting errors should be minimized. 
+For each country-cluster, we compute average values for each feature to allow for investigation of differences between countries in different clusters. We also investigate which country is most likely to all other countries in each cluster maximizing silhouette width within each cluster and use it to demonstrate cluster-level characteristics. It is important to note that our clustering approach hinges substantially on the availability of features in the data. If a variable, for example cooking fuel use, remains unobserved for one country, the country may end up in a cluster with countries in which cooking fuel use has little explanatory power, even though it may have in reality. Our approach might nevertheless be warranted under the assumption that policy formulation (for example on optimal targeting of compensation measures) can naturally only center on observable characteristics, if targeting errors should be minimized. 
 
 
 \begin{itemize}
@@ -274,15 +279,21 @@ For each country-cluster, we compute average values for each variable to allow f
 
 \section{Results: Heterogeneity of carbon intensity of consumption} \label{sec:results}
 
+Figure \ref{fig:fig_3} shows the relative importance of different features across country-clusters. %What are important criteria to assign countries to different clusters?
+
 \begin{figure}[ht!]
     \centering
     \includegraphics{Figure 3/Figure_3}
-    \caption{Feature importance across country clusters}
+    \caption{Average feature importance across country clusters}
     \label{fig:fig_3}
     \begin{subcaption}
-    TBD
+    This figure shows the average importance of features (in normalized absolute average SHAP-values) across all countries from each cluster A to N. Colours express the average importance of features in a cluster in comparison to other clusters. Blue (red) colours indicate that a feature is relatively less (more) important on average in a cluster compared to all other clusters. 'Sociodemographic' comprises normalized absolute average SHAP values for features such as ethnicity, nationality, religion or language. 
+    For horizontal inequality, blue (red) colours indicate a lower (higher) heterogeneity within the first income quintile compared to the fifth income quintile. For vertical inequality, blue (red) colours indicate lower (higher) median carbon intensity among the first income quintile compared to the fifth income quintile. For average $CO_{2}$-intensity, blue (red) colours indicate a lower (higher) average carbon intensity across clusters. We assign countries to 14 clusters performing k-means clustering. We also show all values in Table REF.
     \end{subcaption}
 \end{figure}
+
+Figures \ref{fig:fig_4_1} and \ref{fig:fig_4_2} show the relative importance of features for each country across clusters. %Describe single clusters, at least A, B, C and D. Touch briefly upon the rest.
+% What are important features? In which direction? Why?
 
 \begin{figure}[ht!]
     \centering
@@ -290,7 +301,9 @@ For each country-cluster, we compute average values for each variable to allow f
     \caption{Feature importance across countries by cluster}
     \label{fig:fig_4_1}
     \begin{subcaption}
-    TBD
+    This figure shows the importance of features (in normalized average absolute SHAP-values) for each country, grouped by country clusters. Blue (red) colours indicate that a feature is relatively less (more) important in a country compared to all other countries. 'Sociodemographic' comprises normalized absolute SHAP-values for features such as ethnicity, nationality, religion or language.
+    For horizontal inequality, blue (red) colours indicate a lower (higher) heterogeneity within the first income quintile compared to the fifth income quintile. For vertical inequality, blue (red) colours indicate lower (higher) median carbon intensity among the first income quintile compared to the fifth income quintile. For average $CO_{2}$-intensity, blue (red) colours indicate a lower (higher) average carbon intensity across all countries.
+    We assign countries to 14 clusters performing k-means clustering based on scaled values across all features. We also show all values in Table REF.
     \end{subcaption}
 \end{figure}
 
@@ -298,43 +311,62 @@ For each country-cluster, we compute average values for each variable to allow f
     \centering
     \includegraphics{Figure 4/Figure_4_2}
     \caption{Feature importance across countries by cluster}
-    \label{fig:fig_4_1}
+    \label{fig:fig_4_2}
     \begin{subcaption}
-    TBD
+    This figure shows the importance of features (in normalized average absolute SHAP-values) for each country, grouped by country clusters. Blue (red) colours indicate that a feature is relatively less (more) important in a country compared to all other countries. 'Sociodemographic' comprises normalized absolute SHAP-values for features such as ethnicity, nationality, religion or language.
+    For horizontal inequality, blue (red) colours indicate a lower (higher) heterogeneity within the first income quintile compared to the fifth income quintile. For vertical inequality, blue (red) colours indicate lower (higher) median carbon intensity among the first income quintile compared to the fifth income quintile. For average $CO_{2}$-intensity, blue (red) colours indicate a lower (higher) average carbon intensity across all countries.
+    We assign countries to 14 clusters performing k-means clustering based on scaled values across all features. We also show all values in Table REF.
     \end{subcaption}
 \end{figure}
 
 \begin{figure}[ht!]
     \centering
     \includegraphics[width=15.5 cm]{Figure 5/Figures_joint_1}
-    \caption{}
-    \label{fig:fig_5}
+    \caption{Partial dependence plots (SHAP) for one country in clusters A to E}
+    \label{fig:fig_5_1}
     \begin{subcaption}
-    TBD
+    This figure shows SHAP-values for predicting carbon intensity over feature values for one representative country in each country-cluster in rows. All values are from the testing set. The bar chart displays normalized average absolute SHAP-values for all features. Features with less than 3\% of normalized SHAP-values are subsumed as "Other features (Sum)". Charts show SHAP-values over total household expenditures for all countries and for the three most important features in each country besides total household expenditures. Colours represent household expenditures with blue (red) colours indicating lower (higher) household expenditures. See also Appendix REF to REF.
+    \end{subcaption}
+\end{figure}
+
+\begin{figure}[ht!]
+    \centering
+    \includegraphics[width=15.5 cm]{Figure 5/Figures_joint_2}
+    \caption{Partial dependence plots (SHAP) for one country in clusters F to J}
+    \label{fig:fig_5_2}
+    \begin{subcaption}
+    This figure shows SHAP-values for predicting carbon intensity over feature values for one representative country in each country-cluster in rows. All values are from the testing set. The bar chart displays normalized average absolute SHAP-values for all features. Features with less than 3\% of normalized SHAP-values are subsumed as "Other features (Sum)". Charts show SHAP-values over total household expenditures for all countries and for the three most important features in each country besides total household expenditures. Colours represent household expenditures with blue (red) colours indicating lower (higher) household expenditures. See also Appendix REF to REF
+    \end{subcaption}
+\end{figure}
+
+\begin{figure}[ht!]
+    \centering
+    \includegraphics[width=15.5 cm]{Figure 5/Figures_joint_3}
+    \caption{Partial dependence plots (SHAP) for one country in clusters K to N}
+    \label{fig:fig_5_3}
+    \begin{subcaption}
+    This figure shows SHAP-values for predicting carbon intensity over feature values for one representative country in each country-cluster in rows. All values are from the testing set. The bar chart displays normalized average absolute SHAP-values for all features. Features with less than 3\% of normalized SHAP-values are subsumed as "Other features (Sum)". Charts show SHAP-values over total household expenditures for all countries and for the three most important features in each country besides total household expenditures. Colours represent household expenditures with blue (red) colours indicating lower (higher) household expenditures. See also Appendix REF to REF.
     \end{subcaption}
 \end{figure}
 
 \begin{itemize}
-\item Cluster-figure
-\item "Machine-learning results" figure
-\item Pro Cluster ein Land. Dazu den Feature Importance Plot, sowie SHAP-based Figures für die wichtigsten Kriterien, ggf. Expenditures (immer) und dazu ein Kriterium. Ggf. auch PDP mit Expenditures.
-\item (Tendenziell ginge auch out-of-sample prediction mit detaillierter Auflösung, wie einzelne features (SHAP) zur gesamten Prediction beitragen.
-\item Pro Cluster das größte Land, ggf. SHAP oder Logit-model (TBD Entscheidungskriterium). Shap values to appendix. Marginal effects of logit-models per country for easier visualization. Across countries to Appendix.
-  \item Summary statistics
-  \item Show differences between poor and rich households.
-  \item Show differences within poor and rich households.
-  \item One figure: One country (quintiles and boxplots), all countries (poorest quintile and between-quintile differences), all countries (vertical over horizontal inequality)
-  \item Within-quintile differences exceed between-quintile differences
-  \item Horizontal heterogeneity even more pronounced than vertical heterogeneity in majority of countries
-  \item Households that consume more carbon-intensively than others are poorer than others in richer countries and richer than others in poorer countries. Explain basic intuition.
-  \item If within-quintile differences exceed between-quintile differences using differences in income as a main indicator for evaluating heterogeneity is insufficient.
-  \item Learning about the most carbon-intensively consuming households and their characteristics (beyond income) is important.
-  \item Discuss main arguments for single characteristics (possibly already in methods section).
-  \item Show results for different characteristics.
-  \item One figure: One country (Marginal effects from Logit-model), Shapley-values from boosted regression trees
-  \item One figure: Comparing marginal effects from Logit-model across countries
+    \item (Tendenziell ginge auch out-of-sample prediction mit detaillierter Auflösung, wie einzelne features (SHAP) zur gesamten Prediction beitragen).
+    \item Marginal effects of logit-models per country for easier visualization. Across countries to Appendix.
+    %\item Summary statistics
+    %\item Show differences between poor and rich households.
+    %\item Show differences within poor and rich households.
+    %\item One figure: One country (quintiles and boxplots), all countries (poorest quintile and between-quintile differences), all countries (vertical over horizontal inequality)
+    %\item Within-quintile differences exceed between-quintile differences
+    %\item Horizontal heterogeneity even more pronounced than vertical heterogeneity in majority of countries
+    %\item Households that consume more carbon-intensively than others are poorer than others in richer countries and richer than others in poorer countries. Explain basic intuition.
+    %\item If within-quintile differences exceed between-quintile differences using differences in income as a main indicator for evaluating heterogeneity is insufficient.
+    %\item Learning about the most carbon-intensively consuming households and their characteristics (beyond income) is important.
+    %\item Discuss main arguments for single characteristics (possibly already in methods section).
+    \item Show results for different characteristics.
+    %\item One figure: One country (Marginal effects from Logit-model), Shapley-values from boosted regression trees
+    %\item One figure: Comparing marginal effects from Logit-model across countries
   \item More carbon-intensive households are more likely to own (and use) a car, more likely to use fossil fuels for cooking, such as coal, gas, or LPG, less likely to use firewood, charcoal or biomass for cooking, compared to households cooking with electricity. More likely connected to the electricity grid, more likely to have secondary or higher education, more likely to live in rural areas (in richer countries). Discuss differences in space, across provinces and districts. Depending on the country-context, they are more/less likely to identify with ethnic majorities or minorities.
-  \item Comparing model outcomes across countries. One figure: A: Show classification for single countries with colour codes (order in clusters). B: Show clustering of countries with colour codes.
+   %\item Comparing model outcomes across countries. One figure: A: Show classification for single countries with colour codes (order in clusters). B: Show clustering of countries with colour codes.
   \item Discuss differences in instruments: electricity sector instruments, transport sector instruments, international trade policy etc. Highlight main differences: electricity sector characteristics and electrification critical for electricity sector instruments, transport sector policies likely regressive in richer countries, progressive in poorer countries, carbon border adjustments more likely to affect people who consume more carbon-intensive and imported goods and services. Non-consumption impacts probably more severe. (If anything, possibly also Appendix. I suggest the figure comparing vertical and horizontal aspects here - in Appendix).
 \end{itemize}
 
