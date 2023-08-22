@@ -2961,7 +2961,22 @@ shap_1.1 <- shap_1 %>%
 
 eval_1 <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_SHAP_Evaluation.xlsx")
 
+eval_1.0 <- eval_1 %>%
+  filter(.metric == "mae")%>%
+  group_by(Country, number_ob)%>%
+  mutate(number = 1:n())%>%
+  filter(number == max(number))%>%
+  ungroup()%>%
+  group_by(Country)%>%
+  filter(Sample_Testing == min(Sample_Testing))%>%
+  ungroup()%>%
+  arrange(Country)%>%
+  select(Country, number_ob)%>%
+  mutate(number_ob = ifelse(Country == "MEX", "MEX_3", 
+                            ifelse(Country == "NOR", "NOR_4", number_ob)))
+
 eval_1.1 <- eval_1 %>%
+  filter(number_ob %in% eval_1.0$number_ob)%>%
   left_join(Country.Set)%>%
   select(Country_long, .metric, starts_with("Sample"), Country)%>%
   mutate_at(vars(starts_with("Sample")), ~ round(., 2))%>%
@@ -2980,7 +2995,7 @@ eval_1.2 <- data_2 %>%
   mutate(mean_carbon_intensity = round(mean_carbon_intensity, 2))
 
 eval_1.3 <- left_join(eval_1.1, eval_1.2)%>%
-  select(Country_long, mean_carbon_intensity, everything(), -Country)
+  select(Country_long, mean_carbon_intensity, everything(), -Country, -sample)
 
 colnames(eval_1.3) <- c("Country", "Mean", rep(c("MAE", "RMSE", "R_{2}"),3))
 
@@ -6287,7 +6302,7 @@ for(i in c(1,2)){
 rm(P_8.4.4, P_8.4.3, P_8.4.2, P_8.4.1,
    data_8.4.1, data_8.4.2, data_8.4.3, cluster_0, i, L.1)
 
-# 8.5.1   Figure 5a: Feature importance (SHAP) on the country-level ####
+# 8.5     Figure 5: Joint-figures for paper and Appendix ####
 
 eval_8.5 <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_SHAP_Evaluation.xlsx")
 
@@ -6304,6 +6319,664 @@ eval_8.5.1 <- eval_8.5 %>%
   select(Country, number_ob)%>%
   mutate(number_ob = ifelse(Country == "MEX", "MEX_3", 
                             ifelse(Country == "NOR", "NOR_4", number_ob)))
+
+data_8.5.1 <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_SHAP_Classification.xlsx")%>%
+  filter(number_ob %in% eval_8.5.1$number_ob)%>%
+  group_by(number_ob)%>%
+  mutate(test = cumsum(share_SHAP)-0.00000001)%>%
+  ungroup()%>%
+  arrange(Country)%>%
+  mutate(test2 = ceiling(test))%>%
+  group_by(number_ob)%>%
+  filter(test2 == max(test2))%>%
+  ungroup()%>%
+  #group_by(Country)%>%
+  #mutate(test3 = sum(share_SHAP))%>%
+  #ungroup()
+  select(Country, Var_0, share_SHAP)%>%
+  arrange(Country)%>%
+  mutate(order = ifelse(Var_0 == "Other features (Sum)", n(), 1))%>%
+  arrange(Country, order, desc(share_SHAP))%>%
+  mutate(order = ifelse(order == 1, 1:n(),order))%>%
+  group_by(Country)%>%
+  mutate(order_new = 1:n())%>%
+  ungroup()%>%
+  mutate(help_0 = ifelse(order_new < 5,1,0))%>%
+  filter(share_SHAP > 0)%>%
+  mutate(Var_0 = ifelse(Var_0 == "ISCED", "Education",
+                        ifelse(Var_0 == "HF", "Heating fuel",
+                               ifelse(Var_0 == "LF", "Lighting fuel",
+                                      ifelse(Var_0 == "CF", "Cooking fuel", Var_0)))))
+
+data_8.5.2.A <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_SHAP_Classification.xlsx")%>%
+  filter(number_ob %in% eval_8.5.1$number_ob)%>%
+  mutate(lag_country = ifelse(Country != lag(Country), 1:n(),NA))%>%
+  fill(lag_country)%>%
+  mutate(lag_country = ifelse(is.na(lag_country),1,lag_country))%>%
+  group_by(Country)%>%
+  filter(lag_country == max(lag_country))%>%
+  group_by(Country, Var_0)%>%
+  mutate(number = 1:n())%>%
+  ungroup()%>%
+  arrange(Country, desc(share_SHAP))%>%
+  group_by(Country)%>%
+  slice_head(n = 4)%>%
+  ungroup()
+
+data_8.5.2.B <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_SHAP_Detail.xlsx")%>%
+  filter(number_ob %in% eval_8.5.1$number_ob)%>%
+  mutate(lag_country = ifelse(Country != lag(Country), 1:n(),NA))%>%
+  fill(lag_country)%>%
+  mutate(lag_country = ifelse(is.na(lag_country),1,lag_country))%>%
+  group_by(Country)%>%
+  filter(lag_country == max(lag_country))%>%
+  group_by(Country, Var_0, Var_1)%>%
+  mutate(number = 1:n())%>%
+  ungroup()%>%
+  arrange(Country, desc(share_SHAP))
+
+data_8.5.2.C <- read_csv("../0_Data/9_Supplementary Data/BRT-Tracking/Clusters_Normalized.csv", show_col_types = FALSE)%>%
+  left_join(ungroup(summarise(group_by(mutate(data_2, pop = hh_size*hh_weights), Country), pop = sum(pop))))%>%
+  group_by(cluster)%>%
+  mutate(most_pop = ifelse(pop == max(pop),1,0))%>%
+  ungroup()
+
+data_8.5.2.D <- data_8.5.2.B %>%
+  group_by(Country, Var_0)%>%
+  summarise(share_SHAP = sum(share_SHAP))%>%
+  arrange()%>%
+  arrange(Country, desc(share_SHAP))
+
+# for-Loop for all countries
+
+list_C <- list()
+
+for (i in data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1]){
+  
+    list_A <- list()
+    list_B <- list()
+  
+    data_8.5.2 <- data_8.5.1 %>%
+      filter(Country == i)%>%
+      mutate(help_0 = ifelse(!"HH expenditures" %in% filter(data_8.5.2.A, Country == i)$Var_0 & order_new == 4,0,
+                             ifelse(!"HH expenditures" %in% filter(data_8.5.2.A, Country == i)$Var_0 & Var_0 == "HH expenditures",1,help_0)))
+    
+    P_8.5 <- ggplot(data_8.5.2)+
+      geom_col(aes(x = share_SHAP, y = reorder(Var_0, desc(order)), fill = factor(help_0)), width = 0.7, colour = "black", size = 0.3)+
+      theme_bw()+
+      coord_cartesian(xlim = c(0,max(signif(max(data_8.5.2$share_SHAP) + 0.1,1),0.3000001)))+
+      scale_fill_manual(values = c("#E64B35FF","#6F99ADFF"))+
+      scale_x_continuous(labels = scales::percent_format(accuracy = 1), expand = c(0,0))+
+      guides(fill = "none")+
+      xlab("Feature importance (SHAP)")+
+      ylab("Feature")+
+      ggtitle(paste0("Cluster ", data_8.5.2.C$cluster[data_8.5.2.C$Country == i],
+                     ": ", Country.Set$Country_long[Country.Set$Country == i]))+
+      theme(axis.text.y = element_text(size = 6), 
+            axis.text.x = element_text(size = 6),
+            axis.title  = element_text(size = 7),
+            plot.title = element_text(size = 11),
+            plot.title.position = "plot",
+            legend.position = "bottom",
+            # strip.text = element_text(size = 7),
+            #strip.text.y = element_text(angle = 180),
+            #panel.grid.major = element_blank(),
+            panel.grid.minor.x = element_blank(),
+            panel.grid.major.y = element_blank(),
+            panel.grid.minor.y = element_blank(),
+            axis.ticks = element_line(size = 0.2),
+            legend.text = element_text(size = 7),
+            legend.title = element_text(size = 7),
+            plot.margin = unit(c(0.3,0.3,0.3,0.3), "cm"),
+            panel.border = element_rect(size = 0.3))
+    
+    list_A[[i]] <- P_8.5
+    
+    data_8.5.2.A.1 <- data_8.5.2.A %>%
+      filter(Country == i)%>%
+      mutate(Var_1 = ifelse(Var_0 == "Car own.", "car.01", 
+                            ifelse(Var_0 == "HH size", "hh_size",
+                                   ifelse(Var_0 == "Electricity access", "electricity.access",
+                                          ifelse(Var_0 == "Motorcycle own.", "motorcycle.01",
+                                                 ifelse(Var_0 == "Gender HHH", "sex_hhh",
+                                                        ifelse(Var_0 %in% c("CF", "HF", "LF", "HH expenditures", "District", "Province",
+                                                                            "Ethnicity", "Nationality", "Religion", "Appliance own."), Var_0, 
+                                                               ifelse(Var_0 == "Urban", "urban_01", 
+                                                                      ifelse(Var_0 == "ISCED", "ISCED",NA)))))))))
+    
+    data_8.5.2.D.1 <- data_8.5.2.D %>%
+      filter(Country == i)%>%
+      slice_head(n = 4)%>%
+      ungroup()%>%
+      mutate(Var_1 = ifelse(Var_0 == "Car own.", "car.01", 
+                            ifelse(Var_0 == "HH size", "hh_size",
+                                   ifelse(Var_0 == "Electricity access", "electricity.access",
+                                          ifelse(Var_0 == "Motorcycle own.", "motorcycle.01",
+                                                 ifelse(Var_0 == "Gender HHH", "sex_hhh",
+                                                        ifelse(Var_0 %in% c("CF", "HF", "LF", "HH expenditures", "District", "Province",
+                                                                            "Ethnicity", "Nationality", "Religion", "Appliance own."), Var_0, 
+                                                               ifelse(Var_0 == "Urban", "urban_01", 
+                                                                      ifelse(Var_0 == "ISCED", "ISCED",NA)))))))))
+    
+    labels_dataframe <- data.frame(Var_1 = c("car.01", "electricity.access", "hh_size", "motorcycle.01", "sex_hhh", "CF", "HF", "LF",
+                                             "HH expenditures", "urban_01", "District", "Province", "Appliance own.", "Ethnicity", "ISCED", "Nationality", "Religion"),
+                                   XLAB = c("Car ownership", "Electricity access", "Household size", "Motorcycle ownership",
+                                            "Gender of household head", "Cooking fuel", "Heating fuel", "Lighting fuel", "Household expenditures", "Urban",
+                                            "District", "Province", "Appliance ownership", "Ethnicity", "Education of household head", "Nationality", "Religion"),
+                                   YLAB = c("SHAP value for car ownership", "SHAP value for electricity access", "SHAP value for household size",
+                                            "SHAP value for motorcycle ownership", "SHAP value for gender of household head", 
+                                            "SHAP value for cooking fuel", "SHAP value for heating fuel", "SHAP value for lighting fuel", NA, "SHAP for urban/rural",
+                                            "SHAP value for district", "SHAP value for province", "SHAP value for appliance ownership", 
+                                            "SHAP value for ethnicity", "SHAP value for education of hosuehold head", "SHAP value for nationality", "SHAP value for religion"))%>%
+      left_join(select(data_8.5.2.D.1, Var_1, share_SHAP), by = c("Var_1" = "Var_1"))%>%
+      mutate(share_SHAP = round(share_SHAP,2))%>%
+      mutate(help = ifelse(Var_1 %in% c("HH expenditures", "Appliance own."), Var_1, 
+                           ifelse(Var_1 == "ISCED", "Education",
+                                  ifelse(Var_1 == "hh_size", "HH size",
+                                         ifelse(Var_1 == "motorcycle.01", "Motorcycle",
+                                                ifelse(Var_1 == "sex_hhh", "Gender HHH", 
+                                                       ifelse(Var_1 == "electricity.access", "Electricity", 
+                                                              ifelse(Var_1 == "car.01", "Car own.", XLAB))))))))%>%
+      mutate(title = paste0(help, " (norm. |SHAP|: ", share_SHAP,")"))
+    
+    data_8.5.2.D.1 <- data_8.5.2.D.1 %>%
+      filter(Var_0 != "HH expenditures")
+    
+    data_8.5.2.0 <- read_rds(sprintf("../0_Data/9_Supplementary Data/BRT-Tracking/SHAP-Values en detail/SHAP_wide_%s.rds",i))
+    
+    if(nrow(data_8.5.2.0)<500){
+      alpha_0 <- 0.75
+    } else if (nrow(data_8.5.2.0)<5000){
+      alpha_0 <- 0.6
+    } else if (nrow(data_8.5.2.0)<10000){
+      alpha_0 <- 0.4
+    } else {
+      alpha_0 <- 0.3}
+    
+    # colnames(data_8.5.2.0)
+    
+    # Expenditures dataframe
+    
+    data_8.5.2.1 <- data_8.5.2.0 %>%
+      select(SHAP_hh_expenditures_USD_2014, hh_expenditures_USD_2014, z_score_exp)%>%
+      filter(z_score_exp < 3)
+    
+    P_8.5.2.1 <- ggplot(data_8.5.2.1)+
+      geom_hline(aes(yintercept = 0))+
+      geom_smooth(aes(x     = hh_expenditures_USD_2014,
+                      y     = SHAP_hh_expenditures_USD_2014),
+                  method = "loess", color = "black", size = 0.15, se = FALSE,
+                  formula = y ~ x)+
+      geom_point(aes(x = hh_expenditures_USD_2014,
+                     y = SHAP_hh_expenditures_USD_2014,
+                     colour = z_score_exp),
+                 size = 0.5, alpha = alpha_0)+
+      theme_bw()+
+      scale_colour_gradient(low = "#0072B5FF", high = "#BC3C29FF")+
+      scale_fill_gradient(low = "#0072B5FF", high = "#BC3C29FF")+
+      # scale_fill_viridis_c()+
+      # scale_colour_viridis_c()+
+      #scale_color_gradientn(na.value = NA,
+      #                       colors = c("#0072B5FF", "white","#BC3C29FF", "#631879FF"),
+      #                       values = scales::rescale(c(0,0.3,0.5,1)))+
+      guides(colour = "none", fill = "none")+
+      ggtitle(paste0(labels_dataframe$title[labels_dataframe$Var_1 == "HH expenditures"]))+
+      coord_cartesian(xlim = c(0,max(data_8.5.2.1$hh_expenditures_USD_2014)))+ # TBA
+      scale_x_continuous(labels = scales::dollar_format(), expand = c(0,0), n.breaks = 4)+
+      xlab("Household expenditures in US-$ (2014)")+
+      ylab("SHAP value for household expenditures")+
+      theme(axis.text.y = element_text(size = 6), 
+            axis.text.x = element_text(size = 6),
+            axis.title  = element_text(size = 7),
+            plot.title = element_text(size = 8),
+            plot.subtitle = element_text(size = 6),
+            legend.position = "bottom",
+            # strip.text = element_text(size = 7),
+            #strip.text.y = element_text(angle = 180),
+            #panel.grid.major = element_blank(),
+            panel.grid.major.y = element_blank(),
+            panel.grid.minor = element_blank(),
+            axis.ticks = element_line(size = 0.2),
+            legend.text = element_text(size = 7),
+            legend.title = element_text(size = 7),
+            plot.margin = unit(c(0.3,0.4,0.3,0.3), "cm"),
+            panel.border = element_rect(size = 0.3))
+    
+    list_B[[paste0(i,"_0")]] <- P_8.5.2.1
+    list_C[[paste0(i, "_B_0")]] <- P_8.5.2.1
+    
+    list_0 <- list()
+    
+    # Easily computable variables
+    
+    for(j in c("car.01", "electricity.access", "hh_size", "motorcycle.01", "sex_hhh", 
+               "CF", "HF", "LF", "urban_01")){
+      if(j %in% colnames(data_8.5.2.0) | (j == "sex_hhh" & "Gender" %in% colnames(data_8.5.2.0))){
+        data_8.5.2.2 <- data_8.5.2.0 %>%
+          rename_if(str_detect(names(.), "SHAP_HH size"), ~paste0("SHAP_hh_size"))%>%
+          rename_if(str_detect(names(.), "SHAP_Car own."), ~paste0("SHAP_car.01"))%>%
+          rename_if(str_detect(names(.), "SHAP_Motorcycle own."), ~paste0("SHAP_motorcycle.01"))%>%
+          rename_if(str_detect(names(.), "SHAP_Gender"), ~paste0("SHAP_sex_hhh"))%>%
+          rename_if(str_detect(names(.), "Gender"), ~paste0("sex_hhh"))%>%
+          rename_if(str_detect(names(.), "SHAP_Urban"), ~paste0("SHAP_urban_01"))%>%
+          rename_if(str_detect(names(.), "SHAP_Electricity access"), ~paste0("SHAP_electricity.access"))%>%
+          select(ends_with(j), z_score_exp)%>%
+          rename_if(str_detect(names(.), "SHAP"), ~paste0("SHAP"))%>%
+          rename(Variable = j)%>%
+          filter(z_score_exp < 3)%>%
+          mutate(SHAP = ifelse(is.na(SHAP),0,SHAP))
+        
+        if(j == "motorcycle.01"){
+          data_8.5.2.2 <- data_8.5.2.2 %>%
+            mutate(Variable = ifelse(Variable == 0, "No motorcycle", "Owns a motorcycle"))%>%
+            mutate(Variable = factor(Variable, levels = c("No motorcycle", "Owns a motorcycle")))
+        }
+        
+        if(j == "car.01"){
+          data_8.5.2.2 <- data_8.5.2.2 %>%
+            mutate(Variable = ifelse(Variable == 0, "No car", "Owns a car"))%>%
+            mutate(Variable = factor(Variable, levels = c("No car", "Owns a car")))
+        }
+        
+        if(j == "LF"){
+          data_8.5.2.2 <- data_8.5.2.2 %>%
+            mutate(Variable = ifelse((Variable %in% c("Firewood", "Gas", "Other biomass")) & SHAP == 0, "Other lighting", Variable))
+        }
+        
+        if(j == "CF"){
+          data_8.5.2.2 <- data_8.5.2.2 %>%
+            mutate(Variable = ifelse(i == "PER" & (Variable %in% c("Unknown", "Other biomass", "Coal")) & SHAP == 0, "Other cooking", Variable))
+          
+        }
+        
+        if(j == "electricity.access"){
+          data_8.5.2.2 <- data_8.5.2.2 %>%
+            mutate(Variable = ifelse(Variable == 0, "No access", "Access"))
+        }
+        
+        if(j == "urban_01"){
+          data_8.5.2.2 <- data_8.5.2.2 %>%
+            mutate(Variable = ifelse(Variable == 0, "Rural", "Urban"))
+        }
+        
+        if(j == "sex_hhh"){
+          data_8.5.2.2 <- data_8.5.2.2 %>%
+            mutate()
+        }
+        
+        if(j == "hh_size"){
+          data_8.5.2.2 <- data_8.5.2.2 %>%
+            filter(Variable < 6)
+        }
+        
+        text_size_0 <- if(j %in% c("CF", "HF")){text_size_0 <- 5}else{text_size_0 <- 6}
+        
+        P_8.5.2.2 <- ggplot(data_8.5.2.2)+
+          geom_hline(aes(yintercept = 0))+
+          # geom_violin(aes(x = Variable,
+          #                 y = SHAP),
+          #             size = 0.1, fill = "grey", alpha = 0.1, scale = "count")+
+          #ggforce::geom_sina(aes(x = Variable,
+          #                       y = SHAP,
+          #                       colour = z_score_exp,
+          #                       fill = z_score_exp),
+          #                   size = 0.75, alpha = 0.75, scale = "count", shape = 21)+
+          geom_jitter(aes(x = as.factor(Variable),
+                          y = SHAP,
+                          colour = z_score_exp,
+                          fill = z_score_exp),
+                      size = 1, alpha = alpha_0, height = 0, width = 0.25, shape = 21)+
+          theme_bw()+
+          scale_colour_gradient(low = "#0072B5FF", high = "#BC3C29FF")+
+          scale_fill_gradient(low = "#0072B5FF", high = "#BC3C29FF")+
+          # scale_colour_viridis_c()+
+          # scale_fill_viridis_c()+
+          guides(colour = "none", fill = "none")+
+          ggtitle(labels_dataframe$title[labels_dataframe$Var_1 == j])+
+          xlab(labels_dataframe$XLAB[labels_dataframe$Var_1 == j])+
+          ylab(labels_dataframe$YLAB[labels_dataframe$Var_1 == j])+
+          theme(axis.text.y = element_text(size = 6), 
+                axis.text.x = element_text(size = text_size_0),
+                axis.title  = element_text(size = 7),
+                plot.title = element_text(size = 8),
+                plot.subtitle = element_text(size = 6),
+                legend.position = "bottom",
+                # strip.text = element_text(size = 7),
+                #strip.text.y = element_text(angle = 180),
+                #panel.grid.major = element_blank(),
+                panel.grid.major.y = element_blank(),
+                panel.grid.minor.y = element_blank(),
+                axis.ticks = element_line(size = 0.2),
+                legend.text = element_text(size = 7),
+                legend.title = element_text(size = 7),
+                plot.margin = unit(c(0.3,0.3,0.3,0.3), "cm"),
+                panel.border = element_rect(size = 0.3))
+        
+        list_0[[j]] <- P_8.5.2.2
+        
+      }
+      
+    }
+    
+    # Other variables
+    
+    for(j in c("District", "Province", "Ethnicity", "ISCED", "Nationality", "Religion")){
+      if(j %in% colnames(data_8.5.2.0)){
+        data_8.5.2.2 <- data_8.5.2.0 %>%
+          #rename_if(str_detect(names(.), "SHAP_HH size"), ~paste0("SHAP_hh_size"))%>%
+          select(ends_with(j), z_score_exp)%>%
+          rename_if(str_detect(names(.), "SHAP"), ~paste0("SHAP"))%>%
+          rename(Variable = j)%>%
+          filter(z_score_exp < 3)%>%
+          mutate(SHAP = ifelse(is.na(SHAP),0,SHAP))
+        
+        # Variable-specific adjustment
+        
+        data_8.5.2.B.1 <- data_8.5.2.B %>%
+          filter(Country == i)%>%
+          filter(Var_0 == j)%>%
+          arrange(desc(share_SHAP))%>%
+          slice_head(n = 5)%>%
+          mutate(order_no = 1:n())
+        
+        data_8.5.2.B.2 <- data_8.5.2.2 %>%
+          group_by(Variable)%>%
+          summarise(number = n())%>%
+          ungroup()%>%
+          arrange(desc(number))%>%
+          slice_head(n = 5)
+        
+        data_8.5.2.3 <- data_8.5.2.2 %>%
+          mutate(Variable = str_replace(Variable, "-"," "))%>%
+          mutate(Variable = str_replace(Variable, "\\."," "))%>%
+          mutate(Var_imp = ifelse(Variable %in% data_8.5.2.B.1$Var_1, "1","0"),
+                 Var_big = ifelse(Variable %in% data_8.5.2.B.2$Variable, "1","0"))%>%
+          left_join(select(data_8.5.2.B.1, Var_1, share_SHAP, order_no), by = c("Variable" = "Var_1"))%>%
+          arrange(desc(share_SHAP))%>%
+          mutate(Variable = ifelse(i == "SUR" & Variable == "Mixed", "other", Variable))%>%
+          mutate(order_no = ifelse(Var_imp == "0",1,order_no+1))%>%
+          group_by(Variable)%>%
+          mutate(var_ID = cur_group_id())%>%
+          ungroup()%>%
+          mutate(Variable = ifelse((Var_imp == "0" & max(order_no)>5 & i != "SUR") | (Var_imp == "0" & max(var_ID)>5 & i != "SUR"), "Other", Variable))%>%
+          mutate(Variable = ifelse(i == "NGA" & Variable != "Other", str_sub(Variable, 5,-1), Variable))%>%
+          mutate(Variable = ifelse(i == "BFA" & Variable == "Centre Est", "Cen. Est", Variable))%>%
+          mutate(Variable = ifelse(nchar(Variable) > 6, paste0(str_sub(Variable, 1,6),"."), Variable))
+        
+        text_size_0 <- if(j == "Province"){text_size_0 <- 5}else{text_size_0 <- 6}
+        
+        P_8.5.2.3 <- ggplot(data_8.5.2.3)+
+          geom_hline(aes(yintercept = 0))+
+          # geom_violin(aes(x = Variable,
+          #                 y = SHAP),
+          #             size = 0.1, fill = "grey", alpha = 0.1, scale = "count")+
+          #ggforce::geom_sina(aes(x = Variable,
+          #                       y = SHAP,
+          #                       colour = z_score_exp,
+          #                       fill = z_score_exp),
+          #                   size = 0.75, alpha = 0.75, scale = "count", shape = 21)+
+          geom_jitter(aes(x = fct_reorder(as.factor(Variable),order_no),
+                          y = SHAP,
+                          colour = z_score_exp,
+                          fill = z_score_exp),
+                      size = 1, alpha = alpha_0, height = 0, width = 0.25, shape = 21)+
+          theme_bw()+
+          scale_colour_gradient(low = "#0072B5FF", high = "#BC3C29FF")+
+          scale_fill_gradient(low = "#0072B5FF", high = "#BC3C29FF")+
+          # scale_colour_viridis_c()+
+          # scale_fill_viridis_c()+
+          guides(colour = "none", fill = "none")+
+          ggtitle(labels_dataframe$title[labels_dataframe$Var_1 == j])+
+          xlab(labels_dataframe$XLAB[labels_dataframe$Var_1 == j])+
+          ylab(labels_dataframe$YLAB[labels_dataframe$Var_1 == j])+
+          theme(axis.text.y = element_text(size = 6), 
+                axis.text.x = element_text(size = text_size_0),
+                axis.title  = element_text(size = 7),
+                plot.title = element_text(size = 8),
+                plot.subtitle = element_text(size = 6),
+                legend.position = "bottom",
+                # strip.text = element_text(size = 7),
+                #strip.text.y = element_text(angle = 180),
+                #panel.grid.major = element_blank(),
+                panel.grid.major.y = element_blank(),
+                panel.grid.minor.y = element_blank(),
+                axis.ticks = element_line(size = 0.2),
+                legend.text = element_text(size = 7),
+                legend.title = element_text(size = 7),
+                plot.margin = unit(c(0.3,0.3,0.3,0.3), "cm"),
+                panel.border = element_rect(size = 0.3))
+        
+        list_0[[j]] <- P_8.5.2.3
+      }
+    }
+    
+    for(j in c("Appliance own.")){
+      if(j %in% data_8.5.2.D.1$Var_1){
+        data_8.5.2.2 <- data_8.5.2.0 %>%
+          rename_if(str_detect(names(.), "SHAP_Washing_machine"), ~paste0("SHAP_washing_machine.01"))%>%
+          rename_if(str_detect(names(.), "SHAP_Refrigerator"), ~paste0("SHAP_refrigerator.01"))%>%
+          rename_if(str_detect(names(.), "SHAP_TV"), ~paste0("SHAP_tv.01"))%>%
+          rename_if(str_detect(names(.), "SHAP_AC"), ~paste0("SHAP_ac.01"))%>%
+          select(ends_with("washing_machine.01"), ends_with("refrigerator.01"), ends_with("tv.01"), ends_with("ac.01"), z_score_exp)%>%
+          mutate(id = 1:n())
+        
+        if("washing_machine.01" %in% colnames(data_8.5.2.2)){
+          data_8.5.2.2.1 <- data_8.5.2.2 %>%
+            select(ends_with("washing_machine.01"), id)%>%
+            rename_if(str_detect(names(.), "SHAP"), ~ paste0("SHAP"))%>%
+            rename_if(str_detect(names(.), ".01"), ~ paste0("Variable"))%>%
+            mutate(Variable = ifelse(Variable == 0, "No washing machine", "Has washing machine"))%>%
+            mutate(Var_1 = "Washing machine")
+        } else data_8.5.2.2.1 <- select(data_8.5.2.2, id)
+        
+        
+        if("refrigerator.01" %in% colnames(data_8.5.2.2)){
+          data_8.5.2.2.2 <- data_8.5.2.2 %>%
+            select(ends_with("refrigerator.01"), id)%>%
+            rename_if(str_detect(names(.), "SHAP"), ~ paste0("SHAP"))%>%
+            rename_if(str_detect(names(.), ".01"), ~ paste0("Variable"))%>%
+            mutate(Variable = ifelse(Variable == 0, "No refrig.", "Has refrig."))%>%
+            mutate(Var_1 = "Refrigerator")
+        } else data_8.5.2.2.2 <- select(data_8.5.2.2, id)
+        
+        if("tv.01" %in% colnames(data_8.5.2.2)){
+          data_8.5.2.2.3 <- data_8.5.2.2 %>%
+            select(ends_with("tv.01"), id)%>%
+            rename_if(str_detect(names(.), "SHAP"), ~ paste0("SHAP"))%>%
+            rename_if(str_detect(names(.), ".01"), ~ paste0("Variable"))%>%
+            mutate(Variable = ifelse(Variable == 0, "No TV", "Has TV"))%>%
+            mutate(Var_1 = "TV")
+        }else data_8.5.2.2.3 <- select(data_8.5.2.2, id)
+        
+        if("ac.01" %in% colnames(data_8.5.2.2)){
+          data_8.5.2.2.4 <- data_8.5.2.2 %>%
+            select(ends_with("ac.01"), id)%>%
+            rename_if(str_detect(names(.), "SHAP"), ~ paste0("SHAP"))%>%
+            rename_if(str_detect(names(.), ".01"), ~ paste0("Variable"))%>%
+            mutate(Variable = ifelse(Variable == 0, "No AC", "Has AC"))%>%
+            mutate(Var_1 = "AC")
+        } else data_8.5.2.2.4 <- select(data_8.5.2.2, id)
+        
+        data_8.5.2.2.5 <- data.frame()%>%
+          bind_rows(data_8.5.2.2.1)%>%
+          bind_rows(data_8.5.2.2.2)%>%
+          bind_rows(data_8.5.2.2.3)%>%
+          bind_rows(data_8.5.2.2.4)%>%
+          left_join(select(data_8.5.2.2, id, z_score_exp), by = "id")
+        
+        # Variable-specific adjustment
+        
+        data_8.5.2.B.1 <- data_8.5.2.B %>%
+          filter(Country == i)%>%
+          filter(Var_0 == j)%>%
+          arrange(desc(share_SHAP))%>%
+          slice_head(n = 2)%>%
+          mutate(order_no = 1:n())
+        
+        data_8.5.2.3 <- data_8.5.2.2.5 %>%
+          mutate(Var_imp = ifelse(Var_1 %in% data_8.5.2.B.1$Var_1, "1","0"))%>%
+          filter(Var_imp == "1")%>%
+          arrange(Var_1, desc(Variable))%>%
+          mutate(order_no = 1:n())%>%
+          group_by(Var_1, Variable)%>%
+          mutate(order_no = min(order_no))%>%
+          ungroup()
+        
+        P_8.5.2.3 <- ggplot(data_8.5.2.3)+
+          geom_hline(aes(yintercept = 0))+
+          # geom_violin(aes(x = Variable,
+          #                 y = SHAP),
+          #             size = 0.1, fill = "grey", alpha = 0.1, scale = "count")+
+          #ggforce::geom_sina(aes(x = Variable,
+          #                       y = SHAP,
+          #                       colour = z_score_exp,
+          #                       fill = z_score_exp),
+          #                   size = 0.75, alpha = 0.75, scale = "count", shape = 21)+
+          geom_jitter(aes(x = fct_reorder(as.factor(Variable),order_no),
+                          y = SHAP,
+                          colour = z_score_exp,
+                          fill = z_score_exp),
+                      size = 1, alpha = alpha_0, height = 0, width = 0.25, shape = 21)+
+          theme_bw()+
+          scale_colour_gradient(low = "#0072B5FF", high = "#BC3C29FF")+
+          scale_fill_gradient(low = "#0072B5FF", high = "#BC3C29FF")+
+          # scale_colour_viridis_c()+
+          # scale_fill_viridis_c()+
+          guides(colour = "none", fill = "none")+
+          ggtitle(labels_dataframe$title[labels_dataframe$Var_1 == j])+
+          xlab(labels_dataframe$XLAB[labels_dataframe$Var_1 == j])+
+          ylab(labels_dataframe$YLAB[labels_dataframe$Var_1 == j])+
+          theme(axis.text.y = element_text(size = 6), 
+                axis.text.x = element_text(size = 6),
+                axis.title  = element_text(size = 7),
+                plot.title = element_text(size = 8),
+                plot.subtitle = element_text(size = 6),
+                legend.position = "bottom",
+                # strip.text = element_text(size = 7),
+                #strip.text.y = element_text(angle = 180),
+                #panel.grid.major = element_blank(),
+                panel.grid.major.y = element_blank(),
+                panel.grid.minor.y = element_blank(),
+                axis.ticks = element_line(size = 0.2),
+                legend.text = element_text(size = 7),
+                legend.title = element_text(size = 7),
+                plot.margin = unit(c(0.3,0.3,0.3,0.3), "cm"),
+                panel.border = element_rect(size = 0.3))
+        
+        list_0[[j]] <- P_8.5.2.3
+      }
+    }
+    
+
+    list_B[[paste0(i,"_1")]] <- list_0[[data_8.5.2.D.1$Var_1[1]]]
+    list_B[[paste0(i,"_2")]] <- list_0[[data_8.5.2.D.1$Var_1[2]]]
+    list_B[[paste0(i,"_3")]] <- list_0[[data_8.5.2.D.1$Var_1[3]]]
+    
+    P_8.5.0 <- ggarrange(list_A[[1]], list_B[[1]], list_B[[2]], list_B[[3]], list_B[[4]], align = "hv", nrow = 1)
+    
+    list_C[[i]] <- P_8.5.0
+    list_C[[paste0(i, "_A")]] <- P_8.5
+    list_C[[paste0(i, "_B_1")]] <- list_0[[data_8.5.2.D.1$Var_1[1]]]
+    list_C[[paste0(i, "_B_2")]] <- list_0[[data_8.5.2.D.1$Var_1[2]]]
+    list_C[[paste0(i, "_B_3")]] <- list_0[[data_8.5.2.D.1$Var_1[3]]]
+    
+    print(i)
+
+}
+
+P_8.5.0.I   <- ggarrange(list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "A"],"_A")[1]]],
+                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "A"],"_B_0")[1]]],
+                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "A"],"_B_1")[1]]],
+                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "A"],"_B_2")[1]]],
+                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "A"],"_B_3")[1]]],
+                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "B"],"_A")[1]]],
+                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "B"],"_B_0")[1]]],
+                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "B"],"_B_1")[1]]],
+                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "B"],"_B_2")[1]]],
+                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "B"],"_B_3")[1]]],
+                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "C"],"_A")[1]]],
+                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "C"],"_B_0")[1]]],
+                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "C"],"_B_1")[1]]],
+                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "C"],"_B_2")[1]]],
+                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "C"],"_B_3")[1]]],
+                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "D"],"_A")[1]]],
+                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "D"],"_B_0")[1]]],
+                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "D"],"_B_1")[1]]],
+                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "D"],"_B_2")[1]]],
+                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "D"],"_B_3")[1]]],
+                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "E"],"_A")[1]]],
+                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "E"],"_B_0")[1]]],
+                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "E"],"_B_1")[1]]],
+                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "E"],"_B_2")[1]]],
+                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "E"],"_B_3")[1]]],
+                         ncol = 5, nrow = 5, align = "h")
+P_8.5.0.II  <- ggarrange(list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "F"],"_A")[1]]],
+                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "F"],"_B_0")[1]]],
+                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "F"],"_B_1")[1]]],
+                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "F"],"_B_2")[1]]],
+                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "F"],"_B_3")[1]]],
+                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "G"],"_A")[1]]],
+                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "G"],"_B_0")[1]]],
+                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "G"],"_B_1")[1]]],
+                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "G"],"_B_2")[1]]],
+                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "G"],"_B_3")[1]]],
+                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "H"],"_A")[1]]],
+                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "H"],"_B_0")[1]]],
+                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "H"],"_B_1")[1]]],
+                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "H"],"_B_2")[1]]],
+                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "H"],"_B_3")[1]]],
+                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "I"],"_A")[1]]],
+                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "I"],"_B_0")[1]]],
+                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "I"],"_B_1")[1]]],
+                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "I"],"_B_2")[1]]],
+                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "I"],"_B_3")[1]]],
+                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "J"],"_A")[1]]],
+                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "J"],"_B_0")[1]]],
+                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "J"],"_B_1")[1]]],
+                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "J"],"_B_2")[1]]],
+                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "J"],"_B_3")[1]]],
+                         ncol = 5, nrow = 5, align = "h")
+P_8.5.0.III <- ggarrange(list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "K"],"_A")[1]]],
+                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "K"],"_B_0")[1]]],
+                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "K"],"_B_1")[1]]],
+                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "K"],"_B_2")[1]]],
+                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "K"],"_B_3")[1]]],
+                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "L"],"_A")[1]]],
+                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "L"],"_B_0")[1]]],
+                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "L"],"_B_1")[1]]],
+                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "L"],"_B_2")[1]]],
+                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "L"],"_B_3")[1]]],
+                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "M"],"_A")[1]]],
+                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "M"],"_B_0")[1]]],
+                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "M"],"_B_1")[1]]],
+                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "M"],"_B_2")[1]]],
+                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "M"],"_B_3")[1]]],
+                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "N"],"_A")[1]]],
+                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "N"],"_B_0")[1]]],
+                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "N"],"_B_1")[1]]],
+                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "N"],"_B_2")[1]]],
+                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "N"],"_B_3")[1]]],
+                         ncol = 5, nrow = 4, align = "h")
+
+jpeg("1_Figures/Figure 5/Figures_joint_%d.jpg", width = 30, height = 37.5, unit = "cm", res = 400)
+print(P_8.5.0.I)
+print(P_8.5.0.II)
+dev.off()
+
+jpeg("1_Figures/Figure 5/Figures_joint_3.jpg", width = 30, height = 30, unit = "cm", res = 300)
+print(P_8.5.0.III)
+dev.off()
+
+rm(list_A, list_B, list_C,
+   P_8.5.0.I, P_8.5.0.II, P_8.5.0.III, P_8.5, data_8.5.1, data_8.5.2,
+   P_8.5.2.1, P_8.5.2.2, P_8.5.2.3, P_8.5.0,
+   data_8.5.2.A, data_8.5.2.B, data_8.5.2.C, data_8.5.2.D,
+   data_8.5.2.A.1, data_8.5.2.B.1, data_8.5.2.B.2, data_8.5.2.D.1,
+   data_8.5.2.0, data_8.5.2.1, data_8.5.2.2,
+   data_8.5.2.2.1, data_8.5.2.2.2, data_8.5.2.2.3, data_8.5.2.2.4, data_8.5.2.2.5,
+   data_8.5.2.3, labels_dataframe, list_0, alpha_0, i, j, text_size_0, eval_8.5, eval_8.5.1,)
+
+# 8.5.1   Figure 5a: Feature importance (SHAP) on the country-level ####
 
 # Introduce for-loop for each country that loads in shap_1
 
