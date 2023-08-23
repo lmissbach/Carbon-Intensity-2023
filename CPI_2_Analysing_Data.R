@@ -2997,15 +2997,15 @@ eval_1.2 <- data_2 %>%
 eval_1.3 <- left_join(eval_1.1, eval_1.2)%>%
   select(Country_long, mean_carbon_intensity, everything(), -Country, -sample)
 
-colnames(eval_1.3) <- c("Country", "Mean", rep(c("MAE", "RMSE", "R_{2}"),3))
+colnames(eval_1.3) <- c("Country", "Mean", rep(c("MAE", "RMSE", "$R^{2}$"),3))
 
 kbl(eval_1.3, format = "latex", caption = "Evaluation of boosted regression tree models", booktabs = T, align = "l|r|rrr|rrr|rrr", vline = "", format.args = list(big.mark = ",", scientific = FALSE), linesep = "",
-    longtable = T)%>%
+    longtable = T, escape = FALSE)%>%
   kable_styling(position = "center", latex_options = c("HOLD_position", "repeat_header"), font_size = 8)%>%
   #column_spec(1, width = "3.15 cm")%>%
   # add_header_above(c("Country" = 1, rep(c("MAE", "RMSE", "R^{2}"),3) ))%>%
-  add_header_above(c(" " = 1, "Test sample" = 3, "Training sample" = 3, "Entire sample"))%>%
-  footnote(general = "This table shows performance metrics for boosted regression tree models. MAE is the mean absolute error of predictions; RMSE is the root mean squared error of predictions; R^{2} is the squared correlation of prediction errors. Unit of MAE and RMSE is kgCO_{2} per US-$. We show MAE, RMSE and R^{2} for predictions on the testing set, on the training set and on the entire dataset. ", threeparttable = T)%>%
+  add_header_above(c(" " = 2, "Test sample" = 3, "Training sample" = 3, "Entire sample" = 3))%>%
+  footnote(general = "This table shows performance metrics for boosted regression tree models. MAE is the mean absolute error of predictions; RMSE is the root mean squared error of predictions; $R^{2}$ is the squared correlation of prediction errors. Unit of MAE and RMSE is $kgCO_{2}$ per US-\\\\$. We show MAE, RMSE and $R^{2}$ for predictions on the testing set, on the training set and on the entire dataset. ", threeparttable = T, escape = FALSE)%>%
   save_kable(., "2_Tables/Table_SHAP_Summary.tex")
 
 rm(eval_1, eval_1.1, eval_1.2, eval_1.3)
@@ -5843,6 +5843,19 @@ data_8.2.1 <- data_2 %>%
   mutate(value = ifelse(Country == "TWN", 20388.2761, value))
   # mutate(interest2 = ifelse(Country %in% c("RWA", "DEU", "ZAF", "USA", "CAN", "MWI", "LBR"),1,0.5))
 
+# For Manuscript
+
+data_8.2.2 <- data_8.2.1 %>%
+  mutate(regressive = ifelse(median_1_5 > 1,1,0))%>%
+  mutate(progressive = ifelse(median_1_5 < 1,1,0))%>%
+  arrange(desc(value))%>%
+  mutate(income_higher = 1:n())%>%
+  mutate(income_lower = n():1)%>%
+  mutate(regressive_income  = ifelse(regressive == 1 & income_higher < 26,1,0))%>%
+  mutate(progressive_income = ifelse(progressive == 1 & income_lower < 26,1,0))%>%
+  mutate(horizontal = ifelse(dif_95_05_1_5 > 1,1,0))%>%
+  mutate(hor_ver = ifelse(dif_95_05_1_5 > median_1_5,1,0))
+
 poly <- data.frame(g = c(1,1,1,2,2,2,2,3,3,3,4,4,4,5,5,5,5,6,6,6), x = c(0.05,0.05,0.95,
                                                                          0.05,0.05,0.95,0.95,
                                                                          1.05,1.05,2.95,
@@ -5956,7 +5969,7 @@ jpeg("1_Figures/Figure 2/Figure_2.jpg", width = 15.5, height = 10, unit = "cm", 
 print(P_8.2)
 dev.off()
 
-rm(data_8.2.0, data_8.2.1, poly, poly_2, poly_3, poly_4, poly_5, P_8.2)
+rm(data_8.2.0, data_8.2.1, poly, poly_2, poly_3, poly_4, poly_5, P_8.2, data_8.2.2)
 
 # 8.3     Figure 3: Clustering and features ####
 
@@ -6116,6 +6129,37 @@ dev.off()
 
 rm(data_8.3.0, data_8.3.1, data_8.3.2, data_8.3.3,
    P_8.3.1, P_8.3.2, P_8.3.3, P_8.3.4, L.1)
+
+# 8.3.1   Figure 3: Supplementing table ####
+
+data_8.3.0 <- read_csv("../0_Data/9_Supplementary Data/BRT-Tracking/Clusters_Normalized.csv", show_col_types = FALSE) %>%
+  group_by(cluster)%>%
+  mutate(number = n())%>%
+  summarise_at(vars("Appliance own.":"silhouette_13_means", number), ~ mean(.))%>%
+  ungroup()%>%
+  rename("Horizontal inequality" = "dif_95_05_1_5", 
+         "Mean carbon intensity" = "mean_carbon_intensity",
+         "Vertical inequality"   = "median_1_5",
+         "Average silhouette width" = "silhouette_13_means")%>%
+  select(cluster, number, "Average silhouette width", "Mean carbon intensity", "Horizontal inequality", "Vertical inequality",
+          "HH expenditures", "HH size", "Education", "Gender HHH", "Sociodemographic",
+          "Urban", "Province", "District", "Electricity access", "Cooking fuel",
+          "Heating fuel", "Lighting fuel", "Car own.", "Motorcycle own.", "Appliance own.")%>%
+  rename(Cluster = cluster,
+         Number = number)%>%
+  mutate_at(vars("Average silhouette width":"Appliance own."), ~ round(.,2))
+
+kbl(data_8.3.0, format = "latex", caption = "Average feature importance across country clusters", booktabs = T, 
+    align = "l|rr|r|rr|rrrrr|rrr|rrrr|rrr", vline = "", format.args = list(big.mark = ",", scientific = FALSE), linesep = "", escape = FALSE)%>%
+  kable_styling(position = "center", latex_options = c("HOLD_position", "scale_down"), font_size = 2)%>%
+  row_spec(0, angle = 90)%>%
+  #column_spec(1:21, width = "0.5 cm")%>%
+  #column_spec(1, width = "3.15 cm")%>%
+  # add_header_above(c("Country" = 1, rep(c("MAE", "RMSE", "R^{2}"),3) ))%>%
+  footnote(general = "This table shows the average importance of features in percent (based on absolute average SHAP-values per feature) across all countries from each cluster A to N. Columns 'Mean carbon intensity', 'Horizontal inequality' and 'Vertical inequality' show average values. Column 'number' refers to the number of countries assigned to this cluster.", threeparttable = T)%>%
+  save_kable(., "2_Tables/Table_Clusters_Summary.tex")
+
+rm(data_8.3.0)  
 
 # 8.4     Figure 4: Country-level feature importance and clusters ####
 
@@ -6301,6 +6345,38 @@ for(i in c(1,2)){
 
 rm(P_8.4.4, P_8.4.3, P_8.4.2, P_8.4.1,
    data_8.4.1, data_8.4.2, data_8.4.3, cluster_0, i, L.1)
+
+# 8.4.1   Figure 4: Table outputs ####
+
+# First horizontal and vertical indicators - scaling not necessary
+
+data_8.4.1 <- read_csv("../0_Data/9_Supplementary Data/BRT-Tracking/Clusters_Normalized.csv", show_col_types = FALSE)%>%
+  # it is in fact not normalized
+  select(cluster, Country, order, best_fit, largest_country, everything())%>%
+  mutate_at(vars("Appliance own.":"Sociodemographic"), ~ ifelse(. == 0, NA, .))%>%
+  rename("Horizontal inequality" = "dif_95_05_1_5", 
+         "Mean carbon intensity" = "mean_carbon_intensity",
+         "Vertical inequality"   = "median_1_5",
+         "Silhouette width" = "silhouette_13_means")%>%
+  select(cluster, Country, "Average silhouette width", "Mean carbon intensity", "Horizontal inequality", "Vertical inequality",
+         "HH expenditures", "HH size", "Education", "Gender HHH", "Sociodemographic",
+         "Urban", "Province", "District", "Electricity access", "Cooking fuel",
+         "Heating fuel", "Lighting fuel", "Car own.", "Motorcycle own.", "Appliance own.")%>%
+  rename(Cluster = cluster)%>%
+  mutate_at(vars("Average silhouette width":"Appliance own."), ~ round(.,2))
+
+options(knitr.kable.NA = "")
+
+kbl(data_8.4.1, format = "latex", caption = "Feature importance across countries by cluster", booktabs = T, align = "l|rr|r|rr|rrrrr|rrr|rrrr|rrr", vline = "", format.args = list(big.mark = ",", scientific = FALSE), linesep = "",
+    longtable = T)%>%
+  kable_styling(position = "center", latex_options = c("HOLD_position", "repeat_header"), font_size = 8)%>%
+  row_spec(0, angle = -90)%>%
+  row_spec(c(14,27,37,45,52,59,66,71,76,79,81,83,85), hline_after = TRUE)%>%
+  #collapse_rows(columns = 3:4, valign = "middle")%>%
+  footnote(general = "This table shows feature importance in percent (based on absolute average SHAP-values per feature) across all countries and per cluster. Columns 'Mean carbon intensity', 'Horizontal inequality' and 'Vertical inequality' show average values. Column 'number' refers to the number of countries assigned to this cluster.", threeparttable = T)%>%
+  save_kable(., "2_Tables/Table_Countries_SHAP_Summary.tex")
+
+rm(data_8.4.1)
 
 # 8.5     Figure 5: Joint-figures for paper and Appendix ####
 
