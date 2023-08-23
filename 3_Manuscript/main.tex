@@ -288,7 +288,7 @@ Figure \ref{fig:fig_3} shows the relative importance of different features acros
     \label{fig:fig_3}
     \begin{subcaption}
     This figure shows the average importance of features (in normalized absolute average SHAP-values) across all countries from each cluster A to N. Colors express the average importance of features in a cluster in comparison to other clusters. Blue (red) colors indicate that a feature is relatively less (more) important on average in a cluster compared to all other clusters. 'Sociodemographic' comprises normalized absolute average SHAP values for features such as ethnicity, nationality, religion or language.
-    For horizontal inequality, blue (red) colors indicate a lower (higher) heterogeneity within the first income quintile compared to the fifth income quintile. For vertical inequality, blue (red) colors indicate lower (higher) median carbon intensity among the first income quintile compared to the fifth income quintile. For average $CO_{2}$-intensity, blue (red) colors indicate a lower (higher) average carbon intensity across clusters. We assign countries to 14 clusters performing k-means clustering. We also show all values in Table REF.
+    For horizontal inequality, blue (red) colors indicate a lower (higher) heterogeneity within the first income quintile compared to the fifth income quintile. For vertical inequality, blue (red) colors indicate lower (higher) median carbon intensity among the first income quintile compared to the fifth income quintile. For average $CO_{2}$-intensity, blue (red) colors indicate a lower (higher) average carbon intensity across clusters. We assign countries to 14 clusters performing k-means clustering. We also show all values in Table \ref{tab:A9}.
     \end{subcaption}
 \end{figure}
 
@@ -303,7 +303,7 @@ Figures \ref{fig:fig_4_1} and \ref{fig:fig_4_2} show the relative importance of 
     \begin{subcaption}
     This figure shows the importance of features (in normalized average absolute SHAP-values) for each country, grouped by country clusters. Blue (red) colors indicate that a feature is relatively less (more) important in a country compared to all other countries. 'Sociodemographic' comprises normalized absolute SHAP-values for features such as ethnicity, nationality, religion or language.
     For horizontal inequality, blue (red) colors indicate a lower (higher) heterogeneity within the first income quintile compared to the fifth income quintile. For vertical inequality, blue (red) colors indicate lower (higher) median carbon intensity among the first income quintile compared to the fifth income quintile. For average $CO_{2}$-intensity, blue (red) colors indicate a lower (higher) average carbon intensity across all countries.
-    We assign countries to 14 clusters performing k-means clustering based on scaled values across all features. We also show all values in Table REF.
+    We assign countries to 14 clusters performing k-means clustering based on scaled values across all features. We also show all values in Table \ref{tab:A10}.
     \end{subcaption}
 \end{figure}
 
@@ -315,7 +315,7 @@ Figures \ref{fig:fig_4_1} and \ref{fig:fig_4_2} show the relative importance of 
     \begin{subcaption}
     This figure shows the importance of features (in normalized average absolute SHAP-values) for each country, grouped by country clusters. Blue (red) colors indicate that a feature is relatively less (more) important in a country compared to all other countries. 'Sociodemographic' comprises normalized absolute SHAP-values for features such as ethnicity, nationality, religion or language.
     For horizontal inequality, blue (red) colors indicate a lower (higher) heterogeneity within the first income quintile compared to the fifth income quintile. For vertical inequality, blue (red) colors indicate lower (higher) median carbon intensity among the first income quintile compared to the fifth income quintile. For average $CO_{2}$-intensity, blue (red) colors indicate a lower (higher) average carbon intensity across all countries.
-    We assign countries to 14 clusters performing k-means clustering based on scaled values across all features. We also show all values in Table REF.
+    We assign countries to 14 clusters performing k-means clustering based on scaled values across all features. We also show all values in Table \ref{tab:A10}.
     \end{subcaption}
 \end{figure}
 
@@ -1043,5 +1043,11 @@ BGD, BGR, BOL, BRA, BRB, CHL, %CIV,
 }
 
 \input{../2_Tables/Table_Vertical_Horizontal} \label{tab:A7}
+
+\input{../2_Tables/Table_SHAP_Summary} \label{tab:A8}
+
+\input{../2_Tables/Table_Clusters_Summary} \label{tab:A9}
+
+\input{../2_Tables/Table_Countries_SHAP_Summary} \label{tab:A10}
 
 \end{document}
