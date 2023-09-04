@@ -3088,6 +3088,8 @@ r2_6.2.0 <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_SHAP
   summarise(rsq = mean(Sample_Testing))%>%
   ungroup()
 
+# With and without correction for r2
+
 data_6.2.1_r2 <- data_6.2.1 %>%
   left_join(r2_6.2.0)%>%
   mutate_at(vars(-Country, -rsq), ~ .*rsq)%>%
@@ -3121,16 +3123,26 @@ data_6.2.3 <- data_2 %>%
 # data_6.2.4.0 <- left_join(data_6.2.1, data_6.2.2)%>%
 #   left_join(data_6.2.3)%>%
 #   mutate_at(vars(median_1_5, dif_95_05_1_5), ~ as.numeric(.))
+
+# No correction for r2
+
+data_6.2.4.0 <- left_join(data_6.2.1, data_6.2.2, by = "Country")%>%
+  left_join(data_6.2.3, by = "Country")%>%
+  mutate_at(vars(median_1_5, dif_95_05_1_5), ~ as.numeric(.))
+
+# Correction for r2
   
-data_6.2.4.0 <- left_join(data_6.2.1_r2, data_6.2.2)%>%
-  left_join(data_6.2.3)%>%
+data_6.2.4.0_r2 <- left_join(data_6.2.1_r2, data_6.2.2, by = "Country")%>%
+  left_join(data_6.2.3, by = "Country")%>%
   mutate_at(vars(median_1_5, dif_95_05_1_5), ~ as.numeric(.))
 
 data_6.2.4 <- data_6.2.4.0 %>%
   mutate_at(vars(-Country), ~ (. - mean(.))/sd(.))%>%
   select(-Country)
 
-# Think carefully about what needs to be done here
+data_6.2.4_r2 <- data_6.2.4.0_r2 %>%
+  mutate_at(vars(-Country), ~ (. - mean(.))/sd(.))%>%
+  select(-Country)
 
 # Unsupervised machine learning algorithm
 # Each cluster is represented by its centroid which corresponds to the mean of points assigned to the cluster
@@ -3158,15 +3170,42 @@ for(k in 2:40){
   # PAM more robust
 }
 
+data_6.2.5_r2 <- data.frame()
+
+for(k in 2:40){
+  model_6.2.0 <- kmeans(data_6.2.4_r2, centers = k, nstart = 500)
+  
+  # total within-cluster sum of squares
+  
+  tot_within_ss <- model_6.2.0$tot.withinss
+  
+  # Silhouette
+  
+  silhouette_1 <- mean((cluster::silhouette(model_6.2.0$cluster, dist(data_6.2.4_r2)))[,3])
+  
+  data_6.2.5_r2 <- bind_rows(data_6.2.5_r2,
+                          data.frame(k_0             = k,
+                                     tot_within_ss_0 = tot_within_ss,
+                                     silhouette_0    = silhouette_1))
+  
+  # PAM more robust
+}
+
 # Ellbow-Plot:
 
-ggplot(data_6.2.5)+
-  geom_line(aes(x = k_0, y = tot_within_ss_0))+
-  geom_point(aes(x = k_0, y = tot_within_ss_0))
+# ggplot(data_6.2.5)+
+#   geom_line(aes(x = k_0, y = tot_within_ss_0))+
+#   geom_point(aes(x = k_0, y = tot_within_ss_0))
 
 # Silhouette-Plot:
 
+# Non-corrected
 data_6.2.5.1 <- data_6.2.5 %>%
+  bind_rows(data.frame(k_0 = 1, silhouette_0 = 0))%>%
+  mutate(help_0 = ifelse(silhouette_0 == max(silhouette_0),1,0))
+
+# Corrected
+data_6.2.5.2 <- data_6.2.5_r2 %>%
   bind_rows(data.frame(k_0 = 1, silhouette_0 = 0))%>%
   mutate(help_0 = ifelse(silhouette_0 == max(silhouette_0),1,0))
 
@@ -3178,7 +3217,35 @@ P_6.2.5.1 <- ggplot(data_6.2.5.1)+
   guides(fill = "none")+
   xlab("Number of clusters (k)")+
   ylab("Average silhouette width")+
-  coord_cartesian(ylim = c(min(data_6.2.5.1$silhouette_0)*0.8, max(data_6.2.5.1$silhouette_0)*1.15),
+  coord_cartesian(ylim = c(min(data_6.2.5.1$silhouette_0)*0.8, 0.21),
+                  xlim = c(0,40.5))+
+  scale_x_continuous(expand = c(0,0), breaks = seq(0,41,5), minor_breaks = seq(0,41,1))+
+  scale_y_continuous(expand = c(0,0.01))+
+  theme_bw()+
+  ggtitle("Silhouette plot (non-corrected)")+
+  theme(axis.text.y = element_text(size = 6), 
+        axis.text.x = element_text(size = 6),
+        axis.title  = element_text(size = 7),
+        plot.title = element_text(size = 11),
+        legend.position = "bottom",
+        # strip.text = element_text(size = 7),
+        #strip.text.y = element_text(angle = 180),
+        panel.grid.minor = element_blank(),
+        axis.ticks = element_line(size = 0.2),
+        legend.text = element_text(size = 7),
+        legend.title = element_text(size = 7),
+        plot.margin = unit(c(0.3,0.3,0.3,0.3), "cm"),
+        panel.border = element_rect(size = 0.3))
+
+P_6.2.5.2 <- ggplot(data_6.2.5.2)+
+  geom_vline(aes(xintercept = data_6.2.5.2$k[silhouette_0 == max(silhouette_0)]))+
+  geom_line(aes(x = k_0, y = silhouette_0))+
+  geom_point(aes(x = k_0,y = silhouette_0, fill = factor(help_0)), shape = 21, size = 1.5)+
+  scale_fill_manual(values = c("#0072B5FF", "#BC2C29FF"))+
+  guides(fill = "none")+
+  xlab("Number of clusters (k)")+
+  ylab("Average silhouette width")+
+  coord_cartesian(ylim = c(min(data_6.2.5.2$silhouette_0)*0.8, 0.21),
                   xlim = c(0,40.5))+
   scale_x_continuous(expand = c(0,0), breaks = seq(0,41,5), minor_breaks = seq(0,41,1))+
   scale_y_continuous(expand = c(0,0.01))+
@@ -3198,41 +3265,61 @@ P_6.2.5.1 <- ggplot(data_6.2.5.1)+
         plot.margin = unit(c(0.3,0.3,0.3,0.3), "cm"),
         panel.border = element_rect(size = 0.3))
 
-jpeg("1_Figures/Figures_Appendix/Figure_Silhouette.jpg", width = 12, height = 10, unit = "cm", res = 400)
+jpeg("1_Figures/Figures_Appendix/Figure_Silhouette_%d.jpg", width = 12, height = 10, unit = "cm", res = 400)
 print(P_6.2.5.1)
+print(P_6.2.5.2)
 dev.off()
 
-# Silhouette-method gives 14 clusters as best - muss überarbeitet werden
+# Silhouette-method 
 
-model_6.2.1 <- kmeans(data_6.2.4, centers = 15, nstart = 500)
+model_6.2.1 <- kmeans(data_6.2.4,    centers = 19, nstart = 2000)
+model_6.2.2 <- kmeans(data_6.2.4_r2, centers = 3, nstart = 2000)
 
 silhouette_6.2.1 <- cluster::silhouette(model_6.2.1$cluster, dist(data_6.2.4))[,3]
+silhouette_6.2.2 <- cluster::silhouette(model_6.2.2$cluster, dist(data_6.2.4_r2))[,3]
 
 data_6.2.6 <- data_6.2.4.0 %>%
-  mutate(cluster_13_means    = model_6.2.1$cluster,
-         silhouette_13_means = silhouette_6.2.1)%>%
-  group_by(cluster_13_means)%>%
+  mutate(cluster_19_means    = model_6.2.1$cluster,
+         silhouette_19_means = silhouette_6.2.1)%>%
+  group_by(cluster_19_means)%>%
   mutate(number = n())%>%
   ungroup()%>%
-  arrange(number, cluster_13_means, silhouette_13_means)%>%
+  arrange(number, cluster_19_means, silhouette_19_means)%>%
   mutate(order = 1:n())%>%
-  mutate(order_2 = ifelse(cluster_13_means != lag(cluster_13_means), 1:n(), NA))%>%
+  mutate(order_2 = ifelse(cluster_19_means != lag(cluster_19_means), 1:n(), NA))%>%
+  fill(order_2)%>%
+  mutate(order_2 = ifelse(is.na(order_2),1, 1/order_2))
+
+data_6.2.6_r2 <- data_6.2.4.0_r2 %>%
+  mutate(cluster_3_means    = model_6.2.2$cluster,
+         silhouette_3_means = silhouette_6.2.2)%>%
+  group_by(cluster_3_means)%>%
+  mutate(number = n())%>%
+  ungroup()%>%
+  arrange(number, cluster_3_means, silhouette_3_means)%>%
+  mutate(order = 1:n())%>%
+  mutate(order_2 = ifelse(cluster_3_means != lag(cluster_3_means), 1:n(), NA))%>%
   fill(order_2)%>%
   mutate(order_2 = ifelse(is.na(order_2),1, 1/order_2))
 
 data_6.2.6.1 <- data_6.2.6 %>%
-  arrange(desc(number), cluster_13_means)%>%
-  distinct(cluster_13_means)%>%
+  arrange(desc(number), cluster_19_means)%>%
+  distinct(cluster_19_means)%>%
   mutate(cluster = LETTERS[1:n()])
 
-data_6.2.6.2 <- left_join(data_6.2.6, data_6.2.6.1, by = "cluster_13_means")%>%
+data_6.2.6.1_r2 <- data_6.2.6_r2 %>%
+  arrange(desc(number), cluster_3_means)%>%
+  distinct(cluster_3_means)%>%
+  mutate(cluster = LETTERS[1:n()])
+
+data_6.2.6.2 <- left_join(data_6.2.6, data_6.2.6.1, by = "cluster_19_means")%>%
   select(cluster, Country, everything())%>%
-  arrange(cluster, desc(silhouette_13_means))%>%
+  arrange(cluster, desc(silhouette_19_means))%>%
   mutate(order = 1:n())%>%
-  select(-order_2, -number, -cluster_13_means)%>%
+  select(-order_2, -number, -cluster_19_means)%>%
   # Information on best-fitting countries
   group_by(cluster)%>%
-  mutate(best_fit = ifelse(silhouette_13_means == max(silhouette_13_means),1,0))%>%
+  mutate(best_fit = ifelse(silhouette_19_means == max(silhouette_19_means),1,0))%>%
   ungroup()%>%
   left_join(select(Country.Set, Country, sample), by = "Country")%>%
   group_by(cluster)%>%
@@ -3240,10 +3327,26 @@ data_6.2.6.2 <- left_join(data_6.2.6, data_6.2.6.1, by = "cluster_13_means")%>%
   ungroup()%>%
   select(-sample)
 
-write_csv(data_6.2.6.2, "../0_Data/9_Supplementary Data/BRT-Tracking/Clusters_Normalized.csv")
+data_6.2.6.2_r2 <- left_join(data_6.2.6_r2, data_6.2.6.1_r2, by = "cluster_3_means")%>%
+  select(cluster, Country, everything())%>%
+  arrange(cluster, desc(silhouette_3_means))%>%
+  mutate(order = 1:n())%>%
+  select(-order_2, -number, -cluster_3_means)%>%
+  # Information on best-fitting countries
+  group_by(cluster)%>%
+  mutate(best_fit = ifelse(silhouette_3_means == max(silhouette_3_means),1,0))%>%
+  ungroup()%>%
+  left_join(select(Country.Set, Country, sample), by = "Country")%>%
+  group_by(cluster)%>%
+  mutate(largest_country = ifelse(sample == max(sample),1,0))%>%
+  ungroup()%>%
+  select(-sample)
 
-P_6.2.5.2 <- ggplot(data_6.2.6)+
-  geom_bar(aes(y = silhouette_13_means, x = factor(order), fill = factor(order_2)), 
+write_csv(data_6.2.6.2, "../0_Data/9_Supplementary Data/BRT-Tracking/Clusters_Normalized_Uncorrected.csv")
+write_csv(data_6.2.6.2_r2, "../0_Data/9_Supplementary Data/BRT-Tracking/Clusters_Normalized_Corrected.csv")
+
+P_6.2.5.3 <- ggplot(data_6.2.6)+
+  geom_bar(aes(y = silhouette_19_means, x = factor(order), fill = factor(order_2)), 
            stat = "identity", 
            colour = "black",
            width = 0.6, size = 0.1)+
@@ -3252,7 +3355,7 @@ P_6.2.5.2 <- ggplot(data_6.2.6)+
   scale_fill_viridis_d()+
   ylab("Silhouette width")+
   xlab("Country")+
-  ggtitle("Silhouette plot for 14 clusters")+
+  ggtitle("Silhouette plot for 19 clusters")+
   coord_flip()+
   theme_bw()+
   guides(fill = "none")+
@@ -3271,9 +3374,41 @@ P_6.2.5.2 <- ggplot(data_6.2.6)+
         plot.margin = unit(c(0.3,0.3,0.3,0.3), "cm"),
         panel.border = element_rect(size = 0.3))
 
-jpeg("1_Figures/Figures_Appendix/Figure_Silhouette_Clusters.jpg", width = 15.5, height = 10, unit = "cm", res = 400)
-print(P_6.2.5.2)
+P_6.2.5.4 <- ggplot(data_6.2.6_r2)+
+  geom_bar(aes(y = silhouette_3_means, x = factor(order), fill = factor(order_2)), 
+           stat = "identity", 
+           colour = "black",
+           width = 0.6, size = 0.1)+
+  scale_x_discrete(labels = data_6.2.6_r2$Country, guide = guide_axis(n.dodge=2))+
+  scale_y_continuous(expand = c(0,0.01))+
+  scale_fill_viridis_d()+
+  ylab("Silhouette width")+
+  xlab("Country")+
+  ggtitle("Silhouette plot for 3 clusters")+
+  coord_flip()+
+  theme_bw()+
+  guides(fill = "none")+
+  theme(axis.text.y = element_text(size = 5), 
+        axis.text.x = element_text(size = 6),
+        axis.title  = element_text(size = 7),
+        plot.title = element_text(size = 11),
+        legend.position = "bottom",
+        # strip.text = element_text(size = 7),
+        #strip.text.y = element_text(angle = 180),
+        panel.grid.minor = element_blank(),
+        panel.grid.major = element_line(size = 0.2),
+        axis.ticks = element_line(size = 0.2),
+        legend.text = element_text(size = 7),
+        legend.title = element_text(size = 7),
+        plot.margin = unit(c(0.3,0.3,0.3,0.3), "cm"),
+        panel.border = element_rect(size = 0.3))
+
+jpeg("1_Figures/Figures_Appendix/Figure_Silhouette_Clusters_%d.jpg", width = 15.5, height = 10, unit = "cm", res = 400)
+print(P_6.2.5.3)
+print(P_6.2.5.4)
 dev.off()
+
+# to be updated: data_6.2.7, data_6.2.8
 
 data_6.2.7 <- data_6.2.4.0 %>%
   mutate(cluster_13_means    = model_6.2.1$cluster,
@@ -3326,9 +3461,10 @@ data_6.2.8 <- data_6.2.4.0 %>%
   mutate_at(vars(-cluster_13_means, - number), ~ (. - mean(.))/sd(.))
 
 rm(data_6.2.0, data_6.2.1, data_6.2.2, data_6.2.3, data_6.2.4, 
-   data_6.2.4.0, data_6.2.5, data_6.2.5.1,
+   data_6.2.4.0, data_6.2.5, data_6.2.5.1, data_6.2.4_r2, data_6.2.4.0_r2, data_6.2.5_r2, data_6.2.5.2,
+   data_6.2.6_r2, data_6.2.6.1_r2, data_6.2.6.2_r2, model_6.2.2, silhouette_6.2.2,
    data_6.2.6, data_6.2.6.1, data_6.2.6.2, data_6.2.7, data_6.2.1_r2, r2_6.2.0,
-   data_6.2.8, model_6.2.0, model_6.2.1, P_6.2.5.1, P_6.2.5.2, k, silhouette_1, silhouette_6.2.1, tot_within_ss,
+   data_6.2.8, model_6.2.0, model_6.2.1, P_6.2.5.1, P_6.2.5.2, P_6.2.5.3, P_6.2.5.4, k, silhouette_1, silhouette_6.2.1, tot_within_ss,
    eval_6.2, eval_6.2.1)
 
 # 6.1.X   BRT on carbon intensity of consumption (regression model) ####
@@ -6010,17 +6146,17 @@ rm(data_8.2.0, data_8.2.1, poly, poly_2, poly_3, poly_4, poly_5, P_8.2, data_8.2
 
 # 8.3     Figure 3: Clustering and features ####
 
-data_8.3.0 <- read_csv("../0_Data/9_Supplementary Data/BRT-Tracking/Clusters_Normalized.csv", show_col_types = FALSE) %>%
+data_8.3.0 <- read_csv("../0_Data/9_Supplementary Data/BRT-Tracking/Clusters_Normalized_Corrected.csv", show_col_types = FALSE) %>%
   group_by(cluster)%>%
   mutate(number = n())%>%
-  summarise_at(vars("Appliance own.":"silhouette_13_means", number), ~ mean(.))%>%
+  summarise_at(vars("Appliance own.":"silhouette_3_means", number), ~ mean(.))%>%
   ungroup()%>%
   mutate_at(vars(-cluster, - number, - dif_95_05_1_5, -median_1_5), ~ (. - mean(.))/sd(.))%>%
   rename("Horizontal inequality" = "dif_95_05_1_5", 
          "Mean carbon intensity" = "mean_carbon_intensity",
          "Vertical inequality"   = "median_1_5")%>%
-  pivot_longer("Appliance own.":"silhouette_13_means", names_to = "names", values_to = "values")%>%
-  filter(names != "silhouette_13_means")%>%
+  pivot_longer("Appliance own.":"silhouette_3_means", names_to = "names", values_to = "values")%>%
+  filter(names != "silhouette_3_means")%>%
   mutate(names = factor(names, levels = c("Mean carbon intensity", "Horizontal inequality", "Vertical inequality",
                                           "HH expenditures", "HH size", "Education", "Gender HHH", "Sociodemographic",
                                           "Urban", "Province", "District", "Electricity access", "Cooking fuel",
@@ -6161,7 +6297,162 @@ P_8.3.4 <- ggarrange(P_8.3.2, P_8.3.1, P_8.3.3, nrow = 1, align = "h", widths = 
                      legend.grob = L.1,
                      legend = "bottom")
 
-jpeg("1_Figures/Figure 3/Figure_3.jpg", width = 15.5, height = 18, unit = "cm", res = 600)
+jpeg("1_Figures/Figure 3/Figure_3_Corrected.jpg", width = 15.5, height = 8, unit = "cm", res = 600)
+print(P_8.3.4)
+dev.off()
+
+data_8.3.0 <- read_csv("../0_Data/9_Supplementary Data/BRT-Tracking/Clusters_Normalized_Uncorrected.csv", show_col_types = FALSE) %>%
+  group_by(cluster)%>%
+  mutate(number = n())%>%
+  summarise_at(vars("Appliance own.":"silhouette_19_means", number), ~ mean(.))%>%
+  ungroup()%>%
+  mutate_at(vars(-cluster, - number, - dif_95_05_1_5, -median_1_5), ~ (. - mean(.))/sd(.))%>%
+  rename("Horizontal inequality" = "dif_95_05_1_5", 
+         "Mean carbon intensity" = "mean_carbon_intensity",
+         "Vertical inequality"   = "median_1_5")%>%
+  pivot_longer("Appliance own.":"silhouette_19_means", names_to = "names", values_to = "values")%>%
+  filter(names != "silhouette_19_means")%>%
+  mutate(names = factor(names, levels = c("Mean carbon intensity", "Horizontal inequality", "Vertical inequality",
+                                          "HH expenditures", "HH size", "Education", "Gender HHH", "Sociodemographic",
+                                          "Urban", "Province", "District", "Electricity access", "Cooking fuel",
+                                          "Heating fuel", "Lighting fuel", "Car own.", "Motorcycle own.", "Appliance own.")))
+
+# Need to split up because of different scaling required
+
+data_8.3.1 <- data_8.3.0 %>%
+  filter(names != "Vertical inequality" & names != "Horizontal inequality")%>%
+  # group_by(names)%>%
+  mutate(values_rescaled = rescale(values))
+
+data_8.3.2 <- data_8.3.0 %>%
+  filter(names == "Vertical inequality" | names == "Horizontal inequality")%>%
+  group_by(names)%>%
+  mutate(values_new = (values - 1))%>%
+  mutate(values_new = values_new/sd(values_new))%>%
+  ungroup()%>%
+  bind_rows(data.frame(values = 1, values_new = 0))%>%
+  mutate(values_rescaled     = rescale(values, c(0,1)),
+         values_rescaled_new = rescale(values_new, c(0,1)))%>%
+  filter(!is.na(cluster))
+
+data_8.3.3 <- data_8.3.1 %>%
+  filter(!names %in% c("Mean carbon intensity", "Vertical inequality", "Horizontal inequality"))
+
+data_8.3.1 <- data_8.3.1 %>%
+  filter(names == "Mean carbon intensity")
+
+P_8.3.1 <- ggplot(data_8.3.1)+
+  geom_point(aes(y = cluster, x = names, fill = values), shape = 22, size = 4, stroke = 0.2)+
+  theme_bw()+
+  scale_fill_gradientn(na.value = NA,
+                       colors = c("#0072B5FF", "white","#BC3C29FF", "#631879FF"),
+                       values = scales::rescale(c(0,0.30,0.56,1)))+
+  
+  # scale_fill_gradient2(na.value = NA, low = "#0072B5FF", high = "#BC3C29FF", midpoint = 1)+
+  #scale_fill_gradient2(na.value = NA, limits = c(0,1.5), low = "#0072B5FF", high = "#BC3C29FF", breaks = c(0,0.5,1,1.5), labels = c(0,1,2,3),
+  #                     midpoint = 0.5)+
+  theme_bw()+
+  scale_y_discrete(limits = rev)+
+  scale_x_discrete(labels = c(expression(paste("Mean ", CO[2],"-intensity (", CI[r], ")", sep = ""))))+
+  xlab("")+ 
+  guides(fill = "none")+
+  ylab("")+
+  ggtitle("")+
+  theme(axis.text.y = element_blank(), 
+        axis.text.x = element_text(size = 6, angle = 90, hjust = 1, vjust = 0.5),
+        axis.title  = element_blank(),
+        plot.title = element_text(size = 11),
+        legend.position = "bottom",
+        strip.text = element_blank(),
+        strip.background = element_blank(),
+        #strip.text.y = element_text(angle = 180),
+        panel.grid.major.x = element_blank(),
+        panel.grid.major.y = element_line(size = 0.2),
+        panel.grid.minor = element_blank(),
+        axis.ticks = element_blank(),
+        legend.text = element_text(size = 7),
+        legend.title = element_text(size = 7),
+        plot.margin = unit(c(0.3,0.3,0.3,0.3), "cm"),
+        panel.border = element_rect(size = 0.3))
+
+P_8.3.2 <- ggplot(data_8.3.2)+
+  geom_point(aes(y = cluster, x = names, fill = values_new), shape = 22, size = 4, stroke = 0.2)+
+  theme_bw()+
+  scale_fill_gradientn(na.value = NA,
+                       colors = c("#0072B5FF", "white","#BC3C29FF", "#631879FF"),
+                       values = scales::rescale(c(0,0.33,0.66,1)))+theme_bw()+
+  scale_y_discrete(limits = rev)+
+  scale_x_discrete(labels = c(expression(paste("Horizontal inequality (", widehat(H)[r]^{1} ,")", sep = "")), 
+                              expression(paste("Vertical inequality (", widehat(V)[r]^{1} ,")", sep = ""))))+
+  xlab("")+ 
+  guides(fill = "none")+
+  ylab("Country cluster")+
+  ggtitle("")+
+  theme(axis.text.y = element_text(size = 6), 
+        axis.text.x = element_text(size = 6, angle = 90, hjust = 1, vjust = 0.5),
+        axis.title  = element_blank(),
+        plot.title = element_text(size = 11),
+        legend.position = "bottom",
+        strip.text = element_blank(),
+        strip.background = element_blank(),
+        #strip.text.y = element_text(angle = 180),
+        panel.grid.major.x = element_blank(),
+        panel.grid.major.y = element_line(size = 0.2),
+        panel.grid.minor = element_blank(),
+        axis.ticks = element_line(size = 0.2),
+        legend.text = element_text(size = 7),
+        legend.title = element_text(size = 7),
+        plot.margin = unit(c(0.3,0.3,0.3,0.3), "cm"),
+        panel.border = element_rect(size = 0.3))
+
+P_8.3.3 <- ggplot(data_8.3.3)+
+  geom_point(aes(y = cluster, x = names, fill = values), shape = 22, size = 4, stroke = 0.2)+
+  theme_bw()+
+  scale_fill_gradientn(na.value = NA,
+                       colors = c("#0072B5FF", "white","#BC3C29FF", "#631879FF"),
+                       values = scales::rescale(c(0,0.28,0.56,1)))+
+  scale_y_discrete(limits = rev)+
+  scale_x_discrete()+
+  xlab("")+ 
+  guides(fill = "none")+
+  ylab("")+
+  ggtitle("")+
+  theme(axis.text.y = element_blank(),
+        axis.text.x = element_text(size = 6, angle = 90, hjust = 1, vjust = 0.5),
+        axis.title.x  = element_text(size = 7),
+        axis.title.y = element_blank(),
+        plot.title = element_text(size = 11),
+        legend.position = "bottom",
+        #strip.background = element_blank(),
+        #strip.text.y = element_text(angle = 180),
+        #panel.grid.major = element_blank(),
+        panel.grid.major.y = element_line(size = 0.2),
+        panel.grid.major.x = element_blank(),
+        panel.grid.minor = element_blank(),
+        axis.ticks = element_blank(),
+        legend.text = element_text(size = 7),
+        legend.title = element_text(size = 7),
+        plot.margin = unit(c(0.3,0.3,0.3,0.1), "cm"),
+        panel.border = element_rect(size = 0.3))
+
+L.1 <- get_legend(ggplot(data_8.3.3)+
+                    geom_point(aes(x = values, y = values, fill = values_rescaled), shape = 22)+
+                    scale_fill_gradientn(na.value = NA,
+                                         colors = c("#0072B5FF", "white","#BC3C29FF", "#631879FF"),
+                                         values = scales::rescale(c(0,0.36,0.72,1)),
+                                         breaks = c(0,0.36,0.72,1),
+                                         labels = c("Rather low", "Neutral","Rather high","High"),
+                                         name = "Feature value",
+                                         guide = guide_colorbar(barwidth = 10, barheight = 0.8, ticks.colour = NA))+
+                    theme(legend.position = "bottom",
+                          legend.title    = element_text(size = 6, vjust = 0.75, hjust = 0, margin = margin(r = 3)),
+                          legend.text     = element_text(size = 5)))
+
+P_8.3.4 <- ggarrange(P_8.3.2, P_8.3.1, P_8.3.3, nrow = 1, align = "h", widths = c(2,1,6),
+                     legend.grob = L.1,
+                     legend = "bottom")
+
+jpeg("1_Figures/Figure 3/Figure_3_Uncorrected.jpg", width = 15.5, height = 18, unit = "cm", res = 600)
 print(P_8.3.4)
 dev.off()
 
@@ -6170,15 +6461,15 @@ rm(data_8.3.0, data_8.3.1, data_8.3.2, data_8.3.3,
 
 # 8.3.1   Figure 3: Supplementing table ####
 
-data_8.3.0 <- read_csv("../0_Data/9_Supplementary Data/BRT-Tracking/Clusters_Normalized.csv", show_col_types = FALSE) %>%
+data_8.3.0 <- read_csv("../0_Data/9_Supplementary Data/BRT-Tracking/Clusters_Normalized_Corrected.csv", show_col_types = FALSE) %>%
   group_by(cluster)%>%
   mutate(number = n())%>%
-  summarise_at(vars("Appliance own.":"silhouette_13_means", number), ~ mean(.))%>%
+  summarise_at(vars("Appliance own.":"silhouette_3_means", number), ~ mean(.))%>%
   ungroup()%>%
   rename("Horizontal inequality" = "dif_95_05_1_5", 
          "Mean carbon intensity" = "mean_carbon_intensity",
          "Vertical inequality"   = "median_1_5",
-         "Average silhouette width" = "silhouette_13_means")%>%
+         "Average silhouette width" = "silhouette_3_means")%>%
   select(cluster, number, "Average silhouette width", "Mean carbon intensity", "Horizontal inequality", "Vertical inequality",
           "HH expenditures", "HH size", "Education", "Gender HHH", "Sociodemographic",
           "Urban", "Province", "District", "Electricity access", "Cooking fuel",
@@ -6195,7 +6486,34 @@ kbl(data_8.3.0, format = "latex", caption = "Average feature importance across c
   #column_spec(1, width = "3.15 cm")%>%
   # add_header_above(c("Country" = 1, rep(c("MAE", "RMSE", "R^{2}"),3) ))%>%
   footnote(general = "This table shows the average importance of features in percent (based on absolute average SHAP-values per feature) across all countries from each cluster A to N. Columns 'Mean carbon intensity', 'Horizontal inequality' and 'Vertical inequality' show average values. Column 'number' refers to the number of countries assigned to this cluster.", threeparttable = T)%>%
-  save_kable(., "2_Tables/Table_Clusters_Summary.tex")
+  save_kable(., "2_Tables/Table_Clusters_Summary_Corrected.tex")
+
+data_8.3.0 <- read_csv("../0_Data/9_Supplementary Data/BRT-Tracking/Clusters_Normalized_Uncorrected.csv", show_col_types = FALSE) %>%
+  group_by(cluster)%>%
+  mutate(number = n())%>%
+  summarise_at(vars("Appliance own.":"silhouette_19_means", number), ~ mean(.))%>%
+  ungroup()%>%
+  rename("Horizontal inequality" = "dif_95_05_1_5", 
+         "Mean carbon intensity" = "mean_carbon_intensity",
+         "Vertical inequality"   = "median_1_5",
+         "Average silhouette width" = "silhouette_19_means")%>%
+  select(cluster, number, "Average silhouette width", "Mean carbon intensity", "Horizontal inequality", "Vertical inequality",
+         "HH expenditures", "HH size", "Education", "Gender HHH", "Sociodemographic",
+         "Urban", "Province", "District", "Electricity access", "Cooking fuel",
+         "Heating fuel", "Lighting fuel", "Car own.", "Motorcycle own.", "Appliance own.")%>%
+  rename(Cluster = cluster,
+         Number = number)%>%
+  mutate_at(vars("Average silhouette width":"Appliance own."), ~ round(.,2))
+
+kbl(data_8.3.0, format = "latex", caption = "Average feature importance across country clusters", booktabs = T, 
+    vline = "", format.args = list(big.mark = ",", scientific = FALSE), linesep = "", escape = FALSE)%>%
+  kable_styling(position = "center", latex_options = c("HOLD_position", "scale_down"))%>%
+  row_spec(0, angle = 90)%>%
+  #column_spec(1:21, width = "0.5 cm")%>%
+  #column_spec(1, width = "3.15 cm")%>%
+  # add_header_above(c("Country" = 1, rep(c("MAE", "RMSE", "R^{2}"),3) ))%>%
+  footnote(general = "This table shows the average importance of features in percent (based on absolute average SHAP-values per feature) across all countries from each cluster A to N. Columns 'Mean carbon intensity', 'Horizontal inequality' and 'Vertical inequality' show average values. Column 'number' refers to the number of countries assigned to this cluster.", threeparttable = T)%>%
+  save_kable(., "2_Tables/Table_Clusters_Summary_Uncorrected.tex")
 
 rm(data_8.3.0)  
 
@@ -6203,12 +6521,12 @@ rm(data_8.3.0)
 
 for(i in c(1,2)){
   if(i == 1){
-    cluster_0 <- c("A", "B", "C")
-  } else {cluster_0 <- c("D","E", "F", "G", "H", "I", "J", "K", "L", "M", "N")}
+    cluster_0 <- c("A", "B", "C", "D", "E", "F")
+  } else {cluster_0 <- c("G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S")}
   
   # First horizontal and vertical indicators - scaling not necessary
   
-  data_8.4.1 <- read_csv("../0_Data/9_Supplementary Data/BRT-Tracking/Clusters_Normalized.csv", show_col_types = FALSE)%>%
+  data_8.4.1 <- read_csv("../0_Data/9_Supplementary Data/BRT-Tracking/Clusters_Normalized_Uncorrected.csv", show_col_types = FALSE)%>%
     # it is in fact not normalized
     select(cluster, Country, order, best_fit, largest_country, everything())%>%
     select(cluster, Country, median_1_5, dif_95_05_1_5)%>%
@@ -6258,10 +6576,10 @@ for(i in c(1,2)){
   
   # Carbon intensity of consumption - scaling cannot do harm
   
-  data_8.4.2 <- read_csv("../0_Data/9_Supplementary Data/BRT-Tracking/Clusters_Normalized.csv", show_col_types = FALSE)%>%
+  data_8.4.2 <- read_csv("../0_Data/9_Supplementary Data/BRT-Tracking/Clusters_Normalized_Uncorrected.csv", show_col_types = FALSE)%>%
     # it is in fact not normalized
     select(cluster, Country, order, best_fit, largest_country, everything())%>%
-    select(-silhouette_13_means)%>%
+    select(-silhouette_19_means)%>%
     pivot_longer("Appliance own.":"mean_carbon_intensity", names_to = "names", values_to = "values")%>%
     mutate(continent = countrycode(Country, origin = "iso3c", destination = "continent"))%>%
     filter(names %in% c("mean_carbon_intensity"))%>%
@@ -6306,10 +6624,10 @@ for(i in c(1,2)){
   
   # Here we could show NAs as missings
   
-  data_8.4.3 <- read_csv("../0_Data/9_Supplementary Data/BRT-Tracking/Clusters_Normalized.csv", show_col_types = FALSE)%>%
+  data_8.4.3 <- read_csv("../0_Data/9_Supplementary Data/BRT-Tracking/Clusters_Normalized_Uncorrected.csv", show_col_types = FALSE)%>%
     # it is in fact not normalized
     select(cluster, Country, order, best_fit, largest_country, everything())%>%
-    select(-silhouette_13_means, -mean_carbon_intensity, -median_1_5, -dif_95_05_1_5)%>%
+    select(-silhouette_19_means, -mean_carbon_intensity, -median_1_5, -dif_95_05_1_5)%>%
     mutate_at(vars("Appliance own.":"Sociodemographic"), ~ ifelse(. == 0, NA, .))%>%
     # Now it is normalized
     # mutate_at(vars("Appliance own.":"Sociodemographic"), ~ (. - mean(., na.rm = TRUE))/sd(., na.rm = TRUE))%>%
@@ -6379,7 +6697,190 @@ for(i in c(1,2)){
   P_8.4.4 <- ggarrange(P_8.4.1, P_8.4.2, P_8.4.3, nrow = 1, align = "h", widths = c(2,1,6),
                        legend.grob = L.1, legend = "bottom")
   
-  jpeg(sprintf("1_Figures/Figure 4/Figure_4_%s.jpg",i), width = 15.5, height = 18, unit = "cm", res = 600)
+  jpeg(sprintf("1_Figures/Figure 4/Figure_4_Uncorrected_%s.jpg",i), width = 15.5, height = 18, unit = "cm", res = 600)
+  print(P_8.4.4)
+  dev.off()
+}
+
+for(i in c(1,2)){
+  if(i == 1){
+    cluster_0 <- c("A")
+  } else if(i == 2){cluster_0 <- c("B", "C")}
+  
+  # First horizontal and vertical indicators - scaling not necessary
+  
+  data_8.4.1 <- read_csv("../0_Data/9_Supplementary Data/BRT-Tracking/Clusters_Normalized_Corrected.csv", show_col_types = FALSE)%>%
+    # it is in fact not normalized
+    select(cluster, Country, order, best_fit, largest_country, everything())%>%
+    select(cluster, Country, median_1_5, dif_95_05_1_5)%>%
+    mutate_at(vars(median_1_5, dif_95_05_1_5), ~ (. - 1))%>%
+    mutate_at(vars(median_1_5, dif_95_05_1_5), ~ ./sd(.))%>%
+    pivot_longer("median_1_5":"dif_95_05_1_5", names_to = "names", values_to = "values")%>%
+    mutate(values_rescaled = rescale(values, c(0,1)))
+  
+  data_8.4.1.1 <- data_8.4.1 %>%
+    filter(cluster %in% cluster_0)
+  
+  P_8.4.1 <- ggplot(data_8.4.1.1)+
+    geom_point(aes(y = Country, x = names, fill = values_rescaled), shape = 22, size = 3, stroke = 0.2)+
+    theme_bw()+
+    scale_fill_gradientn(na.value = NA,
+                         colors = c("#0072B5FF", "white","#BC3C29FF", "#631879FF"),
+                         values = scales::rescale(c(0,0.36,0.54,1)))+
+    
+    # scale_fill_gradient2(na.value = NA, low = "#0072B5FF", high = "#BC3C29FF", midpoint = 1)+
+    #scale_fill_gradient2(na.value = NA, limits = c(0,1.5), low = "#0072B5FF", high = "#BC3C29FF", breaks = c(0,0.5,1,1.5), labels = c(0,1,2,3),
+    #                     midpoint = 0.5)+
+    theme_bw()+
+    facet_grid(cluster ~ ., scales = "free", space = "free")+
+    scale_y_discrete(limits = rev)+
+    scale_x_discrete(labels = c(expression(paste("Horizontal inequality (", widehat(H)[r]^{1} ,")", sep = "")), 
+                                expression(paste("Vertical inequality (", widehat(V)[r]^{1} ,")", sep = ""))))+
+    xlab("")+ 
+    guides(fill = "none")+
+    ylab("Country")+
+    ggtitle("")+
+    theme(axis.text.y = element_text(size = 6), 
+          axis.text.x = element_text(size = 6, angle = 90, hjust = 1, vjust = 0.5),
+          axis.title  = element_text(size = 7),
+          plot.title = element_text(size = 11),
+          legend.position = "bottom",
+          strip.text = element_blank(),
+          strip.background = element_blank(),
+          #strip.text.y = element_text(angle = 180),
+          panel.grid.major.x = element_blank(),
+          panel.grid.major.y = element_line(size = 0.2),
+          panel.grid.minor = element_blank(),
+          axis.ticks = element_line(size = 0.2),
+          legend.text = element_text(size = 7),
+          legend.title = element_text(size = 7),
+          plot.margin = unit(c(0.3,0.3,0.3,0.3), "cm"),
+          panel.border = element_rect(size = 0.3))
+  
+  # Carbon intensity of consumption - scaling cannot do harm
+  
+  data_8.4.2 <- read_csv("../0_Data/9_Supplementary Data/BRT-Tracking/Clusters_Normalized_Corrected.csv", show_col_types = FALSE)%>%
+    # it is in fact not normalized
+    select(cluster, Country, order, best_fit, largest_country, everything())%>%
+    select(-silhouette_3_means)%>%
+    pivot_longer("Appliance own.":"mean_carbon_intensity", names_to = "names", values_to = "values")%>%
+    mutate(continent = countrycode(Country, origin = "iso3c", destination = "continent"))%>%
+    filter(names %in% c("mean_carbon_intensity"))%>%
+    mutate(value = (values - mean(values))/sd(values))%>%
+    mutate(values_rescaled = rescale(values, c(0,1)))%>%
+    filter(cluster %in% cluster_0)
+  
+  P_8.4.2 <- ggplot(data_8.4.2)+
+    geom_point(aes(y = Country, x = names, fill = value), shape = 22, size = 3, stroke = 0.2)+
+    theme_bw()+
+    #scale_fill_gradient2(na.value = NA, low = "#0072B5FF", high = "#BC3C29FF", midpoint = 0)+
+    scale_fill_gradientn(na.value = NA,
+                         colors = c("#0072B5FF", "white","#BC3C29FF", "#631879FF"),
+                         values = scales::rescale(c(0,0.21,0.36,1)))+
+    theme_bw()+
+    facet_grid(cluster ~ ., scales = "free", space = "free")+
+    scale_y_discrete(limits = rev)+
+    scale_x_discrete(labels = c(expression(paste("Mean ", CO[2],"-intensity (", CI[r], ")", sep = ""))))+
+    xlab("")+ 
+    guides(fill = "none")+
+    ylab("")+
+    ggtitle("")+
+    theme(axis.text.y = element_blank(),
+          axis.text.x = element_text(size = 6, angle = 90, hjust = 1, vjust = 0.5),
+          axis.title.x  = element_text(size = 7),
+          axis.title.y = element_blank(),
+          plot.title = element_text(size = 11),
+          legend.position = "bottom",
+          strip.text = element_blank(),
+          strip.background = element_blank(),
+          #strip.text.y = element_text(angle = 180),
+          panel.grid.major.x = element_blank(),
+          panel.grid.major.y = element_line(size = 0.2),
+          panel.grid.minor = element_blank(),
+          axis.ticks = element_blank(),
+          legend.text = element_text(size = 7),
+          legend.title = element_text(size = 7),
+          plot.margin = unit(c(0.3,0.3,0.3,0.1), "cm"),
+          panel.border = element_rect(size = 0.3))
+  
+  # Features
+  
+  # Here we could show NAs as missings
+  
+  data_8.4.3 <- read_csv("../0_Data/9_Supplementary Data/BRT-Tracking/Clusters_Normalized_Corrected.csv", show_col_types = FALSE)%>%
+    # it is in fact not normalized
+    select(cluster, Country, order, best_fit, largest_country, everything())%>%
+    select(-silhouette_3_means, -mean_carbon_intensity, -median_1_5, -dif_95_05_1_5)%>%
+    mutate_at(vars("Appliance own.":"Sociodemographic"), ~ ifelse(. == 0, NA, .))%>%
+    # Now it is normalized
+    # mutate_at(vars("Appliance own.":"Sociodemographic"), ~ (. - mean(., na.rm = TRUE))/sd(., na.rm = TRUE))%>%
+    pivot_longer("Appliance own.":"Sociodemographic", names_to = "names", values_to = "values")%>%
+    mutate(continent = countrycode(Country, origin = "iso3c", destination = "continent"))%>%
+    mutate(help = ifelse(is.na(values), NA, "1"))%>%
+    mutate(values_rescaled = rescale(values, c(0,1)))%>%
+    filter(cluster %in% cluster_0)%>%
+    mutate(names = factor(names, levels = c("HH expenditures", "HH size", "Education", "Gender HHH", "Sociodemographic",
+                                            "Urban", "Province", "District", "Electricity access", "Cooking fuel",
+                                            "Heating fuel", "Lighting fuel", "Car own.", "Motorcycle own.", "Appliance own.")))
+  
+  P_8.4.3 <- ggplot(data_8.4.3)+
+    geom_point(aes(y = Country, x = names, fill = values, colour = help), shape = 22, size = 3, stroke = 0.2)+
+    theme_bw()+
+    scale_colour_manual(na.value = NA, values = c("black"))+
+    scale_fill_gradientn(na.value = NA,
+                         colors = c("#0072B5FF", "white","#BC3C29FF", "#631879FF"),
+                         values = scales::rescale(c(0,0.17,0.34,1)))+
+    # scale_fill_gradient2(na.value = NA, 
+    #                      limits = c(-1.5,1.5), 
+    #                      low = "#0072B5FF", high = "#BC3C29FF", midpoint = 0)+
+    facet_grid(cluster ~ ., scales = "free", space = "free")+
+    scale_y_discrete(limits = rev)+
+    scale_x_discrete()+
+    xlab("")+ 
+    guides(fill = "none", colour = "none")+
+    ylab("")+
+    ggtitle("")+
+    theme(axis.text.y = element_blank(),
+          axis.text.x = element_text(size = 6, angle = 90, hjust = 1, vjust = 0.5),
+          axis.title.x  = element_text(size = 7),
+          axis.title.y = element_blank(),
+          plot.title = element_text(size = 11),
+          legend.position = "bottom",
+          strip.text.y = element_text(size = 6, angle = 0),
+          strip.background = element_rect(size = 0.3),
+          #strip.background = element_blank(),
+          #strip.text.y = element_text(angle = 180),
+          #panel.grid.major = element_blank(),
+          panel.grid.major.y = element_line(size = 0.2),
+          panel.grid.major.x = element_blank(),
+          panel.grid.minor = element_blank(),
+          axis.ticks = element_blank(),
+          legend.text = element_text(size = 7),
+          legend.title = element_text(size = 7),
+          plot.margin = unit(c(0.3,0.3,0.3,0.1), "cm"),
+          panel.border = element_rect(size = 0.3))
+  
+  # Legend
+  
+  L.1 <- get_legend(ggplot(data_8.4.1)+
+                      geom_point(aes(x = values, y = values, fill = values_rescaled), shape = 22)+
+                      scale_fill_gradientn(na.value = NA,
+                                           colors = c("#0072B5FF", "white","#BC3C29FF", "#631879FF"),
+                                           values = scales::rescale(c(0,0.36,0.72,1)),
+                                           breaks = c(0,0.36,0.72,1),
+                                           labels = c("Rather low", "Neutral","Rather high","High"),
+                                           name = "Feature value",
+                                           guide = guide_colorbar(barwidth = 10, barheight = 0.8, ticks.colour = NA))+
+                      theme(legend.position = "bottom",
+                            legend.title    = element_text(size = 6, vjust = 0.75, hjust = 0, margin = margin(r = 3)),
+                            legend.text     = element_text(size = 5)))
+  
+  # P_8.4.4 <- align_plots(P_8.4.1, P_8.4.2, P_8.4.3, align = "h")
+  
+  P_8.4.4 <- ggarrange(P_8.4.1, P_8.4.2, P_8.4.3, nrow = 1, align = "h", widths = c(2,1,6),
+                       legend.grob = L.1, legend = "bottom")
+  
+  jpeg(sprintf("1_Figures/Figure 4/Figure_4_Corrected_%s.jpg",i), width = 15.5, height = 18, unit = "cm", res = 600)
   print(P_8.4.4)
   dev.off()
 }
@@ -6391,14 +6892,14 @@ rm(P_8.4.4, P_8.4.3, P_8.4.2, P_8.4.1,
 
 # First horizontal and vertical indicators - scaling not necessary
 
-data_8.4.1 <- read_csv("../0_Data/9_Supplementary Data/BRT-Tracking/Clusters_Normalized.csv", show_col_types = FALSE)%>%
+data_8.4.1 <- read_csv("../0_Data/9_Supplementary Data/BRT-Tracking/Clusters_Normalized_Uncorrected.csv", show_col_types = FALSE)%>%
   # it is in fact not normalized
   select(cluster, Country, order, best_fit, largest_country, everything())%>%
   mutate_at(vars("Appliance own.":"Sociodemographic"), ~ ifelse(. == 0, NA, .))%>%
   rename("Horizontal inequality" = "dif_95_05_1_5", 
          "Mean carbon intensity" = "mean_carbon_intensity",
          "Vertical inequality"   = "median_1_5",
-         "Silhouette width" = "silhouette_13_means")%>%
+         "Silhouette width" = "silhouette_19_means")%>%
   select(cluster, Country, "Silhouette width", "Mean carbon intensity", "Horizontal inequality", "Vertical inequality",
          "HH expenditures", "HH size", "Education", "Gender HHH", "Sociodemographic",
          "Urban", "Province", "District", "Electricity access", "Cooking fuel",
@@ -6417,7 +6918,35 @@ kbl(data_8.4.1, format = "latex", caption = "Feature importance across countries
   row_spec(c(14,27,37,45,52,59,66,71,76,79,81,83,85), hline_after = TRUE)%>%
   #collapse_rows(columns = 3:4, valign = "middle")%>%
   footnote(general = "This table shows feature importance in percent (based on absolute average SHAP-values per feature) across all countries and per cluster. Columns 'Mean carbon intensity', 'Horizontal inequality' and 'Vertical inequality' show average values. Column 'number' refers to the number of countries assigned to this cluster.", threeparttable = T)%>%
-  save_kable(., "2_Tables/Table_Countries_SHAP_Summary.tex")
+  save_kable(., "2_Tables/Table_Countries_SHAP_Summary_Uncorrected.tex")
+
+data_8.4.1 <- read_csv("../0_Data/9_Supplementary Data/BRT-Tracking/Clusters_Normalized_Corrected.csv", show_col_types = FALSE)%>%
+  # it is in fact not normalized
+  select(cluster, Country, order, best_fit, largest_country, everything())%>%
+  mutate_at(vars("Appliance own.":"Sociodemographic"), ~ ifelse(. == 0, NA, .))%>%
+  rename("Horizontal inequality" = "dif_95_05_1_5", 
+         "Mean carbon intensity" = "mean_carbon_intensity",
+         "Vertical inequality"   = "median_1_5",
+         "Silhouette width" = "silhouette_3_means")%>%
+  select(cluster, Country, "Silhouette width", "Mean carbon intensity", "Horizontal inequality", "Vertical inequality",
+         "HH expenditures", "HH size", "Education", "Gender HHH", "Sociodemographic",
+         "Urban", "Province", "District", "Electricity access", "Cooking fuel",
+         "Heating fuel", "Lighting fuel", "Car own.", "Motorcycle own.", "Appliance own.")%>%
+  rename(Cluster = cluster)%>%
+  mutate_at(vars("Silhouette width":"Appliance own."), ~ round(.,2))
+
+options(knitr.kable.NA = "")
+
+kbl(data_8.4.1, format = "latex", caption = "Feature importance across countries by cluster", booktabs = T, 
+    vline = "", format.args = list(big.mark = ",", scientific = FALSE), linesep = "",
+    longtable = T)%>%
+  kable_styling(position = "center", latex_options = c("HOLD_position", "repeat_header"), font_size = 8)%>%
+  row_spec(0, angle = 90)%>%
+  column_spec(1:21, width = "0.5 cm")%>%
+  row_spec(c(14,27,37,45,52,59,66,71,76,79,81,83,85), hline_after = TRUE)%>%
+  #collapse_rows(columns = 3:4, valign = "middle")%>%
+  footnote(general = "This table shows feature importance in percent (based on absolute average SHAP-values per feature) across all countries and per cluster. Columns 'Mean carbon intensity', 'Horizontal inequality' and 'Vertical inequality' show average values. Column 'number' refers to the number of countries assigned to this cluster.", threeparttable = T)%>%
+  save_kable(., "2_Tables/Table_Countries_SHAP_Summary_Corrected.tex")
 
 rm(data_8.4.1)
 
@@ -6534,7 +7063,7 @@ data_8.5.2.D <- data_8.5.2.B %>%
 
 list_C <- list()
 
-for (i in data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1]){
+for (i in c(data_8.5.2.C$Country, "IDN")){
   
     list_A <- list()
     list_B <- list()
@@ -7024,7 +7553,7 @@ for (i in data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1]){
     list_B[[paste0(i,"_2")]] <- list_0[[data_8.5.2.D.1$Var_1[2]]]
     list_B[[paste0(i,"_3")]] <- list_0[[data_8.5.2.D.1$Var_1[3]]]
     
-    P_8.5.0 <- ggarrange(list_A[[1]], list_B[[1]], list_B[[2]], list_B[[3]], list_B[[4]], align = "hv", nrow = 1)
+    P_8.5.0 <- ggarrange(list_A[[1]], list_B[[1]], list_B[[2]], list_B[[3]], list_B[[4]], align = "h", nrow = 1)
     
     list_C[[i]] <- P_8.5.0
     list_C[[paste0(i, "_A")]] <- P_8.5
@@ -7125,9 +7654,17 @@ jpeg("1_Figures/Figure 5/Figures_joint_3.jpg", width = 30, height = 30, unit = "
 print(P_8.5.0.III)
 dev.off()
 
+for (i in c(data_8.5.2.C$Country, "IDN")){
+  P_8.5.1 <- list_C[[paste0(i)[1]]]
+  
+  jpeg(sprintf("1_Figures/Figure 5b/Figure_5b_%s.jpg", i), width = 30, height = 10, unit = "cm", res = 300)
+  print(P_8.5.1)
+  dev.off()
+}
+
 rm(list_A, list_B, list_C,
    P_8.5.0.I, P_8.5.0.II, P_8.5.0.III, P_8.5, data_8.5.1, data_8.5.2,
-   P_8.5.2.1, P_8.5.2.2, P_8.5.2.3, P_8.5.0,
+   P_8.5.2.1, P_8.5.2.2, P_8.5.2.3, P_8.5.0, P_8.5.1,
    data_8.5.2.A, data_8.5.2.B, data_8.5.2.C, data_8.5.2.D,
    data_8.5.2.A.1, data_8.5.2.B.1, data_8.5.2.B.2, data_8.5.2.D.1,
    data_8.5.2.0, data_8.5.2.1, data_8.5.2.2,
