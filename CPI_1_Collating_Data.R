@@ -744,12 +744,12 @@ for (i in Country.Set.B){
       if(!Country.Name %in% c("Barbados", "Liberia", "Suriname", "Myanmar", "Maldives", "Guinea-Bissau")){
         carbon_intensities_0 <- read.xlsx("../0_Data/2_IO Data/GTAP_11_MRIO/Carbon_Intensities_Full_All.xlsx", sheet = Country.Name)
       }
-      if(Country.Name == "Barbados"){carbon_intensities_0 <- read.xlsx("../0_Data/2_IO Data/GTAP_10_MRIO/Carbon_Intensities_Full_All.xlsx", sheet = "Rest of the Caribbean")}
-      if(Country.Name == "Suriname"){carbon_intensities_0 <- read.xlsx("../0_Data/2_IO Data/GTAP_10_MRIO/Carbon_Intensities_Full_All.xlsx", sheet = "Rest of South America")}
-      if(Country.Name == "Liberia"){carbon_intensities_0  <- read.xlsx("../0_Data/2_IO Data/GTAP_10_MRIO/Carbon_Intensities_Full_All.xlsx", sheet = "Rest of Western Africa")}
-      if(Country.Name == "Myanmar"){carbon_intensities_0  <- read.xlsx("../0_Data/2_IO Data/GTAP_10_MRIO/Carbon_Intensities_Full_All.xlsx", sheet = "Rest of Southeast Asia")}
-      if(Country.Name == "Maldives"){carbon_intensities_0 <- read.xlsx("../0_Data/2_IO Data/GTAP_10_MRIO/Carbon_Intensities_Full_All.xlsx", sheet = "Rest of South Asia")}
-      if(Country.Name == "Guinea-Bissau"){carbon_intensities_0 <- read.xlsx("../0_Data/2_IO Data/GTAP_10_MRIO/Carbon_Intensities_Full_All.xlsx", sheet = "Rest of Western Africa")}
+      if(Country.Name == "Barbados"){carbon_intensities_0 <- read.xlsx("../0_Data/2_IO Data/GTAP_11_MRIO/Carbon_Intensities_Full_All.xlsx", sheet = "Rest of the Caribbean")}
+      if(Country.Name == "Suriname"){carbon_intensities_0 <- read.xlsx("../0_Data/2_IO Data/GTAP_11_MRIO/Carbon_Intensities_Full_All.xlsx", sheet = "Rest of South America")}
+      if(Country.Name == "Liberia"){carbon_intensities_0  <- read.xlsx("../0_Data/2_IO Data/GTAP_11_MRIO/Carbon_Intensities_Full_All.xlsx", sheet = "Rest of Western Africa")}
+      if(Country.Name == "Myanmar"){carbon_intensities_0  <- read.xlsx("../0_Data/2_IO Data/GTAP_11_MRIO/Carbon_Intensities_Full_All.xlsx", sheet = "Rest of Southeast Asia")}
+      if(Country.Name == "Maldives"){carbon_intensities_0 <- read.xlsx("../0_Data/2_IO Data/GTAP_11_MRIO/Carbon_Intensities_Full_All.xlsx", sheet = "Rest of South Asia")}
+      if(Country.Name == "Guinea-Bissau"){carbon_intensities_0 <- read.xlsx("../0_Data/2_IO Data/GTAP_11_MRIO/Carbon_Intensities_Full_All.xlsx", sheet = "Rest of Western Africa")}
       
       GTAP_code            <- read_delim("../0_Data/2_IO Data/GTAP_10_MRIO/GTAP10.csv", ";", escape_double = FALSE, trim_ws = TRUE, show_col_types = FALSE)
       
@@ -763,11 +763,13 @@ for (i in Country.Set.B){
                CO2_t_per_dollar_national    = CO2_Mt_within/     Total_HH_Consumption_MUSD,
                CO2_t_per_dollar_electricity = CO2_Mt_Electricity/Total_HH_Consumption_MUSD,
                CO2_t_per_dollar_transport   = CO2_Mt_Transport/  Total_HH_Consumption_MUSD,
+               CO2_t_per_dollar_direct      = CO2_direct/        Total_HH_Consumption_MUSD
                # CH4_t_per_dollar_national    = CH4_MtCO2_within/  Total_HH_Consumption_MUSD,
                # N2O_t_per_dollar_national    = N2O_MtCO2_within/  Total_HH_Consumption_MUSD,
                # FGAS_t_per_dollar_national   = FGAS_MtCO2_within/ Total_HH_Consumption_MUSD
         )%>%
-        select(GTAP, starts_with("CO2_t"), ends_with("national"))
+        select(GTAP, starts_with("CO2_t"), ends_with("national"))%>%
+        mutate(Country = i)
       
       rm(GTAP_code)
     }
@@ -808,6 +810,8 @@ for (i in Country.Set.B){
 # 3.1   Analyse and systematically compare carbon intensities ####
 
 dir.create("1_Figures/Analysis_Carbon_Intensities_GTAP", showWarnings = FALSE)
+
+carbon_intensities_0 <- carbon_intensities_df
 
 carbon_intensities_2.1 <- carbon_intensities_0 %>%
   select(everything())%>%
@@ -971,9 +975,9 @@ GTAP_Groups <- distinct(carbon_intensities_2.1.1, GTAP)%>%
   mutate(Group_0 = c(rep("A", 16),
                      rep("B", 16),
                      rep("C", 16),
-                     rep("D", 13)))%>%
+                     rep("D", 14)))%>%
   mutate(Group_1A = c(rep(NA, 48),
-                     rep("A",1),
+                     rep("A",2),
                      rep("B",4),
                      rep("C",4),
                      rep("D",4)))
