@@ -79,6 +79,12 @@
 \section{Introduction} \label{sec:introduction}
 
 \begin{itemize}
+  \item Homogenized, cross-country evaluation based on microdata and household-level characteristics is missing.
+  \item Identification of non-linear relationships insufficient with existing approaches.
+  \item Improving targeting precision: Learning how more and less carbon-intensively consuming households differ from each other can help to design compensation measures that minimize target error. Also, enabling cross-country learning.
+  \item As we show, often-proposed lump-sum transfers insufficient, because of large horizontal heterogeneity. Progressive results do not necessarily mean that all poorer people receive compensation.
+
+    
   % One paragraph on setting the scene
   \item Many criteria influence the evaluation of different policy instruments, including efficiency, effectiveness, tractability, institutional feasibility, but also political feasibility, including equity and fairness. One important aspect are distributional implications. In the context of climate policy people may ask: Who loses from climate policy and why?
   % Highlight discourse on public acceptance, possibly on just transitions etc.
@@ -95,11 +101,13 @@
 
 % One paragraph stating the research question
 
-In this study, we analyze the heterogeneity in carbon intensity of consumption within countries and compare results across countries. Transgressing traditional analyses of vertical and horizontal heterogeneity, we study country-level household characteristics that correlate with and drive the carbon intensity of consumption. We construct a unique dataset on household-level carbon intensity of consumption for 1.5 million single households representative for 5 billion people in 87 countries that comprise 68\% of global GDP and 52\% of global $CO_{2}$-emissions\footnote{We use data for GDP and $CO_{2}$-emissions from the World Development Indicators database \autocite{WorldBankGroup.2023}}.
+In this study, we analyze the heterogeneity in carbon intensity of consumption within countries and compare results across countries. Transgressing traditional analyses of vertical and horizontal heterogeneity, we study country-level household characteristics that correlate with and drive the carbon intensity of consumption. We construct a unique dataset on household-level carbon intensity of consumption for 1.5 million single households representative for 5 billion people in 87 countries that comprise 68\% of global GDP and 52\% of global $CO_{2}$-emissions\footnote{We use data for GDP and $CO_{2}$-emissions from the World Development Indicators database \autocite{WorldBankGroup.2023}.}.
 
 % One paragraph sketching findings
 
 % One paragraph outlining contribution
+
+Our contribution is threefold: First, we construct a novel and homogenized dataset on household-level carbon intensity of consumption including granular information on various household characteristics. Second, we use supervised machine learning to detect non-linear relationships between household characteristics and carbon-intensity of consumption. Third, we assign countries to clusters based on model outcomes. Countries in the same cluster are more similar to each with respect to factors associated to the heterogeneity of carbon intensity of consumption. 
 
 %\item Our analysis informs further research on potential drivers of carbon emissions and inequality in carbon-intensive consumption. It might inform policy to develop international, but also national complementary measures to combat unintended effects of effective climate mitigation policies.
 
@@ -109,12 +117,15 @@ In this study, we analyze the heterogeneity in carbon intensity of consumption w
 \section{Vertical and horizontal inequality of climate policy} \label{sec:literature}
 
 \begin{itemize}
-  \item Introducing vertical and horizontal inequality
-  \item Three paragraphs on distributional impacts of climate/environmental policy (theoretical arguments (Sandmo, Cremer), one on broad relevance (acceptance?), one on price-based policies, one on standards, subsidies, behavioural interventions)
-  \item Hänsel, van der Ploeg, Rausch 2011, Farrell 2017, Cronin 2019, Feindt 2021, Fischer and Pizer 2019
+    \item One paragraph on broad relevance of distributional impacts of climate/environmental policy: Acceptance and public support.
+    \item One paragraph on theoretical arguments: Price-based policies (Sandmo, Cremer).
+    \item One paragraph on theoretical arguments: Standards, subsidies, behavioural interventions.
+    \item Introducing vertical and horizontal inequality
+  \item Hänsel, van der Ploeg, Rausch 2011, Farrell 2017, Cronin 2019, Feindt 2021, Fischer and Pizer 2019, Missbach, Steckel
   \item Two paragraphs on distributional impacts of climate policy (empirical studies, mainly on price-based policies (Ohlendorf), also on standards (Mattauch), subsidies, behavioural interventions, can be short)
-  \item One paragraph on compensation: Transfers, tax breaks (Goulder 1995, Bento 2018), in-kind transfers or financing public goods (Franks).
+  \item One paragraph on compensation: Transfers, tax breaks (Goulder 1995, Bento 2018), in-kind transfers or financing public goods (Franks, Jakob).
   \item One paragraph on macro-level studies on carbon inequality (within countries, Chancel)
+  \item Point out research gap.
 
 \end{itemize}
 
@@ -133,13 +144,13 @@ e_{i} = \frac{E_{i}}{C_{i}} = \frac{\sum_{s} e_{s}*C_{i,s}}{\sum_{s} C_{i,s}}
 % Show that carbon intensity is equivalent to first-order carbon pricing incidence (Detailed analysis in Appendix)
 % Show that sector-specific carbon intensities can help to learn about other policies (to be continued in discussion)
 
-The carbon intensity of consumption $e_{i}$ is the variable of interest in this study. Analyzing heterogeneity in the carbon intensity of consumption can help to learn about heterogeneous impacts of climate policy on consumption costs: Assume household \textit{A's} consumption is twice as carbon-intensive as the consumption of household \textit{B}, then climate policy will lead to costs twice as high for household \textit{A} compared to household \textit{B}, in comparison to total expenditures \footnote{This holds under the assumption that climate policy increases supply-side input prices according to associated $CO_{2}$-emissions and that firms cannot react to changing input prices in the short-term. Output prices for consumer goods and services would increase in equivalence to embedded (direct and indirect) $CO_{2}$-emissions. See also Appendix \ref{sec:policysimulation}}. Examining he household-level carbon intensity for different sectors \textit{s}, denoted $e_{i,s}$, allows for understanding heterogeneous impacts of different policies, for example of policies in the transport or electricity sector or of trade policies, such as carbon border adjustments.
+The carbon intensity of consumption $e_{i}$ is the variable of interest in this study. Analyzing heterogeneity in the carbon intensity of consumption can help to learn about heterogeneous impacts of climate policy on consumption costs: Assume household \textit{A's} consumption is twice as carbon-intensive as the consumption of household \textit{B}, then climate policy will lead to costs twice as high for household \textit{A} compared to household \textit{B}, in comparison to total expenditures\footnote{This holds under the assumption that climate policy increases supply-side input prices according to associated $CO_{2}$-emissions and that firms cannot react to changing input prices in the short-term. Output prices for consumer goods and services would increase in equivalence to embedded (direct and indirect) $CO_{2}$-emissions. See also Appendix \ref{sec:policysimulation}}. Examining he household-level carbon intensity for different sectors \textit{s}, denoted $e_{i,s}$, allows for understanding heterogeneous impacts of different policies, for example of policies in the transport or electricity sector or of trade policies, such as carbon border adjustments.
 
 %  Household expenditure shares: Data, cleaning, homogenizing and shortcomings
-\paragraph{Sectoral expenditure shares} We collect information on sectoral expenditure shares at the household-level ($\frac{C_{i,s}}{\sum_{s}C_{i,s}}$) from household budget surveys. In such surveys, households report expenditures on goods and services on the item-level, from which we compute sectoral expenditure shares\footnote{We match consumption items to sectors with the help of matching tables. We share all matching tables through a stable online data repository.}.
-Survey datasets are eligible for inclusion in our study, if they cover a nationally representative sample, include item-level expenditure information and were conducted between 2010 and 2019 \footnote{We exclude more recent survey data to account for potential biases induced by large economic shocks, such as measures in the context of Covid-19.}. Our harmonized \footnote{Appendix \ref{sec:cleaning} lists details on cleaning and harmonization.} dataset contains information on 1.5 million households representative for 5 billion people from 87 countries that comprise 68\% of global GDP and 52\% of global $CO_{2}$-emissions.
+\paragraph{Sectoral expenditure shares} We collect information on sectoral expenditure shares at the household-level ($\frac{C_{i,s}}{\sum_{s}C_{i,s}}$) from household budget surveys. In such surveys, households report expenditures on goods and services on the item-level, from which we compute sectoral expenditure shares\footnote{We match consumption items to sectors with the help of matching tables. We share all matching tables through a stable online data repository.}\footnote{Figures \ref{fig:A1} to \ref{fig:A4} show country-level Engel curves for energy, goods, services and food}.
+Survey datasets are eligible for inclusion in our study, if they cover a nationally representative sample, include item-level expenditure information and were conducted between 2010 and 2019\footnote{We exclude more recent survey data to account for potential biases induced by large economic shocks, such as measures in the context of Covid-19.}. Our harmonized\footnote{Appendix \ref{sec:cleaning} lists details on cleaning and harmonization.} dataset contains information on 1.5 million households representative for 5 billion people from 87 countries that comprise 68\% of global GDP and 52\% of global $CO_{2}$-emissions.
 
-Beyond expenditure shares, we include total household expenditures as a surrogate for household income data because total consumption expenditures are a meaningful proxy for lifetime income \autocite{Poterba.1989; JamesM.Poterba.2016} and because wage data from such surveys are often unreliable \autocite{Blundell.1998}.
+Beyond expenditure shares, we include total household expenditures as a surrogate for household income data because total consumption expenditures are a meaningful proxy for lifetime income \autocite{Poterba.1989,JamesM.Poterba.2016} and because wage data from such surveys are often unreliable \autocite{Blundell.1998}.
 
 We also include socio-demographic information about household members (such as education, occupation, gender, self-identified ethnicity or age of household representatives), detailed spatial information (such as province, district or village of households) and on energy use (main fuels used for cooking, lighting and heating) or asset ownership. Such household-level information (including total household expenditures) forms a set of variables $X_{i}^{'}$ that allows for analyzing differences between households with different characteristics.
 
@@ -155,14 +166,14 @@ We also include socio-demographic information about household members (such as e
     e_{s,r} = \frac{E_{s,r}^{direct}+E_{s,r}^{indirect}}{\sum_{i} C_{i,s,r}}
 \end{equation}
 
-We derive total sectoral output ($\sum_{i} C_{i,s,r}$), direct ($E_{s}^{direct}$) and indirect ($E_{s}^{indirect}$) $CO_{2}$-emissions from and with the help of multi-regional input-output (MRIO) data. This approach is popular in the literature as it accommodates trade flows between different countries and regions, but features sufficient detail for high sectoral resolution. We build on trade data from the GTAP database \autocite{Aguiar.2019} which we transform to MRIO data \autocite{Peters.2011} capturing input-output relationships between 65 sectors \textit{s} in 141 countries \textit{r}. We subsequently compute the \textit{Leontief}-inverse $L_{r',s'}^{r,s}$ that gives information about required inputs from each sector \textit{s'} and region \textit{r'} for production of one unit of output in each sector \textit{s} and region \textit{r}. We derive indirect $CO_{2}$-emissions $E_{s}^{indirect}$ as follows\footnote{See \autocite{Missbach.2023b, Steckel.2021b,Feindt.2021,VogtSchilb.2019} or REF for a detailed description of this approach.} \footnote{Simulation of different sectoral policies is possible through exclusion of different sectors \textit{s} or countries \textit{r}. In our main analysis we focus on national carbon intensities, i.e., how many emissions resulting from production in each country can be attributed to one unit of output. This would be equivalent to zero-carbon carbon intensities of imported products, but re-imported emissions would be included.}:
+We derive total sectoral output ($\sum_{i} C_{i,s,r}$), direct ($E_{s}^{direct}$) and indirect ($E_{s}^{indirect}$) $CO_{2}$-emissions from and with the help of multi-regional input-output (MRIO) data. This approach is popular in the literature as it accommodates trade flows between different countries and regions, but features sufficient detail for high sectoral resolution. We build on trade data from the GTAP database (Version 11,  \textcite{Aguiar.2022}) which we transform to MRIO data \autocite{Peters.2011} capturing input-output relationships between 65 sectors \textit{s} in 160 countries \textit{r}. We subsequently compute the \textit{Leontief}-inverse $L_{r',s'}^{r,s}$ that gives information about required inputs from each sector \textit{s'} and region \textit{r'} for production of one unit of output in each sector \textit{s} and region \textit{r}. We derive indirect $CO_{2}$-emissions $E_{s}^{indirect}$ as follows\footnote{See \textcite{Missbach.2023b, Steckel.2021b,Feindt.2021,VogtSchilb.2019} or REF for a detailed description of this approach.} \footnote{Simulation of different sectoral policies is possible through exclusion of different sectors \textit{s} or countries \textit{r}. In our main analysis we focus on national carbon intensities, i.e., how many emissions resulting from production in each country can be attributed to one unit of output. This would be equivalent to zero carbon intensities of imported products, but re-imported emissions would be included.}:
 
 \begin{equation}
     E_{s}^{indirect} = \sum_{r'} \sum_{s'} e_{r',s'} L_{r',s'}^{r,s} C_{s}
 \end{equation}
 
 The GTAP database includes information on direct $CO_{2}$-emissions $E_{s}^{direct}$. It captures $CO_{2}$-emissions resulting from household-level use of fossil fuels, such as gasoline, natural gas, LPG or hard coal.
-Our resulting dataset contains information on the carbon intensity of output $e_{s,r}$ for 65 sectors \textit{s}, 141 countries \textit{r} \footnote{We show country- and sector-level carbon intensities in Appendix Figures \ref{fig:B1} to \ref{fig:B2}.}.
+Our resulting dataset contains information on the carbon intensity of output $e_{s,r}$ for 65 sectors \textit{s}, 141 countries \textit{r} \footnote{We show country- and sector-level carbon intensities in Appendix Figures \ref{fig:B1} to \ref{fig:B4}.}.
 
 \begin{itemize}
     \item Methodological discussion and shortcomings (brief)
@@ -172,7 +183,7 @@ Our resulting dataset contains information on the carbon intensity of output $e_
 
 % Summary statistics missing
 
-Analyses of distributional impacts of climate policy often focus on comparing average (or median) costs of policies for different income groups of households. One frequent approach is to assign households to income (or expenditure) quintiles to infer about vertical differences, i.e., differences between poorer and richer households. Often, researchers also compute measures for within-group heterogeneity, such as the $25^{th}$ or $75^{th}$ quantile within each expenditure quintile. Comparing such quantile costs across expenditure quintiles can help to infer about horizontal differences.
+Analyses of distributional impacts of climate policy often focus on comparing average (or median) costs of policies for different income groups of households. One frequent approach is to assign households to income (or expenditure) quintiles to infer about vertical differences, i.e., differences between poorer and richer households. Often, researchers also compute measures for within-group heterogeneity, such as the $25^{th}$ or $75^{th}$ quantile within each expenditure quintile \autocite{Cronin.2019, Missbach.2023b}. Comparing such quantile costs across expenditure quintiles can help to infer about horizontal differences.
 
 Figure \ref{fig:fig_1} displays the distribution of carbon intensity of consumption among the poorest 20\% of households in all countries of our sample with the help of boxplots. Boxes and whiskers contain 90\% of all households in these groups. Blue bars show the difference between the lowest and the highest median carbon intensity across all quintiles for each country.
 
@@ -186,7 +197,7 @@ Figure \ref{fig:fig_1} displays the distribution of carbon intensity of consumpt
     \end{subcaption}
 \end{figure}
 
-Figure \ref{fig:fig_1} illustrates that within-quintile heterogeneity exceeds between-quintile differences in \textit{all} countries \footnote{See FIGURE REF MISSING for country-level comparisons across all expenditure quintiles}. This underlines that analysis building on differences in income to explain differences in carbon intensity of consumption (or the impact of climate policy) might be insufficient since it falls short of accounting for differences in carbon intensity at similar levels of income. Instead, we propose including household-level characteristics beyond income in such an analysis to paint a more nuanced picture of which households' consumption is especially carbon-intensive.
+Figure \ref{fig:fig_1} illustrates that within-quintile heterogeneity exceeds between-quintile differences in \textit{all} countries\footnote{See FIGURE REF MISSING for country-level comparisons across all expenditure quintiles.}. This underlines that analyses building on differences in income to explain differences in carbon intensity of consumption (or the impact of climate policy) might be insufficient since it falls short of accounting for differences in carbon intensity at similar levels of income. Instead, we propose including household-level characteristics beyond income in such analyses to give a more nuanced description of which households' consumption is especially carbon-intensive.
 
 This is also warranted, because - as we show in Figure \ref{fig:fig_2} - within-quintile differences are different across quintiles. To facilitate comparison across countries, we compute two coefficients \autocite{Missbach.2023b}: The vertical distribution coefficient $\overline{V_{r}}$ compares median carbon intensity of the poorest and the richest expenditure quintile:
 
@@ -231,27 +242,25 @@ We analyze which household characteristics are associated to higher levels of ca
 
 \paragraph{Boosted regression trees} Fitting boosted regression trees (BRT) \autocite{Friedman.2003, Elith.2008} is a supervised machine learning method allowing for detection of non-linear relationships and interaction effects between an outcome and many predictor variables (features). As an extension to regression trees, the BRT algorithm (\textit{XGBoost} \autocite{Chen.2016}) fits many single regression trees, iteratively giving higher weights to observations with larger predicting errors. This leads to large predictive power, also if compared to the frequently used random forest algorithm. Nevertheless, fitting BRT is usually more computationally intensive and outcomes are more difficult to interpret. % Why BRT is helpful here.
 
-Deploying BRT serves the purpose of our analysis, because it is a priori ambiguous which variables to include in a model. BRT-modeling is well suited to help identifying important predictors and potentially non-linear effect sizes.
+Deploying BRT serves the purpose of our analysis, because it is a priori ambiguous which variables to include in a model. Specifically, research indicates that the impacts of climate policy (and therefore the carbon intensity of consumption) distribute non-linearly across households with different characteristics, such as income, demographic groups \autocite{Missbach.2023}, energy use \autocite{Farrell.2017} and space \autocite{Chan.2023}. Compared to other approaches, such as variance-based inequality decomposition \autocite{Farrell.2017,Sager.2019b,Missbach.2023b}, using BRT is well-suited to help identifying important predictors while also allowing for detecting potentially non-linear relationships.
 
 We build BRT-models on the country-level to investigate characteristics associated to heterogeneous levels of carbon intensities within single countries. The carbon intensity $e_{i}$ is the outcome variable. For each country-level model we use the entire set of observable household-level characteristics $X_{i}^{'}$ as possible features and perform several feature engineering steps (see also Appendix \ref{sec:featureengineering}).
 
-To avoid overfitting, we randomly split country-level data into a training and a test sample with the training sample comprising 75\% of all observations. We use the training dataset to train the model; we use the testing dataset (i.e., the remaining 25\% of observations) for evaluation of the model. We evaluate model performance with the help of mean absolute error (MAE), root mean squared error (RMSE) and $R^{2}$ and show predictive performance of our models based on the testing dataset.
+The predictive performance of BRT-models critically hinges on several hyperparameters. For hyperparameter tuning, we randomly split country-level data into a training and a test sample, comprising 75\% and 25\% of observations, respectively. We use five-fold cross-validation on the training dataset to fit 1,000 trees - following the recommendations by \textcite{Elith.2008} - along with 16 different combinations of learning rate ($\eta \in [0.001,0.3]$), the maximum depth of trees (\textit{max\_depth} $\in \{x \in \mathbb{N} \mid 1  \leq x \leq 15 \}$) and a fraction of possible features included in each tree (\textit{mtry} $\in \{0.5,0.7,1\}$). For each country, we select the combination of hyperparamters that minimizes mean absolute error.
 
-BRT-models include a number of hyperparameters that we optimize for best predictive performance. We use five-fold cross-validation on the training dataset to fit 1,000 trees - following the recommendations by \autocite{Elith.2008} -  along with 16 different combinations of learning rate ($\eta \in [0.001,0.3]$, the maximum depth of trees (\textit{max\_depth} $\in \{x \in \mathbb{N} \mid 1  \leq x \leq 15 \}$) and a fraction of possible features included in each tree (\textit{mtry} $\in \{0.5,0.7,1\}$). For each country, we select those hyperparameters that minimize mean absolute error across the training set.
+Building on selected hyperparameters, we use five-fold cross-validation on all observations, i.e., from the training and test set, for model evaluation. We evaluate model performance with the help of mean absolute error (MAE), root mean squared error (RMSE) and $R^{2}$. We also use all observations to evaluate the relative importance of each feature with the help of SHAP-values \autocite{Lundberg.2020}: SHAP-values represent the contribution of each feature to each individual prediction and have recently been proposed as a more suitable means to interpret outcomes of machine learning models compared to other approaches. We also determine feature importance by calculating the average absolute SHAP-value for each feature across all individual predictions. We show feature importance as a share of contribution (in \% of total mean absolute SHAP-values) to allow for better comparability of feature importance across countries. We visualize the distribution of SHAP-values for the most important features in each country over feature values, i.e., in partial dependence plots. 
 
-Building on selected hyperparameters, we fit out model to the test dataset and evaluate the relative importance of each feature with the help of Shapley additive explanation (SHAP) values \autocite{Lundberg.2020}: SHAP-values represent the contribution of each feature to each individual prediction. SHAP-values have recently been established as a more suitable means to interpret outcomes of machine learning models compared to other approaches. We also calculate the mean absolute contribution of each feature across all individual predictions and calculate the feature importance for each feature as a share of contribution (in \%) to allow for better comparability of feature importance across countries. We also show partial dependence plots, i.e., the distribution of SHAP-values for the most important features in each country over feature values.
-
-\paragraph{Logit-model} We also fit a logit-model to identify households whose consumption is relatively carbon-intensive compared to the entire population. We construct a binary variable $e_{i}^{80}$ for each household \textit{i} indicating whether the household is among the most carbon-intensive 20\% of households in each country:
+\paragraph{Logit-model} We also fit a logit-model to identify households whose consumption is relatively carbon-intensive compared to the entire population. We construct a binary variable $e_{i}^{80^{th}}$ for each household \textit{i} indicating whether the household is among the most carbon-intensive 20\% of households in each country:
 
 \begin{equation}
-    e_{i}^{80} =
+    e_{i}^{80^{th}} =
     \begin{cases}
-    1, & \text{for }  e_{i} \geq e^{80} \\
-    0, & \text{for }  e_{i} < e^{80}
+    1, & \text{for }  e_{i} \geq e^{80^{th}} \\
+    0, & \text{for }  e_{i} < e^{80^{th}}
     \end{cases}
 \end{equation}
 
-Subsequently, be $P_{e_{i}^{80}}$ the probability of household \textit{i} to consume more carbon-intensively than 80\% of the population in each country. We are interested in the coefficients $\beta^{'}$ of the following logit-model:
+Subsequently, be $P_{e_{i}^{80^{th}}}$ the probability of household \textit{i} to consume more carbon-intensively than 80\% of the population in each country. We are interested in the coefficients $\beta^{'}$ of the following logit-model:
 
 \begin{equation}
     log \left( \frac{P_{e_{i}^{80}}}{1 - P_{e_{i}^{80}}} \right) = \alpha_{0} + \beta^{'} X_{i}^{'} + \varepsilon_{i}
@@ -259,12 +268,13 @@ Subsequently, be $P_{e_{i}^{80}}$ the probability of household \textit{i} to con
 
 Estimating a logit-model serves as a robustness check for results from BRT-models. It also allows for investigation of characteristics associated to "hardship-case" households including a more accessible interpretation of results and parameters. We show results from logit-models with the help of regression tables and visualize average marginal effects for each independent variable.
 
-\paragraph{Clustering} Country-level analyses can be meaningful to identify country-specific household characteristics associated to higher levels of carbon intensity of consumption. In fact, the relationship between household-level characteristics and carbon intensity of consumption is unique for each country, but also contingent on availability of granular data. To learn more about which characteristics are more important in many countries we perform k-means clustering algorithm on country-level model outcomes. For each country, we extract the average feature importance (in \% of normalized average absolute SHAP-values). If features are missing in the data, we assume its share of contribution is zero. We also include $\widehat{V_{r}}$ and $\widehat{H_{r}}$ as measures for vertical and horizontal heterogeneity and the average carbon intensity of consumption $\overline{e_{r}}$ across all households. We normalize all variables to allow for comparison across variables. If one feature is more (less) important in one country compared to all other countries, the processed feature value will be relatively high (low). If one feature is equally important across all countries, processed feature values will be close to zero.
+\paragraph{Clustering} Country-level analyses can be meaningful to identify country-specific household characteristics associated to higher levels of carbon intensity of consumption. In fact, the relationship between household-level characteristics and carbon intensity of consumption is unique for each country, but also contingent on availability of granular data. To account for differences in available features across countries, we correct individual feature importance by multiplying individual feature importance and country-level $R^{2}$. This approach also helps to account for the aggregate performance of the model and allows for better comparison of feature importance across countries.
 
-K-means clustering is an unsupervised machine-learning method and helps to analyze clusters of observations which are most similar in many variables within each cluster and least similar in many variables across clusters \autocite{MacQueen.1967}. We inspect the optimal number of clusters with the help of average silhouette widths \autocite{Rousseeuw.1987} for each cluster \textit{k}. The silhouette width $s_{i}$ accounts for the average distance of each observation \textit{i} to all other observations within its cluster and for the average distance to observations from the nearest neighbouring cluster. Silhouettes closer to $1$ indicate a good fit of an observation to its cluster and silhouettes closer to $-1$ indicate a poor fit. The average silhouette width $\overline{s_{k}}$ for each cluster \textit{k} expresses how well all observations fit on average to each cluster. Our approach yields $k = 14$ to be the number of clusters maximizing average silhouette width\footnote{See Figures\ref{fig:G1_silhouette} and \ref{fig:G2_silhouette} for visualization.}.
+Building on (adjusted) feature importance for each country, we use k-means clustering algorithm to learn more about which characteristics are more important in many countries. If features are missing in the data, we assume its share of contribution is zero. We normalize all variables to allow for comparison across variables. If one feature is more (less) important in one country compared to all other countries, the processed feature value will be relatively high (low). If one feature is equally important across all countries, processed feature values will be close to zero.
 
-For each country-cluster, we compute average values for each feature to allow for investigation of differences between countries in different clusters. We also investigate which country is most likely to all other countries in each cluster maximizing silhouette width within each cluster and use it to demonstrate cluster-level characteristics. It is important to note that our clustering approach hinges substantially on the availability of features in the data. If a variable, for example cooking fuel use, remains unobserved for one country, the country may end up in a cluster with countries in which cooking fuel use has little explanatory power, even though it may have in reality. Our approach might nevertheless be warranted under the assumption that policy formulation (for example on optimal targeting of compensation measures) can naturally only center on observable characteristics, if targeting errors should be minimized.
+K-means clustering is an unsupervised machine-learning method and helps to analyze clusters of observations that are most similar in many variables within each cluster and least similar in many variables across clusters \autocite{MacQueen.1967}. We inspect the optimal number of clusters with the help of average silhouette widths \autocite{Rousseeuw.1987} for each cluster \textit{k}. The silhouette width $s_{i}$ accounts for the average distance of each observation \textit{i} to all other observations within its cluster and for the average distance to observations from the nearest neighbouring cluster. Silhouettes closer to $1$ indicate a good fit of an observation to its cluster and silhouettes closer to $-1$ indicate a poor fit. The average silhouette width $\overline{s_{k}}$ for each cluster \textit{k} expresses how well all observations fit on average to each cluster. Our approach yields $k = 3$ to be the number of clusters maximizing average silhouette width\footnote{See Figures\ref{fig:G1_silhouette} and \ref{fig:G2_silhouette} for visualization.}. We also show the optimal number of clusters ($k = 19$) for k-means clustering building on non-adjusted feature importance in the Appendix\footnote{See Figures \ref{fig:G3_silhouette_2} and \ref{fig:G4_silhouette_2}.}.
 
+For each country-cluster, we compute average values for each feature to allow for investigation of differences between countries in different clusters. We also investigate which country is most likely to all other countries in each cluster maximizing silhouette width within each cluster and use it to demonstrate cluster-level characteristics. It is important to note that our approach to adjust feature values for total model performance reduces in the influence of feature availability in the data for clustering. Uncorrected feature importance values may be exaggerated, if only few features exist, so countries with few features may end up in wrong clusters simply because the model cannot help explaining much of the variation in carbon intensity. Instead, our approach ensures that all \textit{observable} features contribute to clustering. Despite many structurally unobservable household-level features, our approach might be warranted under the assumption that policy formulation (for example on optimal targeting of compensation measures) can naturally only center on observable characteristics, if targeting errors should be minimized.
 
 \begin{itemize}
     \item Methodological discussion (brief)
@@ -279,11 +289,19 @@ For each country-cluster, we compute average values for each feature to allow fo
 
 \section{Results: Heterogeneity of carbon intensity of consumption} \label{sec:results}
 
-Figure \ref{fig:fig_3} shows the relative importance of different features across country-clusters. %What are important criteria to assign countries to different clusters?
+Building on model outcomes to help identifying factors associated to higher levels of carbon intensity of consumption, we cluster countries which are similar to each other, i.e., in which features are similarly important for model prediction. Figure \ref{fig:fig_3} shows the relative importance of different features across country-clusters. 
+
+%What are important criteria to assign countries to different clusters?
+
+\paragraph{Country clusters}
+
+% Write about model fit
+
+The largest cluster comprises 14 countries (including USA, Germany and Italy)
 
 \begin{figure}[ht!]
     \centering
-    \includegraphics{Figure 3/Figure_3}
+    \includegraphics{1_Figures/Figure 3/Figure_3_Corrected.jpg}
     \caption{Average feature importance across country clusters}
     \label{fig:fig_3}
     \begin{subcaption}
@@ -292,12 +310,24 @@ Figure \ref{fig:fig_3} shows the relative importance of different features acros
     \end{subcaption}
 \end{figure}
 
+\paragraph{Country-level feature importance}
+
 Figures \ref{fig:fig_4_1} and \ref{fig:fig_4_2} show the relative importance of features for each country across clusters. %Describe single clusters, at least A, B, C and D. Touch briefly upon the rest.
 % What are important features? In which direction? Why?
 
+On average, the most important feature across countries is household expenditures, accounting for a relative contribution of 24\% on average. Household expenditures are the single most important feature in 36 countries. and in some countries, such as Chile, the Netherlands or Austria, differences in household expenditures contribute to more than 40\% of model predictions.
+
+Car or motorcycle ownership is the most important feature in 13 or 8 countries, respectively.
+
+Spatial features, such as urban or rural location, province or district of household, are the most important features in 21 countries. For example, urban citizenship contributes more than 40\% of model prediction in countries such as Czech Republic, Slovakia or Latvia. 
+
+Features describing energy use, such as main fuels used for cooking, lighting and heating, or electricity acccess and appliance ownership are the most important feature in nine countries.
+
+Sociodemographic features are the most important feature in four countries.
+
 \begin{figure}[ht!]
     \centering
-    \includegraphics{Figure 4/Figure_4_1}
+    \includegraphics{1_Figures/Figure 4/Figure_4_Corrected_1.jpg}
     \caption{Feature importance across countries by cluster}
     \label{fig:fig_4_1}
     \begin{subcaption}
@@ -309,7 +339,7 @@ Figures \ref{fig:fig_4_1} and \ref{fig:fig_4_2} show the relative importance of 
 
 \begin{figure}[ht!]
     \centering
-    \includegraphics{Figure 4/Figure_4_2}
+    \includegraphics{Figure 4/Figure_4_Corrected_2}
     \caption{Feature importance across countries by cluster}
     \label{fig:fig_4_2}
     \begin{subcaption}
@@ -318,6 +348,8 @@ Figures \ref{fig:fig_4_1} and \ref{fig:fig_4_2} show the relative importance of 
     We assign countries to 14 clusters performing k-means clustering based on scaled values across all features. We also show all values in Table \ref{tab:A10}.
     \end{subcaption}
 \end{figure}
+
+\paragraph{Household characteristics and heterogeneous carbon intensity of consumption}
 
 \begin{figure}[ht!]
     \centering
@@ -350,7 +382,7 @@ Figures \ref{fig:fig_4_1} and \ref{fig:fig_4_2} show the relative importance of 
 \end{figure}
 
 \begin{itemize}
-    \item (Tendenziell ginge auch out-of-sample prediction mit detaillierter Auflösung, wie einzelne features (SHAP) zur gesamten Prediction beitragen).
+    %\item (Tendenziell ginge auch out-of-sample prediction mit detaillierter Auflösung, wie einzelne features (SHAP) zur gesamten Prediction beitragen).
     \item Marginal effects of logit-models per country for easier visualization. Across countries to Appendix.
     %\item Summary statistics
     %\item Show differences between poor and rich households.
@@ -369,6 +401,8 @@ Figures \ref{fig:fig_4_1} and \ref{fig:fig_4_2} show the relative importance of 
    %\item Comparing model outcomes across countries. One figure: A: Show classification for single countries with colour codes (order in clusters). B: Show clustering of countries with colour codes.
   \item Discuss differences in instruments: electricity sector instruments, transport sector instruments, international trade policy etc. Highlight main differences: electricity sector characteristics and electrification critical for electricity sector instruments, transport sector policies likely regressive in richer countries, progressive in poorer countries, carbon border adjustments more likely to affect people who consume more carbon-intensive and imported goods and services. Non-consumption impacts probably more severe. (If anything, possibly also Appendix. I suggest the figure comparing vertical and horizontal aspects here - in Appendix).
 \end{itemize}
+
+\paragraph{Impacts of climate policy}
 
 \section{Discussion} \label{sec:discussion}
 
@@ -415,7 +449,7 @@ Building on raw microdata from household budget surveys we perform several clean
     \item We remove observations if expenditures are negative, for example, if households sell items.
     \item We remove duplicates from our sample. We check separately for duplicates at the level of household-level information, but also at the level of item expenditures: We consider households spending the same amount of money on the same items duplicates.
     \item We remove all households from our sample if aggregate expenditures exceed mean expenditures by five standard deviations ($z>5$).
-    \item We use inflation rates from IMF and exchange rates from the World Bank to convert all local currencies to US-\$ for the year 2014. Expenditures from surveys conducted before 2014 are inflated; expenditures from surveys after 2014 are deflated. This ensures consistency with calculated $CO_{2}$-emissions as they refer to the year 2014. This approach does however neglect that expenditure shares may change with inflation.
+    \item We use inflation rates from \textcite{IMF.2020} and exchange rates from the \textcite{WorldBankGroup.2023} to convert all local currencies to US-\$ for the year 2014. Expenditures from surveys conducted before 2014 are inflated; expenditures from surveys after 2014 are deflated. This ensures consistency with calculated $CO_{2}$-emissions as they refer to the year 2014. This approach does however neglect that expenditure shares may change with inflation.
     \item We create matching tables to assign country-level expenditure items to 65 aggregate sectors and to four broad expenditure categories (energy, food, goods, services). Items, that are difficult to match to a specific sector or to a specific category, e.g., 'other expenses', are matched to artificial sectors and categories labeled 'other'. We delete observations for items indicating aggregate categories, if this would lead to double-counting of single expenditures. We delete observations for items indicating taxes, since including them would prove inaccurate to calculate expenditure shares and because items indicating tax payments are not available in each country. We also identify items indicating energy use and create separate columns listing expenditures for different energy items, such as electricity, gasoline, diesel, kerosene, LPG, natural gas, charcoal, hard coal, firewood and other biomass. All matching tables are available through a separate stable online repository (INSERT LINK).
 \end{itemize}
 
@@ -477,29 +511,29 @@ Tau proportionaler Faktor. Ausdruck in \% as $\frac{USD_{\tau}}{USD_{i}}$ or in 
 
 \clearpage
 
-\begin{figure}[ht!]
-  \centering
-  \caption{Engel curves: expenditure shares over total household expenditures - Part C} \label{fig:A3}
-  \includegraphics{Analysis_Parametric_Engel_Curves/Parametric_EC_0_C}
-  \begin{subcaption}
-    This figure displays fitted lines for parametric and quadratic Engel curves for each consumption category in 20 countries of our sample. Black vertical lines indicate average household expenditures per capita for each expenditure quintile and country.
-  \end{subcaption}
+% \begin{figure}[ht!]
+%   \centering
+%   \caption{Engel curves: expenditure shares over total household expenditures - Part C} \label{fig:A3}
+%   \includegraphics{Analysis_Parametric_Engel_Curves/Parametric_EC_0_C}
+%   \begin{subcaption}
+%     This figure displays fitted lines for parametric and quadratic Engel curves for each consumption category in 20 countries of our sample. Black vertical lines indicate average household expenditures per capita for each expenditure quintile and country.
+%   \end{subcaption}
 
-\end{figure}
+% \end{figure}
 
-\clearpage
+% \clearpage
 
-\begin{figure}[ht!]
-  \centering
-  \caption{Engel curves: expenditure shares over total household expenditures - Part D} \label{fig:A4}
-  \includegraphics{Analysis_Parametric_Engel_Curves/Parametric_EC_0_D}
-  \begin{subcaption}
-    This figure displays fitted lines for parametric and quadratic Engel curves for each consumption category in 20 countries of our sample. Black vertical lines indicate average household expenditures per capita for each expenditure quintile and country.
-  \end{subcaption}
+% \begin{figure}[ht!]
+%   \centering
+%   \caption{Engel curves: expenditure shares over total household expenditures - Part D} \label{fig:A4}
+%   \includegraphics{Analysis_Parametric_Engel_Curves/Parametric_EC_0_D}
+%   \begin{subcaption}
+%     This figure displays fitted lines for parametric and quadratic Engel curves for each consumption category in 20 countries of our sample. Black vertical lines indicate average household expenditures per capita for each expenditure quintile and country.
+%   \end{subcaption}
 
-\end{figure}
+% \end{figure}
 
-\clearpage
+% \clearpage
 
 % Carbon intensities
 
@@ -601,400 +635,400 @@ Tau proportionaler Faktor. Ausdruck in \% as $\frac{USD_{\tau}}{USD_{i}}$ or in 
 
 \clearpage
 
-\begin{figure}[ht!]
-  \centering
- \caption{Average marginal effects of car ownership} \label{fig:D1_Car}
-  \includegraphics{Analysis_OLS_ME_Carbon_Footprint/AME_OLS_FP_car.01}
-  \begin{subcaption}
-    This figure displays ...
-  \end{subcaption}
-
-\end{figure}
-
-\clearpage
-
-\begin{figure}[ht!]
-  \centering
- \caption{Average marginal effects of electricity access} \label{fig:D2_Electricity}
-  \includegraphics{Analysis_OLS_ME_Carbon_Footprint/AME_OLS_FP_electricity.access}
-  \begin{subcaption}
-    This figure displays ...
-  \end{subcaption}
-
-\end{figure}
-
-\clearpage
-
-\begin{figure}[ht!]
-  \centering
- \caption{Average marginal effects of household size} \label{fig:D3_Size}
-  \includegraphics{Analysis_OLS_ME_Carbon_Footprint/AME_OLS_FP_hh_size}
-  \begin{subcaption}
-    This figure displays ...
-  \end{subcaption}
-
-\end{figure}
-
-\clearpage
-
-\begin{figure}[ht!]
-  \centering
- \caption{Average marginal effects of household expenditures} \label{fig:D4_Expenditures}
-  \includegraphics{Analysis_OLS_ME_Carbon_Footprint/AME_OLS_FP_log_hh_expenditures_USD_2014}
-  \begin{subcaption}
-    This figure displays ...
-  \end{subcaption}
-
-\end{figure}
-
-\clearpage
-
-\begin{figure}[ht!]
-  \centering
- \caption{Average marginal effects of urban citizenship} \label{fig:D5_Urban}
-  \includegraphics{Analysis_OLS_ME_Carbon_Footprint/AME_OLS_FP_urban_01}
-  \begin{subcaption}
-    This figure displays ...
-  \end{subcaption}
-
-\end{figure}
-
-\clearpage
-
-\begin{figure}[ht!]
-  \centering
- \caption{Average marginal effects of cooking fuel choice - Part A} \label{fig:D6_Electricity_A}
-  \includegraphics{Analysis_OLS_ME_Carbon_Footprint/AME_OLS_FP_CF_Electricity A}
-  \begin{subcaption}
-    This figure displays ...
-  \end{subcaption}
-
-\end{figure}
-
-\clearpage
-
-\begin{figure}[ht!]
-  \centering
- \caption{Average marginal effects of cooking fuel choice - Part B} \label{fig:D7_Electricity_B}
-  \includegraphics{Analysis_OLS_ME_Carbon_Footprint/AME_OLS_FP_CF_Electricity B}
-  \begin{subcaption}
-    This figure displays ...
-  \end{subcaption}
-
-\end{figure}
-
-\clearpage
-
-\begin{figure}[ht!]
-  \centering
- \caption{Average marginal effects of cooking fuel choice - Part C} \label{fig:D8_LPG}
-  \includegraphics{Analysis_OLS_ME_Carbon_Footprint/AME_OLS_FP_CF_LPG}
-  \begin{subcaption}
-    This figure displays ...
-  \end{subcaption}
-
-\end{figure}
-
-\clearpage
-
-\begin{figure}[ht!]
-  \centering
- \caption{Average marginal effects of cooking fuel choice - Part D} \label{fig:D9_Charcoal}
-  \includegraphics{Analysis_OLS_ME_Carbon_Footprint/AME_OLS_FP_CF_Charcoal}
-  \begin{subcaption}
-    This figure displays ...
-  \end{subcaption}
+% \begin{figure}[ht!]
+%   \centering
+%  \caption{Average marginal effects of car ownership} \label{fig:D1_Car}
+%   \includegraphics{Analysis_OLS_ME_Carbon_Footprint/AME_OLS_FP_car.01}
+%   \begin{subcaption}
+%     This figure displays ...
+%   \end{subcaption}
+
+% \end{figure}
+
+% \clearpage
+
+% \begin{figure}[ht!]
+%   \centering
+%  \caption{Average marginal effects of electricity access} \label{fig:D2_Electricity}
+%   \includegraphics{Analysis_OLS_ME_Carbon_Footprint/AME_OLS_FP_electricity.access}
+%   \begin{subcaption}
+%     This figure displays ...
+%   \end{subcaption}
+
+% \end{figure}
+
+% \clearpage
+
+% \begin{figure}[ht!]
+%   \centering
+%  \caption{Average marginal effects of household size} \label{fig:D3_Size}
+%   \includegraphics{Analysis_OLS_ME_Carbon_Footprint/AME_OLS_FP_hh_size}
+%   \begin{subcaption}
+%     This figure displays ...
+%   \end{subcaption}
+
+% \end{figure}
+
+% \clearpage
+
+% \begin{figure}[ht!]
+%   \centering
+%  \caption{Average marginal effects of household expenditures} \label{fig:D4_Expenditures}
+%   \includegraphics{Analysis_OLS_ME_Carbon_Footprint/AME_OLS_FP_log_hh_expenditures_USD_2014}
+%   \begin{subcaption}
+%     This figure displays ...
+%   \end{subcaption}
+
+% \end{figure}
+
+% \clearpage
+
+% \begin{figure}[ht!]
+%   \centering
+%  \caption{Average marginal effects of urban citizenship} \label{fig:D5_Urban}
+%   \includegraphics{Analysis_OLS_ME_Carbon_Footprint/AME_OLS_FP_urban_01}
+%   \begin{subcaption}
+%     This figure displays ...
+%   \end{subcaption}
+
+% \end{figure}
+
+% \clearpage
+
+% \begin{figure}[ht!]
+%   \centering
+%  \caption{Average marginal effects of cooking fuel choice - Part A} \label{fig:D6_Electricity_A}
+%   \includegraphics{Analysis_OLS_ME_Carbon_Footprint/AME_OLS_FP_CF_Electricity A}
+%   \begin{subcaption}
+%     This figure displays ...
+%   \end{subcaption}
+
+% \end{figure}
+
+% \clearpage
+
+% \begin{figure}[ht!]
+%   \centering
+%  \caption{Average marginal effects of cooking fuel choice - Part B} \label{fig:D7_Electricity_B}
+%   \includegraphics{Analysis_OLS_ME_Carbon_Footprint/AME_OLS_FP_CF_Electricity B}
+%   \begin{subcaption}
+%     This figure displays ...
+%   \end{subcaption}
+
+% \end{figure}
+
+% \clearpage
+
+% \begin{figure}[ht!]
+%   \centering
+%  \caption{Average marginal effects of cooking fuel choice - Part C} \label{fig:D8_LPG}
+%   \includegraphics{Analysis_OLS_ME_Carbon_Footprint/AME_OLS_FP_CF_LPG}
+%   \begin{subcaption}
+%     This figure displays ...
+%   \end{subcaption}
+
+% \end{figure}
+
+% \clearpage
+
+% \begin{figure}[ht!]
+%   \centering
+%  \caption{Average marginal effects of cooking fuel choice - Part D} \label{fig:D9_Charcoal}
+%   \includegraphics{Analysis_OLS_ME_Carbon_Footprint/AME_OLS_FP_CF_Charcoal}
+%   \begin{subcaption}
+%     This figure displays ...
+%   \end{subcaption}
 
-\end{figure}
+% \end{figure}
 
-\clearpage
+% \clearpage
 
-\begin{figure}[ht!]
-  \centering
- \caption{Average marginal effects of secondary education} \label{fig:D10_sec_edu}
-  \includegraphics{Analysis_OLS_ME_Carbon_Footprint/AME_OLS_FP_secondary_education}
-  \begin{subcaption}
-    This figure displays ... Finland special case
-  \end{subcaption}
-
-\end{figure}
-
-\clearpage
+% \begin{figure}[ht!]
+%   \centering
+%  \caption{Average marginal effects of secondary education} \label{fig:D10_sec_edu}
+%   \includegraphics{Analysis_OLS_ME_Carbon_Footprint/AME_OLS_FP_secondary_education}
+%   \begin{subcaption}
+%     This figure displays ... Finland special case
+%   \end{subcaption}
+
+% \end{figure}
+
+% \clearpage
 
-\begin{figure}[ht!]
-  \centering
- \caption{Average marginal effects of higher education} \label{fig:D11_high_edu}
-  \includegraphics{Analysis_OLS_ME_Carbon_Footprint/AME_OLS_FP_higher_education}
-  \begin{subcaption}
-    This figure displays ... Finland special case
-  \end{subcaption}
-
-\end{figure}
-
-\clearpage
+% \begin{figure}[ht!]
+%   \centering
+%  \caption{Average marginal effects of higher education} \label{fig:D11_high_edu}
+%   \includegraphics{Analysis_OLS_ME_Carbon_Footprint/AME_OLS_FP_higher_education}
+%   \begin{subcaption}
+%     This figure displays ... Finland special case
+%   \end{subcaption}
+
+% \end{figure}
+
+% \clearpage
 
-\begin{figure}[ht!]
-  \centering
- \caption{Average marginal effects of car ownership} \label{fig:E1_Car}
-  \includegraphics{Analysis_OLS_ME_Carbon_Intensity/AME_OLS_CI_car.01}
-  \begin{subcaption}
-    This figure displays ...
-  \end{subcaption}
-
-\end{figure}
-
-\clearpage
-
-\begin{figure}[ht!]
-  \centering
- \caption{Average marginal effects of electricity access} \label{fig:E2_Electricity}
-  \includegraphics{Analysis_OLS_ME_Carbon_Intensity/AME_OLS_CI_electricity.access}
-  \begin{subcaption}
-    This figure displays ...
-  \end{subcaption}
-
-\end{figure}
-
-\clearpage
-
-\begin{figure}[ht!]
-  \centering
- \caption{Average marginal effects of household size} \label{fig:E3_Size}
-  \includegraphics{Analysis_OLS_ME_Carbon_Intensity/AME_OLS_CI_hh_size}
-  \begin{subcaption}
-    This figure displays ...
-  \end{subcaption}
-
-\end{figure}
-
-\clearpage
-
-\begin{figure}[ht!]
-  \centering
- \caption{Average marginal effects of household expenditures} \label{fig:E4_Expenditures}
-  \includegraphics{Analysis_OLS_ME_Carbon_Intensity/AME_OLS_CI_log_hh_expenditures_USD_2014}
-  \begin{subcaption}
-    This figure displays ...
-  \end{subcaption}
-
-\end{figure}
-
-\clearpage
-
-\begin{figure}[ht!]
-  \centering
- \caption{Average marginal effects of urban citizenship} \label{fig:E5_Urban}
-  \includegraphics{Analysis_OLS_ME_Carbon_Intensity/AME_OLS_CI_urban_01}
-  \begin{subcaption}
-    This figure displays ...
-  \end{subcaption}
-
-\end{figure}
-
-\clearpage
-
-\begin{figure}[ht!]
-  \centering
- \caption{Average marginal effects of cooking fuel choice - Part A} \label{fig:E6_Electricity_A}
-  \includegraphics{Analysis_OLS_ME_Carbon_Intensity/AME_OLS_CI_CI_Electricity A}
-  %\includegraphics{Analysis_OLS_ME_Carbon_Intensity/AME_OLS_CI_CF_Electricity A}
-  \begin{subcaption}
-    This figure displays ...
-  \end{subcaption}
-
-\end{figure}
-
-\clearpage
-
-\begin{figure}[ht!]
-  \centering
- \caption{Average marginal effects of cooking fuel choice - Part B} \label{fig:E7_Electricity_B}
-  \includegraphics{Analysis_OLS_ME_Carbon_Intensity/AME_OLS_CI_CI_Electricity B}
-  %\includegraphics{Analysis_OLS_ME_Carbon_Intensity/AME_OLS_CI_CF_Electricity B}
-  \begin{subcaption}
-    This figure displays ...
-  \end{subcaption}
-
-\end{figure}
-
-\clearpage
-
-\begin{figure}[ht!]
-  \centering
- \caption{Average marginal effects of cooking fuel choice - Part C} \label{fig:E8_LPG}
-  \includegraphics{Analysis_OLS_ME_Carbon_Intensity/AME_OLS_CI_CI_LPG}
-  %\includegraphics{Analysis_OLS_ME_Carbon_Intensity/AME_OLS_CI_CF_LPG}
-  \begin{subcaption}
-    This figure displays ...
-  \end{subcaption}
-
-\end{figure}
-
-\clearpage
-
-\begin{figure}[ht!]
-  \centering
- \caption{Average marginal effects of cooking fuel choice - Part D} \label{fig:E9_Charcoal}
-  \includegraphics{Analysis_OLS_ME_Carbon_Intensity/AME_OLS_CI_CI_Charcoal}
-  %\includegraphics{Analysis_OLS_ME_Carbon_Intensity/AME_OLS_CI_CF_Charcoal}
-  \begin{subcaption}
-    This figure displays ...
-  \end{subcaption}
-
-\end{figure}
-
-\clearpage
-
-\begin{figure}[ht!]
-  \centering
- \caption{Average marginal effects of secondary education} \label{fig:E10_sec_edu}
-  \includegraphics{Analysis_OLS_ME_Carbon_Intensity/AME_OLS_CI_secondary_education}
-  \begin{subcaption}
-    This figure displays ... Special case finland
-  \end{subcaption}
-
-\end{figure}
-
-\clearpage
-
-\begin{figure}[ht!]
-  \centering
- \caption{Average marginal effects of higher education} \label{fig:E11_high_edu}
-  \includegraphics{Analysis_OLS_ME_Carbon_Intensity/AME_OLS_CI_higher_education}
-  \begin{subcaption}
-    This figure displays ... Special case finland
-  \end{subcaption}
-
-\end{figure}
-
-\clearpage
-
- \begin{figure}[ht!]
-   \centering
-  \caption{Average marginal effects of car ownership} \label{fig:F1_Car}
-   \includegraphics{Analysis_Logit_Models_Marginal_Effects/Average_Marginal_Effects_affected_upper_80_car.01}
-   \begin{subcaption}
-     This figure displays ...
-   \end{subcaption}
-
- \end{figure}
-
- \clearpage
-%
- \begin{figure}[ht!]
-   \centering
-   \caption{Average marginal effects of electricity.access} \label{fig:F2_Electricity}
-   \includegraphics{Analysis_Logit_Models_Marginal_Effects/Average_Marginal_Effects_affected_upper_80_electricity.access}
-   \begin{subcaption}
-     This figure displays ...
-   \end{subcaption}
- \end{figure}
-
- \clearpage
-
- \begin{figure}[ht!]
-   \centering
-   \caption{Average marginal effects of household size} \label{fig:F3_Size}
-   \includegraphics{Analysis_Logit_Models_Marginal_Effects/Average_Marginal_Effects_affected_upper_80_hh_size}
-   \begin{subcaption}
-     This figure displays ...
-   \end{subcaption}
- \end{figure}
-
- \clearpage
-
- \begin{figure}[ht!]
-   \centering
-   \caption{Average marginal effects of household expenditures } \label{fig:F4_Expenditures}
-   \includegraphics{Analysis_Logit_Models_Marginal_Effects/Average_Marginal_Effects_affected_upper_80_log_hh_expenditures_USD_2014}
-   \begin{subcaption}
-     This figure displays ...
-   \end{subcaption}
- \end{figure}
-
- \clearpage
-
- \begin{figure}[ht!]
-   \centering
-   \caption{Average marginal effects of urban citizenship} \label{fig:F5_Urban}
-   \includegraphics{Analysis_Logit_Models_Marginal_Effects/Average_Marginal_Effects_affected_upper_80_urban_01}
-   \begin{subcaption}
-     This figure displays ...
-   \end{subcaption}
- \end{figure}
-
- \clearpage
-
- \begin{figure}[ht!]
-   \centering
-   \caption{Average marginal effects of cooking fuel choice - Part A} \label{fig:F6_Electricity_A}
-   \includegraphics{Analysis_Logit_Models_Marginal_Effects/Average_Marginal_Effects_affected_upper_80_CF_Electricity A}
-   \begin{subcaption}
-     This figure displays ...
-   \end{subcaption}
- \end{figure}
-
- \clearpage
-
- \begin{figure}[ht!]
-   \centering
-   \caption{Average marginal effects of cooking fuel choice - Part B} \label{fig:F7_Electricity_B}
-   \includegraphics{Analysis_Logit_Models_Marginal_Effects/Average_Marginal_Effects_affected_upper_80_CF_Electricity B}
-   \begin{subcaption}
-     This figure displays ...
-   \end{subcaption}
- \end{figure}
-
- \clearpage
-
- \begin{figure}[ht!]
-   \centering
-   \caption{Average marginal effects of cooking fuel choice - Part C} \label{fig:F8_LPG}
-   \includegraphics{Analysis_Logit_Models_Marginal_Effects/Average_Marginal_Effects_affected_upper_80_CF_LPG}
-   \begin{subcaption}
-     This figure displays ...
-   \end{subcaption}
- \end{figure}
-
- \clearpage
-
- \begin{figure}[ht!]
-   \centering
-   \caption{Average marginal effects of cooking fuel choice - Part D} \label{fig:F9_Charcoal}
-   \includegraphics{Analysis_Logit_Models_Marginal_Effects/Average_Marginal_Effects_affected_upper_80_CF_Charcoal}
-   \begin{subcaption}
-     This figure displays ...
-   \end{subcaption}
- \end{figure}
-
- \clearpage
-
- \begin{figure}[ht!]
-   \centering
-   \caption{Average marginal effects of secondary education} \label{fig:F10_sec_edu}
-   \includegraphics{Analysis_Logit_Models_Marginal_Effects/Average_Marginal_Effects_affected_upper_80_secondary_education}
-   \begin{subcaption}
-     This figure displays ...
-   \end{subcaption}
- \end{figure}
-
- \clearpage
-
- \begin{figure}[ht!]
-   \centering
-   \caption{Average marginal effects of higher education} \label{fig:F11_high_edu}
-   \includegraphics{Analysis_Logit_Models_Marginal_Effects/Average_Marginal_Effects_affected_upper_80_higher_education}
-   \begin{subcaption}
-     This figure displays ...
-   \end{subcaption}
- \end{figure}
-
- \clearpage
+% \begin{figure}[ht!]
+%   \centering
+%  \caption{Average marginal effects of car ownership} \label{fig:E1_Car}
+%   \includegraphics{Analysis_OLS_ME_Carbon_Intensity/AME_OLS_CI_car.01}
+%   \begin{subcaption}
+%     This figure displays ...
+%   \end{subcaption}
+
+% \end{figure}
+
+% \clearpage
+
+% \begin{figure}[ht!]
+%   \centering
+%  \caption{Average marginal effects of electricity access} \label{fig:E2_Electricity}
+%   \includegraphics{Analysis_OLS_ME_Carbon_Intensity/AME_OLS_CI_electricity.access}
+%   \begin{subcaption}
+%     This figure displays ...
+%   \end{subcaption}
+
+% \end{figure}
+
+% \clearpage
+
+% \begin{figure}[ht!]
+%   \centering
+%  \caption{Average marginal effects of household size} \label{fig:E3_Size}
+%   \includegraphics{Analysis_OLS_ME_Carbon_Intensity/AME_OLS_CI_hh_size}
+%   \begin{subcaption}
+%     This figure displays ...
+%   \end{subcaption}
+
+% \end{figure}
+
+% \clearpage
+
+% \begin{figure}[ht!]
+%   \centering
+%  \caption{Average marginal effects of household expenditures} \label{fig:E4_Expenditures}
+%   \includegraphics{Analysis_OLS_ME_Carbon_Intensity/AME_OLS_CI_log_hh_expenditures_USD_2014}
+%   \begin{subcaption}
+%     This figure displays ...
+%   \end{subcaption}
+
+% \end{figure}
+
+% \clearpage
+
+% \begin{figure}[ht!]
+%   \centering
+%  \caption{Average marginal effects of urban citizenship} \label{fig:E5_Urban}
+%   \includegraphics{Analysis_OLS_ME_Carbon_Intensity/AME_OLS_CI_urban_01}
+%   \begin{subcaption}
+%     This figure displays ...
+%   \end{subcaption}
+
+% \end{figure}
+
+% \clearpage
+
+% \begin{figure}[ht!]
+%   \centering
+%  \caption{Average marginal effects of cooking fuel choice - Part A} \label{fig:E6_Electricity_A}
+%   \includegraphics{Analysis_OLS_ME_Carbon_Intensity/AME_OLS_CI_CI_Electricity A}
+%   %\includegraphics{Analysis_OLS_ME_Carbon_Intensity/AME_OLS_CI_CF_Electricity A}
+%   \begin{subcaption}
+%     This figure displays ...
+%   \end{subcaption}
+
+% \end{figure}
+
+% \clearpage
+
+% \begin{figure}[ht!]
+%   \centering
+%  \caption{Average marginal effects of cooking fuel choice - Part B} \label{fig:E7_Electricity_B}
+%   \includegraphics{Analysis_OLS_ME_Carbon_Intensity/AME_OLS_CI_CI_Electricity B}
+%   %\includegraphics{Analysis_OLS_ME_Carbon_Intensity/AME_OLS_CI_CF_Electricity B}
+%   \begin{subcaption}
+%     This figure displays ...
+%   \end{subcaption}
+
+% \end{figure}
+
+% \clearpage
+
+% \begin{figure}[ht!]
+%   \centering
+%  \caption{Average marginal effects of cooking fuel choice - Part C} \label{fig:E8_LPG}
+%   \includegraphics{Analysis_OLS_ME_Carbon_Intensity/AME_OLS_CI_CI_LPG}
+%   %\includegraphics{Analysis_OLS_ME_Carbon_Intensity/AME_OLS_CI_CF_LPG}
+%   \begin{subcaption}
+%     This figure displays ...
+%   \end{subcaption}
+
+% \end{figure}
+
+% \clearpage
+
+% \begin{figure}[ht!]
+%   \centering
+%  \caption{Average marginal effects of cooking fuel choice - Part D} \label{fig:E9_Charcoal}
+%   \includegraphics{Analysis_OLS_ME_Carbon_Intensity/AME_OLS_CI_CI_Charcoal}
+%   %\includegraphics{Analysis_OLS_ME_Carbon_Intensity/AME_OLS_CI_CF_Charcoal}
+%   \begin{subcaption}
+%     This figure displays ...
+%   \end{subcaption}
+
+% \end{figure}
+
+% \clearpage
+
+% \begin{figure}[ht!]
+%   \centering
+%  \caption{Average marginal effects of secondary education} \label{fig:E10_sec_edu}
+%   \includegraphics{Analysis_OLS_ME_Carbon_Intensity/AME_OLS_CI_secondary_education}
+%   \begin{subcaption}
+%     This figure displays ... Special case finland
+%   \end{subcaption}
+
+% \end{figure}
+
+% \clearpage
+
+% \begin{figure}[ht!]
+%   \centering
+%  \caption{Average marginal effects of higher education} \label{fig:E11_high_edu}
+%   \includegraphics{Analysis_OLS_ME_Carbon_Intensity/AME_OLS_CI_higher_education}
+%   \begin{subcaption}
+%     This figure displays ... Special case finland
+%   \end{subcaption}
+
+% \end{figure}
+
+% \clearpage
+
+%  \begin{figure}[ht!]
+%    \centering
+%   \caption{Average marginal effects of car ownership} \label{fig:F1_Car}
+%    \includegraphics{Analysis_Logit_Models_Marginal_Effects/Average_Marginal_Effects_affected_upper_80_car.01}
+%    \begin{subcaption}
+%      This figure displays ...
+%    \end{subcaption}
+
+%  \end{figure}
+
+%  \clearpage
+% %
+%  \begin{figure}[ht!]
+%    \centering
+%    \caption{Average marginal effects of electricity.access} \label{fig:F2_Electricity}
+%    \includegraphics{Analysis_Logit_Models_Marginal_Effects/Average_Marginal_Effects_affected_upper_80_electricity.access}
+%    \begin{subcaption}
+%      This figure displays ...
+%    \end{subcaption}
+%  \end{figure}
+
+%  \clearpage
+
+%  \begin{figure}[ht!]
+%    \centering
+%    \caption{Average marginal effects of household size} \label{fig:F3_Size}
+%    \includegraphics{Analysis_Logit_Models_Marginal_Effects/Average_Marginal_Effects_affected_upper_80_hh_size}
+%    \begin{subcaption}
+%      This figure displays ...
+%    \end{subcaption}
+%  \end{figure}
+
+%  \clearpage
+
+%  \begin{figure}[ht!]
+%    \centering
+%    \caption{Average marginal effects of household expenditures } \label{fig:F4_Expenditures}
+%    \includegraphics{Analysis_Logit_Models_Marginal_Effects/Average_Marginal_Effects_affected_upper_80_log_hh_expenditures_USD_2014}
+%    \begin{subcaption}
+%      This figure displays ...
+%    \end{subcaption}
+%  \end{figure}
+
+%  \clearpage
+
+%  \begin{figure}[ht!]
+%    \centering
+%    \caption{Average marginal effects of urban citizenship} \label{fig:F5_Urban}
+%    \includegraphics{Analysis_Logit_Models_Marginal_Effects/Average_Marginal_Effects_affected_upper_80_urban_01}
+%    \begin{subcaption}
+%      This figure displays ...
+%    \end{subcaption}
+%  \end{figure}
+
+%  \clearpage
+
+%  \begin{figure}[ht!]
+%    \centering
+%    \caption{Average marginal effects of cooking fuel choice - Part A} \label{fig:F6_Electricity_A}
+%    \includegraphics{Analysis_Logit_Models_Marginal_Effects/Average_Marginal_Effects_affected_upper_80_CF_Electricity A}
+%    \begin{subcaption}
+%      This figure displays ...
+%    \end{subcaption}
+%  \end{figure}
+
+%  \clearpage
+
+%  \begin{figure}[ht!]
+%    \centering
+%    \caption{Average marginal effects of cooking fuel choice - Part B} \label{fig:F7_Electricity_B}
+%    \includegraphics{Analysis_Logit_Models_Marginal_Effects/Average_Marginal_Effects_affected_upper_80_CF_Electricity B}
+%    \begin{subcaption}
+%      This figure displays ...
+%    \end{subcaption}
+%  \end{figure}
+
+%  \clearpage
+
+%  \begin{figure}[ht!]
+%    \centering
+%    \caption{Average marginal effects of cooking fuel choice - Part C} \label{fig:F8_LPG}
+%    \includegraphics{Analysis_Logit_Models_Marginal_Effects/Average_Marginal_Effects_affected_upper_80_CF_LPG}
+%    \begin{subcaption}
+%      This figure displays ...
+%    \end{subcaption}
+%  \end{figure}
+
+%  \clearpage
+
+%  \begin{figure}[ht!]
+%    \centering
+%    \caption{Average marginal effects of cooking fuel choice - Part D} \label{fig:F9_Charcoal}
+%    \includegraphics{Analysis_Logit_Models_Marginal_Effects/Average_Marginal_Effects_affected_upper_80_CF_Charcoal}
+%    \begin{subcaption}
+%      This figure displays ...
+%    \end{subcaption}
+%  \end{figure}
+
+%  \clearpage
+
+%  \begin{figure}[ht!]
+%    \centering
+%    \caption{Average marginal effects of secondary education} \label{fig:F10_sec_edu}
+%    \includegraphics{Analysis_Logit_Models_Marginal_Effects/Average_Marginal_Effects_affected_upper_80_secondary_education}
+%    \begin{subcaption}
+%      This figure displays ...
+%    \end{subcaption}
+%  \end{figure}
+
+%  \clearpage
+
+%  \begin{figure}[ht!]
+%    \centering
+%    \caption{Average marginal effects of higher education} \label{fig:F11_high_edu}
+%    \includegraphics{Analysis_Logit_Models_Marginal_Effects/Average_Marginal_Effects_affected_upper_80_higher_education}
+%    \begin{subcaption}
+%      This figure displays ...
+%    \end{subcaption}
+%  \end{figure}
+
+%  \clearpage
 
  \begin{figure}[ht!]
    \centering
    \caption{Average silhouette width for different number of clusters \textit{k}} \label{fig:G1_silhouette}
-   \includegraphics{Figures_Appendix/Figure_Silhouette}
+   \includegraphics{Figures_Appendix/Figure_Silhouette_1}
    \begin{subcaption}
      This figure displays ...
    \end{subcaption}
@@ -1005,7 +1039,29 @@ Tau proportionaler Faktor. Ausdruck in \% as $\frac{USD_{\tau}}{USD_{i}}$ or in 
  \begin{figure}[ht!]
    \centering
    \caption{Average silhouette width for each country per cluster \textit{k}} \label{fig:G2_silhouette}
-   \includegraphics{Figures_Appendix/Figure_Silhouette_Clusters}
+   \includegraphics{Figures_Appendix/Figure_Silhouette_Clusters_1}
+   \begin{subcaption}
+     This figure displays ...
+   \end{subcaption}
+ \end{figure}
+
+ \clearpage
+
+ \begin{figure}[ht!]
+   \centering
+   \caption{Average silhouette width for different number of clusters \textit{k}} \label{fig:G3_silhouette_2}
+   \includegraphics{Figures_Appendix/Figure_Silhouette_2}
+   \begin{subcaption}
+     This figure displays ...
+   \end{subcaption}
+ \end{figure}
+
+ \clearpage
+
+ \begin{figure}[ht!]
+   \centering
+   \caption{Average silhouette width for each country per cluster \textit{k}} \label{fig:G4_silhouette_2}
+   \includegraphics{Figures_Appendix/Figure_Silhouette_Clusters_2}
    \begin{subcaption}
      This figure displays ...
    \end{subcaption}
@@ -1035,14 +1091,14 @@ Tau proportionaler Faktor. Ausdruck in \% as $\frac{USD_{\tau}}{USD_{i}}$ or in 
 
 \clearpage
 
-\foreach \country in {ARG, ARM, BEL, BEN, BFA,
-BGD, BGR, BOL, BRA, BRB, CHL, %CIV,
- COL, CRI, CYP, CZE, DEU, DNK, DOM, ECU, ESP, EST, ETH, FIN, FRA, GHA, GRC, GTM,
- HRV, HUN, IDN, IND, IRL, IRQ, ISR, ITA, KEN, KHM, LBR, LTU, LUX, LVA, MAR, MDV, MEX, MLI, MMR, MNG, MWI, NER, NGA,  NIC, NLD, NOR, PAK, PER, PHL, POL, PRT, PRY, ROU, RWA, SEN, SLV, SUR, SVK, SWE, TGO, THA, TUR, UGA, URY, ZAF}{
-  \input{../2_Tables/3c_OLS_Logit_combined/Table_CF_CI_UL20_\country}
-}
+% \foreach \country in {ARG, ARM, BEL, BEN, BFA,
+% BGD, BGR, BOL, BRA, BRB, CHL, %CIV,
+%  COL, CRI, CYP, CZE, DEU, DNK, DOM, ECU, ESP, EST, ETH, FIN, FRA, GHA, GRC, GTM,
+%  HRV, HUN, IDN, IND, IRL, IRQ, ISR, ITA, KEN, KHM, LBR, LTU, LUX, LVA, MAR, MDV, MEX, MLI, MMR, MNG, MWI, NER, NGA,  NIC, NLD, NOR, PAK, PER, PHL, POL, PRT, PRY, ROU, RWA, SEN, SLV, SUR, SVK, SWE, TGO, THA, TUR, UGA, URY, ZAF}{
+%   \input{../2_Tables/3c_OLS_Logit_combined/Table_CF_CI_UL20_\country}
+% }
 
-\clearpage
+% \clearpage
 
 \input{../2_Tables/Table_Vertical_Horizontal} \label{tab:A7}
 
