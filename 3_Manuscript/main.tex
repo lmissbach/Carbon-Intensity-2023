@@ -173,7 +173,7 @@ We derive total sectoral output ($\sum_{i} C_{i,s,r}$), direct ($E_{s}^{direct}$
 \end{equation}
 
 The GTAP database includes information on direct $CO_{2}$-emissions $E_{s}^{direct}$. It captures $CO_{2}$-emissions resulting from household-level use of fossil fuels, such as gasoline, natural gas, LPG or hard coal.
-Our resulting dataset contains information on the carbon intensity of output $e_{s,r}$ for 65 sectors \textit{s}, 141 countries \textit{r} \footnote{We show country- and sector-level carbon intensities in Appendix Figures \ref{fig:B1} to \ref{fig:B4}.}.
+Our resulting dataset contains information on the carbon intensity of output $e_{s,r}$ for 65 sectors \textit{s}, 160 countries \textit{r} \footnote{We show country- and sector-level carbon intensities in Appendix Figures \ref{fig:B1} to \ref{fig:B4}.}.
 
 \begin{itemize}
     \item Methodological discussion and shortcomings (brief)
@@ -189,7 +189,7 @@ Figure \ref{fig:fig_1} displays the distribution of carbon intensity of consumpt
 
 \begin{figure}[ht!]
     \centering
-    \includegraphics{Figure 1/Figure_1}
+    \includegraphics{Figure 1/Figure_1_2017}
     \caption{Vertical differences and distribution of carbon intensity within poorest quintiles}
     \label{fig:fig_1}
     \begin{subcaption}
@@ -215,11 +215,11 @@ The horizontal distribution coefficient $\overline{H_{r}}$ compares within-quint
 
 $\widehat{H_{r}}>1$ ($\widehat{H_{r}}<1$) would indicate that within-quintile differences are larger (smaller) among poorer compared to richer households.
 
-Figure \ref{fig:fig_2} illustrates that the average carbon intensity of consumption is larger among the poorest quintile in 52 out of 87 countries compared to the richest quintile. These countries have a higher GDP per capita than others: We observe $\widehat{V_{r}}>1$ for 25 out of 25 countries in our sample with the highest GDP per capita. In these countries, climate policies (such as carbon pricing) are likely to have regressive effects. Similarly, carbon intensity is higher for richer quintiles compared to poorer quintiles ($\widehat{V_{r}}>1$ ) in 21 out of 25 countries in our sample with the lowest GDP per capita. This is in line with inverse-U-shaped Engel curves for carbon-intensive goods and services across countries and income quintiles \autocite{Dorband.2019}. %Interestingly, this does not necessarily hold in each single country.
+Figure \ref{fig:fig_2} illustrates that the average carbon intensity of consumption is larger among the poorest quintile in 43 out of 87 countries compared to the richest quintile. These countries have a higher GDP per capita than others: We observe $\widehat{V_{r}}>1$ for 20 out of 20 countries in our sample with the highest GDP per capita. In these countries, climate policies (such as carbon pricing) are likely to have regressive effects. Similarly, carbon intensity is higher for richer quintiles compared to poorer quintiles ($\widehat{V_{r}}>1$ ) in 18 out of 20 countries in our sample with the lowest GDP per capita. This is in line with inverse-U-shaped Engel curves for carbon-intensive goods and services across countries and income quintiles \autocite{Dorband.2019}. %Interestingly, this does not necessarily hold in each single country.
 
 \begin{figure}[ht!]
     \centering
-    \includegraphics{Figure 2/Figure_2}
+    \includegraphics{Figure 2/Figure_2_2017}
     \caption{Vertical and horizontal distribution coefficient}
     \label{fig:fig_2}
     \begin{subcaption}
@@ -227,7 +227,7 @@ Figure \ref{fig:fig_2} illustrates that the average carbon intensity of consumpt
     \end{subcaption}
 \end{figure}
 
-In 59 out of 87 countries, within-quintile variation (expressed as the difference between the $5^{th}$ and the $95^{th}$ quantile within quintiles) is larger in the poorest quintile compared to the richest quintile. Horizontal differences, i.e., within-quintile heterogeneity, exceeds vertical differences, i.e., between-quintile heterogeneity in 65 countries, emphasizing the need for detailed investigation of household characteristics associated to higher levels of carbon intensity of consumption.
+In 58 out of 87 countries, within-quintile variation (expressed as the difference between the $5^{th}$ and the $95^{th}$ quantile within quintiles) is larger in the poorest quintile compared to the richest quintile. Horizontal differences, i.e., within-quintile heterogeneity, exceeds vertical differences, i.e., between-quintile heterogeneity in 66 countries, emphasizing the need for detailed investigation of household characteristics associated to higher levels of carbon intensity of consumption.
 
 In response, one core assumption of this study is that $e_{i}$, the carbon intensity of household \textit{i}, correlates with observable household characteristics $X_{i}^{'}$:
 
@@ -246,7 +246,7 @@ Deploying BRT serves the purpose of our analysis, because it is a priori ambiguo
 
 We build BRT-models on the country-level to investigate characteristics associated to heterogeneous levels of carbon intensities within single countries. The carbon intensity $e_{i}$ is the outcome variable. For each country-level model we use the entire set of observable household-level characteristics $X_{i}^{'}$ as possible features and perform several feature engineering steps (see also Appendix \ref{sec:featureengineering}).
 
-The predictive performance of BRT-models critically hinges on several hyperparameters. For hyperparameter tuning, we randomly split country-level data into a training and a test sample, comprising 75\% and 25\% of observations, respectively. We use five-fold cross-validation on the training dataset to fit 1,000 trees - following the recommendations by \textcite{Elith.2008} - along with 16 different combinations of learning rate ($\eta \in [0.001,0.3]$), the maximum depth of trees (\textit{max\_depth} $\in \{x \in \mathbb{N} \mid 1  \leq x \leq 15 \}$) and a fraction of possible features included in each tree (\textit{mtry} $\in \{0.5,0.7,1\}$). For each country, we select the combination of hyperparamters that minimizes mean absolute error.
+The predictive performance of BRT-models critically hinges on several hyperparameters. For hyperparameter tuning, we randomly split country-level data into a training and a test sample, comprising 75\% and 25\% of observations, respectively. We use five-fold cross-validation on the training dataset to fit 1,000 trees - following the recommendations by \textcite{Elith.2008} - along with 30 different combinations of learning rate ($\eta \in [0.001,0.3]$), the maximum depth of trees (\textit{max\_depth} $\in \{x \in \mathbb{N} \mid 1  \leq x \leq 15 \}$) and a fraction of possible features included in each tree (\textit{mtry} $\in \{0.5,0.7,1\}$). For each country, we select the combination of hyperparamters that minimizes mean absolute error.
 
 Building on selected hyperparameters, we use five-fold cross-validation on all observations, i.e., from the training and test set, for model evaluation. We evaluate model performance with the help of mean absolute error (MAE), root mean squared error (RMSE) and $R^{2}$. We also use all observations to evaluate the relative importance of each feature with the help of SHAP-values \autocite{Lundberg.2020}: SHAP-values represent the contribution of each feature to each individual prediction and have recently been proposed as a more suitable means to interpret outcomes of machine learning models compared to other approaches. We also determine feature importance by calculating the average absolute SHAP-value for each feature across all individual predictions. We show feature importance as a share of contribution (in \% of total mean absolute SHAP-values) to allow for better comparability of feature importance across countries. We visualize the distribution of SHAP-values for the most important features in each country over feature values, i.e., in partial dependence plots. 
 
@@ -540,7 +540,7 @@ Tau proportionaler Faktor. Ausdruck in \% as $\frac{USD_{\tau}}{USD_{i}}$ or in 
 \begin{figure}[ht!]
   \centering
   \caption{Sectoral carbon intensities from GTAP - Part A} \label{fig:B1}
-  \includegraphics{Analysis_Carbon_Intensities_GTAP/Figure_2.1.1_A}
+  \includegraphics{Analysis_Carbon_Intensities_GTAP/Figure_2.1.1_A_2017}
   \begin{subcaption}
     This figure displays...
   \end{subcaption}
@@ -552,7 +552,7 @@ Tau proportionaler Faktor. Ausdruck in \% as $\frac{USD_{\tau}}{USD_{i}}$ or in 
 \begin{figure}[ht!]
   \centering
   \caption{Sectoral carbon intensities from GTAP - Part B} \label{fig:B2}
-  \includegraphics{Analysis_Carbon_Intensities_GTAP/Figure_2.1.1_B}
+  \includegraphics{Analysis_Carbon_Intensities_GTAP/Figure_2.1.1_B_2017}
   \begin{subcaption}
     This figure displays...
   \end{subcaption}
@@ -564,7 +564,7 @@ Tau proportionaler Faktor. Ausdruck in \% as $\frac{USD_{\tau}}{USD_{i}}$ or in 
 \begin{figure}[ht!]
   \centering
   \caption{Sectoral carbon intensities from GTAP - Part C} \label{fig:B3}
-  \includegraphics{Analysis_Carbon_Intensities_GTAP/Figure_2.1.1_C}
+  \includegraphics{Analysis_Carbon_Intensities_GTAP/Figure_2.1.1_C_2017}
   \begin{subcaption}
     This figure displays...
   \end{subcaption}
@@ -576,7 +576,7 @@ Tau proportionaler Faktor. Ausdruck in \% as $\frac{USD_{\tau}}{USD_{i}}$ or in 
 \begin{figure}[ht!]
   \centering
   \caption{Sectoral carbon intensities from GTAP - Part D} \label{fig:B4}
-  \includegraphics{Analysis_Carbon_Intensities_GTAP/Figure_2.1.1_D}
+  \includegraphics{Analysis_Carbon_Intensities_GTAP/Figure_2.1.1_D_2017}
   \begin{subcaption}
     This figure displays...
   \end{subcaption}
