@@ -166,7 +166,7 @@ We also include socio-demographic information about household members (such as e
     e_{s,r} = \frac{E_{s,r}^{direct}+E_{s,r}^{indirect}}{\sum_{i} C_{i,s,r}}
 \end{equation}
 
-We derive total sectoral output ($\sum_{i} C_{i,s,r}$), direct ($E_{s}^{direct}$) and indirect ($E_{s}^{indirect}$) $CO_{2}$-emissions from and with the help of multi-regional input-output (MRIO) data. This approach is popular in the literature as it accommodates trade flows between different countries and regions, but features sufficient detail for high sectoral resolution. We build on trade data from the GTAP database (Version 11,  \textcite{Aguiar.2022}) which we transform to MRIO data \autocite{Peters.2011} capturing input-output relationships between 65 sectors \textit{s} in 160 countries \textit{r}. We subsequently compute the \textit{Leontief}-inverse $L_{r',s'}^{r,s}$ that gives information about required inputs from each sector \textit{s'} and region \textit{r'} for production of one unit of output in each sector \textit{s} and region \textit{r}. We derive indirect $CO_{2}$-emissions $E_{s}^{indirect}$ as follows\footnote{See \textcite{Missbach.2023b, Steckel.2021b,Feindt.2021,VogtSchilb.2019} or REF for a detailed description of this approach.} \footnote{Simulation of different sectoral policies is possible through exclusion of different sectors \textit{s} or countries \textit{r}. In our main analysis we focus on national carbon intensities, i.e., how many emissions resulting from production in each country can be attributed to one unit of output. This would be equivalent to zero carbon intensities of imported products, but re-imported emissions would be included.}:
+We derive total sectoral output ($\sum_{i} C_{i,s,r}$), direct ($E_{s}^{direct}$) and indirect ($E_{s}^{indirect}$) $CO_{2}$-emissions from and with the help of multi-regional input-output (MRIO) data. This approach is popular in the literature as it accommodates trade flows between different countries and regions, but features sufficient detail for high sectoral resolution. We build on trade data from the GTAP database (Version 11,  \textcite{Aguiar.2022}) which we transform to MRIO data \autocite{Peters.2011} capturing input-output relationships between 65 sectors \textit{s} in 160 countries \textit{r} for the year 2017. We subsequently compute the \textit{Leontief}-inverse $L_{r',s'}^{r,s}$ that gives information about required inputs from each sector \textit{s'} and region \textit{r'} for production of one unit of output in each sector \textit{s} and region \textit{r}. We derive indirect $CO_{2}$-emissions $E_{s}^{indirect}$ as follows\footnote{See \textcite{Missbach.2023b, Steckel.2021b,Feindt.2021,VogtSchilb.2019} or REF for a detailed description of this approach.} \footnote{Simulation of different sectoral policies is possible through exclusion of different sectors \textit{s} or countries \textit{r}. In our main analysis we focus on national carbon intensities, i.e., how many emissions resulting from production in each country can be attributed to one unit of output. This would be equivalent to zero carbon intensities of imported products, but re-imported emissions would be included.}:
 
 \begin{equation}
     E_{s}^{indirect} = \sum_{r'} \sum_{s'} e_{r',s'} L_{r',s'}^{r,s} C_{s}
@@ -193,11 +193,11 @@ Figure \ref{fig:fig_1} displays the distribution of carbon intensity of consumpt
     \caption{Vertical differences and distribution of carbon intensity within poorest quintiles}
     \label{fig:fig_1}
     \begin{subcaption}
-    Boxplots display the distribution of household-level carbon intensity within the poorest quintile in each of 87 countries: The boxes display the $25^{th}$ and $75^{th}$ percentile; whiskers display the $5^{th}$ and $95^{th}$ percentile, respectively. Rhombuses display the mean. Blue bars represent the vertical difference in household-level carbon intensity, i.e., the difference between the highest and the lowest median carbon intensity across quintiles.
+    Boxplots display the distribution of household-level carbon intensity within the poorest quintile in each of 87 countries: The boxes display the $25^{th}$ and $75^{th}$ percentile; whiskers display the $5^{th}$ and $95^{th}$ percentile, respectively. Rhombuses display the mean. Blue and red bars represent the vertical difference in household-level carbon intensity, i.e., the difference between the highest and the lowest median carbon intensity across quintiles. Blue (red) bars represent indicate that the average carbon intensity is higher (lower) in richer households compared to poorer households.
     \end{subcaption}
 \end{figure}
 
-Figure \ref{fig:fig_1} illustrates that within-quintile heterogeneity exceeds between-quintile differences in \textit{all} countries\footnote{See FIGURE REF MISSING for country-level comparisons across all expenditure quintiles.}. This underlines that analyses building on differences in income to explain differences in carbon intensity of consumption (or the impact of climate policy) might be insufficient since it falls short of accounting for differences in carbon intensity at similar levels of income. Instead, we propose including household-level characteristics beyond income in such analyses to give a more nuanced description of which households' consumption is especially carbon-intensive.
+Figure \ref{fig:fig_1} illustrates that within-quintile heterogeneity exceeds between-quintile differences in \textit{all} countries\footnote{See Figures \ref{fig:Quint_A} to \ref{fig:Quint_C} for country-level comparisons across all expenditure quintiles.}. This underlines that analyses building on differences in income to explain differences in carbon intensity of consumption (or the impact of climate policy) might be insufficient since it falls short of accounting for differences in carbon intensity at similar levels of income. Instead, we propose including household-level characteristics beyond income in such analyses to give a more nuanced description of which households' consumption is especially carbon-intensive.
 
 This is also warranted, because - as we show in Figure \ref{fig:fig_2} - within-quintile differences are different across quintiles. To facilitate comparison across countries, we compute two coefficients \autocite{Missbach.2023b}: The vertical distribution coefficient $\overline{V_{r}}$ compares median carbon intensity of the poorest and the richest expenditure quintile:
 
@@ -272,7 +272,7 @@ Estimating a logit-model serves as a robustness check for results from BRT-model
 
 Building on (adjusted) feature importance for each country, we use k-means clustering algorithm to learn more about which characteristics are more important in many countries. If features are missing in the data, we assume its share of contribution is zero. We normalize all variables to allow for comparison across variables. If one feature is more (less) important in one country compared to all other countries, the processed feature value will be relatively high (low). If one feature is equally important across all countries, processed feature values will be close to zero.
 
-K-means clustering is an unsupervised machine-learning method and helps to analyze clusters of observations that are most similar in many variables within each cluster and least similar in many variables across clusters \autocite{MacQueen.1967}. We inspect the optimal number of clusters with the help of average silhouette widths \autocite{Rousseeuw.1987} for each cluster \textit{k}. The silhouette width $s_{i}$ accounts for the average distance of each observation \textit{i} to all other observations within its cluster and for the average distance to observations from the nearest neighbouring cluster. Silhouettes closer to $1$ indicate a good fit of an observation to its cluster and silhouettes closer to $-1$ indicate a poor fit. The average silhouette width $\overline{s_{k}}$ for each cluster \textit{k} expresses how well all observations fit on average to each cluster. Our approach yields $k = 3$ to be the number of clusters maximizing average silhouette width\footnote{See Figures\ref{fig:G1_silhouette} and \ref{fig:G2_silhouette} for visualization.}. We also show the optimal number of clusters ($k = 19$) for k-means clustering building on non-adjusted feature importance in the Appendix\footnote{See Figures \ref{fig:G3_silhouette_2} and \ref{fig:G4_silhouette_2}.}.
+K-means clustering is an unsupervised machine-learning method and helps to analyze clusters of observations that are most similar in many variables within each cluster and least similar in many variables across clusters \autocite{MacQueen.1967}. We inspect the optimal number of clusters ($\{k \in \mathbb{N} \mid 2  \leq k \leq 20 \}$) with the help of average silhouette widths \autocite{Rousseeuw.1987} for each cluster \textit{k}. The silhouette width $s_{i}$ accounts for the average distance of each observation \textit{i} to all other observations within its cluster and for the average distance to observations from the nearest neighbouring cluster. Silhouettes closer to $1$ indicate a good fit of an observation to its cluster and silhouettes closer to $-1$ indicate a poor fit. The average silhouette width $\overline{s_{k}}$ for each cluster \textit{k} expresses how well all observations fit on average to each cluster. Our approach yields $k = 9$ to be the number of clusters maximizing average silhouette width\footnote{See Figures\ref{fig:G1_silhouette} and \ref{fig:G2_silhouette} for visualization.}. We also show the optimal number of clusters ($k = 15$) for k-means clustering building on non-adjusted feature importance in the Appendix\footnote{See Figures \ref{fig:G3_silhouette_2} and \ref{fig:G4_silhouette_2}.}.
 
 For each country-cluster, we compute average values for each feature to allow for investigation of differences between countries in different clusters. We also investigate which country is most likely to all other countries in each cluster maximizing silhouette width within each cluster and use it to demonstrate cluster-level characteristics. It is important to note that our approach to adjust feature values for total model performance reduces in the influence of feature availability in the data for clustering. Uncorrected feature importance values may be exaggerated, if only few features exist, so countries with few features may end up in wrong clusters simply because the model cannot help explaining much of the variation in carbon intensity. Instead, our approach ensures that all \textit{observable} features contribute to clustering. Despite many structurally unobservable household-level features, our approach might be warranted under the assumption that policy formulation (for example on optimal targeting of compensation measures) can naturally only center on observable characteristics, if targeting errors should be minimized.
 
@@ -305,7 +305,7 @@ The largest cluster comprises 14 countries (including USA, Germany and Italy)
     \caption{Average feature importance across country clusters}
     \label{fig:fig_3}
     \begin{subcaption}
-    This figure shows the average importance of features (in normalized absolute average SHAP-values) across all countries from each cluster A to N. Colors express the average importance of features in a cluster in comparison to other clusters. Blue (red) colors indicate that a feature is relatively less (more) important on average in a cluster compared to all other clusters. 'Sociodemographic' comprises normalized absolute average SHAP values for features such as ethnicity, nationality, religion or language.
+    This figure shows the average importance of features (in normalized absolute average SHAP-values) across all countries from each cluster A to I. Colors express the average importance of features in a cluster in comparison to other clusters. Blue (red) colors indicate that a feature is relatively less (more) important on average in a cluster compared to all other clusters. 'Sociodemographic' comprises normalized absolute average SHAP values for features such as ethnicity, nationality, religion or language.
     For horizontal inequality, blue (red) colors indicate a lower (higher) heterogeneity within the first income quintile compared to the fifth income quintile. For vertical inequality, blue (red) colors indicate lower (higher) median carbon intensity among the first income quintile compared to the fifth income quintile. For average $CO_{2}$-intensity, blue (red) colors indicate a lower (higher) average carbon intensity across clusters. We assign countries to 14 clusters performing k-means clustering. We also show all values in Table \ref{tab:A9}.
     \end{subcaption}
 \end{figure}
@@ -333,7 +333,7 @@ Sociodemographic features are the most important feature in four countries.
     \begin{subcaption}
     This figure shows the importance of features (in normalized average absolute SHAP-values) for each country, grouped by country clusters. Blue (red) colors indicate that a feature is relatively less (more) important in a country compared to all other countries. 'Sociodemographic' comprises normalized absolute SHAP-values for features such as ethnicity, nationality, religion or language.
     For horizontal inequality, blue (red) colors indicate a lower (higher) heterogeneity within the first income quintile compared to the fifth income quintile. For vertical inequality, blue (red) colors indicate lower (higher) median carbon intensity among the first income quintile compared to the fifth income quintile. For average $CO_{2}$-intensity, blue (red) colors indicate a lower (higher) average carbon intensity across all countries.
-    We assign countries to 14 clusters performing k-means clustering based on scaled values across all features. We also show all values in Table \ref{tab:A10}.
+    We assign countries to 9 clusters performing k-means clustering based on scaled values across all features. We also show all values in Table \ref{tab:A10}.
     \end{subcaption}
 \end{figure}
 
@@ -345,7 +345,7 @@ Sociodemographic features are the most important feature in four countries.
     \begin{subcaption}
     This figure shows the importance of features (in normalized average absolute SHAP-values) for each country, grouped by country clusters. Blue (red) colors indicate that a feature is relatively less (more) important in a country compared to all other countries. 'Sociodemographic' comprises normalized absolute SHAP-values for features such as ethnicity, nationality, religion or language.
     For horizontal inequality, blue (red) colors indicate a lower (higher) heterogeneity within the first income quintile compared to the fifth income quintile. For vertical inequality, blue (red) colors indicate lower (higher) median carbon intensity among the first income quintile compared to the fifth income quintile. For average $CO_{2}$-intensity, blue (red) colors indicate a lower (higher) average carbon intensity across all countries.
-    We assign countries to 14 clusters performing k-means clustering based on scaled values across all features. We also show all values in Table \ref{tab:A10}.
+    We assign countries to 9 clusters performing k-means clustering based on scaled values across all features. We also show all values in Table \ref{tab:A10}.
     \end{subcaption}
 \end{figure}
 
@@ -354,30 +354,30 @@ Sociodemographic features are the most important feature in four countries.
 \begin{figure}[ht!]
     \centering
     \includegraphics[width=15.5 cm]{Figure 5/Figures_joint_1}
-    \caption{Partial dependence plots (SHAP) for one country in clusters A to E}
+    \caption{Partial dependence plots (SHAP) for one country in clusters A to C}
     \label{fig:fig_5_1}
     \begin{subcaption}
-    This figure shows SHAP-values for predicting carbon intensity over feature values for one representative country in each country-cluster in rows. All values are from the testing set. The bar chart displays normalized average absolute SHAP-values for all features. Features with less than 3\% of normalized SHAP-values are subsumed as "Other features (Sum)". Charts show SHAP-values over total household expenditures for all countries and for the three most important features in each country besides total household expenditures. Colors represent household expenditures with blue (red) colors indicating lower (higher) household expenditures. See also Appendix REF to REF.
+    This figure shows SHAP-values for predicting carbon intensity over feature values for one representative country in each country-cluster in rows. The bar chart displays normalized average absolute SHAP-values for all features. Features with less than 3\% of normalized SHAP-values are subsumed as "Other features (Sum)". Charts show SHAP-values over total household expenditures for all countries and for the three most important features in each country besides total household expenditures. Colors represent household expenditures with blue (red) colors indicating lower (higher) household expenditures. See also Appendix REF to REF.
     \end{subcaption}
 \end{figure}
 
 \begin{figure}[ht!]
     \centering
     \includegraphics[width=15.5 cm]{Figure 5/Figures_joint_2}
-    \caption{Partial dependence plots (SHAP) for one country in clusters F to J}
+    \caption{Partial dependence plots (SHAP) for one country in clusters D to F}
     \label{fig:fig_5_2}
     \begin{subcaption}
-    This figure shows SHAP-values for predicting carbon intensity over feature values for one representative country in each country-cluster in rows. All values are from the testing set. The bar chart displays normalized average absolute SHAP-values for all features. Features with less than 3\% of normalized SHAP-values are subsumed as "Other features (Sum)". Charts show SHAP-values over total household expenditures for all countries and for the three most important features in each country besides total household expenditures. Colors represent household expenditures with blue (red) colors indicating lower (higher) household expenditures. See also Appendix REF to REF
+    This figure shows SHAP-values for predicting carbon intensity over feature values for one representative country in each country-cluster in rows. The bar chart displays normalized average absolute SHAP-values for all features. Features with less than 3\% of normalized SHAP-values are subsumed as "Other features (Sum)". Charts show SHAP-values over total household expenditures for all countries and for the three most important features in each country besides total household expenditures. Colors represent household expenditures with blue (red) colors indicating lower (higher) household expenditures. See also Appendix REF to REF
     \end{subcaption}
 \end{figure}
 
 \begin{figure}[ht!]
     \centering
     \includegraphics[width=15.5 cm]{Figure 5/Figures_joint_3}
-    \caption{Partial dependence plots (SHAP) for one country in clusters K to N}
+    \caption{Partial dependence plots (SHAP) for one country in clusters G to I}
     \label{fig:fig_5_3}
     \begin{subcaption}
-    This figure shows SHAP-values for predicting carbon intensity over feature values for one representative country in each country-cluster in rows. All values are from the testing set. The bar chart displays normalized average absolute SHAP-values for all features. Features with less than 3\% of normalized SHAP-values are subsumed as "Other features (Sum)". Charts show SHAP-values over total household expenditures for all countries and for the three most important features in each country besides total household expenditures. Colors represent household expenditures with blue (red) colors indicating lower (higher) household expenditures. See also Appendix REF to REF.
+    This figure shows SHAP-values for predicting carbon intensity over feature values for one representative country in each country-cluster in rows. The bar chart displays normalized average absolute SHAP-values for all features. Features with less than 3\% of normalized SHAP-values are subsumed as "Other features (Sum)". Charts show SHAP-values over total household expenditures for all countries and for the three most important features in each country besides total household expenditures. Colors represent household expenditures with blue (red) colors indicating lower (higher) household expenditures. See also Appendix REF to REF.
     \end{subcaption}
 \end{figure}
 
@@ -577,6 +577,44 @@ Tau proportionaler Faktor. Ausdruck in \% as $\frac{USD_{\tau}}{USD_{i}}$ or in 
   \centering
   \caption{Sectoral carbon intensities from GTAP - Part D} \label{fig:B4}
   \includegraphics{Analysis_Carbon_Intensities_GTAP/Figure_2.1.1_D_2017}
+  \begin{subcaption}
+    This figure displays...
+  \end{subcaption}
+
+\end{figure}
+
+\clearpage
+
+% Boxplots over quintiles
+
+\begin{figure}[ht!]
+  \centering
+  \caption{Distribution of carbon intensities over expenditure quintiles - Part A} \label{fig:Quint_A}
+  \includegraphics{1_Figures/Figures_Appendix/Figure_1_2017_Appendix_1}
+  \begin{subcaption}
+    This figure displays...
+  \end{subcaption}
+
+\end{figure}
+
+\clearpage
+
+\begin{figure}[ht!]
+  \centering
+  \caption{Distribution of carbon intensities over expenditure quintiles - Part B} \label{fig:Quint_B}
+  \includegraphics{1_Figures/Figures_Appendix/Figure_1_2017_Appendix_2}
+  \begin{subcaption}
+    This figure displays...
+  \end{subcaption}
+
+\end{figure}
+
+\clearpage
+
+\begin{figure}[ht!]
+  \centering
+  \caption{Distribution of carbon intensities over expenditure quintiles - Part C} \label{fig:Quint_C}
+  \includegraphics{1_Figures/Figures_Appendix/Figure_1_2017_Appendix_3}
   \begin{subcaption}
     This figure displays...
   \end{subcaption}
