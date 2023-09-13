@@ -3256,8 +3256,8 @@ P_6.2.5.1 <- ggplot(data_6.2.5.1)+
   xlab("Number of clusters (k)")+
   ylab("Average silhouette width")+
   coord_cartesian(ylim = c(min(data_6.2.5.1$silhouette_0)*0.8, 0.23),
-                  xlim = c(0,40.5))+
-  scale_x_continuous(expand = c(0,0), breaks = seq(0,41,5), minor_breaks = seq(0,41,1))+
+                  xlim = c(0,20.5))+
+  scale_x_continuous(expand = c(0,0), breaks = seq(0,20,5), minor_breaks = seq(0,20,1))+
   scale_y_continuous(expand = c(0,0.01))+
   theme_bw()+
   ggtitle("Silhouette plot (non-corrected)")+
@@ -3268,7 +3268,7 @@ P_6.2.5.1 <- ggplot(data_6.2.5.1)+
         legend.position = "bottom",
         # strip.text = element_text(size = 7),
         #strip.text.y = element_text(angle = 180),
-        panel.grid.minor = element_blank(),
+        # panel.grid.minor = element_blank(),
         axis.ticks = element_line(size = 0.2),
         legend.text = element_text(size = 7),
         legend.title = element_text(size = 7),
@@ -3284,8 +3284,8 @@ P_6.2.5.2 <- ggplot(data_6.2.5.2)+
   xlab("Number of clusters (k)")+
   ylab("Average silhouette width")+
   coord_cartesian(ylim = c(min(data_6.2.5.2$silhouette_0)*0.8, 0.23),
-                  xlim = c(0,40.5))+
-  scale_x_continuous(expand = c(0,0), breaks = seq(0,41,5), minor_breaks = seq(0,41,1))+
+                  xlim = c(0,20.5))+
+  scale_x_continuous(expand = c(0,0), breaks = seq(0,20,5), minor_breaks = seq(0,20,1))+
   scale_y_continuous(expand = c(0,0.01))+
   theme_bw()+
   ggtitle("Silhouette plot")+
@@ -3296,7 +3296,7 @@ P_6.2.5.2 <- ggplot(data_6.2.5.2)+
         legend.position = "bottom",
         # strip.text = element_text(size = 7),
         #strip.text.y = element_text(angle = 180),
-        panel.grid.minor = element_blank(),
+        #panel.grid.minor = element_blank(),
         axis.ticks = element_line(size = 0.2),
         legend.text = element_text(size = 7),
         legend.title = element_text(size = 7),
@@ -7092,12 +7092,12 @@ data_8.5.1 <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_SH
   group_by(number_ob, fold)%>%
   mutate(test = cumsum(share_SHAP)-0.00000001)%>%
   ungroup()%>%
-  arrange(Country)%>%
-  mutate(test2 = ceiling(test))%>%
-  group_by(number_ob, fold)%>%
-  filter(test2 == max(test2))%>%
-  ungroup()%>%
-  # group_by(Country)%>%
+  # arrange(Country)%>%
+  # mutate(test2 = ceiling(test))%>%
+  # group_by(number_ob, fold)%>%
+  # filter(test2 == max(test2))%>%
+  # ungroup()%>%
+  # group_by(Country, fold)%>%
   # mutate(test3 = sum(share_SHAP))%>%
   # ungroup()
   select(Country, Var_0, share_SHAP, fold)%>%
@@ -7105,6 +7105,11 @@ data_8.5.1 <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_SH
   pivot_longer(c(-Country, -fold), names_to = "Var_0", values_to = "share_SHAP")%>%
   group_by(Country, Var_0)%>%
   summarise(share_SHAP = mean(share_SHAP))%>%
+  ungroup()%>%
+  # Because of folds, some variables have values lower than 3%
+  mutate(Var_0 = ifelse(share_SHAP < 0.03 & share_SHAP > 0, "Other features (Sum)", Var_0))%>%
+  group_by(Country, Var_0)%>%
+  summarise(share_SHAP = sum(share_SHAP))%>%
   ungroup()%>%
   arrange(Country)%>%
   mutate(order = ifelse(Var_0 == "Other features (Sum)", n(), 1))%>%
@@ -7202,7 +7207,7 @@ for (i in c(data_8.5.2.C$Country)){
       theme(axis.text.y = element_text(size = 6), 
             axis.text.x = element_text(size = 6),
             axis.title  = element_text(size = 7),
-            plot.title = element_text(size = 11),
+            plot.title = element_text(size = 9),
             plot.title.position = "plot",
             legend.position = "bottom",
             # strip.text = element_text(size = 7),
@@ -7371,7 +7376,7 @@ for (i in c(data_8.5.2.C$Country)){
         
         if(j == "LF"){
           data_8.5.2.2 <- data_8.5.2.2 %>%
-            mutate(Variable = ifelse((Variable %in% c("Firewood", "Gas", "Other biomass")) & SHAP == 0, "Other lighting", Variable))
+            mutate(Variable = ifelse((Variable %in% c("Firewood", "Gas", "Other biomass")) & SHAP == 0 | i == "ETH" & Variable == "other", "Other lighting", Variable))
         }
         
         if(j == "CF"){
@@ -7400,7 +7405,7 @@ for (i in c(data_8.5.2.C$Country)){
             filter(Variable < 6)
         }
         
-        text_size_0 <- if(j %in% c("CF", "HF")){text_size_0 <- 5}else{text_size_0 <- 6}
+        text_size_0 <- if(j %in% c("CF", "HF", "LF")){text_size_0 <- 5}else{text_size_0 <- 6}
         
         P_8.5.2.2 <- ggplot(data_8.5.2.2)+
           geom_hline(aes(yintercept = 0))+
