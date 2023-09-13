@@ -23,6 +23,11 @@
 \usepackage{xtab}
 \usepackage{hyperref}
 
+\hypersetup{
+    pdftitle={Heterogeneity in carbon intensity of consumption},
+    pdfpagemode=FullScreen,
+}
+
 \maxdeadcycles = 1000
 
 % everything concerning biblatex
@@ -57,7 +62,7 @@
 
 \title{Heterogeneity in carbon intensity of consumption}
 %\author{Leonard Missbach\thanks{Mercator Research Institute on Global Commons and Climate Change, Berlin, Germany; Department Economics of Climate Change, Technische Universität Berlin, Berlin, Germany}}
-\date{August 2023}
+\date{September 2023}
 
 \begin{document}
 
@@ -152,7 +157,7 @@ Survey datasets are eligible for inclusion in our study, if they cover a nationa
 
 Beyond expenditure shares, we include total household expenditures as a surrogate for household income data because total consumption expenditures are a meaningful proxy for lifetime income \autocite{Poterba.1989,JamesM.Poterba.2016} and because wage data from such surveys are often unreliable \autocite{Blundell.1998}. See also \textcite{Levay.2023} for a discussion about differences between using expenditures or income data in the context of calculating carbon footprints.
 
-We also include socio-demographic information about household members (such as education, occupation, gender, self-identified ethnicity or age of household representatives), detailed spatial information (such as province, district or village of households) and on energy use (main fuels used for cooking, lighting and heating) or appliance and vehicle ownership. Such household-level information (including total household expenditures) forms a set of variables $X_{i}^{'}$ that allows for analyzing differences between households with different characteristics.
+We also include socio-demographic information about household members (such as education, occupation, gender, self-identified ethnicity or age of household representatives), detailed spatial information (such as province, district or village of households) and on energy use (main fuels used for cooking, lighting and heating) or appliance and vehicle ownership. Such household-level information (including total household expenditures) forms a set of variables $X_{i}^{'}$ that allows for analyzing differences between households with different characteristics\footnote{Table \ref{tab:A1} shows summary statistics for all countries in our sample; Table \ref{tab:A2} shows average household expenditures and average expenditure shares for each expenditure quintile and each country. We also show the share of households using different cooking fuels (Table \ref{tab:A4_CF}), lighting fuels (Table \ref{tab:A5_LF}) and the possession of different major appliances (Table \ref{tab:A6}) for all countries where data is available.}. 
 
 \begin{itemize}
     \item Methodological discussion and shortcomings (brief)
@@ -206,7 +211,7 @@ Figure \ref{fig:fig_1} displays the distribution of carbon intensity of consumpt
     \end{subcaption}
 \end{figure}
 
-Figure \ref{fig:fig_1} illustrates that within-quintile heterogeneity exceeds between-quintile differences in \textit{all} countries\footnote{See Figures \ref{fig:Quint_A} to \ref{fig:Quint_C} for country-level comparisons across all expenditure quintiles.}. This underlines that analyses building on differences in income to explain differences in carbon intensity of consumption (or the impact of climate policy) might be insufficient since it falls short of accounting for differences in carbon intensity at similar levels of income. Instead, we propose including household-level characteristics beyond income in such analyses to give a more nuanced description of which households' consumption is especially carbon-intensive.
+Figure \ref{fig:fig_1} illustrates that within-quintile heterogeneity exceeds between-quintile differences in \textit{all} countries\footnote{See Figures \ref{fig:Quint_A} to \ref{fig:Quint_C} for country-level comparisons across all expenditure quintiles and Table \ref{tab:A3} for summary statistics on carbon footprints and carbon intensity of consumption.}. This underlines that analyses building on differences in income to explain differences in carbon intensity of consumption (or the impact of climate policy) might be insufficient since it falls short of accounting for differences in carbon intensity at similar levels of income. Instead, we propose including household-level characteristics beyond income in such analyses to give a more nuanced description of which households' consumption is especially carbon-intensive.
 
 This is also warranted, because - as we show in Figure \ref{fig:fig_2} - within-quintile differences are different across quintiles. To facilitate comparison across countries, we compute two coefficients \autocite{Missbach.2023b}: The vertical distribution coefficient $\overline{V_{r}}$ compares median carbon intensity of the poorest and the richest expenditure quintile:
 
@@ -302,11 +307,26 @@ It is important to note that our approach to adjust feature values for total mod
 
 \section{Results: Heterogeneity of carbon intensity of consumption} \label{sec:results}
 
+Climate policies can lead to short-term costs distributing unevenly across households. Such costs correspond to the household-level carbon intensity of consumption. Analyzing the importance of different household characteristics for predicting the carbon intensity of households, we show that different characteristics matter in different countries.
+
+
 Building on model outcomes to help identifying factors associated to higher levels of carbon intensity of consumption, we cluster countries which are similar to each other, i.e., in which features are similarly important for model prediction. Figure \ref{fig:fig_3} shows the relative importance of different features across country-clusters. 
 
 %What are important criteria to assign countries to different clusters?
 
-\paragraph{Country clusters}
+\begin{itemize}
+    \item Potentially begin with discussing model fits. How often is the data fitted well?
+    \item Discuss meaningful variables. Go on level of clusters to discuss direction and intuition of effects.
+    \item Discuss country clusters in general and data issues, idiosyncracy. For each country cluster, one could recommend specific policy actions --> going to discussion section
+\end{itemize}
+
+\paragraph{Identifying country clusters}
+
+We identify nine country-clusters based on feature importance for prediction of household-level carbon intensity, the average carbon intensity of households and the vertical and horizontal distribution of countries. Countries within clusters are more similar to each compared to countries in other clusters. Figure \ref{fig:fig_3} shows the relative importance of different features across country-clusters.
+
+The largest cluster A comprises 36 countries (including USA, Canada, Brazil or Germany). In countries of this cluster, our analysis yields more carbon-intensive consumption among relatively poorer households and a larger heterogeneity in carbon intensity among poorer households compared to richer households. 
+
+In contrast, cluster B includes 16 countries (such as India, Bangladesh or Kenya). Here, consumption is more carbon-intensive among richer households and we also find a larger heterogeneity among richer households compared to poorer households. In countries of this cluster, electricity access, cooking fuel use, vehicle ownership and appliance ownership are relatively more important compared to other clusters.
 
 % Write about model fit
 
@@ -1122,23 +1142,27 @@ Tau proportionaler Faktor. Ausdruck in \% as $\frac{USD_{\tau}}{USD_{i}}$ or in 
 
 \subsection{Supplementary tables} \label{sec:tables}
 
-\input{../2_Tables/Table_Summary_A1} \label{tab:A_1}
+\input{../2_Tables/Table_Summary_A1}
 
 \clearpage
 
-\input{../2_Tables/Table_Summary_A2} \label{tab:A_2}
+\input{../2_Tables/Table_Summary_A2}
 
 \clearpage
 
-\input{../2_Tables/Table_Summary_A3} \label{tab:A3}
+\input{../2_Tables/Table_Summary_A3}
 
 \clearpage
 
-\input{../2_Tables/Table_Summary_A4_Cooking_Fuels} \label{tab:A4_CF}
+\input{../2_Tables/Table_Summary_A4_Cooking_Fuels}
 
-\input{../2_Tables/Table_Summary_A4_Lighting_Fuels} \label{tab:A5_LF}
+\clearpage
 
-\input{../2_Tables/Table_Summary_A5_Appliances} \label{tab:A6}
+\input{../2_Tables/Table_Summary_A4_Lighting_Fuels}
+
+\clearpage
+
+\input{../2_Tables/Table_Summary_A5_Appliances}
 
 \clearpage
 
