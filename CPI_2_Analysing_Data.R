@@ -1147,32 +1147,35 @@ print(i)
 
 data_4.5 <- data_2 %>%
   group_by(Country, Income_Group_5)%>%
-  summarise(median_burden_CO2_national = wtd.quantile(burden_CO2_national, probs = 0.5, weights = hh_weights),
-            q95_burden_CO2_national    = wtd.quantile(burden_CO2_national, probs = 0.95, weights = hh_weights),
-            q05_burden_CO2_national    = wtd.quantile(burden_CO2_national, probs = 0.05, weights = hh_weights),
-            q20_burden_CO2_national    = wtd.quantile(burden_CO2_national, probs = 0.20, weights = hh_weights),
-            q80_burden_CO2_national    = wtd.quantile(burden_CO2_national, probs = 0.80, weights = hh_weights))%>%
+  summarise(median_carbon_intensity_kg_per_USD_national = wtd.quantile(carbon_intensity_kg_per_USD_national, probs = 0.5, weights = hh_weights),
+            q95_carbon_intensity_kg_per_USD_national    = wtd.quantile(carbon_intensity_kg_per_USD_national, probs = 0.95, weights = hh_weights),
+            q05_carbon_intensity_kg_per_USD_national    = wtd.quantile(carbon_intensity_kg_per_USD_national, probs = 0.05, weights = hh_weights),
+            q20_carbon_intensity_kg_per_USD_national    = wtd.quantile(carbon_intensity_kg_per_USD_national, probs = 0.20, weights = hh_weights),
+            q80_carbon_intensity_kg_per_USD_national    = wtd.quantile(carbon_intensity_kg_per_USD_national, probs = 0.80, weights = hh_weights))%>%
   ungroup()%>%
   filter(Income_Group_5 == 1 | Income_Group_5 == 5)%>%
-  mutate(dif_q95_q05_burden_CO2_national = q95_burden_CO2_national - q05_burden_CO2_national,
-         dif_q80_q20_burden_CO2_national = q80_burden_CO2_national - q20_burden_CO2_national,)%>%
-  select(Country, Income_Group_5, dif_q95_q05_burden_CO2_national, dif_q80_q20_burden_CO2_national, median_burden_CO2_national)%>%
-  pivot_wider(names_from = Income_Group_5, values_from = c(median_burden_CO2_national, dif_q95_q05_burden_CO2_national, dif_q80_q20_burden_CO2_national))%>%
-  mutate(median_1_5    = median_burden_CO2_national_1/median_burden_CO2_national_5,
-         dif_95_05_1_5 = dif_q95_q05_burden_CO2_national_1/dif_q95_q05_burden_CO2_national_5,
-         dif_80_20_1_5 = dif_q80_q20_burden_CO2_national_1/dif_q80_q20_burden_CO2_national_5)
+  mutate(dif_q95_q05_carbon_intensity_kg_per_USD_national = q95_carbon_intensity_kg_per_USD_national - q05_carbon_intensity_kg_per_USD_national,
+         dif_q80_q20_carbon_intensity_kg_per_USD_national = q80_carbon_intensity_kg_per_USD_national - q20_carbon_intensity_kg_per_USD_national,)%>%
+  select(Country, Income_Group_5, dif_q95_q05_carbon_intensity_kg_per_USD_national, dif_q80_q20_carbon_intensity_kg_per_USD_national, median_carbon_intensity_kg_per_USD_national)%>%
+  pivot_wider(names_from = Income_Group_5, values_from = c(median_carbon_intensity_kg_per_USD_national, dif_q95_q05_carbon_intensity_kg_per_USD_national, dif_q80_q20_carbon_intensity_kg_per_USD_national))%>%
+  mutate(median_1_5    = median_carbon_intensity_kg_per_USD_national_1/median_carbon_intensity_kg_per_USD_national_5,
+         dif_95_05_1_5 = dif_q95_q05_carbon_intensity_kg_per_USD_national_1/dif_q95_q05_carbon_intensity_kg_per_USD_national_5,
+         dif_80_20_1_5 = dif_q80_q20_carbon_intensity_kg_per_USD_national_1/dif_q80_q20_carbon_intensity_kg_per_USD_national_5)
 
 # Table Output
 
 data_4.5.1 <- data_4.5 %>%
-  mutate_at(vars(median_burden_CO2_national_1:dif_q80_q20_burden_CO2_national_5), list(~ label_percent(accuracy = 0.01)(.)))%>%
-  mutate_at(vars(median_1_5:dif_80_20_1_5), list(~ round(.,2)))
+  # mutate_at(vars(median_burden_CO2_national_1:dif_q80_q20_burden_CO2_national_5), list(~ label_percent(accuracy = 0.01)(.)))%>%
+  mutate_at(vars(median_carbon_intensity_kg_per_USD_national_1:dif_80_20_1_5), list(~ round(.,2)))%>%
+  left_join(select(Country.Set, Country, Country_long))%>%
+  select(Country_long, everything(), - Country)%>%
+  arrange(Country_long)
 
 colnames(data_4.5.1) <- c("Country", "$\\overline{AC}_{r}^{1}$", "MAC5", "H1", "H5", "H1A", "H5A", "MAC 1/5", "H 1/5", "H 1/5 A")
 
 kbl(mutate_all(data_4.5.1, linebreak), format = "latex", caption = "Comparing Median Additional Costs (AC) and Horizontal Spread between first and fifth Expenditure Quintile", 
     booktabs = T, align = "l|cc|cccc|ccc", vline = "", linesep = "", longtable = T,
-    col.names = NULL)%>%
+    col.names = NULL, label = "A7")%>%
   kable_styling(position = "center", latex_options = c("HOLD_position", "repeat_header"), font_size = 9)%>%
   add_header_above(c("Country" = 1, 
                      "$\\\\overline{AC}_{r}^{1}$" = 1, 
@@ -1186,7 +1189,7 @@ kbl(mutate_all(data_4.5.1, linebreak), format = "latex", caption = "Comparing Me
                      "$\\\\widehat{H}_{r}^{1*}$" = 1), escape = FALSE, align = "c")%>%
   column_spec(1, width = "2.88 cm")%>%
   column_spec(2:10, width = "1.46 cm")%>%
-  footnote(general = "This table shows the median additional costs from carbon pricing in the first expenditure quintile ($\\\\overline{AC}_{r}^{1}$) and in the fifth quintile ($\\\\overline{AC}_{r}^{5}$). It displays the difference between the 5$^{th}$ (20$^{th}$) and 95$^{th}$ (80$^{th}$) within quintile percentile incidence for the first ($\\\\overline{H}_{r}^{1}$ and $\\\\overline{H}_{r}^{1*}$) and the fifth quintile ($\\\\overline{H}_{r}^{5}$ and $\\\\overline{H}_{r}^{5*}$). It also compares median additional costs from carbon pricing in the first income quintile to that in the fifth quintile ($\\\\hat{AC}$$_{r}^{1}$). Lastly it displays our comparison index faciltiating the comparison of within quintile variation between the first and fifth quintile ($\\\\hat{H}_{r}^{1}$ and $\\\\hat{H}_{r}^{1*}$ respectively).",
+  footnote(general = "This table shows the median carbon intensity in the first expenditure quintile ($\\\\overline{AC}_{r}^{1}$) and in the fifth quintile ($\\\\overline{AC}_{r}^{5}$). It displays the difference between the 5$^{th}$ (20$^{th}$) and 95$^{th}$ (80$^{th}$) within quintile percentile incidence for the first ($\\\\overline{H}_{r}^{1}$ and $\\\\overline{H}_{r}^{1*}$) and the fifth quintile ($\\\\overline{H}_{r}^{5}$ and $\\\\overline{H}_{r}^{5*}$). It also compares median carbon intensity in the first income quintile to that in the fifth quintile ($\\\\hat{AC}$$_{r}^{1}$). Lastly it displays our comparison index faciltiating the comparison of within quintile variation between the first and fifth quintile ($\\\\hat{H}_{r}^{1}$ and $\\\\hat{H}_{r}^{1*}$ respectively).",
            threeparttable = T, escape = FALSE)%>%
   save_kable(., "2_Tables/Table_Vertical_Horizontal.tex")
 
@@ -3067,7 +3070,7 @@ eval_1.3 <- left_join(eval_1.1, eval_1.2)%>%
 colnames(eval_1.3) <- c("Country", "Mean", rep(c("MAE", "RMSE", "$R^{2}$"),1))
 
 kbl(eval_1.3, format = "latex", caption = "Evaluation of boosted regression tree models", booktabs = T, align = "l|r|rrr", vline = "", format.args = list(big.mark = ",", scientific = FALSE), linesep = "",
-    longtable = T, escape = FALSE)%>%
+    longtable = T, escape = FALSE, label = "A8")%>%
   kable_styling(position = "center", latex_options = c("HOLD_position", "repeat_header"), font_size = 8)%>%
   #column_spec(1, width = "3.15 cm")%>%
   # add_header_above(c("Country" = 1, rep(c("MAE", "RMSE", "R^{2}"),3) ))%>%
@@ -6121,20 +6124,20 @@ data_8.2.0 <- read_csv("../0_Data/9_Supplementary Data/WDI/2021_08_17_WDI.csv") 
 
 data_8.2.1 <- data_2 %>%
   group_by(Country, Income_Group_5)%>%
-  summarise(median_burden_CO2_national = wtd.quantile(burden_CO2_national, probs = 0.5, weights = hh_weights),
-            q95_burden_CO2_national    = wtd.quantile(burden_CO2_national, probs = 0.95, weights = hh_weights),
-            q05_burden_CO2_national    = wtd.quantile(burden_CO2_national, probs = 0.05, weights = hh_weights),
-            q20_burden_CO2_national    = wtd.quantile(burden_CO2_national, probs = 0.20, weights = hh_weights),
-            q80_burden_CO2_national    = wtd.quantile(burden_CO2_national, probs = 0.80, weights = hh_weights))%>%
+  summarise(median_carbon_intensity_kg_per_USD_national = wtd.quantile(carbon_intensity_kg_per_USD_national, probs = 0.5, weights = hh_weights),
+            q95_carbon_intensity_kg_per_USD_national    = wtd.quantile(carbon_intensity_kg_per_USD_national, probs = 0.95, weights = hh_weights),
+            q05_carbon_intensity_kg_per_USD_national    = wtd.quantile(carbon_intensity_kg_per_USD_national, probs = 0.05, weights = hh_weights),
+            q20_carbon_intensity_kg_per_USD_national    = wtd.quantile(carbon_intensity_kg_per_USD_national, probs = 0.20, weights = hh_weights),
+            q80_carbon_intensity_kg_per_USD_national    = wtd.quantile(carbon_intensity_kg_per_USD_national, probs = 0.80, weights = hh_weights))%>%
   ungroup()%>%
   filter(Income_Group_5 == 1 | Income_Group_5 == 5)%>%
-  mutate(dif_q95_q05_burden_CO2_national = q95_burden_CO2_national - q05_burden_CO2_national,
-         dif_q80_q20_burden_CO2_national = q80_burden_CO2_national - q20_burden_CO2_national,)%>%
-  select(Country, Income_Group_5, dif_q95_q05_burden_CO2_national, dif_q80_q20_burden_CO2_national, median_burden_CO2_national)%>%
-  pivot_wider(names_from = Income_Group_5, values_from = c(median_burden_CO2_national, dif_q95_q05_burden_CO2_national, dif_q80_q20_burden_CO2_national))%>%
-  mutate(median_1_5    = median_burden_CO2_national_1/median_burden_CO2_national_5,
-         dif_95_05_1_5 = dif_q95_q05_burden_CO2_national_1/dif_q95_q05_burden_CO2_national_5,
-         dif_80_20_1_5 = dif_q80_q20_burden_CO2_national_1/dif_q80_q20_burden_CO2_national_5)%>%
+  mutate(dif_q95_q05_carbon_intensity_kg_per_USD_national = q95_carbon_intensity_kg_per_USD_national - q05_carbon_intensity_kg_per_USD_national,
+         dif_q80_q20_carbon_intensity_kg_per_USD_national = q80_carbon_intensity_kg_per_USD_national - q20_carbon_intensity_kg_per_USD_national,)%>%
+  select(Country, Income_Group_5, dif_q95_q05_carbon_intensity_kg_per_USD_national, dif_q80_q20_carbon_intensity_kg_per_USD_national, median_carbon_intensity_kg_per_USD_national)%>%
+  pivot_wider(names_from = Income_Group_5, values_from = c(median_carbon_intensity_kg_per_USD_national, dif_q95_q05_carbon_intensity_kg_per_USD_national, dif_q80_q20_carbon_intensity_kg_per_USD_national))%>%
+  mutate(median_1_5    = median_carbon_intensity_kg_per_USD_national_1/median_carbon_intensity_kg_per_USD_national_5,
+         dif_95_05_1_5 = dif_q95_q05_carbon_intensity_kg_per_USD_national_1/dif_q95_q05_carbon_intensity_kg_per_USD_national_5,
+         dif_80_20_1_5 = dif_q80_q20_carbon_intensity_kg_per_USD_national_1/dif_q80_q20_carbon_intensity_kg_per_USD_national_5)%>%
   left_join(data_8.2.0, by = c("Country" = "Country.Code"))%>%
   mutate(value = ifelse(Country == "TWN", 20388.2761, value))
   # mutate(interest2 = ifelse(Country %in% c("RWA", "DEU", "ZAF", "USA", "CAN", "MWI", "LBR"),1,0.5))
@@ -7031,7 +7034,8 @@ data_8.4.1 <- read_csv("../0_Data/9_Supplementary Data/BRT-Tracking/Clusters_Nor
   rename(Cluster = cluster)%>%
   mutate_at(vars("Silhouette width":"Appliance own."), ~ round(.,2))%>%
   left_join(select(Country.Set, Country, Country_long))%>%
-  select(Cluster, Country_long, everything(), - Country)
+  select(Cluster, Country_long, everything(), - Country)%>%
+  rename(Country = Country_long)
 
 options(knitr.kable.NA = "")
 
@@ -7059,7 +7063,10 @@ data_8.4.1 <- read_csv("../0_Data/9_Supplementary Data/BRT-Tracking/Clusters_Nor
          "Urban", "Province", "District", "Electricity access", "Cooking fuel",
          "Heating fuel", "Lighting fuel", "Car own.", "Motorcycle own.", "Appliance own.")%>%
   rename(Cluster = cluster)%>%
-  mutate_at(vars("Silhouette width":"Appliance own."), ~ round(.,2))
+  mutate_at(vars("Silhouette width":"Appliance own."), ~ round(.,2))%>%
+  left_join(select(Country.Set, Country, Country_long))%>%
+  select(Cluster, Country_long, everything(), - Country)%>%
+  rename(Country = Country_long)
 
 options(knitr.kable.NA = "")
 
