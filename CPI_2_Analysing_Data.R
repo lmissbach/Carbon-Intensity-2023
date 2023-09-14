@@ -128,12 +128,15 @@ sum_3.1.2 <- data_2 %>%
   mutate(share_Firewood = paste0(round((Firewood_Biomass_Consumption/sum_hh_weights)*100,0),"%"))%>%
   select(Country, share_Firewood)
 
-sum_3.1.3 <- left_join(sum_3.1.1, sum_3.1.2, by = "Country")
+sum_3.1.3 <- left_join(sum_3.1.1, sum_3.1.2, by = "Country")%>%
+  left_join(select(Country.Set, Country, Country_long))%>%
+  select(Country_long, everything(), - Country)%>%
+  arrange(Country_long)
   
 colnames(sum_3.1.3) <- c("Country", "Observations", "Average \nHousehold Size", "Urban \nPopulation", "Electricity \nAccess", "Average \nHousehold \nExpenditures [USD]", "Car \nOwnership", "Share of \nFirewood or \n Charcoal Cons.")
 
 kbl(mutate_all(sum_3.1.3,linebreak), format = "latex", linesep = "", booktabs = T, longtable = T,
-    caption = "Summary statistics", format.args = list(big.mark = ",", scientific = FALSE), align = "lrcccccc")%>%
+    caption = "Summary statistics", format.args = list(big.mark = ",", scientific = FALSE), align = "lrcccccc", label = "A1")%>%
   kable_styling(position = "center", latex_options = c("HOLD_position", "repeat_header"), font_size = 9)%>%
   footnote(general = "This table provides summary statistics for households in our sample. All values (except observations) are household-weighted averages.", threeparttable = T)%>%
   column_spec(column = 1,    width = "1.5 cm", border_right = T)%>%
@@ -160,12 +163,15 @@ sum_3.2.2 <- data_2 %>%
 sum_3.2.3 <- left_join(sum_3.2.1, sum_3.2.2, by = "Country")%>%
   select(Country, starts_with("hh_expenditures_USD_2014"), starts_with("share_energy"))%>%
   mutate_at(vars(starts_with("hh_expenditures_USD_2014")), list(~ round(.,0)))%>%
-  mutate_at(vars(starts_with("share_energy")), list(~ paste0(round(.*100,1), "%")))
+  mutate_at(vars(starts_with("share_energy")), list(~ paste0(round(.*100,1), "%")))%>%
+  left_join(select(Country.Set, Country, Country_long))%>%
+  select(Country_long, everything(), - Country)%>%
+  arrange(Country_long)
 
 colnames(sum_3.2.3) <- c("Country", rep(c("All","EQ1","EQ2","EQ3","EQ4","EQ5"),2))
 
 kbl(sum_3.2.3, format = "latex", caption = "Average household expenditures and average energy expenditure shares per expenditure quintile", booktabs = T, align = "l|rrrrrr|rrrrrr", vline = "", format.args = list(big.mark = ",", scientific = FALSE), linesep = "",
-    longtable = T)%>%
+    longtable = T, label = "A2")%>%
   kable_styling(position = "center", latex_options = c("HOLD_position", "repeat_header"), font_size = 8)%>%
   column_spec(1, width = "3.15 cm")%>%
   column_spec(2:7, width = "1.13 cm")%>%
@@ -181,33 +187,36 @@ rm(sum_3.2.1, sum_3.2.2, sum_3.2.3)
 
 sum_3.3.1 <- data_2 %>%
   group_by(Country)%>%
-  summarise(CO2_t_national      = wtd.mean(CO2_t_national,      weights = hh_weights),
-            burden_CO2_national = wtd.mean(burden_CO2_national, weights = hh_weights))%>%
+  summarise(CO2_t_national                       = wtd.mean(CO2_t_national,      weights = hh_weights),
+            carbon_intensity_kg_per_USD_national = wtd.mean(carbon_intensity_kg_per_USD_national, weights = hh_weights))%>%
   ungroup()
 
 sum_3.3.2 <- data_2 %>%
   group_by(Country, Income_Group_5)%>%
   summarise(CO2_t_national      = wtd.mean(CO2_t_national,      weights = hh_weights),
-            burden_CO2_national = wtd.mean(burden_CO2_national, weights = hh_weights))%>%
+            carbon_intensity_kg_per_USD_national = wtd.mean(carbon_intensity_kg_per_USD_national, weights = hh_weights))%>%
   ungroup()%>%
-  pivot_wider(names_from = "Income_Group_5", values_from = c("CO2_t_national", "burden_CO2_national"))
+  pivot_wider(names_from = "Income_Group_5", values_from = c("CO2_t_national", "carbon_intensity_kg_per_USD_national"))
 
 sum_3.3.3 <- left_join(sum_3.3.1, sum_3.3.2, by = "Country")%>%
-  select(Country, starts_with("CO2_t_national"), starts_with("burden_CO2_national"))%>%
+  select(Country, starts_with("CO2_t_national"), starts_with("carbon_intensity_kg_per_USD_national"))%>%
   mutate_at(vars(starts_with("CO2_t_national")), list(~ round(.,1)))%>%
-  mutate_at(vars(starts_with("burden_CO2_national")), list(~ paste0(round(.*100,2), "%")))
+  mutate_at(vars(starts_with("carbon_intensity_kg_per_USD_national")), list(~ round(.,2)))%>%
+  left_join(select(Country.Set, Country, Country_long))%>%
+  select(Country_long, everything(), - Country)%>%
+  arrange(Country_long)
 
 colnames(sum_3.3.3) <- c("Country", rep(c("All","EQ1","EQ2","EQ3","EQ4","EQ5"),2))
 
-kbl(sum_3.3.3, format = "latex", caption = "Average carbon footprint and average USD/tCO$_{2}$ carbon price incidence per expenditure quintile", booktabs = T, align = "l|rrrrrr|rrrrrr", vline = "", linesep = "",
-    longtable = T)%>%
+kbl(sum_3.3.3, format = "latex", caption = "Average carbon footprint and average carbon intensity per expenditure quintile", booktabs = T, align = "l|rrrrrr|rrrrrr", vline = "", linesep = "",
+    longtable = T, label = "A3")%>%
   kable_styling(position = "center", latex_options = c("HOLD_position", "repeat_header"), font_size = 9)%>%
   column_spec(1, width = "3.15 cm")%>%
   column_spec(2:7, width = "1.05 cm")%>%
   column_spec(8:13, width = "1.15 cm")%>%
   add_header_above(c(" " = 2, "Expenditure quintile" = 5, " " = 1, "Expenditure quintile" = 5))%>%
-  add_header_above(c(" " = 1, "Average carbon footprint [tCO$_{2}$]" = 6, "Average incidence from USD 40/tCO$_{2}$ carbon price" = 6), escape = FALSE)%>%
-  footnote(general = "This table shows average carbon footprints in tCO$_{2}$ and average levels of carbon price incidence for households in all countries of our sample. We estimate household-weighted averages for the whole population and per expenditure quintile.", threeparttable = T, escape = FALSE)%>%
+  add_header_above(c(" " = 1, "Average carbon footprint [tCO$_{2}$]" = 6, "Average carbon intensity [kgCO$_{2}$/USD]" = 6), escape = FALSE)%>%
+  footnote(general = "This table shows average carbon footprints in tCO$_{2}$ and average carbon intensity for households in all countries of our sample. We estimate household-weighted averages for the whole population and per expenditure quintile.", threeparttable = T, escape = FALSE)%>%
   save_kable(., "2_Tables/Table_Summary_A3.tex")
 
 rm(sum_3.3.1, sum_3.3.2, sum_3.3.3)
@@ -233,11 +242,14 @@ sum_3.4.1 <- data_2 %>%
   pivot_wider(names_from = "IG_CF_agg", values_from = "share")%>%
   select(Country, starts_with("Solid"), starts_with("Liquid"), starts_with("Electricity"))%>%
   mutate_at(vars(-Country), list(~ paste0(round(.*100,0), "%")))%>%
-  mutate_at(vars(-Country), list(~ ifelse(. == "NA%","-",.)))
+  mutate_at(vars(-Country), list(~ ifelse(. == "NA%","-",.)))%>%
+  left_join(select(Country.Set, Country, Country_long))%>%
+  select(Country_long, everything(), - Country)%>%
+  arrange(Country_long)
 
 colnames(sum_3.4.1) <- c("Country", rep(c("EQ1","EQG2","EQ3","EQ4","EQ5"),3))
 
-kbl(sum_3.4.1, format = "latex", caption = "Share of households using cooking fuels", booktabs = T, align = "l|rrrrr|rrrrr|rrrrr", vline = "", linesep = "")%>%
+kbl(sum_3.4.1, format = "latex", caption = "Share of households using cooking fuels", booktabs = T, align = "l|rrrrr|rrrrr|rrrrr", vline = "", linesep = "", label = "A4_CF")%>%
   kable_styling(position = "center", latex_options = c("HOLD_position", "scale_down"))%>%
   column_spec(1, width = "3.15 cm")%>%
   column_spec(2:16, width = "1.00 cm")%>%
@@ -265,11 +277,14 @@ sum_3.4.2 <- data_2 %>%
   pivot_wider(names_from = "IG_LF_agg", values_from = "share")%>%
   select(Country, starts_with("Kerosene"), starts_with("Electricity"), starts_with("Other lighting"))%>%
   mutate_at(vars(-Country), list(~ paste0(round(.*100,0), "%")))%>%
-  mutate_at(vars(-Country), list(~ ifelse(. == "NA%","-",.)))
+  mutate_at(vars(-Country), list(~ ifelse(. == "NA%","-",.)))%>%
+  left_join(select(Country.Set, Country, Country_long))%>%
+  select(Country_long, everything(), - Country)%>%
+  arrange(Country_long)
 
 colnames(sum_3.4.2) <- c("Country", rep(c("EQ1","EQ2","EQ3","EQ4","EQ5"),3))
 
-kbl(sum_3.4.2, format = "latex", caption = "Share of households using lighting fuels", booktabs = T, align = "l|rrrrr|rrrrr|rrrrr", vline = "", linesep = "")%>%
+kbl(sum_3.4.2, format = "latex", caption = "Share of households using lighting fuels", booktabs = T, align = "l|rrrrr|rrrrr|rrrrr", vline = "", linesep = "", label = "A5_LF")%>%
   kable_styling(position = "center", latex_options = c("HOLD_position", "scale_down"))%>%
   column_spec(1, width = "3.15 cm")%>%
   column_spec(2:16, width = "1.00 cm")%>%
@@ -309,11 +324,14 @@ sum_3.5.2 <- sum_3.5.1 %>%
   select(Country, ends_with("_All"), everything())%>%
   select(Country, starts_with("car.01"), starts_with("tv.01"), starts_with("refrigerator.01"), starts_with("ac.01"), starts_with("washing"))%>%
   mutate_at(vars(-Country), list(~ paste0(round(.*100,0), "%")))%>%
-  mutate_at(vars(-Country), list(~ ifelse(. == "NA%","-",.)))
+  mutate_at(vars(-Country), list(~ ifelse(. == "NA%","-",.)))%>%
+  left_join(select(Country.Set, Country, Country_long))%>%
+  select(Country_long, everything(), - Country)%>%
+  arrange(Country_long)
 
 colnames(sum_3.5.2) <- c("Country", rep(c("All","EQ1","EQ5"),5))
 
-kbl(sum_3.5.2, format = "latex", caption = "Share of households possessing different assets", booktabs = T, align = "l|rrr|rrr|rrr|rrr|rrr", vline = "", linesep = "")%>%
+kbl(sum_3.5.2, format = "latex", caption = "Share of households possessing different assets", booktabs = T, align = "l|rrr|rrr|rrr|rrr|rrr", vline = "", linesep = "", label = "A6")%>%
   kable_styling(position = "center", latex_options = c("HOLD_position", "scale_down"))%>%
   column_spec(1, width = "3.15 cm")%>%
   column_spec(2:16, width = "1.00 cm")%>%
@@ -6585,13 +6603,13 @@ data_8.3.0 <- read_csv("../0_Data/9_Supplementary Data/BRT-Tracking/Clusters_Nor
   mutate_at(vars("Average silhouette width":"Appliance own."), ~ round(.,2))
 
 kbl(data_8.3.0, format = "latex", caption = "Average feature importance across country clusters", booktabs = T, 
-    vline = "", format.args = list(big.mark = ",", scientific = FALSE), linesep = "", escape = FALSE)%>%
+    vline = "", format.args = list(big.mark = ",", scientific = FALSE), linesep = "", escape = FALSE, label = "A9")%>%
   kable_styling(position = "center", latex_options = c("HOLD_position", "scale_down"))%>%
   row_spec(0, angle = 90)%>%
   #column_spec(1:21, width = "0.5 cm")%>%
   #column_spec(1, width = "3.15 cm")%>%
   # add_header_above(c("Country" = 1, rep(c("MAE", "RMSE", "R^{2}"),3) ))%>%
-  footnote(general = "This table shows the average importance of features in percent (based on absolute average SHAP-values per feature) across all countries from each cluster A to I. Columns 'Mean carbon intensity', 'Horizontal inequality' and 'Vertical inequality' show average values. Column 'number' refers to the number of countries assigned to this cluster.", threeparttable = T)%>%
+  footnote(general = "This table shows the average importance of features in percent (based on absolute average SHAP-values per feature) across all countries from each cluster A to I. Feature importance is adjusted for model accuracy. Columns 'Mean carbon intensity', 'Horizontal inequality' and 'Vertical inequality' show average values. Column 'number' refers to the number of countries assigned to this cluster.", threeparttable = T)%>%
   save_kable(., "2_Tables/Table_Clusters_Summary_Corrected.tex")
 
 data_8.3.0 <- read_csv("../0_Data/9_Supplementary Data/BRT-Tracking/Clusters_Normalized_Uncorrected.csv", show_col_types = FALSE) %>%
@@ -6612,13 +6630,13 @@ data_8.3.0 <- read_csv("../0_Data/9_Supplementary Data/BRT-Tracking/Clusters_Nor
   mutate_at(vars("Average silhouette width":"Appliance own."), ~ round(.,2))
 
 kbl(data_8.3.0, format = "latex", caption = "Average feature importance across country clusters", booktabs = T, 
-    vline = "", format.args = list(big.mark = ",", scientific = FALSE), linesep = "", escape = FALSE)%>%
+    vline = "", format.args = list(big.mark = ",", scientific = FALSE), linesep = "", escape = FALSE, label = "A9_Uncorrected")%>%
   kable_styling(position = "center", latex_options = c("HOLD_position", "scale_down"))%>%
   row_spec(0, angle = 90)%>%
   #column_spec(1:21, width = "0.5 cm")%>%
   #column_spec(1, width = "3.15 cm")%>%
   # add_header_above(c("Country" = 1, rep(c("MAE", "RMSE", "R^{2}"),3) ))%>%
-  footnote(general = "This table shows the average importance of features in percent (based on absolute average SHAP-values per feature) across all countries from each cluster A to O. Columns 'Mean carbon intensity', 'Horizontal inequality' and 'Vertical inequality' show average values. Column 'number' refers to the number of countries assigned to this cluster.", threeparttable = T)%>%
+  footnote(general = "This table shows the average importance of features in percent (based on absolute average SHAP-values per feature) across all countries from each cluster A to O. Feature importance is unadjusted for model accuracy. Columns 'Mean carbon intensity', 'Horizontal inequality' and 'Vertical inequality' show average values. Column 'number' refers to the number of countries assigned to this cluster.", threeparttable = T)%>%
   save_kable(., "2_Tables/Table_Clusters_Summary_Uncorrected.tex")
 
 rm(data_8.3.0)  
@@ -7011,19 +7029,21 @@ data_8.4.1 <- read_csv("../0_Data/9_Supplementary Data/BRT-Tracking/Clusters_Nor
          "Urban", "Province", "District", "Electricity access", "Cooking fuel",
          "Heating fuel", "Lighting fuel", "Car own.", "Motorcycle own.", "Appliance own.")%>%
   rename(Cluster = cluster)%>%
-  mutate_at(vars("Silhouette width":"Appliance own."), ~ round(.,2))
+  mutate_at(vars("Silhouette width":"Appliance own."), ~ round(.,2))%>%
+  left_join(select(Country.Set, Country, Country_long))%>%
+  select(Cluster, Country_long, everything(), - Country)
 
 options(knitr.kable.NA = "")
 
 kbl(data_8.4.1, format = "latex", caption = "Feature importance across countries by cluster", booktabs = T, 
     vline = "", format.args = list(big.mark = ",", scientific = FALSE), linesep = "",
-    longtable = T)%>%
+    longtable = T, label = "A10_Uncorrected")%>%
   kable_styling(position = "center", latex_options = c("HOLD_position", "repeat_header"), font_size = 8)%>%
   row_spec(0, angle = 90)%>%
   column_spec(1:21, width = "0.5 cm")%>%
   row_spec(c(14,24,33,41,48,55,60,65,70,74,77,80,83,85,87), hline_after = TRUE)%>%
   #collapse_rows(columns = 3:4, valign = "middle")%>%
-  footnote(general = "This table shows feature importance in percent (based on absolute average SHAP-values per feature) across all countries and per cluster. Columns 'Mean carbon intensity', 'Horizontal inequality' and 'Vertical inequality' show average values. Column 'number' refers to the number of countries assigned to this cluster.", threeparttable = T)%>%
+  footnote(general = "This table shows feature importance in percent (based on absolute average SHAP-values per feature) across all countries and per cluster. Feature importance is unadjusted for model accuracy. Columns 'Mean carbon intensity', 'Horizontal inequality' and 'Vertical inequality' show average values. Column 'number' refers to the number of countries assigned to this cluster.", threeparttable = T)%>%
   save_kable(., "2_Tables/Table_Countries_SHAP_Summary_Uncorrected.tex")
 
 data_8.4.1 <- read_csv("../0_Data/9_Supplementary Data/BRT-Tracking/Clusters_Normalized_Corrected.csv", show_col_types = FALSE)%>%
@@ -7045,13 +7065,13 @@ options(knitr.kable.NA = "")
 
 kbl(data_8.4.1, format = "latex", caption = "Feature importance across countries by cluster", booktabs = T, 
     vline = "", format.args = list(big.mark = ",", scientific = FALSE), linesep = "",
-    longtable = T)%>%
+    longtable = T, label = "A10")%>%
   kable_styling(position = "center", latex_options = c("HOLD_position", "repeat_header"), font_size = 8)%>%
   row_spec(0, angle = 90)%>%
   column_spec(1:21, width = "0.5 cm")%>%
   row_spec(c(36,52,62,71,76,80,83,85,87), hline_after = TRUE)%>%
   #collapse_rows(columns = 3:4, valign = "middle")%>%
-  footnote(general = "This table shows feature importance in percent (based on absolute average SHAP-values per feature) across all countries and per cluster. Columns 'Mean carbon intensity', 'Horizontal inequality' and 'Vertical inequality' show average values. Column 'number' refers to the number of countries assigned to this cluster.", threeparttable = T)%>%
+  footnote(general = "This table shows feature importance in percent (based on absolute average SHAP-values per feature) across all countries and per cluster. Feature importance is adjusted for model accuracy. Columns 'Mean carbon intensity', 'Horizontal inequality' and 'Vertical inequality' show average values. Column 'number' refers to the number of countries assigned to this cluster.", threeparttable = T)%>%
   save_kable(., "2_Tables/Table_Countries_SHAP_Summary_Corrected.tex")
 
 rm(data_8.4.1)
