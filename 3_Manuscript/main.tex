@@ -68,14 +68,14 @@
 
 \maketitle
 \begin{abstract}
-  We construct a novel cross-country dataset and investigate the individual carbon intensity of 1.5 million households from 87 countries. Building on robust machine learning techniques we decompose household characteristics that are associated to higher levels of carbon intensity of consumption. Our results show that differences in household expenditures are an important predictor, but that it is difficult to generalize findings across countries. 
+  We compose a novel cross-country dataset and investigate the individual carbon intensity of 1.5 million households from 87 countries. Building on robust machine learning techniques we decompose household characteristics that are associated to higher levels of carbon intensity of consumption. Our results show that differences in household expenditures are an important predictor, but that it is difficult to generalize findings across countries. 
 \end{abstract}
 
 \smallskip
 
 \noindent \small \textit{Keywords:} Climate mitigation, inequality, carbon pricing
 
-\noindent \small \textit{JEL Codes:} Q56, D30, H23, C38, C55
+\noindent \small \textit{JEL Codes:} C38, C55, D30, H23, Q56
 
 \thispagestyle{empty}
 \clearpage
@@ -83,7 +83,9 @@
 
 \section{Introduction} \label{sec:introduction}
 
-We have come to understand that many people judge a policy by its distributional implications. How policy-induced costs distribute among households can influence aggregate public perception and thus the political feasibility of policy reforms. In the context of climate change, unintended impacts on households or firms can constrain the remaining possibility space for efficient and effective mitigation policies, such as carbon pricing or fossil fuel subsidy abolishment.
+We have come to understand that many people judge a policy by its distributional implications. How policy-induced costs distribute among households can influence aggregate public perception and thus the political feasibility of policy reforms. In the context of climate change mitigation, unintended policy impacts on households can constrain the remaining possibility space for efficient and effective mitigation policies, such as carbon pricing or fossil fuel subsidy abolishment.
+
+% This does not need to be, since compensating households and firms with (targeted) measures can theoretically help to achieve any distribution of costs that is desirable.
 
 % Paragraph on public acceptance - usual literature (Dechezlepretre, Sommer, Maestre-Andres, Harring)
 % What matters to the public?
@@ -131,38 +133,39 @@ Our contribution is threefold: First, we construct a novel and homogenized datas
 \section{Vertical and horizontal inequality of climate policy} \label{sec:literature}
 
 % Introduce distributional impacts of climate policy
-
-One important criterion for the design of climate policy is if policy impacts distribute differently across different households or firms. Unintended distributional impacts can impede policy implementation for example because governments are inequality-averse or because of lower public support \autocite{Bergquist.2022,Douenne.2022}. 
+One important criterion for the design of climate policy is if policy impacts distribute differently across different households. Unintended distributional impacts can impede policy implementation, for example because governments are opposing more inequality per se or because of lower public support \autocite{Bergquist.2022,Douenne.2022}. 
 
 % Show why distributional impacts can happen (theoretically)
-Accordingly, many researchers have engaged with the distributional effects of environmental policy reforms: 
+Accordingly, many researchers have engaged with the distributional effects of environmental policy reforms. Households consuming more of a polluting good can expect higher absolute additional costs when pollution becomes more costly, but relative additional costs depend on expenditure shares for polluting goods. The distribution of such costs can be heterogeneous, depending on XYZ, and possibly increasing existing inequality, resulting in a difficult trade-off between energy and efficiency \autocite{Hansel.2022}.
 
 % Show that vertical distributional impacts exist
-Underpinning theoretical arguments with empirical investigations, many researchers compare policy outcome across different groups of the population to infer about the \textit{vertical inequality}, i.e., differences in policy outcomes between relatively poorer and relatively richer households. For price-based policies, researchers often run policy simulations, for example of carbon pricing reforms, in single countries \autocite{Goulder.2019,Grainger.2010,Rausch.2011,Garaffa.2021,Sterner.2012} or for cross-country comparisons \autocite{Budolfson.2021,Feindt.2021,Dorband.2019,Steckel.2021b}. In particular in many industrialized economies, such policies are often found to be regressive. Results from a meta-analysis \textcite{Ohlendorf.2021} document more progressive results in lower income countries and for price-based policies in the transport sector. 
-
-In comparison, a different strand of the literature investigates vertical distributional impacts for other policy instruments, such as fossil fuel subsidy removal, technology standards \autocite{Levinson.2019,Zhao.2022}, behavioural interventions or subsidies on cleaner goods. 
+Many researchers have studied \textit{vertical} distributional effects of climate policy, i.e., differences in policy outcomes between relatively poorer and relatively richer households. For price-based climate policy, such work includes microsimulation analyses in single countries \autocite{Goulder.2019,Grainger.2010,Rausch.2011,Garaffa.2021,Sterner.2012,Wu.2022} or for cross-country comparisons \autocite{Budolfson.2021,Feindt.2021,Dorband.2019,Steckel.2021b,VogtSchilb.2019,Missbach.2023b}. In particular in many high-income countries, price-based policies (such as carbon taxes) are often found to be regressive. In contrast, results from a meta-analysis \autocite{Ohlendorf.2021} document more progressive results in lower income countries and for price-based policies in the transport sector.
+A different strand of the literature investigates vertical distributional impacts for other policy instruments, such as fossil fuel subsidy removal \autocite{Schaffitzel.2019,Giuliano.2020}, technology standards \autocite{Levinson.2019,Zhao.2022} or subsidies on cleaner goods. %How do they look like?
 
 % Show that there is little sound understanding of horizontal impacts across many countries
-More recently, researchers have started to become interested in the \textit{horizontal inequality}, i.e., differences in policy outcomes among similarly rich or poor households \autocite{Rausch.2011,Fischer.2019}. One reason is that variation within expenditure quintiles may differ more substantially than between quintiles \autocite{Cronin.2019,Steckel.2021b}. Horizontal differences indicate that households use technologies with heterogeneous energy (or carbon) efficiency, which can however not be attributed to heterogeneous levels of household affluence \autocite{Hansel.2022}. In comparison to vertical inequality, the horizontal inequality of climate policy received little attention: Research highlights the role of household size \autocite{Grainger.2010}, sociodemographic variables (such as education and occupation) \autocite{Buchs.2013,Farrell.2017,Missbach.2023}, energy use \autocite{Steckel.2021b} and space \autocite{Chan.2023} for differences in carbon tax incidence. \textcite{Missbach.2023b} identifies predominantly the use of cooking fuels and car ownership to correlate with carbon pricing incidence in 16 countries of Latin America. 
+More recently, researchers have started to become interested in the \textit{horizontal} distributional effects of climate policy, i.e., differences in policy outcomes among similarly rich or poor households \autocite{Rausch.2011,Fischer.2019}. One reason is that variation \textit{within} expenditure quintiles may differ more substantially than \textit{between} quintiles \autocite{Cronin.2019,Steckel.2021b,Pizer.2019}. Horizontal differences indicate that households use technologies with heterogeneous energy (or carbon) efficiency, which can however not be attributed to heterogeneous levels of household affluence \autocite{Hansel.2022}. In comparison to vertical inequality, the horizontal inequality of climate policy received little attention: Research highlights the role of sociodemographic variables (such as household size, education and occupation) \autocite{Grainger.2010,Buchs.2013,Farrell.2017,Missbach.2023}, energy use \autocite{Steckel.2021b,Missbach.2023b} and space \autocite{Chan.2023} for differences in carbon tax incidence.
 
 % Explain why horizontal implications matter --> Redistribution
+One frequently raised proposal to address unintended distributional effects of climate policy is compensating households for excessive costs \autocite{Klenert.2018,Baranzini.2017}. Often, researchers suggest lump-sum transfers for households that would indeed render vertical differences more progressive \autocite{Budolfson.2021,Steckel.2021b,vanderPloeg.2022}, but neglect or even increase horizontal differences \autocite{Cronin.2019,Hansel.2022}. In essence, combining price-based climate policies with revenue-neutral lump-sum transfers would fail to compensate households that would bear the largest additional costs and additional costs remain larger for larger levels of horizontal inequality. Assuming climate policy should also serve the purpose of least distributive distortions \autocite{Fischer.2019} or of increasing public support by shielding especially vulnerable households, then appropriate design of compensation measures requires accounting for horizontal inequality of policies, rendering popular instruments, such as lump-sum transfers, less effective. 
+
+Many complementing compensation measures are theoretically conceivable: Lowering taxes on labor is preferable on efficiency grounds \autocite{Goulder.1995,Bento.2018}, green spending increases public support \autocite{Sommer.2022}, funding public infrastructure can help promoting development goals \autocite{Franks.2018} and subsidizing or providing subsistence goods (including energy) may prevent detrimental impacts on the poorest households \autocite{Greve.2022}. In any case, effectively accounting for the distributional effects of climate policy warrants precise information about the horizontal distribution and household-level characteristics beyond income or expenditures. 
 
 % Show that cross-country studies exist, but do not include the micro-level information
-
-Our paper also connects to studies comparing within-country heterogeneity of carbon-intensive consumption across countries and time. For example, \textcite{Chancel.2022} creates a time-series of country- and percentile-level carbon footprints, notably including households' investments decisions, and finds that \textit{carbon inequality} within countries has increased over the last thirty years. Others \autocite{Oswald.2023,Bruckner.2022} compare the distribution carbon footprints across and within countries, but such studies usually remain calm about policy impacts and their associated vertical and horizontal distributional implications.
+Our paper also connects to research comparing within-country heterogeneity of carbon-intensive consumption across countries and time. For example, \textcite{Chancel.2022} creates a time-series of country- and percentile-level carbon footprints, notably including households' investments decisions, and finds that \textit{carbon inequality} within countries has increased over the last thirty years. Others \autocite{Oswald.2020,Bruckner.2022} compare the distribution carbon footprints across and within countries, but such studies usually remain calm about policy impacts and their associated vertical and horizontal distributional implications.
 
 % Demonstrate gap and highlight contribution
+Building on these findings from existing literature, our paper provides a comprehensive analysis of vertical and horizontal distributional impacts of climate policy for a broad set of countries. Explicitly accounting for household characteristics beyond income our paper analyzes factors driving horizontal inequality. Our flexible modelling framework allows for the simulation of different policies - including, but not limited to carbon pricing - and can help to inform about potential complementing compensation measures that are likely effective in addressing households with largest additional costs. Our study also contributes to highlighting the limitations of more traditional approaches to assess climate policies exclusively with respect to its vertical distributional implications.
 
 \begin{itemize}
-    \item One paragraph on broad relevance of distributional impacts of climate/environmental policy: Acceptance and public support.
+    %\item One paragraph on broad relevance of distributional impacts of climate/environmental policy: Acceptance and public support.
     \item One paragraph on theoretical arguments: Price-based policies (Sandmo, Cremer).
     \item One paragraph on theoretical arguments: Standards, subsidies, behavioural interventions.
-    \item Introducing vertical and horizontal inequality
-  \item Hänsel, van der Ploeg, Rausch 2011, Farrell 2017, Cronin 2019, Feindt 2021, Fischer and Pizer 2019, Missbach, Steckel
+  %\item Introducing vertical and horizontal inequality
+  %\item Hänsel, van der Ploeg, Rausch 2011, Farrell 2017, Cronin 2019, Feindt 2021, Fischer and Pizer 2019, Missbach, Steckel
   %\item Two paragraphs on distributional impacts of climate policy (empirical studies, mainly on price-based policies (Ohlendorf), also on standards (Mattauch), subsidies, behavioural interventions, can be short)
-  \item One paragraph on compensation: Transfers, tax breaks (Goulder 1995, Bento 2018), in-kind transfers or financing public goods (Franks, Jakob).
+  %\item One paragraph on compensation: Transfers, tax breaks (Goulder 1995, Bento 2018), in-kind transfers or financing public goods (Franks, Jakob).
   %\item One paragraph on macro-level studies on carbon inequality (within countries, Chancel).  Distinction also from Bruckner.
-  \item Point out research gap.
+  %\item Point out research gap.
 
 \end{itemize}
 
@@ -170,21 +173,23 @@ Our paper also connects to studies comparing within-country heterogeneity of car
 
 % Introduce carbon intensity of consumption as major indicator
 
-The carbon intensity of consumption of household \textit{i}, denoted by $e_{i}$, reflects the amount of CO$_{2}$-emissions $E_{i}$ that one can reasonably attribute to production, transportation and retail of all goods and services purchased in household \textit{i}, over total consumption $C_{i}$. We express $e_{i}$ in $\frac{kgCO_{2}}{US-\$}$. More specifically, the carbon intensity of consumption represents carbon intensities of different sectors ($e_{s}$), weighted by expenditure shares in household \textit{i} for goods and services from each sector \textit{s}:
+In this paper we infer about the heterogeneous impacts of climate policy on consumption costs by analyzing heterogeneity in the carbon intensity of consumption: Assume household \textit{A's} consumption is twice as carbon-intensive as the consumption of household \textit{B}, then climate policy will lead to costs twice as high for household \textit{A} compared to household \textit{B}, in comparison to total expenditures\footnote{This holds under the assumption that climate policy increases supply-side input prices according to associated CO$_{2}$-emissions and that firms cannot react to changing input prices in the short-term. Output prices for consumer goods and services would increase in equivalence to embedded (direct and indirect) CO$_{2}$-emissions. Specifically, the carbon intensity reflects additional costs of any policy increasing consumer prices proportional to embedded CO$_{2}$-emissions, irrespective of existing policies. See also Appendix \ref{sec:policysimulation}.}.
+
+The carbon intensity of consumption of household \textit{i}, denoted by $e_{i}$, is the variable of interest in this study. It reflects the amount of CO$_{2}$-emissions $E_{i}$ that one can reasonably attribute to production, transportation and retail of all goods and services purchased in household \textit{i}, over total consumption C$_{i}$. We express $e_{i}$ in $\frac{kgCO_{2}}{US-\$}$. More specifically, the carbon intensity of consumption represents carbon intensities of different sectors $e_{s}$, weighted by expenditure shares in household \textit{i} for goods and services from each sector \textit{s}, denoted as $w_{i,s}$:
 
 % Argue backwards: Carbon intensity of consumption consists of household expenditure shares and sectoral carbon intensities
 
 \begin{equation} \label{eq:ei}
-e_{i} = \frac{E_{i}}{C_{i}} = \frac{\sum_{s} e_{s}*C_{i,s}}{\sum_{s} C_{i,s}}
+e_{i} = \frac{E_{i}}{C_{i}} = \frac{\sum_{s} e_{s}*C_{i,s}}{\sum_{s} C_{i,s}} = \sum_{s} e_{s}*w_{i,s}
 \end{equation}
 
 % Show that carbon intensity is equivalent to first-order carbon pricing incidence (Detailed analysis in Appendix)
 % Show that sector-specific carbon intensities can help to learn about other policies (to be continued in discussion)
 
-The carbon intensity of consumption $e_{i}$ is the variable of interest in this study. Analyzing heterogeneity in the carbon intensity of consumption can help to learn about heterogeneous impacts of climate policy on consumption costs: Assume household \textit{A's} consumption is twice as carbon-intensive as the consumption of household \textit{B}, then climate policy will lead to costs twice as high for household \textit{A} compared to household \textit{B}, in comparison to total expenditures\footnote{This holds under the assumption that climate policy increases supply-side input prices according to associated CO$_{2}$-emissions and that firms cannot react to changing input prices in the short-term. Output prices for consumer goods and services would increase in equivalence to embedded (direct and indirect) CO$_{2}$-emissions. Specifically, the carbon intensity reflects additional costs of any policy increasing consumer prices proportional to embedded CO$_{2}$-emissions, irrespective of existing policies. See also Appendix \ref{sec:policysimulation}}. Examining the household-level carbon intensity for different sectors \textit{s}, denoted $e_{i,s}$, allows for understanding heterogeneous impacts of different policies, for example of policies in the transport or electricity sector or of trade policies, such as carbon border adjustments.
+Examining the household-level carbon intensity for different sectors \textit{s}, denoted $e_{i,s}$, allows for understanding heterogeneous impacts of different policies, for example of policies in the transport or electricity sector or of trade policies, such as carbon border adjustments.
 
 %  Household expenditure shares: Data, cleaning, homogenizing and shortcomings
-\paragraph{Sectoral expenditure shares} We collect information on sectoral expenditure shares at the household-level ($w_{i,s}=\frac{C_{i,s}}{\sum_{s}C_{i,s}}$) from household budget surveys. In such surveys, households report expenditures on goods and services on the item-level, from which we compute sectoral expenditure shares\footnote{We match consumption items to sectors with the help of matching tables. We share all matching tables through a stable online data repository.}\footnote{Figures \ref{fig:A1} to \ref{fig:A2} show country-level Engel curves for energy, goods, services and food.}.
+\paragraph{Sectoral expenditure shares} We collect information on sectoral expenditure shares at the household-level ($w_{i,s}=\frac{C_{i,s}}{\sum_{s}C_{i,s}}$) from household budget surveys. In such surveys, households report expenditures on goods and services on the item-level, from which we compute sectoral expenditure shares\footnote{We match consumption items to sectors with the help of matching tables. We share all matching tables through a stable online data repository.}\footnote{Figures REF MISSING show country-level Engel curves for energy, goods, services and food.}.
 Survey datasets are eligible for inclusion in our study, if they cover a nationally representative sample, include item-level expenditure information and were conducted between 2010 and 2019\footnote{We exclude more recent survey data to account for potential biases induced by large economic shocks, such as measures in the context of Covid-19.}. Our harmonized\footnote{Appendix \ref{sec:cleaning} lists details on cleaning and harmonization.} dataset contains information on more than 1.5 million households representative for 5 billion people from 87 countries that comprise 68\% of global GDP and 52\% of global CO$_{2}$-emissions\footnote{We use data for GDP and CO$_{2}$-emissions from the World Development Indicators database \autocite{WorldBankGroup.2023}.}.
 
 Beyond expenditure shares, we include total household expenditures as a surrogate for household income data because total consumption expenditures are a meaningful proxy for lifetime income \autocite{Poterba.1989,JamesM.Poterba.2016,Cronin.2019} and because wage data from such surveys are often unreliable \autocite{Blundell.1998}. See also \textcite{Levay.2023} for a discussion about differences between using expenditures or income data in the context of calculating carbon footprints.
@@ -210,7 +215,7 @@ We also include socio-demographic information about household members (such as e
 
 We derive total sectoral consumption ($\sum_{i} C_{i,s,r}$), direct ($E_{s}^{direct}$) and indirect ($E_{s}^{indirect}$) CO$_{2}$-emissions from and with the help of multi-regional input-output (MRIO) data. This approach is popular in the literature as it accommodates trade flows between different countries and regions, but features sufficient detail for high sectoral resolution. 
 
-We build on trade data from the GTAP database (Version 11,  \textcite{Aguiar.2022}) that we transform to MRIO data \autocite{Peters.2011}, capturing input-output relationships between 65 sectors \textit{s} in 160 countries \textit{r}. We subsequently compute the \textit{Leontief}-inverse $L_{r',s'}^{r,s}$ that gives information about required inputs from each sector \textit{s'} and region \textit{r'} for production of one unit of output in each sector \textit{s} and region \textit{r}. We derive indirect CO$_{2}$-emissions $E_{s}^{indirect}$ as follows\footnote{See \textcite{Missbach.2023b, Steckel.2021b,Feindt.2021,VogtSchilb.2019} for a detailed description of this approach.} \footnote{Simulation of different sectoral and regional policies is possible through exclusion of different sectors \textit{s} or countries \textit{r}. In our main analysis we focus on national carbon intensities, i.e., how many emissions resulting from production within each country can be attributed to one unit of output. This would be equivalent to zero carbon intensities of imported products, but re-imported emissions would be included. See also Appendix \ref{sec:policysimulation}.}:
+We build on trade data from the GTAP database (Version 11,  \textcite{Aguiar.2022}) that we transform to MRIO data \autocite{Peters.2011}, capturing input-output relationships between 65 sectors \textit{s} in 160 countries \textit{r}. We subsequently compute the \textit{Leontief}-inverse $L_{r',s'}^{r,s}$ that captures information about required inputs from each sector \textit{s'} and region \textit{r'} for production of one unit of output in each sector \textit{s} and region \textit{r}. We derive indirect CO$_{2}$-emissions $E_{s}^{indirect}$ as follows\footnote{See \textcite{Missbach.2023b, Steckel.2021b,Feindt.2021,VogtSchilb.2019} for a detailed description of this approach.} \footnote{Simulation of different sectoral and regional policies is possible through exclusion of different sectors \textit{s} or countries \textit{r}. In our main analysis we focus on national carbon intensities, i.e., how many emissions resulting from production within each country can be attributed to one unit of output. This would be equivalent to zero carbon intensities of imported products, but re-imported emissions would be included. See also Appendix \ref{sec:policysimulation}.}:
 
 \begin{equation}
     E_{s}^{indirect} = \sum_{r'} \sum_{s'} e_{r',s'} L_{r',s'}^{r,s} C_{s}
@@ -348,16 +353,16 @@ Climate policy can lead to short-term costs distributing unevenly across the pop
 
 \paragraph{Model accuracy} As we show in Table \ref{tab:A8}, fitting BRT-models helps to predict households' carbon intensity with good precision in many countries. Models' goodness of fit ($R^{2}$) accumulates to 59\% for Jordan, 53\% for Peru and 50\% for Nicaragua and Niger. For 28 countries, $R^{2}$ exceeds 30\%. For some countries, however, our models yield relatively low predictive performance: For 18 countries, $R^{2}$ does not exceed 10\%. Model performance is lowest in Bulgaria (1\%), Estonia (2\%), Serbia (3\%) and Suriname (3\%). One reason is that performance hinges critically on data granularity. For many countries with low predictive performance our model is restricted to drawing on few available features, such as household expenditures, sub-national area identifiers, household size or education of household head.
 
-Low accuracy implies that it is difficult in some countries to infer about the carbon intensity of households through observable characteristics, such as household expenditures. In Bulgaria, for example, vertical differences are low and horizontal differences within expenditure quintiles are large (Figure \ref{fig:Quint_C}). Moreover, as our analysis confirms, within-quintile variation in total expenditures is largely uncorrelated with variation in carbon intensity. Compensation measures based on expenditures of households (such as reducing VAT) would likely benefit all households equally, but prove ineffective to compensate households with highest costs.
+Low accuracy implies that it is difficult in some countries to infer about the carbon intensity of households through observable characteristics, such as household expenditures. In Bulgaria, for example, vertical differences are low and horizontal differences within expenditure quintiles are large (Figure \ref{fig:Quint_C}). Moreover, as our analysis confirms, within-quintile variation in total expenditures is largely uncorrelated with variation in carbon intensity. Compensation measures based on expenditures of households (such as reducing consumption taxes) would likely benefit all households equally, but prove ineffective to compensate households with highest costs.
 
 \paragraph{Country-level feature importance}
 
 Figure \ref{fig:fig_4_1}, Figure \ref{fig:fig_4_2} and Table \ref{tab:A10} show our indicators for vertical and horizontal inequality, the mean CO$_{2}$-intensity and adjusted feature importance for all features in each country, grouped by country clusters. %Describe single clusters, at least A, B, C and D. Touch briefly upon the rest.
 % What are important features? In which direction? Why?
 
-The average CO$_{2}$-intensity is 0.68 kgCO$_{2}$/US-\$. The average CO$_{2}$-intensity is highest for South Africa (2.15 kgCO$_{2}$/US-\$) followed by Turkey (1.75 kgCO$_{2}$/US-\$) and Czech Republic (1.71 kgCO$_{2}$/US-\$). The average CO$_{2}$-intensity is lowest for Malawi (0.03 kgCO$_{2}$/US-\$), Rwanda (0.04 kgCO$_{2}$/US-\$), Ethiopia and Niger (both 0.1 kgCO$_{2}$/US-\$). Country-level CO$_{2}$-intensities help to infer about the relative average costs in countries: For example, a carbon price of 40 USD/tCO$_{2}$ \autocite{Stiglitz.2017} would be equivalent to relative average costs of 4.1\% of total expenditures in a country with an average CO$_{2}$-intensity of 0.68 kgCO$_{2}$/US-\$.
+% The average CO$_{2}$-intensity is 0.68 kgCO$_{2}$/US-\$. The average CO$_{2}$-intensity is highest for South Africa (2.15 kgCO$_{2}$/US-\$) followed by Turkey (1.75 kgCO$_{2}$/US-\$) and Czech Republic (1.71 kgCO$_{2}$/US-\$). The average CO$_{2}$-intensity is lowest for Malawi (0.03 kgCO$_{2}$/US-\$), Rwanda (0.04 kgCO$_{2}$/US-\$), Ethiopia and Niger (both 0.1 kgCO$_{2}$/US-\$). Country-level CO$_{2}$-intensities help to infer about the relative average costs in countries: For example, a carbon price of 40 USD/tCO$_{2}$ \autocite{Stiglitz.2017} would be equivalent to relative average costs of 4.1\% of total expenditures in a country with an average CO$_{2}$-intensity of 0.68 kgCO$_{2}$/US-\$.
 
-On average, the most important feature across countries is household expenditures, accounting for a relative contribution of 22\% on average. Household expenditures are the single most important feature for prediction in 30 countries, and in some countries, such as Luxembourg or Croatia, differences in household expenditures contribute to more than 50\% of model predictions. Household expenditures account for largest shares of adjusted feature importance in Peru (18\%), Ecuador (14\%) and Iraq (14\%) - countries in which we also identify strictly larger carbon intensities for poorer households compared to richer households. The relationship between expenditures and carbon intensity is non-linear, but overall declining for 53 countries, increasing for 14 countries, following an U-shape for 5 countries and an inverse-U-shape for 11 countries (e.g. Turkey, Figure \ref{fig:fig_5_3}). We find declining relationships for 19 of of 20 countries with highest GDP per capita, which lends credibility to our preliminary analysis in section \ref{sec:methods}. Under such circumstances, more carbon-intensively consuming households spend less more on consumption, but relatively more on carbon-intensive goods and services.
+On average, the most important feature across countries is household expenditures, accounting for a relative contribution of 22\% on average. Household expenditures are the single most important feature for prediction in 30 countries, and in some countries, such as Luxembourg or Croatia, differences in household expenditures contribute to more than 50\% of model predictions. Household expenditures account for largest shares of adjusted feature importance in Peru (18\%), Ecuador (14\%) and Iraq (14\%) - countries in which we also identify strictly larger carbon intensities for poorer households compared to richer households. The relationship between expenditures and carbon intensity is non-linear, but overall declining for 53 countries, increasing for 14 countries, following an U-shape for 5 countries and an inverse-U-shape for 11 countries (e.g. Turkey, Figure \ref{fig:fig_5_3}). We find declining relationships for 19 of of 20 countries with highest GDP per capita, which lends credibility to our prior analysis in section \ref{sec:methods}. Under such circumstances, more carbon-intensively consuming households spend less on consumption, but relatively more on carbon-intensive goods and services.
 
 Motorcycle and car ownership is the most important feature in 15 and 14 countries, respectively. Households owning motorcycles or cars are more likely to consume more carbon-intensively than households without such vehicles in every country. This links to the propensity of vehicle-owning (and -using) households to consume relatively more transport fuels than others.
 
@@ -589,29 +594,29 @@ It is also possible to investigate the distribution of regional policies, for ex
 
 \subsection{Supplementary figures} \label{sec:figures}
 
-\begin{figure}[ht!]
-  \centering
-  \caption{Engel curves: expenditure shares over total household expenditures - Part A} \label{fig:A1}
-  \includegraphics{Analysis_Parametric_Engel_Curves/Parametric_EC_0_A}
-  \begin{subcaption}
-    This figure displays fitted lines for parametric and quadratic Engel curves for each consumption category in 20 countries of our sample. Black vertical lines indicate average household expenditures per capita for each expenditure quintile and country.
-  \end{subcaption}
+% \begin{figure}[ht!]
+%   \centering
+%   \caption{Engel curves: expenditure shares over total household expenditures - Part A} \label{fig:A1}
+%   \includegraphics{Analysis_Parametric_Engel_Curves/Parametric_EC_0_A}
+%   \begin{subcaption}
+%     This figure displays fitted lines for parametric and quadratic Engel curves for each consumption category in 20 countries of our sample. Black vertical lines indicate average household expenditures per capita for each expenditure quintile and country.
+%   \end{subcaption}
 
-\end{figure}
+% \end{figure}
 
-\clearpage
+% \clearpage
 
-\begin{figure}[ht!]
-  \centering
-  \caption{Engel curves: expenditure shares over total household expenditures - Part B} \label{fig:A2}
-  \includegraphics{Analysis_Parametric_Engel_Curves/Parametric_EC_0_B}
-  \begin{subcaption}
-    This figure displays fitted lines for parametric and quadratic Engel curves for each consumption category in 20 countries of our sample. Black vertical lines indicate average household expenditures per capita for each expenditure quintile and country.
-  \end{subcaption}
+% \begin{figure}[ht!]
+%   \centering
+%   \caption{Engel curves: expenditure shares over total household expenditures - Part B} \label{fig:A2}
+%   \includegraphics{Analysis_Parametric_Engel_Curves/Parametric_EC_0_B}
+%   \begin{subcaption}
+%     This figure displays fitted lines for parametric and quadratic Engel curves for each consumption category in 20 countries of our sample. Black vertical lines indicate average household expenditures per capita for each expenditure quintile and country.
+%   \end{subcaption}
 
-\end{figure}
+% \end{figure}
 
-\clearpage
+% \clearpage
 
 % \begin{figure}[ht!]
 %   \centering
@@ -1165,29 +1170,7 @@ It is also possible to investigate the distribution of regional policies, for ex
 
 %  \clearpage
 
- \begin{figure}[ht!]
-   \centering
-   \caption{Average silhouette width for different number of clusters \textit{k}} \label{fig:G1_silhouette}
-   \includegraphics{Figures_Appendix/Figure_Silhouette_1}
-   \begin{subcaption}
-     This figure displays ...
-   \end{subcaption}
- \end{figure}
-
- \clearpage
-
- \begin{figure}[ht!]
-   \centering
-   \caption{Average silhouette width for each country per cluster \textit{k}} \label{fig:G2_silhouette}
-   \includegraphics{Figures_Appendix/Figure_Silhouette_Clusters_1}
-   \begin{subcaption}
-     This figure displays ...
-   \end{subcaption}
- \end{figure}
-
- \clearpage
-
- \begin{figure}[ht!]
+  \begin{figure}[ht!]
    \centering
    \caption{Average silhouette width for different number of clusters \textit{k}} \label{fig:G3_silhouette_2}
    \includegraphics{Figures_Appendix/Figure_Silhouette_2}
@@ -1202,6 +1185,28 @@ It is also possible to investigate the distribution of regional policies, for ex
    \centering
    \caption{Average silhouette width for each country per cluster \textit{k}} \label{fig:G4_silhouette_2}
    \includegraphics{Figures_Appendix/Figure_Silhouette_Clusters_2}
+   \begin{subcaption}
+     This figure displays ...
+   \end{subcaption}
+ \end{figure}
+
+ \clearpage
+
+\begin{figure}[ht!]
+   \centering
+   \caption{Average silhouette width for different number of clusters \textit{k}} \label{fig:G1_silhouette}
+   \includegraphics{Figures_Appendix/Figure_Silhouette_1}
+   \begin{subcaption}
+     This figure displays ...
+   \end{subcaption}
+ \end{figure}
+
+ \clearpage
+
+ \begin{figure}[ht!]
+   \centering
+   \caption{Average silhouette width for each country per cluster \textit{k}} \label{fig:G2_silhouette}
+   \includegraphics{Figures_Appendix/Figure_Silhouette_Clusters_1}
    \begin{subcaption}
      This figure displays ...
    \end{subcaption}
