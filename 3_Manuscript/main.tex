@@ -61,14 +61,16 @@
  % Title
 
 \title{Heterogeneity in carbon intensity of consumption}
-%\author{Leonard Missbach\thanks{Mercator Research Institute on Global Commons and Climate Change, Berlin, Germany; Department Economics of Climate Change, Technische Universität Berlin, Berlin, Germany}}
-\date{September 2023}
+%\author[1]{Leonard Missbach}
+%\afil[1]{Mercator Research Institute on Global Commons and Climate Change, Berlin, Germany; Technical University of Berlin, Berlin, Germany; missbach@mcc-berlin.net}
+
+\date{October 2023}
 
 \begin{document}
 
 \maketitle
 \begin{abstract}
-  We compose a novel cross-country dataset and investigate the individual carbon intensity of 1.5 million households from 87 countries. Building on robust machine learning techniques we decompose household characteristics that are associated to higher levels of carbon intensity of consumption. Our results show that differences in household expenditures are an important predictor, but that it is difficult to generalize findings across countries. 
+  ADD. We compose a novel dataset and investigate the individual carbon intensity of 1.5 million households from 87 countries. Building on machine learning techniques we decompose household characteristics that are associated to higher levels of carbon intensity of consumption. Our results show that differences in household expenditures are an important predictor, but that it is difficult to generalize findings across countries. ADD.
 \end{abstract}
 
 \smallskip
@@ -83,15 +85,15 @@
 
 \section{Introduction} \label{sec:introduction}
 
-We have come to understand that many people judge a policy by its distributional implications. How policy-induced costs distribute among households can influence aggregate public perception and thus the political feasibility of policy reforms. In the context of climate change mitigation, unintended policy impacts on households can constrain the remaining possibility space for efficient and effective mitigation policies, such as carbon pricing or fossil fuel subsidy abolishment.
+We have come to understand that many people judge a policy by its distributional implications. One reason is that the distribution of policy-induced costs among households can influence aggregate public perception and thus the political feasibility of policy reforms. In the context of climate change mitigation, unintended policy impacts on households can constrain the remaining possibility space for efficient and effective mitigation policies, such as carbon pricing or fossil fuel subsidy abolishment.
 
-% This does not need to be, since compensating households and firms with (targeted) measures can theoretically help to achieve any distribution of costs that is desirable.
+Theoretically, this does not need to be, since compensating households or firms with (targeted) measures could help to achieve any distribution of costs that is desirable. In practice, however, different frictions impede effective compensation, such as existing distortions in the tax system or limited institutional capability. Moreover, it is often difficult to understand which compensation measure would be effective in achieving which distribution of costs, because a sound understanding of how costs distribute among different households is lacking.
+
+Such distributional impacts of climate policy instruments depend on many aspects\footnote{One important aspect is industries' and households' ability to substitute carbon-intensive inputs and consumption goods and services, which determines their responsiveness to regulation.}. In the short-term, firms and households can expect additional relative costs in accordance to their specific carbon intensity. For households, it is possible to infer on the approximate cost burden for any climate policy instruments, that directly or indirectly increase the marginal cost of emitting CO$_{2}$, by inspecting the household-specific carbon intensity of consumption. It expresses the amount of CO$_{2}$-emissions linked to the consumption of goods and services per unit of expenditure.
 
 % Paragraph on public acceptance - usual literature (Dechezlepretre, Sommer, Maestre-Andres, Harring)
 % What matters to the public?
 % Paragraph on distributional implications
-
-Such distributional impacts of climate policy instruments depend on many aspects, including industries' and households' ability to substitute carbon-intensive inputs and consumption goods and services. In the short-term, firms and households can expect additional relative costs according to their specific carbon-intensity. For households, the carbon intensity expresses the amount of CO$_{2}$-emissions linked to the consumption of goods and services per unit of expenditure. More specifically, one can easily infer on the approximate cost burden from any climate policy instrument directly or indirectly increasing the marginal cost of emitting CO$_{2}$ by inspecting the carbon intensity of consumption.
 
 \begin{itemize}
   \item Homogenized, cross-country evaluation based on microdata and household-level characteristics is missing.
@@ -99,15 +101,13 @@ Such distributional impacts of climate policy instruments depend on many aspects
   \item Improving targeting precision: Learning how more and less carbon-intensively consuming households differ from each other can help to design compensation measures that minimize target error. Also, enabling cross-country learning.
   \item As we show, often-proposed lump-sum transfers insufficient, because of large horizontal heterogeneity. Progressive results do not necessarily mean that all poorer people receive compensation.
   \item Transfers must be highlighted!
-
-    
   % One paragraph on setting the scene
-  \item Many criteria influence the evaluation of different policy instruments, including efficiency, effectiveness, tractability, institutional feasibility, but also political feasibility, including equity and fairness. One important aspect are distributional implications. In the context of climate policy people may ask: Who loses from climate policy and why?
+  % \item Many criteria influence the evaluation of different policy instruments, including efficiency, effectiveness, tractability, institutional feasibility, but also political feasibility, including equity and fairness. One important aspect are distributional implications. In the context of climate policy people may ask: Who loses from climate policy and why?
   % Highlight discourse on public acceptance, possibly on just transitions etc.
-  \item Distributional effects of climate policy instruments hinge on many aspects, including household-specific ability to substitute away from carbon-intensive goods and services, industries' ability to reduce emissions-intensive inputs, and household-level price elasticities of demand.
+  % \item Distributional effects of climate policy instruments hinge on many aspects, including household-specific ability to substitute away from carbon-intensive goods and services, industries' ability to reduce emissions-intensive inputs, and household-level price elasticities of demand.
   % One paragraph becoming more specific
   \item Some policy instruments are considered superior with regard to aggregate cost-effectiveness, but might require supplementary measures, such as subsidies, allowances, or transfers to address unintended distributional consequences for households.
-  \item Important paragraph: One important metric that helps assessing the impacts of climate policy is the carbon intensity of consumption or production. For households, the carbon intensity expresses the amount of CO$_{2}$-emissions that link to the consumption of consumed goods and services per unit of expenditure. The carbon intensity of consumption gives an accurate approximation of the cost burden resulting from any policy instrument that directly or indirectly increases the price of CO$_{2}$-emissions.
+  % \item Important paragraph: One important metric that helps assessing the impacts of climate policy is the carbon intensity of consumption or production. For households, the carbon intensity expresses the amount of CO$_{2}$-emissions that link to the consumption of consumed goods and services per unit of expenditure. The carbon intensity of consumption gives an accurate approximation of the cost burden resulting from any policy instrument that directly or indirectly increases the price of CO$_{2}$-emissions.
   \item Households that consume more carbon-intensive than others spend relatively more money on carbon-intensive goods and services, such as transport fuels, heating fuels, cooking fuels, or electricity.
   \item Evidence suggests many socio-economic socio-demographic characteristics to drive or correlate with more carbon-intensive consumption.
   % One paragraph outlining the research gap
@@ -117,18 +117,19 @@ Such distributional impacts of climate policy instruments depend on many aspects
 
 % One paragraph stating the research question
 
-In this study, we analyze the heterogeneity in carbon intensity of consumption within countries and compare results across countries. Transgressing traditional analyses of vertical and horizontal heterogeneity, we study country-level household characteristics that correlate with and drive the carbon intensity of consumption. We construct a unique dataset on household-level carbon intensity of consumption for 1.5 million single households representative for 5 billion people in 87 countries that comprise 68\% of global GDP and 52\% of global CO$_{2}$-emissions\footnote{We use data for GDP and CO$_{2}$-emissions from the World Development Indicators database \autocite{WorldBankGroup.2023}.}.
+In this study, we analyze the heterogeneity in carbon intensity of consumption within countries and demonstrate that differences in income or expenditures are an insufficient predictor. Transgressing traditional analyses of vertical and horizontal heterogeneity, we study country-level household characteristics that correlate with and drive the carbon intensity of consumption. To this end, we construct a unique dataset on household-level carbon intensity of consumption for 1.5 million single households representative for 5 billion people in 87 countries. For each country, we fit boosted regression trees to distil those characteristics that are most important to predict differences in carbon intensity of consumption. 
 
 % One paragraph sketching findings
+We show that household-level carbon intensity  can be difficult to predict in some countries, but that models perform well in others. Important household characteristics for predicting carbon intensity of consumption include household expenditures, vehicle ownership, spatial information and energy use, such as cooking and heating fuels or appliance ownership. 
 
 % One paragraph outlining contribution
 
-Our contribution is threefold: First, we construct a novel and homogenized dataset on household-level carbon intensity of consumption including granular information on various household characteristics. Prior work focuses on single country-contexts or neglects within-country particularities. Second, we use supervised machine learning to detect non-linear relationships between household characteristics and carbon-intensity of consumption. Third, we assign countries to clusters based on model outcomes. Countries in the same cluster are more similar to each with respect to factors associated to the heterogeneity of carbon intensity of consumption. 
+Our contribution to a more comprehensive assessment of heterogeneous impacts of climate policy is threefold: First, we describe a novel and homogenized dataset on household-level carbon intensity of consumption including granular information on various household characteristics. In contrast, prior work focuses on single country-contexts or neglects within-country particularities. Second, we use supervised machine learning to detect non-linear relationships between household characteristics and carbon-intensity of consumption, while prior work primarily centered on linear models. Third, we identify different clusters of countries based on model outcomes. Countries in the same cluster are more similar to each with respect to factors associated to the heterogeneity of carbon intensity of consumption. This approach helps to better understand the country-specific characteristics of heterogeneity in carbon intensity by identifying similarities across countries. 
 
 %\item Our analysis informs further research on potential drivers of carbon emissions and inequality in carbon-intensive consumption. It might inform policy to develop international, but also national complementary measures to combat unintended effects of effective climate mitigation policies.
 
 % Roadmap paragraph ?
-
+We proceed as follows: In the next chapter, we revisit the literature on vertical and horizontal inequality of climate policy and point to a knowledge gap on the design of complementary compensation policies. In chapter \ref{sec:methods}, we introduce our modelling approach combining household budget survey and multi-regional input-output data and present empirical methods to describe both, within-country heterogeneity and cross-country similarities. In chapter \ref{sec:results}, we analyze the relative feature importance on the country-level and cluster countries, if features are similarly important. Last, we discuss our findings in light of on-going debates about how to circumvent or address unintended distributional impacts of climate policy in chapter \ref{sec:discussion} before we conclude in chapter \ref{sec:conclusion}.  
 
 \section{Vertical and horizontal inequality of climate policy} \label{sec:literature}
 
@@ -148,7 +149,7 @@ More recently, researchers have started to become interested in the \textit{hori
 % Explain why horizontal implications matter --> Redistribution
 One frequently raised proposal to address unintended distributional effects of climate policy is compensating households for excessive costs \autocite{Klenert.2018,Baranzini.2017}. Often, researchers suggest lump-sum transfers for households that would indeed render vertical differences more progressive \autocite{Budolfson.2021,Steckel.2021b,vanderPloeg.2022}, but neglect or even increase horizontal differences \autocite{Cronin.2019,Hansel.2022}. In essence, combining price-based climate policies with revenue-neutral lump-sum transfers would fail to compensate households that would bear the largest additional costs and additional costs remain larger for larger levels of horizontal inequality. Assuming climate policy should also serve the purpose of least distributive distortions \autocite{Fischer.2019} or of increasing public support by shielding especially vulnerable households, then appropriate design of compensation measures requires accounting for horizontal inequality of policies, rendering popular instruments, such as lump-sum transfers, less effective. 
 
-Many complementing compensation measures are theoretically conceivable: Lowering taxes on labor is preferable on efficiency grounds \autocite{Goulder.1995,Bento.2018}, green spending increases public support \autocite{Sommer.2022}, funding public infrastructure can help promoting development goals \autocite{Franks.2018} and subsidizing or providing subsistence goods (including energy) may prevent detrimental impacts on the poorest households \autocite{Greve.2022}. In any case, effectively accounting for the distributional effects of climate policy warrants precise information about the horizontal distribution and household-level characteristics beyond income or expenditures. 
+Theoretically, many complementing compensation measures are conceivable: Lowering taxes on labor is preferable on efficiency grounds \autocite{Goulder.1995,Bento.2018}, green spending increases public support \autocite{Sommer.2022}, funding public infrastructure can help promoting development goals \autocite{Franks.2018} and subsidizing or providing subsistence goods (including energy) may prevent detrimental impacts on the poorest households \autocite{Greve.2022}. In any case, effectively accounting for the distributional effects of climate policy warrants precise information about the horizontal distribution and household-level characteristics beyond income or expenditures. 
 
 % Show that cross-country studies exist, but do not include the micro-level information
 Our paper also connects to research comparing within-country heterogeneity of carbon-intensive consumption across countries and time. For example, \textcite{Chancel.2022} creates a time-series of country- and percentile-level carbon footprints, notably including households' investments decisions, and finds that \textit{carbon inequality} within countries has increased over the last thirty years. Others \autocite{Oswald.2020,Bruckner.2022} compare the distribution carbon footprints across and within countries, but such studies usually remain calm about policy impacts and their associated vertical and horizontal distributional implications.
@@ -237,8 +238,6 @@ The average CO$_{2}$-intensity of household consumption across countries is 0.68
 
 \paragraph{Analysis of heterogeneity in carbon intensity of consumption}
 
-
-
 Analyses of distributional impacts of climate policy often focus on comparing average (or median) costs of policies for different income groups of households. One frequent approach is to assign households to income (or expenditure) quintiles to infer about vertical differences, i.e., differences between poorer and richer households. Often, researchers also compute measures for within-group heterogeneity, such as the $25^{th}$ or $75^{th}$ quantile within each expenditure quintile \autocite{Cronin.2019, Missbach.2023b}. Comparing such quantile costs across expenditure quintiles can help to infer about horizontal differences.
 
 Figure \ref{fig:fig_1} displays the distribution of carbon intensity of consumption among the poorest 20\% of households in all countries of our sample with the help of boxplots. Boxes and whiskers contain 90\% of all households in these groups. Coloured bars show the difference between the lowest and the highest median carbon intensity across all quintiles for each country.
@@ -276,6 +275,7 @@ Figure \ref{fig:fig_2} illustrates that the average carbon intensity of consumpt
 \begin{figure}[ht!]
     \centering
     \includegraphics{Figure 2/Figure_2_2017}
+    %\includegraphics{Figure 2/Legend}
     \caption{Vertical and horizontal distribution coefficient}
     \label{fig:fig_2}
     \begin{subcaption}
@@ -357,20 +357,22 @@ Low accuracy implies that it is difficult in some countries to infer about the c
 
 \paragraph{Country-level feature importance}
 
-Figure \ref{fig:fig_4_1}, Figure \ref{fig:fig_4_2} and Table \ref{tab:A10} show our indicators for vertical and horizontal inequality, the mean CO$_{2}$-intensity and adjusted feature importance for all features in each country, grouped by country clusters. %Describe single clusters, at least A, B, C and D. Touch briefly upon the rest.
+Different features are important in different countries. Figure \ref{fig:fig_4_1}, Figure \ref{fig:fig_4_2} and Table \ref{tab:A10} show our indicators for vertical and horizontal inequality, the mean CO$_{2}$-intensity and adjusted feature importance for all features in each country, grouped by country clusters. %Describe single clusters, at least A, B, C and D. Touch briefly upon the rest.
 % What are important features? In which direction? Why?
 
-% The average CO$_{2}$-intensity is 0.68 kgCO$_{2}$/US-\$. The average CO$_{2}$-intensity is highest for South Africa (2.15 kgCO$_{2}$/US-\$) followed by Turkey (1.75 kgCO$_{2}$/US-\$) and Czech Republic (1.71 kgCO$_{2}$/US-\$). The average CO$_{2}$-intensity is lowest for Malawi (0.03 kgCO$_{2}$/US-\$), Rwanda (0.04 kgCO$_{2}$/US-\$), Ethiopia and Niger (both 0.1 kgCO$_{2}$/US-\$). Country-level CO$_{2}$-intensities help to infer about the relative average costs in countries: For example, a carbon price of 40 USD/tCO$_{2}$ \autocite{Stiglitz.2017} would be equivalent to relative average costs of 4.1\% of total expenditures in a country with an average CO$_{2}$-intensity of 0.68 kgCO$_{2}$/US-\$.
+On average, the most important feature across countries is household expenditures, accounting for a relative contribution of 22\% on average. Household expenditures are the single most important feature for prediction in 30 countries, and in some countries, such as Luxembourg or Croatia, differences in household expenditures contribute to more than 50\% of model predictions. Household expenditures account for largest shares of adjusted feature importance in Peru (18\%), Ecuador (14\%) and Iraq (14\%) - countries in which we also identify strictly larger carbon intensities for poorer households compared to richer households. The relationship between expenditures and carbon intensity is non-linear, but overall declining for 53 countries, increasing for 14 countries, following an U-shape for 5 countries and an inverse-U-shape for 11 countries (e.g. Turkey, Figure \ref{fig:fig_5_3}). We find declining relationships for 19 of 20 countries with highest GDP per capita, which lends credibility to our prior analysis in section \ref{sec:methods}. Under such circumstances, more carbon-intensively consuming households spend less on consumption, but relatively more on carbon-intensive goods and services.
 
-On average, the most important feature across countries is household expenditures, accounting for a relative contribution of 22\% on average. Household expenditures are the single most important feature for prediction in 30 countries, and in some countries, such as Luxembourg or Croatia, differences in household expenditures contribute to more than 50\% of model predictions. Household expenditures account for largest shares of adjusted feature importance in Peru (18\%), Ecuador (14\%) and Iraq (14\%) - countries in which we also identify strictly larger carbon intensities for poorer households compared to richer households. The relationship between expenditures and carbon intensity is non-linear, but overall declining for 53 countries, increasing for 14 countries, following an U-shape for 5 countries and an inverse-U-shape for 11 countries (e.g. Turkey, Figure \ref{fig:fig_5_3}). We find declining relationships for 19 of of 20 countries with highest GDP per capita, which lends credibility to our prior analysis in section \ref{sec:methods}. Under such circumstances, more carbon-intensively consuming households spend less on consumption, but relatively more on carbon-intensive goods and services.
+Motorcycle and car ownership is the most important feature in 15 and 14 countries, respectively. In Burkina Faso, Mali, Niger or Togo variation in motorcycle ownership can be attributed to more than 20\% of variation in carbon intensity. Car ownership accounts for largest adjusted feature importance in Jordan (33\%) and Taiwan (25\%). Vehicle ownership is therefore the most important adjusted feature across all countries and features and can be a meaningful predictor for predicting climate policy impacts in some countries: Households owning motorcycles or cars are more likely to consume more carbon-intensively than households without such vehicles in every country of our sample. This links to the propensity of vehicle-owning (and -using) households to consume relatively more transport fuels than others.
 
-Motorcycle and car ownership is the most important feature in 15 and 14 countries, respectively. Households owning motorcycles or cars are more likely to consume more carbon-intensively than households without such vehicles in every country. This links to the propensity of vehicle-owning (and -using) households to consume relatively more transport fuels than others.
+Spatial features, such as urban or rural location, state, province or district of household, are the most important features in 17 countries. For example, urban citizenship contributes more than 40\% of model prediction in countries such as Czech Republic, Slovakia or Latvia. We find urban households to consume less carbon-intensively compared to rural households in a majority of countries such as France, Norway, Spain, and more carbon-intensively in countries such as Mongolia, Pakistan or Romania. For India, where state residence accounts for adjusted feature importance of 8\%, we document that households in Jharkand, West Bengal or Manipur consume more carbon-intensively than households in Pondicherry, Haryana or Sikkim. In Bolivia, where department residence accounts for adjusted feature importance of 6\%, households in Pando or Cochabamba consume more carbon-intensively than households from Potosí or Chuquisaca. Carbon intensity differences across space hint towards the important role of access to energy and transport infrastructure. For example, in cities, households may choose from different transport modes including public transportation. 
 
-Spatial features, such as urban or rural location, state, province or district of household, are the most important features in 17 countries. For example, urban citizenship contributes more than 40\% of model prediction in countries such as Czech Republic, Slovakia or Latvia. We find urban households to consume less carbon-intensively compared to rural households in a majority of countries such as France, Norway, Spain, and more carbon-intensively in countries such as Mongolia, Pakistan or Romania. For India, where state residence accounts for adjusted feature importance of 8\%, we document that households in Jharkand, West Bengal or Manipur consume more carbon-intensively than households in Pondicherry, Haryana or Sikkim. In Bolivia, where department residence accounts for adjusted feature importance of 6\%, households in Pando or Cochabamba consume more carbon-intensively than households from Potosí or Chuquisaca. Carbon intensity differences across space hint towards the important role of access to energy and transport infrastructure. For example, in cities, households may choose from different transport modes including public transportation.
+Features describing energy use, such as main fuels used for cooking, lighting and heating, or electricity access and appliance ownership are the most important feature in eight countries. Main cooking fuel is an important feature in Peru and Nicaragua with adjusted feature importance of 18\% and 16\%, respectively. In both countries, households cooking with LPG consume substantially more carbon-intensive than households cooking predominantly with firewood, a pattern that is consistent in all countries with a non-negligible share of households using firewood or charcoal. This result is consistent with our assumption of zero direct emissions for biomass, firewood or charcoal, because of informal markets and structural difficulties to regulate (and tax) such emissions. Using kerosene for lighting is associated to higher carbon intensity compared to electricity and other lighting source in Uganda, Rwanda or Ethiopia. Information on heating fuels exists only in few countries, but is the single most important feature in Turkey and Armenia. Carbon intensity is higher in households heating with coal (Turkey) or natural gas (Armenia) compared to households heating with electricity.
 
-Features describing energy use, such as main fuels used for cooking, lighting and heating, or electricity acccess and appliance ownership are the most important feature in eight countries. Main cooking fuel is an important feature in Peru and Nicaragua with adjusted feature importance of 18\% and 16\%, respectively. In both countries, households cooking with LPG consume substantially more carbon-intensive than households cooking predominantly with firewood, a pattern that is consistent in all countries with a non-negligible share of households using firewood or charcoal. This result is consistent with our assumption of zero direct emissions for biomass, firewood or charcoal, because of informal markets and structural difficulties to regulate (and tax) such emissions. Using kerosene for lighting is associated to higher carbon intensity compared to electricity and other lighting source in Uganda, Rwanda or Ethiopia. Information on heating fuels exists only in few countries, but is the single most important feature in Turkey and Armenia. Carbon intensity is higher in households heating with coal (Turkey) or natural gas (Armenia) compared to households heating with electricity.
+Electricity access is a relatively less important feature, contributing a maximum of 4\% of adjusted feature importance in Senegal. In a majority of countries, feature importance for electricity access is low, possibly because of overall high (e.g. Vietnam, Philippines) or low electricity access rates (e.g. Malawi, Liberai) or because of low CO$_{2}$-intensity in the electricity sector (e.g. Ethiopia, Kenya).
 
-Sociodemographic features, such as education, are the most important feature in three countries. In Portugal, where education of household accounts for 29\% of model prediction, households with tertiary education exhibit a higher carbon intensity than households with primary or secondary education. Adjusted feature importance for features such as gender of household head, self-identified ethnicity, language or religion is highest in Benin or Togo, where households with female household heads are found to consume less carbon-intensively. In Israel, households identifying with the muslim community are found to consume more carbon-intensively compared to households identifying as Jewish. Traditional, religious and orthodox households' carbon intensity is larger compared to secular households. For 71 out of 87 countries, sociodemographic features do not exceed 3\% of adjusted feature importance, demonstrating their relatively low relevance across countries.
+Instead, ownership of major household appliances (such as refrigerators, washing machines or air conditioning) is the most important feature in Switzerland and the Philippines, contributing 17\% of adjusted feature performance in the Philippines. This is less surprising, because appliance ownership is a more compelling, yet incomplete proxy for electricity \textit{use} compared to electricity \textit{access}.
+
+Sociodemographic features, such as education, are the most important feature in three countries. In Portugal, where education of household accounts for 29\% of model prediction, households with tertiary education exhibit a higher carbon intensity than households with primary or secondary education. Adjusted feature importance for features such as gender of household head, self-identified ethnicity, language or religion is highest in Benin or Togo, where households with female household heads are found to consume less carbon-intensively. In Israel, households identifying with the Muslim community are found to consume more carbon-intensively compared to households identifying as Jewish. Traditional, religious and orthodox households' carbon intensity is larger compared to secular households. For 71 out of 87 countries, sociodemographic features do not exceed 3\% of adjusted feature importance, indicating their relatively low relevance across countries.
 
 \begin{figure}[ht!]
     \centering
@@ -405,13 +407,19 @@ Sociodemographic features, such as education, are the most important feature in 
 
 \paragraph{Identifying country clusters}
 
-We identify nine country-clusters based on feature importance for prediction of household-level carbon intensity, the average carbon intensity of households and the vertical and horizontal distribution of countries. Countries within clusters are more similar to each compared to countries in other clusters. In general, it is difficult to assign countries to clusters, as demonstrated through an average silhouette width of 0.17 (see Figures \ref{fig:G3_silhouette_2} and \ref{fig:G4_silhouette_2}). This points to idiosyncratic patterns in some countries, which make it more difficult to draw conclusions for climate and compensation policies from the experience of other countries. Figure \ref{fig:fig_3} shows the relative importance of different features across country-clusters.
+We identify nine country-clusters based on feature importance for prediction of household-level carbon intensity, the average carbon intensity of households and the vertical and horizontal distribution of countries. Countries within clusters are more similar to each compared to countries in other clusters. In general, it is difficult to assign countries to clusters, as demonstrated through the optimal number of clusters ($k=9$) and an average silhouette width of 0.17 (see Figures \ref{fig:G3_silhouette_2} and \ref{fig:G4_silhouette_2}). This points to idiosyncratic patterns in some countries, which make it more difficult to draw conclusions for climate and compensation policies from the experience of other countries. 
 
-Since we adjust country-level feature importance for predictive performance, models' predictive power is important for identification of country clusters. For example, 17 out of 18 countries with $R^{2}<$10\% appear in cluster A.
+Figure \ref{fig:fig_3} shows the relative importance of different features across country-clusters, while clusters are ordered by cluster size. Figures \ref{fig:fig_5_1} to \ref{fig:fig_5_3} show variable importance plots and partial dependence plots with SHAP-values for those countries with highest silhouette width per cluster.
 
-The largest cluster A comprises 36 countries (including USA, Canada, Brazil or Germany). In countries of this cluster, our analysis yields more carbon-intensive consumption among relatively poorer households and a larger heterogeneity in carbon intensity among poorer households compared to richer households. 
+The largest cluster A comprises 36 countries (including USA, Canada, Brazil or Germany). In countries of this cluster, our analysis yields more carbon-intensive consumption among relatively poorer households and a larger heterogeneity in carbon intensity among poorer households compared to richer households. In comparison to other clusters, most features contribute relatively little to explaining variation in carbon intensity. For example, average adjusted feature importance is 3\% for household expenditures, which is the most important feature across all countries. In general, countries in cluster A have in common that it is difficult to predict carbon intensity of households with available data. One reason is that we adjust country-level feature importance for models' predictive performance, which influences the identification of country clusters. For example, 17 out of 18 countries with relatively low model performance ($R^{2}<$10\%) appear in cluster A. In particular, data resolution may be insufficient and does not cover important variables (25 countries lack information on major cooking fuels, 21 countries lack information on car ownership). These results also allude to highly idiosyncratic characteristics of heterogeneous carbon intensity with important implications for policy design, because attempts to compensate based on characteristics observable in our dataset (such as household expenditures) will not be effective to compensate the households most affected by climate policy, but impacts can be large, as indicated by - on average - more carbon-intensive consumption (0.72 kgCO$_{2}$/US-\$ on average) compared to countries in other clusters. 
 
-In contrast, cluster B includes 16 countries (such as India, Bangladesh or Kenya). Here, consumption is more carbon-intensive among richer households and we also find a larger heterogeneity among richer households compared to poorer households. In countries of this cluster, electricity access, cooking fuel use, vehicle ownership and appliance ownership are relatively more important compared to other clusters.
+In contrast, cluster B includes 16 countries (such as India, Bangladesh or Kenya) with less carbon-intensive consumption (0.33 kgCO$_{2}$/US-\$ on average). Within such countries, consumption is more carbon-intensive among richer households and we also find a larger heterogeneity among richer households compared to poorer households. In this cluster, vehicle ownership, cooking fuel use and appliance ownership are relatively more important compared to other clusters, while adjusted feature importance for household expenditures is 3.4\%, on average.
+
+Cluster C comprises ten countries (such as Indonesia, Mexico and South Africa) with comparably high average carbon intensity (1.04 kgCO$_{2}$/US-\$ on average). Within countries, differences in carbon-intensity are comparably small between poorer and richer households, but richer households consume more carbon-intensively in all countries but Vietnam. Countries have in common that household province, appliance and car ownership are important features.
+
+Distinguishing between urban and rural households is an important feature in cluster D. In countries in cluster E, household expenditures and main cooking fuels are important predictors for carbon intensity. Compared to others, countries in cluster F stand out because of high adjusted feature importance for motorcycle ownership and sociodemographic variables. Households' main lighting fuel and province are relatively important features in countries of cluster G, while clusters H and I comprise relatively more carbon-intensive countries, in which household expenditures and car ownership (cluster H) and the main heating fuel (cluster I) are comparably relevant.
+
+While being stylized by nature our clustering approach helps to emphasize country-specific characteristics correlating with (and contributing to) heterogeneous impacts of climate policy on households. Importantly, we provide evidence for differences in household expenditures (or income) being less decisive for households' carbon intensity than often suggested. Features describing households' energy use can be helpful predictors in some countries (for example of clusters B, E, F and H), but not necessarily in every context.     
 
 \begin{figure}[ht!]
     \centering
@@ -442,7 +450,7 @@ In contrast, cluster B includes 16 countries (such as India, Bangladesh or Kenya
     \caption{Partial dependence plots (SHAP) for one country in clusters D to F}
     \label{fig:fig_5_2}
     \begin{subcaption}
-    This figure shows SHAP-values for predicting carbon intensity over feature values for one representative country in each country-cluster in rows. The bar chart displays normalized average absolute SHAP-values for all features. Features with less than 3\% of normalized SHAP-values are subsumed as "Other features (Sum)". Charts show SHAP-values over total household expenditures for all countries and for the three most important features in each country besides total household expenditures. Colors represent household expenditures with blue (red) colors indicating lower (higher) household expenditures. See also Appendix REF to REF
+    This figure shows SHAP-values for predicting carbon intensity over feature values for one representative country in each country-cluster in rows. The bar chart displays normalized average absolute SHAP-values for all features. Features with less than 3\% of normalized SHAP-values are subsumed as "Other features (Sum)". Charts show SHAP-values over total household expenditures for all countries and for the three most important features in each country besides total household expenditures. Colors represent household expenditures with blue (red) colors indicating lower (higher) household expenditures. See also Appendix REF to REF.
     \end{subcaption}
 \end{figure}
 
@@ -472,12 +480,23 @@ In contrast, cluster B includes 16 countries (such as India, Bangladesh or Kenya
     \item Show results for different characteristics.
     %\item One figure: One country (Marginal effects from Logit-model), Shapley-values from boosted regression trees
     %\item One figure: Comparing marginal effects from Logit-model across countries
-  \item More carbon-intensive households are more likely to own (and use) a car, more likely to use fossil fuels for cooking, such as coal, gas, or LPG, less likely to use firewood, charcoal or biomass for cooking, compared to households cooking with electricity. More likely connected to the electricity grid, more likely to have secondary or higher education, more likely to live in rural areas (in richer countries). Discuss differences in space, across provinces and districts. Depending on the country-context, they are more/less likely to identify with ethnic majorities or minorities.
+  \item Robustness checks from Logit in text, but figures or tables to Appendix. More carbon-intensive households are more likely to own (and use) a car, more likely to use fossil fuels for cooking, such as coal, gas, or LPG, less likely to use firewood, charcoal or biomass for cooking, compared to households cooking with electricity. More likely connected to the electricity grid, more likely to have secondary or higher education, more likely to live in rural areas (in richer countries). Discuss differences in space, across provinces and districts. Depending on the country-context, they are more/less likely to identify with ethnic majorities or minorities.
    %\item Comparing model outcomes across countries. One figure: A: Show classification for single countries with colour codes (order in clusters). B: Show clustering of countries with colour codes.
-  \item Discuss differences in instruments: electricity sector instruments, transport sector instruments, international trade policy etc. Highlight main differences: electricity sector characteristics and electrification critical for electricity sector instruments, transport sector policies likely regressive in richer countries, progressive in poorer countries, carbon border adjustments more likely to affect people who consume more carbon-intensive and imported goods and services. Non-consumption impacts probably more severe. (If anything, possibly also Appendix. I suggest the figure comparing vertical and horizontal aspects here - in Appendix).
+  % \item Discuss differences in instruments: electricity sector instruments, transport sector instruments, international trade policy etc. Highlight main differences: electricity sector characteristics and electrification critical for electricity sector instruments, transport sector policies likely regressive in richer countries, progressive in poorer countries, carbon border adjustments more likely to affect people who consume more carbon-intensive and imported goods and services. Non-consumption impacts probably more severe. (If anything, possibly also Appendix. I suggest the figure comparing vertical and horizontal aspects here - in Appendix).
 \end{itemize}
 
-\paragraph{Impacts of climate policy}
+\paragraph{Heterogeneous impacts of sectoral and regional policies}
+
+Our flexible analytical framework also allows for investigating the heterogeneous impacts of different policies by including or excluding CO$_{2}$-emissions from different sectors or regions. For example, Figure \ref{fig:comparison_policies} compares vertical and horizontal distribution coefficients for a national climate policy (as in Figure \ref{fig:fig_2}) and international climate policy, i.e. price increases in equivalence to embedded \textit{global} CO$_{2}$-emissions, and to policy instruments that increase consumer prices in equivalence to embedded national CO$_{2}$-emissions from the transport and electricity sector, respectively.  The comparison of vertical and horizontal inequality across policies emphasizes policy-specific differences within expenditure quintiles: In comparison to national climate policy, international climate policy would lead to more heterogeneous impacts in richer households in 23 countries, because richer households usually spend relatively more on imported goods and services. For transport sector policies, we document more carbon-intensive consumption among richer households compared to poorer households in 59 countries while horizontal differences exceed vertical differences in 77 countries. In contrary, our findings indicate that electricity sector policies would likely more heavily affect poorer households in 62 countries with larger horizontal heterogeneity among poorer households in 64 countries\footnote{Both findings are in contrast to national climate policy across all sectors: We find more carbon-intensive consumption among richer households in richer households compared to poorer households in 43 countries. Within-quintile heterogeneity is larger among poorer households in 58 countries and horizontal inequality exceeds vertical inequality in 66 countries.}. 
+On aggregate, these results underpin that distributional implications of climate policy are country- and policy-specific, but that within-quintile heterogeneity is meaningful, hinting to limited leeway for effective cross-country policy learning.
+
+%\begin{itemize}
+%\item Vertical and horizontal indicators: In how many countries?
+% \item National 43 regressive, 44 progressive - 58 larger among poorer households - horizontal exceed vertical in 66 countries
+% \item Global 45 regressive, 42 progressive - 54 larger among poorer households - horizontal exceed vertical in 58 countries. Story here is that inequality among richer households increases because richer households have a larger taste for imported goods and services.
+% \item Transport 28 regressive, 59 progressive - 49 larger among poorer households - horizontal exceed vertical in 77 countries. Story here is very progressive results with large horizontal inequality!
+%\item Electricity 62 regressive, 25 progressive - 64 larger among poorer households - horizontal exceed vertical in 62 countries. Story here is more regressive results with large horizontal inequality among poorer households.
+% \end{itemize}
 
 \section{Discussion} \label{sec:discussion}
 
@@ -485,7 +504,7 @@ In contrast, cluster B includes 16 countries (such as India, Bangladesh or Kenya
 \item Our findings provide evidence for country-specific characteristics associated to higher levels of carbon intensity of consumption. These results can help in ex-ante assessments to identify especially affected household profiles and promising means to compensate them. Building on identified clusters, we discuss implications for potential compensation.
   \item Discuss role of findings for design of transfers. What is being discussed? LST, tax breaks, infrastructure access. Which transfer tool is applicable in which context?
   \item Very important: Low predictive power means that any transfer will be ineffective to some extent! Important concern.
-\item Discuss ``value chain of climate policy implementation''. Discuss literature on public acceptance. Highlight research gaps: Which distributional implications matter to households and why? How could compensation increase public support? Public support of which groups matter for people with political power?
+\item Discuss ``value chain of climate policy implementation''. Discuss literature on public acceptance. Highlight research gaps: Which distributional implications matter to households and why? How could compensation increase public support? Public support of which groups matter for people with political power? Could be first starting point for discussion.
  \item Discuss role of findings for design of different policies (standards, subsidies, brief ?)
  \item Discuss dynamic effects and inaccuracies in modeling approach (tax pass-through, short- vs. medium-term, technological path dependencies/barriers on household-level)
  \item Distinguish results from analyses about climate policy on labour, wealth, impacts, adaptation, co-benefits, co-costs.
@@ -649,7 +668,7 @@ It is also possible to investigate the distribution of regional policies, for ex
   \caption{Sectoral carbon intensities from GTAP - Part A} \label{fig:B1}
   \includegraphics{Analysis_Carbon_Intensities_GTAP/Figure_2.1.1_A_2017}
   \begin{subcaption}
-    This figure displays...
+    This figure displays sectoral carbon intensities in kgCO$_{2}$ per USD of output for 16 sectors. We plot sectoral carbon intensities if household budget surveys in respective countries include consumption items which correspond to each sector. See our online repository for all country- and sector-level carbon intensities. We include labels with country codes if sector outputs are relatively carbon-intensive compared to other countries. See also Figures \ref{fig:B2}, \ref{fig:B3} and \ref{fig:B4}. Note that sectors \textit{other mining extraction (oxt)} and \textit{extraction of crude petroleum (oil)} are not matched to any item in any country.
   \end{subcaption}
 
 \end{figure}
@@ -661,7 +680,7 @@ It is also possible to investigate the distribution of regional policies, for ex
   \caption{Sectoral carbon intensities from GTAP - Part B} \label{fig:B2}
   \includegraphics{Analysis_Carbon_Intensities_GTAP/Figure_2.1.1_B_2017}
   \begin{subcaption}
-    This figure displays...
+    This figure displays sectoral carbon intensities in kgCO$_{2}$ per USD of output for 16 sectors. We plot sectoral carbon intensities if household budget surveys in respective countries include consumption items which correspond to each sector. See our online repository for all country- and sector-level carbon intensities. We include labels with country codes if sector outputs are relatively carbon-intensive compared to other countries. See also Figures \ref{fig:B1}, \ref{fig:B3} and \ref{fig:B4}. Note that sectors \textit{other mining extraction (oxt)} and \textit{extraction of crude petroleum (oil)} are not matched to any item in any country.
   \end{subcaption}
 
 \end{figure}
@@ -673,7 +692,7 @@ It is also possible to investigate the distribution of regional policies, for ex
   \caption{Sectoral carbon intensities from GTAP - Part C} \label{fig:B3}
   \includegraphics{Analysis_Carbon_Intensities_GTAP/Figure_2.1.1_C_2017}
   \begin{subcaption}
-    This figure displays...
+    This figure displays sectoral carbon intensities in kgCO$_{2}$ per USD of output for 16 sectors. We plot sectoral carbon intensities if household budget surveys in respective countries include consumption items which correspond to each sector. See our online repository for all country- and sector-level carbon intensities. We include labels with country codes if sector outputs are relatively carbon-intensive compared to other countries. See also Figures \ref{fig:B1}, \ref{fig:B2} and \ref{fig:B4}. Note that sectors \textit{other mining extraction (oxt)} and \textit{extraction of crude petroleum (oil)} are not matched to any item in any country.
   \end{subcaption}
 
 \end{figure}
@@ -685,7 +704,7 @@ It is also possible to investigate the distribution of regional policies, for ex
   \caption{Sectoral carbon intensities from GTAP - Part D} \label{fig:B4}
   \includegraphics{Analysis_Carbon_Intensities_GTAP/Figure_2.1.1_D_2017}
   \begin{subcaption}
-    This figure displays...
+    This figure displays sectoral carbon intensities in kgCO$_{2}$ per USD of output for 14 sectors. We plot sectoral carbon intensities if household budget surveys in respective countries include consumption items which correspond to each sector. See our online repository for all country- and sector-level carbon intensities. We include labels with country codes if sector outputs are relatively carbon-intensive compared to other countries. See also Figures \ref{fig:B1}, \ref{fig:B2} and \ref{fig:B3}. Note that sectors \textit{other mining extraction (oxt)} and \textit{extraction of crude petroleum (oil)} are not matched to any item in any country.
   \end{subcaption}
 
 \end{figure}
@@ -699,7 +718,7 @@ It is also possible to investigate the distribution of regional policies, for ex
   \caption{Distribution of carbon intensities over expenditure quintiles - Part A} \label{fig:Quint_A}
   \includegraphics{1_Figures/Figures_Appendix/Figure_1_2017_Appendix_1}
   \begin{subcaption}
-    This figure displays...
+    This figure displays the distribution of carbon intensity of consumption in kgCO$_{2}$/USD (x-axis) over expenditure quintiles (y-axis) for 30 countries. The first expenditure quintile comprises those 20\% of all households with least total expenditures per capita. The fifth expenditure quintile comprises those 20\% of all households with largest expenditures per capita. Within quintiles, boxes display the 25$^{th}$ and the 75$^{th}$ percentile; whiskers display the 5$^{th}$ and 95$^{th}$ percentile; rhombuses indicate the within-quintile average. Vertical coloured bands indicate the difference between the highest and the lowest quintile-level median carbon intensity of consumption. Blue bands indicate higher carbon intensities among richer households; red bands indicate higher carbon intensities among poorer households. See also Tables \ref{tab:A3} and \ref{tab:A7}.
   \end{subcaption}
 
 \end{figure}
@@ -711,7 +730,7 @@ It is also possible to investigate the distribution of regional policies, for ex
   \caption{Distribution of carbon intensities over expenditure quintiles - Part B} \label{fig:Quint_B}
   \includegraphics{1_Figures/Figures_Appendix/Figure_1_2017_Appendix_2}
   \begin{subcaption}
-    This figure displays...
+    This figure displays the distribution of carbon intensity of consumption in kgCO$_{2}$/USD (x-axis) over expenditure quintiles (y-axis) for 30 countries. The first expenditure quintile comprises those 20\% of all households with least total expenditures per capita. The fifth expenditure quintile comprises those 20\% of all households with largest expenditures per capita. Within quintiles, boxes display the 25$^{th}$ and the 75$^{th}$ percentile; whiskers display the 5$^{th}$ and 95$^{th}$ percentile; rhombuses indicate the within-quintile average. Vertical coloured bands indicate the difference between the highest and the lowest quintile-level median carbon intensity of consumption. Blue bands indicate higher carbon intensities among richer households; red bands indicate higher carbon intensities among poorer households. See also Tables \ref{tab:A3} and \ref{tab:A7}.
   \end{subcaption}
 
 \end{figure}
@@ -723,7 +742,7 @@ It is also possible to investigate the distribution of regional policies, for ex
   \caption{Distribution of carbon intensities over expenditure quintiles - Part C} \label{fig:Quint_C}
   \includegraphics{1_Figures/Figures_Appendix/Figure_1_2017_Appendix_3}
   \begin{subcaption}
-    This figure displays...
+    This figure displays the distribution of carbon intensity of consumption in kgCO$_{2}$/USD (x-axis) over expenditure quintiles (y-axis) for 27 countries. The first expenditure quintile comprises those 20\% of all households with least total expenditures per capita. The fifth expenditure quintile comprises those 20\% of all households with largest expenditures per capita. Within quintiles, boxes display the 25$^{th}$ and the 75$^{th}$ percentile; whiskers display the 5$^{th}$ and 95$^{th}$ percentile; rhombuses indicate the within-quintile average. Vertical coloured bands indicate the difference between the highest and the lowest quintile-level median carbon intensity of consumption. Blue bands indicate higher carbon intensities among richer households; red bands indicate higher carbon intensities among poorer households. See also Tables \ref{tab:A3} and \ref{tab:A7}.
   \end{subcaption}
 
 \end{figure}
@@ -746,42 +765,6 @@ It is also possible to investigate the distribution of regional policies, for ex
 
 % \begin{figure}[ht!]
 %   \centering
-%   \caption{Carbon intensity of consumption over total household expenditures - Part B} \label{fig:C2}
-%   \includegraphics{Analysis_Carbon_Intensity_Curve/All_Panel_B}
-%   \begin{subcaption}
-%     This figure displays carbon intensity of aggregate consumption (in $kgCO_{2}/USD$) over total household expenditures in USD for 20 countries in our sample. Household expenditures are inflated (or deflated) to 2014. Points represent single households. The red line represents a fitted curve for a quadratic OLS-regression including a 95\%-confidence interval.
-%   \end{subcaption}
-
-% \end{figure}
-
-% \clearpage
-
-% \begin{figure}[ht!]
-%   \centering
-%   \caption{Carbon intensity of consumption over total household expenditures - Part C} \label{fig:C3}
-%   \includegraphics{Analysis_Carbon_Intensity_Curve/All_Panel_C}
-%   \begin{subcaption}
-%     This figure displays carbon intensity of aggregate consumption (in $kgCO_{2}/USD$) over total household expenditures in USD for 20 countries in our sample. Household expenditures are inflated (or deflated) to 2014. Points represent single households. The red line represents a fitted curve for a quadratic OLS-regression including a 95\%-confidence interval.
-%   \end{subcaption}
-
-% \end{figure}
-
-% \clearpage
-
-% \begin{figure}[ht!]
-%   \centering
-%   \caption{Carbon intensity of consumption over total household expenditures - Part D} \label{fig:C4}
-%   \includegraphics{Analysis_Carbon_Intensity_Curve/All_Panel_D}
-%   \begin{subcaption}
-%     This figure displays carbon intensity of aggregate consumption (in $kgCO_{2}/USD$) over total household expenditures in USD for 20 countries in our sample. Household expenditures are inflated (or deflated) to 2014. Points represent single households. The red line represents a fitted curve for a quadratic OLS-regression including a 95\%-confidence interval.
-%   \end{subcaption}
-
-% \end{figure}
-
-% \clearpage
-
-% \begin{figure}[ht!]
-%   \centering
 %  \caption{Average marginal effects of car ownership} \label{fig:D1_Car}
 %   \includegraphics{Analysis_OLS_ME_Carbon_Footprint/AME_OLS_FP_car.01}
 %   \begin{subcaption}
@@ -792,52 +775,6 @@ It is also possible to investigate the distribution of regional policies, for ex
 
 % \clearpage
 
-% \begin{figure}[ht!]
-%   \centering
-%  \caption{Average marginal effects of electricity access} \label{fig:D2_Electricity}
-%   \includegraphics{Analysis_OLS_ME_Carbon_Footprint/AME_OLS_FP_electricity.access}
-%   \begin{subcaption}
-%     This figure displays ...
-%   \end{subcaption}
-
-% \end{figure}
-
-% \clearpage
-
-% \begin{figure}[ht!]
-%   \centering
-%  \caption{Average marginal effects of household size} \label{fig:D3_Size}
-%   \includegraphics{Analysis_OLS_ME_Carbon_Footprint/AME_OLS_FP_hh_size}
-%   \begin{subcaption}
-%     This figure displays ...
-%   \end{subcaption}
-
-% \end{figure}
-
-% \clearpage
-
-% \begin{figure}[ht!]
-%   \centering
-%  \caption{Average marginal effects of household expenditures} \label{fig:D4_Expenditures}
-%   \includegraphics{Analysis_OLS_ME_Carbon_Footprint/AME_OLS_FP_log_hh_expenditures_USD_2014}
-%   \begin{subcaption}
-%     This figure displays ...
-%   \end{subcaption}
-
-% \end{figure}
-
-% \clearpage
-
-% \begin{figure}[ht!]
-%   \centering
-%  \caption{Average marginal effects of urban citizenship} \label{fig:D5_Urban}
-%   \includegraphics{Analysis_OLS_ME_Carbon_Footprint/AME_OLS_FP_urban_01}
-%   \begin{subcaption}
-%     This figure displays ...
-%   \end{subcaption}
-
-% \end{figure}
-
 % \clearpage
 
 % \begin{figure}[ht!]
@@ -846,66 +783,6 @@ It is also possible to investigate the distribution of regional policies, for ex
 %   \includegraphics{Analysis_OLS_ME_Carbon_Footprint/AME_OLS_FP_CF_Electricity A}
 %   \begin{subcaption}
 %     This figure displays ...
-%   \end{subcaption}
-
-% \end{figure}
-
-% \clearpage
-
-% \begin{figure}[ht!]
-%   \centering
-%  \caption{Average marginal effects of cooking fuel choice - Part B} \label{fig:D7_Electricity_B}
-%   \includegraphics{Analysis_OLS_ME_Carbon_Footprint/AME_OLS_FP_CF_Electricity B}
-%   \begin{subcaption}
-%     This figure displays ...
-%   \end{subcaption}
-
-% \end{figure}
-
-% \clearpage
-
-% \begin{figure}[ht!]
-%   \centering
-%  \caption{Average marginal effects of cooking fuel choice - Part C} \label{fig:D8_LPG}
-%   \includegraphics{Analysis_OLS_ME_Carbon_Footprint/AME_OLS_FP_CF_LPG}
-%   \begin{subcaption}
-%     This figure displays ...
-%   \end{subcaption}
-
-% \end{figure}
-
-% \clearpage
-
-% \begin{figure}[ht!]
-%   \centering
-%  \caption{Average marginal effects of cooking fuel choice - Part D} \label{fig:D9_Charcoal}
-%   \includegraphics{Analysis_OLS_ME_Carbon_Footprint/AME_OLS_FP_CF_Charcoal}
-%   \begin{subcaption}
-%     This figure displays ...
-%   \end{subcaption}
-
-% \end{figure}
-
-% \clearpage
-
-% \begin{figure}[ht!]
-%   \centering
-%  \caption{Average marginal effects of secondary education} \label{fig:D10_sec_edu}
-%   \includegraphics{Analysis_OLS_ME_Carbon_Footprint/AME_OLS_FP_secondary_education}
-%   \begin{subcaption}
-%     This figure displays ... Finland special case
-%   \end{subcaption}
-
-% \end{figure}
-
-% \clearpage
-
-% \begin{figure}[ht!]
-%   \centering
-%  \caption{Average marginal effects of higher education} \label{fig:D11_high_edu}
-%   \includegraphics{Analysis_OLS_ME_Carbon_Footprint/AME_OLS_FP_higher_education}
-%   \begin{subcaption}
-%     This figure displays ... Finland special case
 %   \end{subcaption}
 
 % \end{figure}
@@ -924,130 +801,6 @@ It is also possible to investigate the distribution of regional policies, for ex
 
 % \clearpage
 
-% \begin{figure}[ht!]
-%   \centering
-%  \caption{Average marginal effects of electricity access} \label{fig:E2_Electricity}
-%   \includegraphics{Analysis_OLS_ME_Carbon_Intensity/AME_OLS_CI_electricity.access}
-%   \begin{subcaption}
-%     This figure displays ...
-%   \end{subcaption}
-
-% \end{figure}
-
-% \clearpage
-
-% \begin{figure}[ht!]
-%   \centering
-%  \caption{Average marginal effects of household size} \label{fig:E3_Size}
-%   \includegraphics{Analysis_OLS_ME_Carbon_Intensity/AME_OLS_CI_hh_size}
-%   \begin{subcaption}
-%     This figure displays ...
-%   \end{subcaption}
-
-% \end{figure}
-
-% \clearpage
-
-% \begin{figure}[ht!]
-%   \centering
-%  \caption{Average marginal effects of household expenditures} \label{fig:E4_Expenditures}
-%   \includegraphics{Analysis_OLS_ME_Carbon_Intensity/AME_OLS_CI_log_hh_expenditures_USD_2014}
-%   \begin{subcaption}
-%     This figure displays ...
-%   \end{subcaption}
-
-% \end{figure}
-
-% \clearpage
-
-% \begin{figure}[ht!]
-%   \centering
-%  \caption{Average marginal effects of urban citizenship} \label{fig:E5_Urban}
-%   \includegraphics{Analysis_OLS_ME_Carbon_Intensity/AME_OLS_CI_urban_01}
-%   \begin{subcaption}
-%     This figure displays ...
-%   \end{subcaption}
-
-% \end{figure}
-
-% \clearpage
-
-% \begin{figure}[ht!]
-%   \centering
-%  \caption{Average marginal effects of cooking fuel choice - Part A} \label{fig:E6_Electricity_A}
-%   \includegraphics{Analysis_OLS_ME_Carbon_Intensity/AME_OLS_CI_CI_Electricity A}
-%   %\includegraphics{Analysis_OLS_ME_Carbon_Intensity/AME_OLS_CI_CF_Electricity A}
-%   \begin{subcaption}
-%     This figure displays ...
-%   \end{subcaption}
-
-% \end{figure}
-
-% \clearpage
-
-% \begin{figure}[ht!]
-%   \centering
-%  \caption{Average marginal effects of cooking fuel choice - Part B} \label{fig:E7_Electricity_B}
-%   \includegraphics{Analysis_OLS_ME_Carbon_Intensity/AME_OLS_CI_CI_Electricity B}
-%   %\includegraphics{Analysis_OLS_ME_Carbon_Intensity/AME_OLS_CI_CF_Electricity B}
-%   \begin{subcaption}
-%     This figure displays ...
-%   \end{subcaption}
-
-% \end{figure}
-
-% \clearpage
-
-% \begin{figure}[ht!]
-%   \centering
-%  \caption{Average marginal effects of cooking fuel choice - Part C} \label{fig:E8_LPG}
-%   \includegraphics{Analysis_OLS_ME_Carbon_Intensity/AME_OLS_CI_CI_LPG}
-%   %\includegraphics{Analysis_OLS_ME_Carbon_Intensity/AME_OLS_CI_CF_LPG}
-%   \begin{subcaption}
-%     This figure displays ...
-%   \end{subcaption}
-
-% \end{figure}
-
-% \clearpage
-
-% \begin{figure}[ht!]
-%   \centering
-%  \caption{Average marginal effects of cooking fuel choice - Part D} \label{fig:E9_Charcoal}
-%   \includegraphics{Analysis_OLS_ME_Carbon_Intensity/AME_OLS_CI_CI_Charcoal}
-%   %\includegraphics{Analysis_OLS_ME_Carbon_Intensity/AME_OLS_CI_CF_Charcoal}
-%   \begin{subcaption}
-%     This figure displays ...
-%   \end{subcaption}
-
-% \end{figure}
-
-% \clearpage
-
-% \begin{figure}[ht!]
-%   \centering
-%  \caption{Average marginal effects of secondary education} \label{fig:E10_sec_edu}
-%   \includegraphics{Analysis_OLS_ME_Carbon_Intensity/AME_OLS_CI_secondary_education}
-%   \begin{subcaption}
-%     This figure displays ... Special case finland
-%   \end{subcaption}
-
-% \end{figure}
-
-% \clearpage
-
-% \begin{figure}[ht!]
-%   \centering
-%  \caption{Average marginal effects of higher education} \label{fig:E11_high_edu}
-%   \includegraphics{Analysis_OLS_ME_Carbon_Intensity/AME_OLS_CI_higher_education}
-%   \begin{subcaption}
-%     This figure displays ... Special case finland
-%   \end{subcaption}
-
-% \end{figure}
-
-% \clearpage
-
 %  \begin{figure}[ht!]
 %    \centering
 %   \caption{Average marginal effects of car ownership} \label{fig:F1_Car}
@@ -1059,123 +812,13 @@ It is also possible to investigate the distribution of regional policies, for ex
 %  \end{figure}
 
 %  \clearpage
-% %
-%  \begin{figure}[ht!]
-%    \centering
-%    \caption{Average marginal effects of electricity.access} \label{fig:F2_Electricity}
-%    \includegraphics{Analysis_Logit_Models_Marginal_Effects/Average_Marginal_Effects_affected_upper_80_electricity.access}
-%    \begin{subcaption}
-%      This figure displays ...
-%    \end{subcaption}
-%  \end{figure}
-
-%  \clearpage
-
-%  \begin{figure}[ht!]
-%    \centering
-%    \caption{Average marginal effects of household size} \label{fig:F3_Size}
-%    \includegraphics{Analysis_Logit_Models_Marginal_Effects/Average_Marginal_Effects_affected_upper_80_hh_size}
-%    \begin{subcaption}
-%      This figure displays ...
-%    \end{subcaption}
-%  \end{figure}
-
-%  \clearpage
-
-%  \begin{figure}[ht!]
-%    \centering
-%    \caption{Average marginal effects of household expenditures } \label{fig:F4_Expenditures}
-%    \includegraphics{Analysis_Logit_Models_Marginal_Effects/Average_Marginal_Effects_affected_upper_80_log_hh_expenditures_USD_2014}
-%    \begin{subcaption}
-%      This figure displays ...
-%    \end{subcaption}
-%  \end{figure}
-
-%  \clearpage
-
-%  \begin{figure}[ht!]
-%    \centering
-%    \caption{Average marginal effects of urban citizenship} \label{fig:F5_Urban}
-%    \includegraphics{Analysis_Logit_Models_Marginal_Effects/Average_Marginal_Effects_affected_upper_80_urban_01}
-%    \begin{subcaption}
-%      This figure displays ...
-%    \end{subcaption}
-%  \end{figure}
-
-%  \clearpage
-
-%  \begin{figure}[ht!]
-%    \centering
-%    \caption{Average marginal effects of cooking fuel choice - Part A} \label{fig:F6_Electricity_A}
-%    \includegraphics{Analysis_Logit_Models_Marginal_Effects/Average_Marginal_Effects_affected_upper_80_CF_Electricity A}
-%    \begin{subcaption}
-%      This figure displays ...
-%    \end{subcaption}
-%  \end{figure}
-
-%  \clearpage
-
-%  \begin{figure}[ht!]
-%    \centering
-%    \caption{Average marginal effects of cooking fuel choice - Part B} \label{fig:F7_Electricity_B}
-%    \includegraphics{Analysis_Logit_Models_Marginal_Effects/Average_Marginal_Effects_affected_upper_80_CF_Electricity B}
-%    \begin{subcaption}
-%      This figure displays ...
-%    \end{subcaption}
-%  \end{figure}
-
-%  \clearpage
-
-%  \begin{figure}[ht!]
-%    \centering
-%    \caption{Average marginal effects of cooking fuel choice - Part C} \label{fig:F8_LPG}
-%    \includegraphics{Analysis_Logit_Models_Marginal_Effects/Average_Marginal_Effects_affected_upper_80_CF_LPG}
-%    \begin{subcaption}
-%      This figure displays ...
-%    \end{subcaption}
-%  \end{figure}
-
-%  \clearpage
-
-%  \begin{figure}[ht!]
-%    \centering
-%    \caption{Average marginal effects of cooking fuel choice - Part D} \label{fig:F9_Charcoal}
-%    \includegraphics{Analysis_Logit_Models_Marginal_Effects/Average_Marginal_Effects_affected_upper_80_CF_Charcoal}
-%    \begin{subcaption}
-%      This figure displays ...
-%    \end{subcaption}
-%  \end{figure}
-
-%  \clearpage
-
-%  \begin{figure}[ht!]
-%    \centering
-%    \caption{Average marginal effects of secondary education} \label{fig:F10_sec_edu}
-%    \includegraphics{Analysis_Logit_Models_Marginal_Effects/Average_Marginal_Effects_affected_upper_80_secondary_education}
-%    \begin{subcaption}
-%      This figure displays ...
-%    \end{subcaption}
-%  \end{figure}
-
-%  \clearpage
-
-%  \begin{figure}[ht!]
-%    \centering
-%    \caption{Average marginal effects of higher education} \label{fig:F11_high_edu}
-%    \includegraphics{Analysis_Logit_Models_Marginal_Effects/Average_Marginal_Effects_affected_upper_80_higher_education}
-%    \begin{subcaption}
-%      This figure displays ...
-%    \end{subcaption}
-%  \end{figure}
-
-%  \clearpage
 
   \begin{figure}[ht!]
    \centering
-   \caption{Average silhouette width for different number of clusters \textit{k}} \label{fig:G3_silhouette_2}
+   \caption{Average silhouette width for different numbers of clusters \textit{k}} \label{fig:G3_silhouette_2}
    \includegraphics{Figures_Appendix/Figure_Silhouette_2}
    \begin{subcaption}
-     This figure displays ...
+     This figure displays the average silhouette width across all clusters for different numbers of clusters \textit{k}. We perform k-means clustering on a dataset with 87 country-level observations. Observations include information on vertical and horizontal distribution, average carbon intensity and \textit{adjusted} feature importance, i.e., we adjust feature importance for country-level model performance. Vertical line and red point indicate the number of clusters that maximizes average silhouette width across all clusters.
    \end{subcaption}
  \end{figure}
 
@@ -1186,7 +829,7 @@ It is also possible to investigate the distribution of regional policies, for ex
    \caption{Average silhouette width for each country per cluster \textit{k}} \label{fig:G4_silhouette_2}
    \includegraphics{Figures_Appendix/Figure_Silhouette_Clusters_2}
    \begin{subcaption}
-     This figure displays ...
+     This figure displays the silhouette for each country for nine clusters. We perform k-means clustering on a dataset with 87 country-level observations. Observations include information on vertical and horizontal distribution, average carbon intensity and \textit{adjusted} feature importance, i.e. we adjust feature importance for country-level model performance. We order observations (y-axis) by clusters with most observations and by silhouette width. Silhouette width expresses how well each observation fits in its cluster, also in comparison to the observations from the least distant, but different cluster.
    \end{subcaption}
  \end{figure}
 
@@ -1194,10 +837,10 @@ It is also possible to investigate the distribution of regional policies, for ex
 
 \begin{figure}[ht!]
    \centering
-   \caption{Average silhouette width for different number of clusters \textit{k}} \label{fig:G1_silhouette}
+   \caption{Average silhouette width for different numbers of clusters \textit{k}} \label{fig:G1_silhouette}
    \includegraphics{Figures_Appendix/Figure_Silhouette_1}
    \begin{subcaption}
-     This figure displays ...
+     This figure displays the average silhouette width across all clusters for different numbers of clusters \textit{k}. We perform k-means clustering on a dataset with 87 country-level observations. Observations include information on vertical and horizontal distribution, average carbon intensity and feature importance. In contrast to Figure \ref{fig:G3_silhouette_2}, we do not adjust feature importance for country-level model performance. Vertical line and red point indicate the number of clusters that maximizes average silhouette width across all clusters.
    \end{subcaption}
  \end{figure}
 
@@ -1208,11 +851,25 @@ It is also possible to investigate the distribution of regional policies, for ex
    \caption{Average silhouette width for each country per cluster \textit{k}} \label{fig:G2_silhouette}
    \includegraphics{Figures_Appendix/Figure_Silhouette_Clusters_1}
    \begin{subcaption}
-     This figure displays ...
+     This figure displays the silhouette for each country for 15 clusters. We perform k-means clustering on a dataset with 15 country-level observations. Observations include information on vertical and horizontal distribution, average carbon intensity and feature importance. In contrast to Figure \ref{fig:G2_silhouette}, we do not adjust feature importance for country-level model performance. We order observations (y-axis) by clusters with most observations and by silhouette width. Silhouette width expresses how well each observation fits in its cluster, also in comparison to the observations from the least distant, but different cluster.
    \end{subcaption}
  \end{figure}
 
  \clearpage
+
+\begin{figure}[ht!]
+    \centering
+    \caption{Vertical and horizontal distribution coefficients for different policies}
+    \includegraphics[width=\textwidth]{1_Figures/Figure 2/Figure_2_2017_Policy.jpg}
+    \label{fig:comparison_policies}
+    \begin{subcaption}
+    This figure displays the vertical distribution coefficient comparing the median carbon intensity of the richest to the poorest quintile. The horizontal distribution coefficient compares the within-quintile differences (5$^{th}$ to 95$_{th}$ percentile within quintiles) of the richest to the poorest quintile. Rectangles (A) and (B) indicate higher carbon intensity (at the median) among the poorest quintile compared to the richest quintile; rectangles (C) and (D) indicate lower carbon intensity (at the median) among the poorest quintile compared to the richest quintile. Rectangles (A) and (C) indicate smaller within-quintile differences of carbon intensity among the richest quintile compared to the poorest quintile; rectangles (B) and (D) indicate larger within-quintile differences of carbon intensity among the richest quintile compared to the poorest quintile. Colors of points indicate GDP per capita for 2018 (in log-transformed constant 2010 US-\$).
+    
+    Panel "National climate policy" shows the same values as Figure \ref{fig:fig_2}, i.e. distribution coefficients for carbon intensities accounting for all nationally released CO$_{2}$-emissions across all sectors. Panel "International climate policy" shows distribution coefficients for carbon intensities accounting for globally released CO$_{2}$-emissions embedded in national consumption. Panels "Transport sector policy" and "Electricity sector policy" display distribution coefficients for carbon intensities accounting for nationally released CO$_{2}$-emissions in the transport sector and electricity sector, respectively.
+    \end{subcaption}
+\end{figure}
+
+\clearpage
 
 \subsection{Supplementary tables} \label{sec:tables}
 
