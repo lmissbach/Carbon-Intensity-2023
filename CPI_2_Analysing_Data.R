@@ -163,7 +163,7 @@ sum_3.2.2 <- data_2 %>%
 sum_3.2.3 <- left_join(sum_3.2.1, sum_3.2.2, by = "Country")%>%
   select(Country, starts_with("hh_expenditures_USD_2014"), starts_with("share_energy"))%>%
   mutate_at(vars(starts_with("hh_expenditures_USD_2014")), list(~ round(.,0)))%>%
-  mutate_at(vars(starts_with("share_energy")), list(~ paste0(round(.*100,1), "%")))%>%
+  mutate_at(vars(starts_with("share_energy")), list(~ paste0(round(.*100,0), "%")))%>%
   left_join(select(Country.Set, Country, Country_long))%>%
   select(Country_long, everything(), - Country)%>%
   arrange(Country_long)
@@ -172,10 +172,10 @@ colnames(sum_3.2.3) <- c("Country", rep(c("All","EQ1","EQ2","EQ3","EQ4","EQ5"),2
 
 kbl(sum_3.2.3, format = "latex", caption = "Average household expenditures and average energy expenditure shares per expenditure quintile", booktabs = T, align = "l|rrrrrr|rrrrrr", vline = "", format.args = list(big.mark = ",", scientific = FALSE), linesep = "",
     longtable = T, label = "A2")%>%
-  kable_styling(position = "center", latex_options = c("HOLD_position", "repeat_header"), font_size = 8)%>%
-  column_spec(1, width = "3.15 cm")%>%
-  column_spec(2:7, width = "1.13 cm")%>%
-  column_spec(8:13, width = "1.04 cm")%>%
+  kable_styling(position = "center", latex_options = c("HOLD_position", "repeat_header"), font_size = 7)%>%
+  column_spec(1, width = "3.12 cm")%>%
+  column_spec(2:7, width = "1.08 cm")%>%
+  column_spec(8:13, width = "0.9 cm")%>%
   add_header_above(c(" " = 2, "Expenditure quintile" = 5, " " = 1, "Expenditure quintile" = 5))%>%
   add_header_above(c(" " = 1, "Average household expenditures [USD]" = 6, "Average energy expenditure shares" = 6))%>%
   footnote(general = "This table shows average household expenditures and average energy expenditure shares for households in our sample. We estimate household-weighted averages for the whole population and per expenditure quintile.", threeparttable = T)%>%
@@ -3467,12 +3467,8 @@ print(P_6.2.5.3)
 print(P_6.2.5.4)
 dev.off()
 
-# to be updated: data_6.2.7, data_6.2.8
-
-data_6.2.7 <- data_6.2.4.0 %>%
-  mutate(cluster_13_means    = model_6.2.1$cluster,
-         silhouette_13_means = silhouette_6.2.1) %>%
-  group_by(cluster_13_means)%>%
+data_6.2.7 <- read_csv("../0_Data/9_Supplementary Data/BRT-Tracking/Clusters_Normalized_Corrected.csv")%>%
+  group_by(cluster)%>%
   mutate(number = n())%>%
   summarise_at(vars(-Country), ~ mean(.))%>%
   ungroup()%>%
@@ -3480,44 +3476,42 @@ data_6.2.7 <- data_6.2.4.0 %>%
   rename(car_01 = "Car own.", ely = "Electricity access", exp = "HH expenditures",
          app = "Appliance own.", moto = "Motorcycle own.", cook = "Cooking fuel",
          light = "Lighting fuel", heat = "Heating fuel", size = "HH size", gender = "Gender HHH")%>%
-  mutate(CAR         = ifelse(car_01 > 0.1, "Yes", "No"),
-         APPLIANCE   = ifelse(app > 0.1, "Yes", "No"),
-         COOKING     = ifelse(cook > 0.07, "Yes", "No"),
+  mutate(CAR         = ifelse(car_01 > 0.07, "Yes", "No"),
+         APPLIANCE   = ifelse(app > 0.05, "Yes", "No"),
+         COOKING     = ifelse(cook > 0.05, "Yes", "No"),
          ELECTRICITY = ifelse(ely > 0.1, "Yes", "No"),
          EDUCATION   = ifelse(Education > 0.1, "Yes", "No"),
-         MOTORCYCLE  = ifelse(moto > 0.1, "Yes", "No"),
-         PROVINCE    = ifelse(Province > 0.1, "Yes", "No"),
-         DISTRICT    = ifelse(District > 0.1, "Yes", "No"),
-         URBAN       = ifelse(Urban > 0.1, "Yes", "No"),
-         LIGHTING    = ifelse(light > 0.1, "Yes", "No"),
-         HEATING     = ifelse(heat > 0.1, "Yes", "No"),
+         MOTORCYCLE  = ifelse(moto > 0.07, "Yes", "No"),
+         PROVINCE    = ifelse(Province > 0.04, "Yes", "No"),
+         DISTRICT    = ifelse(District > 0.04, "Yes", "No"),
+         URBAN       = ifelse(Urban > 0.04, "Yes", "No"),
+         LIGHTING    = ifelse(light > 0.05, "Yes", "No"),
+         HEATING     = ifelse(heat > 0.05, "Yes", "No"),
          'HH SIZE'   = ifelse(size > 0.1, "Yes", "No"),
          GENDER      = ifelse(gender > 0.1, "Yes", "No"),
-         SOCIODEMOGRAPHIC = ifelse(Sociodemographic > 0.1, "Yes", "No"),
+         SOCIODEMOGRAPHIC = ifelse((Sociodemographic + gender + Education) > 0.05, "Yes", "No"),
          VERTICAL    = ifelse(median_1_5 < 1, "Progressive",
                               ifelse(median_1_5 > 1, "Regressive", NA)),
          HORIZONTAL  = ifelse(dif_95_05_1_5 > 1, "Heterogeneous in poor",
                               ifelse(dif_95_05_1_5 < 1, "Heterogeneous in rich", NA)),
-         ABSOLUTE    = ifelse(mean_carbon_intensity < 0.5466049, "Less carbon intensive",
-                              ifelse(mean_carbon_intensity > 0.5466049 & mean_carbon_intensity < 1, "More carbon intensive",
+         ABSOLUTE    = ifelse(mean_carbon_intensity < 0.6, "Less carbon intensive",
+                              ifelse(mean_carbon_intensity > 0.6 & mean_carbon_intensity < 1, "More carbon intensive",
                                      ifelse(mean_carbon_intensity > 1, "Very carbon intensive", NA))),
-         EXPENDITURES = ifelse(exp < 0.2, "Less important",
-                               ifelse(exp < 0.25, "Relatively less important",
-                                      ifelse(exp > 0.25, "Relatively more important", NA))))%>%
-  select(cluster_13_means, number, CAR:EXPENDITURES)%>%
+         EXPENDITURES = ifelse(exp < 0.05, "Less important",
+                               ifelse(exp < 0.1, "Relatively more important",
+                                      ifelse(exp > 0.1, "Very more important", NA))))%>%
+  select(cluster, number, CAR:EXPENDITURES)%>%
   arrange(desc(number))
 
-data_6.2.8 <- data_6.2.4.0 %>%
-  mutate(cluster_13_means = model_6.2.1$cluster,
-         silhouette_13_means = silhouette_6.2.1)%>%
+data_6.2.8 <- read_csv("../0_Data/9_Supplementary Data/BRT-Tracking/Clusters_Normalized_Corrected.csv") %>%
   select("Car own.", "Electricity access", "HH expenditures", "Appliance own.",
          "Cooking fuel", Education, Province, District, Urban, "Heating fuel", "Lighting fuel",
-         Sociodemographic, median_1_5, dif_95_05_1_5, mean_carbon_intensity, cluster_13_means, Country)%>%
-  group_by(cluster_13_means)%>%
+         Sociodemographic, median_1_5, dif_95_05_1_5, mean_carbon_intensity, cluster, Country)%>%
+  group_by(cluster)%>%
   mutate(number = n())%>%
   summarise_at(vars(-Country), ~ mean(.))%>%
   ungroup()%>%
-  mutate_at(vars(-cluster_13_means, - number), ~ (. - mean(.))/sd(.))
+  mutate_at(vars(-cluster, - number), ~ (. - mean(.))/sd(.))
 
 rm(data_6.2.0, data_6.2.1, data_6.2.2, data_6.2.3, data_6.2.4, 
    data_6.2.4.0, data_6.2.5, data_6.2.5.1, data_6.2.4_r2, data_6.2.4.0_r2, data_6.2.5_r2, data_6.2.5.2,
@@ -6268,7 +6262,328 @@ jpeg("1_Figures/Figure 2/Figure_2_2017.jpg", width = 15.5, height = 10, unit = "
 print(P_8.2)
 dev.off()
 
-rm(data_8.2.0, data_8.2.1, poly, poly_2, poly_3, poly_4, poly_5, P_8.2, data_8.2.2)
+# Policy-design
+
+data_8.2.2 <- data_2 %>%
+  mutate(carbon_intensity_kg_per_USD_global      = CO2_t_global*1000/hh_expenditures_USD_2014,
+         carbon_intensity_kg_per_USD_electricity = CO2_t_electricity*1000/hh_expenditures_USD_2014,
+         carbon_intensity_kg_per_USD_transport   = CO2_t_transport*1000/hh_expenditures_USD_2014)%>%
+  group_by(Country, Income_Group_5)%>%
+  summarise(median_carbon_intensity_kg_per_USD_national    = wtd.quantile(carbon_intensity_kg_per_USD_national, probs = 0.5, weights = hh_weights),
+            q95_carbon_intensity_kg_per_USD_national       = wtd.quantile(carbon_intensity_kg_per_USD_national, probs = 0.95, weights = hh_weights),
+            q05_carbon_intensity_kg_per_USD_national       = wtd.quantile(carbon_intensity_kg_per_USD_national, probs = 0.05, weights = hh_weights),
+            q20_carbon_intensity_kg_per_USD_national       = wtd.quantile(carbon_intensity_kg_per_USD_national, probs = 0.20, weights = hh_weights),
+            q80_carbon_intensity_kg_per_USD_national       = wtd.quantile(carbon_intensity_kg_per_USD_national, probs = 0.80, weights = hh_weights),
+            
+            median_carbon_intensity_kg_per_USD_global      = wtd.quantile(carbon_intensity_kg_per_USD_global, probs = 0.5, weights = hh_weights),
+            q95_carbon_intensity_kg_per_USD_global         = wtd.quantile(carbon_intensity_kg_per_USD_global, probs = 0.95, weights = hh_weights),
+            q05_carbon_intensity_kg_per_USD_global         = wtd.quantile(carbon_intensity_kg_per_USD_global, probs = 0.05, weights = hh_weights),
+            q20_carbon_intensity_kg_per_USD_global         = wtd.quantile(carbon_intensity_kg_per_USD_global, probs = 0.20, weights = hh_weights),
+            q80_carbon_intensity_kg_per_USD_global         = wtd.quantile(carbon_intensity_kg_per_USD_global, probs = 0.80, weights = hh_weights),
+            
+            median_carbon_intensity_kg_per_USD_electricity = wtd.quantile(carbon_intensity_kg_per_USD_electricity, probs = 0.5, weights = hh_weights),
+            q95_carbon_intensity_kg_per_USD_electricity    = wtd.quantile(carbon_intensity_kg_per_USD_electricity, probs = 0.95, weights = hh_weights),
+            q05_carbon_intensity_kg_per_USD_electricity    = wtd.quantile(carbon_intensity_kg_per_USD_electricity, probs = 0.05, weights = hh_weights),
+            q20_carbon_intensity_kg_per_USD_electricity    = wtd.quantile(carbon_intensity_kg_per_USD_electricity, probs = 0.20, weights = hh_weights),
+            q80_carbon_intensity_kg_per_USD_electricity    = wtd.quantile(carbon_intensity_kg_per_USD_electricity, probs = 0.80, weights = hh_weights),
+            
+            median_carbon_intensity_kg_per_USD_transport   = wtd.quantile(carbon_intensity_kg_per_USD_transport, probs = 0.5, weights = hh_weights),
+            q95_carbon_intensity_kg_per_USD_transport      = wtd.quantile(carbon_intensity_kg_per_USD_transport, probs = 0.95, weights = hh_weights),
+            q05_carbon_intensity_kg_per_USD_transport      = wtd.quantile(carbon_intensity_kg_per_USD_transport, probs = 0.05, weights = hh_weights),
+            q20_carbon_intensity_kg_per_USD_transport      = wtd.quantile(carbon_intensity_kg_per_USD_transport, probs = 0.20, weights = hh_weights),
+            q80_carbon_intensity_kg_per_USD_transport      = wtd.quantile(carbon_intensity_kg_per_USD_transport, probs = 0.80, weights = hh_weights))%>%
+  ungroup()%>%
+  filter(Income_Group_5 == 1 | Income_Group_5 == 5)%>%
+  mutate(dif_q95_q05_carbon_intensity_kg_per_USD_national    = q95_carbon_intensity_kg_per_USD_national - q05_carbon_intensity_kg_per_USD_national,
+         dif_q80_q20_carbon_intensity_kg_per_USD_national    = q80_carbon_intensity_kg_per_USD_national - q20_carbon_intensity_kg_per_USD_national,
+         dif_q95_q05_carbon_intensity_kg_per_USD_global      = q95_carbon_intensity_kg_per_USD_global - q05_carbon_intensity_kg_per_USD_global,
+         dif_q80_q20_carbon_intensity_kg_per_USD_global      = q80_carbon_intensity_kg_per_USD_global - q20_carbon_intensity_kg_per_USD_global,
+         dif_q95_q05_carbon_intensity_kg_per_USD_electricity = q95_carbon_intensity_kg_per_USD_electricity - q05_carbon_intensity_kg_per_USD_electricity,
+         dif_q80_q20_carbon_intensity_kg_per_USD_electricity = q80_carbon_intensity_kg_per_USD_electricity - q20_carbon_intensity_kg_per_USD_electricity,
+         dif_q95_q05_carbon_intensity_kg_per_USD_transport   = q95_carbon_intensity_kg_per_USD_transport - q05_carbon_intensity_kg_per_USD_transport,
+         dif_q80_q20_carbon_intensity_kg_per_USD_transport   = q80_carbon_intensity_kg_per_USD_transport - q20_carbon_intensity_kg_per_USD_transport)%>%
+  select(Country, Income_Group_5, 
+         starts_with("dif"), starts_with("median"))%>%
+  pivot_wider(names_from = Income_Group_5, values_from = c(starts_with("dif"), starts_with("median")))%>%
+  mutate(median_1_5_national       = median_carbon_intensity_kg_per_USD_national_1/median_carbon_intensity_kg_per_USD_national_5,
+         dif_95_05_1_5_national    = dif_q95_q05_carbon_intensity_kg_per_USD_national_1/dif_q95_q05_carbon_intensity_kg_per_USD_national_5,
+         dif_80_20_1_5_national    = dif_q80_q20_carbon_intensity_kg_per_USD_national_1/dif_q80_q20_carbon_intensity_kg_per_USD_national_5,
+         median_1_5_global         = median_carbon_intensity_kg_per_USD_global_1/median_carbon_intensity_kg_per_USD_global_5,
+         dif_95_05_1_5_global      = dif_q95_q05_carbon_intensity_kg_per_USD_global_1/dif_q95_q05_carbon_intensity_kg_per_USD_global_5,
+         dif_80_20_1_5_global      = dif_q80_q20_carbon_intensity_kg_per_USD_global_1/dif_q80_q20_carbon_intensity_kg_per_USD_global_5,
+         median_1_5_electricity    = median_carbon_intensity_kg_per_USD_electricity_1/median_carbon_intensity_kg_per_USD_electricity_5,
+         dif_95_05_1_5_electricity = dif_q95_q05_carbon_intensity_kg_per_USD_electricity_1/dif_q95_q05_carbon_intensity_kg_per_USD_electricity_5,
+         dif_80_20_1_5_electricity = dif_q80_q20_carbon_intensity_kg_per_USD_electricity_1/dif_q80_q20_carbon_intensity_kg_per_USD_electricity_5,
+         median_1_5_transport      = median_carbon_intensity_kg_per_USD_transport_1/median_carbon_intensity_kg_per_USD_transport_5,
+         dif_95_05_1_5_transport   = dif_q95_q05_carbon_intensity_kg_per_USD_transport_1/dif_q95_q05_carbon_intensity_kg_per_USD_transport_5,
+         dif_80_20_1_5_transport   = dif_q80_q20_carbon_intensity_kg_per_USD_transport_1/dif_q80_q20_carbon_intensity_kg_per_USD_transport_5)%>%
+  left_join(data_8.2.0, by = c("Country" = "Country.Code"))%>%
+  mutate(value = ifelse(Country == "TWN", 20388.2761, value))
+
+poly <- data.frame(g = c(1,1,1,2,2,2,2,3,3,3,4,4,4,5,5,5,5,6,6,6), x = c(0.05,0.05,0.95,
+                                                                         0.05,0.05,0.95,0.95,
+                                                                         1.05,1.05,4.45,
+                                                                         4.45,4.45,1.06,
+                                                                         4.45,1.05,1.05,4.45,
+                                                                         0.06,0.96,0.96), 
+                   y = c(0.06,0.96,0.96,
+                         1.05,4.45,4.45,1.05,
+                         1.06,4.45,4.45,
+                         4.45,1.05,1.05,
+                         0.95,0.95,0.05,0.05,
+                         0.05,0.95,0.05))%>%
+  mutate(x_1 = ifelse(g == 1,0.25,
+                      ifelse(g == 2,0.5,
+                             ifelse(g == 3,1.75,
+                                    ifelse(g == 4,2.25,
+                                           ifelse(g == 5,2,
+                                                  ifelse(g == 6,0.75,0)))))))%>%
+  mutate(y_1 = ifelse(g == 1,0.75,
+                      ifelse(g == 2,2,
+                             ifelse(g == 3,2.25,
+                                    ifelse(g == 4,1.75,
+                                           ifelse(g == 5,0.5,
+                                                  ifelse(g == 6,0.25,0)))))))%>%
+  mutate(z_1 = ifelse(g == 6 & x_1 == lag(x_1), NA,x_1),
+         z_2 = ifelse(x_1 == lead(x_1), NA, x_1))%>%
+  mutate(z_3 = ifelse(g == 6, z_1, z_2))%>%
+  mutate(z_1 = ifelse(g == 6 & y_1 == lag(y_1), NA,y_1),
+         z_2 = ifelse(y_1 == lead(y_1), NA, y_1))%>%
+  mutate(z_4 = ifelse(g == 6, z_1, z_2))%>%
+  mutate(label = ifelse(g == 1, "Regressive and homogeneous (Horizontal)",
+                        ifelse(g == 2, "Regressive and heterogeneous", 
+                               ifelse(g == 3, "Progressive and heterogeneous (Horizontal)",
+                                      ifelse(g == 4, "Progressive and heterogeneous (Vertical)",
+                                             ifelse(g == 5, "Progressive and homogeneous",
+                                                    ifelse(g == 6, "Regressive and heterogeneous (Vertical)", NA)))))))
+
+poly_2 <- data.frame(g = c(1,1,1,1,
+                           2,2,2,2,
+                           3,3,3,3,
+                           4,4,4,4),
+                     y = c(0.01,0.99,0.99,0.01,
+                           1.01,3.19,3.19,1.01,
+                           1.01,3.19,3.19,1.01,
+                           0.01,0.99,0.99,0.01),
+                     x = c(0.01,0.01,0.99,0.99,
+                           0.01,0.01,0.99,0.99,
+                           1.01,1.01,4.49,4.49,
+                           1.01,1.01,4.49,4.49),
+                     label = c(rep("Progressive and more heterogeneous in IQ5",4),
+                               rep("Regressive and more heterogeneous in IQ5",4),
+                               rep("Regressive and more heterogeneous in IQ1",4),
+                               rep("Progressive and more heterogeneous in IQ1",4)),
+                     g2 = c(rep(1,4), rep(2,4), rep(1,4), rep(2,4)),
+                     label2 = c(rep("Progressive",4),  rep("Regressive",4), rep("Regressive",4), rep("Progressive",4)),
+                     label3 = c(rep("More heterogeneous in IQ5", 8), rep("More heterogeneous in IQ1", 8)))
+
+poly_3 <- data.frame(g = c(1,1,1,
+                           2,2,2),
+                     y = c(0.03,4.48,4.48,
+                           0.02,4.48,0.02),
+                     x = c(0.02,0.02,4.46,
+                           0.03,4.48,4.48))
+
+poly_4 <- data.frame(text = c("Horizontal differences > Vertical differences",
+                              "Vertical differences > Horizontal differences"),
+                     x = c(3.1,1.3),
+                     y = c(0.3,2.8))
+
+poly_5 <- data.frame(text = c("A", "B", "C", "D"),
+                     x = c(0.8,1.2,0.8,1.2),
+                     y = c(3.1,3.1,0.1,0.1))
+
+P_8.0 <- ggplot()+
+  geom_polygon(data = poly_3, aes(x = x, y = y, group = g), colour = "black", fill = NA, size = 0.3)+
+  geom_polygon(data = filter(poly_2, g == 1), aes(x = x, y = y, group = g), alpha = 0.5, fill = "#6F99ADFF")+
+  geom_polygon(data = filter(poly_2, g == 2), aes(x = x, y = y, group = g), alpha = 0.5, fill = "#E18727FF")+
+  geom_polygon(data = filter(poly_2, g == 3), aes(x = x, y = y, group = g), alpha = 0.5, fill = "#0072B5FF")+
+  geom_polygon(data = filter(poly_2, g == 4), aes(x = x, y = y, group = g), alpha = 0.5, fill = "#FFDC91FF")+
+  geom_label(data = poly_4, aes(label = text, x = x, y = y), alpha = 0.5, size = 2.5)+
+  geom_label(data = poly_5, aes(label = text, x = x, y = y), alpha = 0.2, size = 2.5)+
+  theme_bw()+
+  # geom_segment(data = data_8.2.2, aes(y = median_1_5_national, yend = median_1_5_global, x = dif_95_05_1_5_national, xend = dif_95_05_1_5_global), size = 0.1, colour = "lightgrey")+
+  geom_point(data = data_8.2.2, aes(y = median_1_5_national, x = dif_95_05_1_5_national, fill = log(value)), shape = 21, colour = "black", size = 2.5)+
+  # geom_point(data = data_8.2.2, aes(y = median_1_5_global, x = dif_95_05_1_5_global, fill = log(value)), shape = 21, colour = "black", size = 2.5)+
+  #geom_text_repel(data = data_7.3, aes(label = Country, y = median_1_5, x = dif_95_05_1_5),
+  #                direction = "both", size = 2, max.overlaps = 100)+
+  coord_cartesian(xlim = c(0,4.5), ylim = c(0,3.2))+
+  scale_fill_viridis_c(breaks = c(7,11), labels = c("Poorer", "Richer"))+
+  scale_x_continuous(expand = c(0,0))+
+  scale_y_continuous(expand = c(0,0), breaks = c(0,1,2,3))+
+  ylab("Vertical distribution coefficient")+
+  xlab("Horizontal distribution coefficient")+
+  labs(fill = "")+
+  ggtitle("National climate policy")+
+  # guides(fill = "none")+
+  #guides(fill = guide_legend(nrow = 2))+
+  theme(axis.text.y = element_text(size = 7), 
+        axis.text.x = element_text(size = 7),
+        axis.title  = element_text(size = 7),
+        plot.title  = element_text(size = 7),
+        legend.position = "right",
+        strip.text = element_text(size = 7),
+        #strip.text.y = element_text(angle = 180),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        axis.ticks = element_line(size = 0.2),
+        legend.text = element_text(size = 7),
+        legend.title = element_text(size = 7),
+        plot.margin = unit(c(0.3,0.3,0.3,0.3), "cm"),
+        panel.border = element_rect(size = 0.3))
+
+P_8.3 <- ggplot()+
+  geom_polygon(data = poly_3, aes(x = x, y = y, group = g), colour = "black", fill = NA, size = 0.3)+
+  geom_polygon(data = filter(poly_2, g == 1), aes(x = x, y = y, group = g), alpha = 0.5, fill = "#6F99ADFF")+
+  geom_polygon(data = filter(poly_2, g == 2), aes(x = x, y = y, group = g), alpha = 0.5, fill = "#E18727FF")+
+  geom_polygon(data = filter(poly_2, g == 3), aes(x = x, y = y, group = g), alpha = 0.5, fill = "#0072B5FF")+
+  geom_polygon(data = filter(poly_2, g == 4), aes(x = x, y = y, group = g), alpha = 0.5, fill = "#FFDC91FF")+
+  geom_label(data = poly_4, aes(label = text, x = x, y = y), alpha = 0.5, size = 2.5)+
+  geom_label(data = poly_5, aes(label = text, x = x, y = y), alpha = 0.2, size = 2.5)+
+  theme_bw()+
+  # geom_segment(data = data_8.2.2, aes(y = median_1_5_national, yend = median_1_5_global, x = dif_95_05_1_5_national, xend = dif_95_05_1_5_global), size = 0.1, colour = "lightgrey")+
+  geom_point(data = data_8.2.2, aes(y = median_1_5_national, x = dif_95_05_1_5_national, fill = log(value)), shape = 21, colour = "black", size = 2.5, alpha = 0.1)+
+  geom_point(data = data_8.2.2, aes(y = median_1_5_global, x = dif_95_05_1_5_global, fill = log(value)), shape = 21, colour = "black", size = 2.5)+
+  #geom_text_repel(data = data_7.3, aes(label = Country, y = median_1_5, x = dif_95_05_1_5),
+  #                direction = "both", size = 2, max.overlaps = 100)+
+  coord_cartesian(xlim = c(0,4.5), ylim = c(0,3.2))+
+  scale_fill_viridis_c(breaks = c(7,11), labels = c("Poorer", "Richer"))+
+  scale_x_continuous(expand = c(0,0))+
+  scale_y_continuous(expand = c(0,0), breaks = c(0,1,2,3))+
+  ylab("Vertical distribution coefficient")+
+  xlab("Horizontal distribution coefficient")+
+  labs(fill = "")+
+  ggtitle("International climate policy")+
+  # guides(fill = "none")+
+  #guides(fill = guide_legend(nrow = 2))+
+  theme(axis.text.y = element_text(size = 7), 
+        axis.text.x = element_text(size = 7),
+        axis.title  = element_text(size = 7),
+        plot.title  = element_text(size = 7),
+        legend.position = "right",
+        strip.text = element_text(size = 7),
+        #strip.text.y = element_text(angle = 180),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        axis.ticks = element_line(size = 0.2),
+        legend.text = element_text(size = 7),
+        legend.title = element_text(size = 7),
+        plot.margin = unit(c(0.3,0.3,0.3,0.3), "cm"),
+        panel.border = element_rect(size = 0.3))
+
+P_8.4 <- ggplot()+
+  geom_polygon(data = poly_3, aes(x = x, y = y, group = g), colour = "black", fill = NA, size = 0.3)+
+  geom_polygon(data = filter(poly_2, g == 1), aes(x = x, y = y, group = g), alpha = 0.5, fill = "#6F99ADFF")+
+  geom_polygon(data = filter(poly_2, g == 2), aes(x = x, y = y, group = g), alpha = 0.5, fill = "#E18727FF")+
+  geom_polygon(data = filter(poly_2, g == 3), aes(x = x, y = y, group = g), alpha = 0.5, fill = "#0072B5FF")+
+  geom_polygon(data = filter(poly_2, g == 4), aes(x = x, y = y, group = g), alpha = 0.5, fill = "#FFDC91FF")+
+  geom_label(data = poly_4, aes(label = text, x = x, y = y), alpha = 0.5, size = 2.5)+
+  geom_label(data = poly_5, aes(label = text, x = x, y = y), alpha = 0.2, size = 2.5)+
+  theme_bw()+
+  # geom_segment(data = data_8.2.2, aes(y = median_1_5_national, yend = median_1_5_global, x = dif_95_05_1_5_national, xend = dif_95_05_1_5_global), size = 0.1, colour = "lightgrey")+
+  geom_point(data = data_8.2.2, aes(y = median_1_5_national, x = dif_95_05_1_5_national, fill = log(value)), shape = 21, colour = "black", size = 2.5, alpha = 0.1)+
+  geom_point(data = data_8.2.2, aes(y = median_1_5_transport, x = dif_95_05_1_5_transport, fill = log(value)), shape = 21, colour = "black", size = 2.5)+
+  #geom_text_repel(data = data_7.3, aes(label = Country, y = median_1_5, x = dif_95_05_1_5),
+  #                direction = "both", size = 2, max.overlaps = 100)+
+  coord_cartesian(xlim = c(0,4.5), ylim = c(0,3.2))+
+  scale_fill_viridis_c(breaks = c(7,11), labels = c("Poorer", "Richer"))+
+  scale_x_continuous(expand = c(0,0))+
+  scale_y_continuous(expand = c(0,0), breaks = c(0,1,2,3))+
+  ylab("Vertical distribution coefficient")+
+  xlab("Horizontal distribution coefficient")+
+  labs(fill = "")+
+  ggtitle("Transport sector policy")+
+  # guides(fill = "none")+
+  #guides(fill = guide_legend(nrow = 2))+
+  theme(axis.text.y = element_text(size = 7), 
+        axis.text.x = element_text(size = 7),
+        axis.title  = element_text(size = 7),
+        plot.title  = element_text(size = 7),
+        legend.position = "right",
+        strip.text = element_text(size = 7),
+        #strip.text.y = element_text(angle = 180),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        axis.ticks = element_line(size = 0.2),
+        legend.text = element_text(size = 7),
+        legend.title = element_text(size = 7),
+        plot.margin = unit(c(0.3,0.3,0.3,0.3), "cm"),
+        panel.border = element_rect(size = 0.3))
+
+P_8.5 <- ggplot()+
+  geom_polygon(data = poly_3, aes(x = x, y = y, group = g), colour = "black", fill = NA, size = 0.3)+
+  geom_polygon(data = filter(poly_2, g == 1), aes(x = x, y = y, group = g), alpha = 0.5, fill = "#6F99ADFF")+
+  geom_polygon(data = filter(poly_2, g == 2), aes(x = x, y = y, group = g), alpha = 0.5, fill = "#E18727FF")+
+  geom_polygon(data = filter(poly_2, g == 3), aes(x = x, y = y, group = g), alpha = 0.5, fill = "#0072B5FF")+
+  geom_polygon(data = filter(poly_2, g == 4), aes(x = x, y = y, group = g), alpha = 0.5, fill = "#FFDC91FF")+
+  geom_label(data = poly_4, aes(label = text, x = x, y = y), alpha = 0.5, size = 2.5)+
+  geom_label(data = poly_5, aes(label = text, x = x, y = y), alpha = 0.2, size = 2.5)+
+  theme_bw()+
+  # geom_segment(data = data_8.2.2, aes(y = median_1_5_national, yend = median_1_5_global, x = dif_95_05_1_5_national, xend = dif_95_05_1_5_global), size = 0.1, colour = "lightgrey")+
+  geom_point(data = data_8.2.2, aes(y = median_1_5_national, x = dif_95_05_1_5_national, fill = log(value)), shape = 21, colour = "black", size = 2.5, alpha = 0.1)+
+  geom_point(data = data_8.2.2, aes(y = median_1_5_electricity, x = dif_95_05_1_5_electricity, fill = log(value)), shape = 21, colour = "black", size = 2.5)+
+  #geom_text_repel(data = data_7.3, aes(label = Country, y = median_1_5, x = dif_95_05_1_5),
+  #                direction = "both", size = 2, max.overlaps = 100)+
+  coord_cartesian(xlim = c(0,4.5), ylim = c(0,3.2))+
+  scale_fill_viridis_c(breaks = c(7,11), labels = c("Poorer", "Richer"))+
+  scale_x_continuous(expand = c(0,0))+
+  scale_y_continuous(expand = c(0,0), breaks = c(0,1,2,3))+
+  ylab("Vertical distribution coefficient")+
+  xlab("Horizontal distribution coefficient")+
+  labs(fill = "")+
+  ggtitle("Electricity sector policy")+
+  # guides(fill = "none")+
+  #guides(fill = guide_legend(nrow = 2))+
+  theme(axis.text.y = element_text(size = 7), 
+        axis.text.x = element_text(size = 7),
+        axis.title  = element_text(size = 7),
+        plot.title  = element_text(size = 7),
+        legend.position = "right",
+        strip.text = element_text(size = 7),
+        #strip.text.y = element_text(angle = 180),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        axis.ticks = element_line(size = 0.2),
+        legend.text = element_text(size = 7),
+        legend.title = element_text(size = 7),
+        plot.margin = unit(c(0.3,0.3,0.3,0.3), "cm"),
+        panel.border = element_rect(size = 0.3))
+
+P_8.6 <- ggarrange(P_8.0, P_8.3, P_8.4, P_8.5, common.legend = TRUE, legend = "right")
+
+jpeg("1_Figures/Figure 2/Figure_2_2017_Policy.jpg", width = 23, height = 21, unit = "cm", res = 600)
+print(P_8.6)
+dev.off()
+
+# For Manuscript
+
+data_8.2.3 <- data_8.2.2 %>%
+  mutate(regressive_national     = ifelse(median_1_5_national > 1,1,0),
+         progressive_national    = ifelse(median_1_5_national < 1,1,0),
+         regressive_global       = ifelse(median_1_5_global > 1,1,0),
+         progressive_global      = ifelse(median_1_5_global < 1,1,0),
+         regressive_electricity  = ifelse(median_1_5_electricity > 1,1,0),
+         progressive_electricity = ifelse(median_1_5_electricity < 1,1,0),
+         regressive_transport    = ifelse(median_1_5_transport > 1,1,0),
+         progressive_transport   = ifelse(median_1_5_transport < 1,1,0),
+         
+         horizontal_national    = ifelse(dif_95_05_1_5_national > 1,1,0),
+         horizontal_global      = ifelse(dif_95_05_1_5_global > 1,1,0),
+         horizontal_electricity = ifelse(dif_95_05_1_5_electricity > 1,1,0),
+         horizontal_transport   = ifelse(dif_95_05_1_5_transport > 1,1,0),
+         
+         hor_ver_national    = ifelse(dif_95_05_1_5_national > median_1_5_national,1,0),
+         hor_ver_global      = ifelse(dif_95_05_1_5_global > median_1_5_global,1,0),
+         hor_ver_electricity = ifelse(dif_95_05_1_5_electricity > median_1_5_electricity,1,0),
+         hor_ver_transport   = ifelse(dif_95_05_1_5_transport > median_1_5_transport,1,0))%>%
+  arrange(desc(value))%>%
+  mutate(income_higher = 1:n())%>%
+  mutate(income_lower = n():1)%>%
+  mutate(regressive_income  = ifelse(regressive_national == 1 & income_higher < 21,1,0))%>%
+  mutate(progressive_income = ifelse(progressive_national == 1 & income_lower < 21,1,0))
+
+rm(data_8.2.0, data_8.2.1, poly, poly_2, poly_3, poly_4, poly_5, P_8.2, data_8.2.2,
+   P_8.0, P_8.3, P_8.4, P_8.5, P_8.6, data_8.2.3)
 
 # 8.3     Figure 3: Clustering and features ####
 
@@ -7034,8 +7349,7 @@ data_8.4.1 <- read_csv("../0_Data/9_Supplementary Data/BRT-Tracking/Clusters_Nor
   rename(Cluster = cluster)%>%
   mutate_at(vars("Silhouette width":"Appliance own."), ~ round(.,2))%>%
   left_join(select(Country.Set, Country, Country_long))%>%
-  select(Cluster, Country_long, everything(), - Country)%>%
-  rename(Country = Country_long)
+  select(Cluster, Country, everything(), - Country_long)
 
 options(knitr.kable.NA = "")
 
@@ -7044,7 +7358,8 @@ kbl(data_8.4.1, format = "latex", caption = "Feature importance across countries
     longtable = T, label = "A10_Uncorrected")%>%
   kable_styling(position = "center", latex_options = c("HOLD_position", "repeat_header"), font_size = 8)%>%
   row_spec(0, angle = 90)%>%
-  column_spec(1:21, width = "0.5 cm")%>%
+  row_spec(1:87, font_size = 6)%>%
+  column_spec(1:21, width = "0.35 cm")%>%
   row_spec(c(14,24,33,41,48,55,60,65,70,74,77,80,83,85,87), hline_after = TRUE)%>%
   #collapse_rows(columns = 3:4, valign = "middle")%>%
   footnote(general = "This table shows feature importance in percent (based on absolute average SHAP-values per feature) across all countries and per cluster. Feature importance is unadjusted for model accuracy. Columns 'Mean carbon intensity', 'Horizontal inequality' and 'Vertical inequality' show average values. Column 'number' refers to the number of countries assigned to this cluster.", threeparttable = T)%>%
@@ -7065,8 +7380,7 @@ data_8.4.1 <- read_csv("../0_Data/9_Supplementary Data/BRT-Tracking/Clusters_Nor
   rename(Cluster = cluster)%>%
   mutate_at(vars("Silhouette width":"Appliance own."), ~ round(.,2))%>%
   left_join(select(Country.Set, Country, Country_long))%>%
-  select(Cluster, Country_long, everything(), - Country)%>%
-  rename(Country = Country_long)
+  select(Cluster, Country, everything(), - Country_long)
 
 options(knitr.kable.NA = "")
 
@@ -7075,7 +7389,8 @@ kbl(data_8.4.1, format = "latex", caption = "Feature importance across countries
     longtable = T, label = "A10")%>%
   kable_styling(position = "center", latex_options = c("HOLD_position", "repeat_header"), font_size = 8)%>%
   row_spec(0, angle = 90)%>%
-  column_spec(1:21, width = "0.5 cm")%>%
+  row_spec(1:87, font_size = 6)%>%
+  column_spec(1:21, width = "0.35 cm")%>%
   row_spec(c(36,52,62,71,76,80,83,85,87), hline_after = TRUE)%>%
   #collapse_rows(columns = 3:4, valign = "middle")%>%
   footnote(general = "This table shows feature importance in percent (based on absolute average SHAP-values per feature) across all countries and per cluster. Feature importance is adjusted for model accuracy. Columns 'Mean carbon intensity', 'Horizontal inequality' and 'Vertical inequality' show average values. Column 'number' refers to the number of countries assigned to this cluster.", threeparttable = T)%>%
@@ -7217,6 +7532,11 @@ for (i in c(data_8.5.2.C$Country)){
     title_0 <- paste0("Cluster ", data_8.5.2.C$cluster[data_8.5.2.C$Country == i],": ",
                       Country.Set$Country_long[Country.Set$Country == i], " (")
     
+    if(i == "DOM"){
+      title_0 <- paste0("Cluster ", data_8.5.2.C$cluster[data_8.5.2.C$Country == i],": ",
+                        "Dom. Republic", " (")
+    }
+    
     title_1 <- paste0("=", format(eval_8.5.2$Sample_Testing[eval_8.5.2$Country == i], nsmall = 2),")")
     
     P_8.5 <- ggplot(data_8.5.2)+
@@ -7326,14 +7646,14 @@ for (i in c(data_8.5.2.C$Country)){
     
     P_8.5.2.1 <- ggplot(data_8.5.2.1)+
       geom_hline(aes(yintercept = 0))+
-      geom_smooth(aes(x     = hh_expenditures_USD_2014,
-                      y     = SHAP_hh_expenditures_USD_2014),
-                  method = "loess", color = "black", size = 0.15, se = FALSE,
-                  formula = y ~ x)+
       geom_point(aes(x = hh_expenditures_USD_2014,
                      y = SHAP_hh_expenditures_USD_2014,
                      colour = z_score_exp),
                  size = 0.5, alpha = alpha_0)+
+      geom_smooth(aes(x     = hh_expenditures_USD_2014,
+                      y     = SHAP_hh_expenditures_USD_2014),
+                  method = "loess", color = "black", size = 0.4, se = FALSE,
+                  formula = y ~ x)+
       theme_bw()+
       scale_colour_gradient(low = "#0072B5FF", high = "#BC3C29FF")+
       scale_fill_gradient(low = "#0072B5FF", high = "#BC3C29FF")+
@@ -7403,7 +7723,7 @@ for (i in c(data_8.5.2.C$Country)){
         
         if(j == "LF"){
           data_8.5.2.2 <- data_8.5.2.2 %>%
-            mutate(Variable = ifelse((Variable %in% c("Firewood", "Gas", "Other biomass")) & SHAP == 0 | i == "ETH" & Variable == "other", "Other lighting", Variable))
+            mutate(Variable = ifelse((Variable %in% c("Firewood", "Gas", "Other biomass")) & SHAP == 0 | i == "ETH" & Variable == "other" | i == "KEN" & Variable == "other", "Other lighting", Variable))
         }
         
         if(j == "CF"){
@@ -7509,6 +7829,16 @@ for (i in c(data_8.5.2.C$Country)){
           arrange(desc(number))%>%
           slice_head(n = 5)
         
+        if(j == "Province" & i == "EGY"){
+          data_8.5.2.2 <- data_8.5.2.2 %>%
+            mutate(Variable = ifelse(Variable == "Rural Lower Egypt", "Rur. Lower",
+                                     ifelse(Variable == "Rural Upper Egypt", "Rur. Upper",
+                                            ifelse(Variable == "Urban Lower Egypt", "Urb. Lower",
+                                                   ifelse(Variable == "Urban Upper Egypt", "Urb. Upper",
+                                                          ifelse(Variable == "Urban Governorates", "Urb. Gov.", 
+                                                                 ifelse(Variable == "Frontier Governorates", "Other", Variable)))))))
+        }
+        
         data_8.5.2.3 <- data_8.5.2.2 %>%
           mutate(Variable = str_replace(Variable, "-"," "))%>%
           mutate(Variable = str_replace(Variable, "\\."," "))%>%
@@ -7521,12 +7851,43 @@ for (i in c(data_8.5.2.C$Country)){
           group_by(Variable)%>%
           mutate(var_ID = cur_group_id())%>%
           ungroup()%>%
-          mutate(Variable = ifelse((Var_imp == "0" & max(order_no)>5 & i != "SUR") | (Var_imp == "0" & max(var_ID)>5 & i != "SUR"), "Other", Variable))%>%
+          mutate(Variable = ifelse((Var_imp == "0" & max(order_no)>5 & i != "SUR" & i != "EGY") | (Var_imp == "0" & max(var_ID)>5 & i != "SUR" & i != "EGY"), "Other", Variable))%>%
           mutate(Variable = ifelse(i == "NGA" & Variable != "Other", str_sub(Variable, 5,-1), Variable))%>%
           mutate(Variable = ifelse(i == "BFA" & Variable == "Centre Est", "Cen. Est", Variable))%>%
           mutate(Variable = ifelse(nchar(Variable) > 6, paste0(str_sub(Variable, 1,6),"."), Variable))
         
         text_size_0 <- if(j == "Province"){text_size_0 <- 5}else{text_size_0 <- 6}
+        
+        if(j == "Province" | j == "Ethnicity"){
+          data_8.5.2.3 <- data_8.5.2.3 %>%
+            mutate(Variable = str_to_title(Variable))}
+        
+        if(j == "Province" & i == "UGA"){
+          data_8.5.2.3 <- data_8.5.2.3 %>%
+            mutate(Variable = ifelse(Variable == 1, "Kampala",
+                                     ifelse(Variable == 2, "Central 1",
+                                            ifelse(Variable == 3, "Central 2",
+                                                   ifelse(Variable == 5, "Bukedi",
+                                                          ifelse(Variable == 10, "Ancholi", Variable))))))
+        }
+        
+        if(j == "Province" & i == "IND"){
+          data_8.5.2.3 <- data_8.5.2.3 %>%
+            mutate(Variable = ifelse(Variable == "09", "Uttar P.",
+                                     ifelse(Variable == "14", "Manipur",
+                                            ifelse(Variable == "18", "Assam",
+                                                   ifelse(Variable == "19", "West Ben.",
+                                                          ifelse(Variable == "20", "Jhark.", Variable))))))
+        }
+        
+        if(j == "Religiosity"){
+          data_8.5.2.3 <- data_8.5.2.3 %>%
+            mutate(Variable = ifelse(Variable == 1, "Secular",
+                                     ifelse(Variable == 2, "Trad.",
+                                            ifelse(Variable == 3, "Religious",
+                                                   ifelse(Variable == 4, "Orthodox", "other")))))
+        }
+        
         
         P_8.5.2.3 <- ggplot(data_8.5.2.3)+
           geom_hline(aes(yintercept = 0))+
@@ -7863,6 +8224,13 @@ for (i in c(data_8.5.2.C$Country)){
   print(P_8.5.1)
   dev.off()
 }
+
+# Supplementary analysis
+
+data_8.5.2.E <- data_8.5.2.D %>%
+  group_by(Country)%>%
+  mutate(max_0 = ifelse(share_SHAP == max(share_SHAP),1,0))%>%
+  ungroup()
 
 rm(list_A, list_B, list_C,
    P_8.5.0.I, P_8.5.0.II, P_8.5.0.III, P_8.5, data_8.5.1, data_8.5.2,
@@ -8462,3 +8830,196 @@ rm(P_8.5.2.5.A, P_8.5.2.5.B, P_8.5.2.5.C, P_8.5.2.5.D,
    P_8.5.2.5.E, P_8.5.2.5.F, P_8.5.2.5.G, P_8.5.2.5.H, 
    P_8.5.2.5.I, P_8.5.2.5.J, P_8.5.2.5.K, P_8.5.2.5.L, P_8.5.2.5.M, 
    P_8.5.2.6, P_8.5.2.7, P_8.5.2.8 )
+
+# 8.5.3   Information 5c: Direction of effects ####
+
+data_8.5.3.0 <- data.frame()
+
+for (i in c(Country.Set$Country)){
+  
+  data_8.5.3.1 <- read_rds(sprintf("../0_Data/9_Supplementary Data/BRT-Tracking/SHAP-Values en detail/2017/SHAP_wide_%s.rds",i))%>%
+    mutate(Country = i)
+  
+  data_8.5.3.0 <- data_8.5.3.0 %>%
+    bind_rows(data_8.5.3.1)
+  
+  print(i)
+}
+
+# Urban
+
+data_8.5.3.2 <- data_8.5.3.0 %>%
+  select(Country, SHAP_Urban, urban_01)%>%
+  filter(!is.na(urban_01))%>%
+  group_by(Country, urban_01)%>%
+  summarise(mean_SHAP_urban = mean(SHAP_Urban))%>%
+  ungroup()%>%
+  pivot_wider(names_from = "urban_01", values_from = "mean_SHAP_urban", names_prefix = "urban_")%>%
+  mutate(Urban = ifelse(urban_1 > urban_0,1,0))
+
+# Provinces
+
+data_8.5.3.3 <- data_8.5.3.0 %>%
+  select(Country, SHAP_Province, Province)%>%
+  filter(!is.na(Province))%>%
+  group_by(Country, Province)%>%
+  summarise(mean_SHAP_Province = mean(SHAP_Province))%>%
+  ungroup()%>%
+  arrange(Country, desc(mean_SHAP_Province))
+
+# District
+
+data_8.5.3.4 <- data_8.5.3.0 %>%
+  select(Country, SHAP_District, District)%>%
+  filter(!is.na(District))%>%
+  group_by(Country, District)%>%
+  summarise(mean_SHAP_District = mean(SHAP_District))%>%
+  ungroup()%>%
+  arrange(Country, desc(mean_SHAP_District))
+
+# CF
+
+data_8.5.3.5 <- data_8.5.3.0 %>%
+  select(Country, SHAP_CF, CF)%>%
+  filter(!is.na(CF))%>%
+  group_by(Country, CF)%>%
+  summarise(mean_SHAP_CF = mean(SHAP_CF))%>%
+  ungroup()%>%
+  arrange(Country, desc(mean_SHAP_CF))
+
+# LF
+
+data_8.5.3.6 <- data_8.5.3.0 %>%
+  select(Country, SHAP_LF, LF)%>%
+  filter(!is.na(LF))%>%
+  group_by(Country, LF)%>%
+  summarise(mean_SHAP_LF = mean(SHAP_LF))%>%
+  ungroup()%>%
+  arrange(Country, desc(mean_SHAP_LF))
+
+# HF
+
+data_8.5.3.7 <- data_8.5.3.0 %>%
+  select(Country, SHAP_HF, HF)%>%
+  filter(!is.na(HF))%>%
+  group_by(Country, HF)%>%
+  summarise(mean_SHAP_HF = mean(SHAP_HF))%>%
+  ungroup()%>%
+  arrange(Country, desc(mean_SHAP_HF))
+
+# ISCED
+
+data_8.5.3.8 <- data_8.5.3.0 %>%
+  select(Country, SHAP_ISCED, ISCED)%>%
+  filter(!is.na(ISCED))%>%
+  group_by(Country, ISCED)%>%
+  summarise(mean_SHAP_ISCED = mean(SHAP_ISCED))%>%
+  ungroup()%>%
+  arrange(Country, desc(mean_SHAP_ISCED))
+
+# Religiosity
+
+data_8.5.3.9 <- data_8.5.3.0 %>%
+  select(Country, SHAP_Religiosity, Religiosity)%>%
+  filter(!is.na(Religiosity))%>%
+  group_by(Country, Religiosity)%>%
+  summarise(mean_SHAP_Religiosity = mean(SHAP_Religiosity))%>%
+  ungroup()%>%
+  arrange(Country, desc(mean_SHAP_Religiosity))
+
+# Religion
+
+data_8.5.3.10 <- data_8.5.3.0 %>%
+  select(Country, SHAP_Religion, Religion)%>%
+  filter(!is.na(Religion))%>%
+  group_by(Country, Religion)%>%
+  summarise(mean_SHAP_Religion = mean(SHAP_Religion))%>%
+  ungroup()%>%
+  arrange(Country, desc(mean_SHAP_Religion))
+
+test <- data_8.4.1 %>%
+  mutate(gender = ifelse(is.na(`Gender HHH`),0,`Gender HHH`),
+         sociodemographic = ifelse(is.na(Sociodemographic),0,Sociodemographic),
+         education   = ifelse(is.na(Education),0,Education))%>%
+  rowwise()%>%
+  mutate(aggregate = sum(gender + sociodemographic + education))%>%
+  mutate(agg_2 = ifelse(aggregate > 0.03,1,0))
+
+# 8.6.0   Figures for Appendix ####
+# 8.6.1   Figure non-parametric Engel-curves ####
+
+data_8.6.1.1 <- data_2 %>%
+  left_join(Country.Set)%>%
+  mutate(Country_long = fct_reorder(Country_long,hh_expenditures_USD_2014_mean, min))%>%
+  select(hh_id, hh_weights, Country, starts_with("share_"), hh_expenditures_USD_2014_pc, Group_Income, Country_long)%>%
+  select(-share_other_binning)%>%
+  rename(share_Energy = share_energy, share_Food = share_food, share_Services = share_services, share_Goods = share_goods)%>%
+  pivot_longer(starts_with("share"), names_to = "Type", values_to = "Share", names_prefix = "share_")
+
+data_8.6.1.2 <- data_2 %>%
+  left_join(Country.Set)%>%
+  mutate(Country_long = fct_reorder(Country_long,hh_expenditures_USD_2014_mean, min))%>%
+  group_by(Country_long, Income_Group_5, Group_Income)%>%
+  summarise(mean_hh_expenditures_USD_2014_pc = wtd.mean(hh_expenditures_USD_2014_pc, hh_weights))%>%
+  ungroup()
+
+for(Group_0 in c("A", "B", "C", "D")){
+  
+  if(Group_0 == "A") upper_bound <- 7000 else if(Group_0 == "B") upper_bound <- 12000 else if(Group_0 == "C") upper_bound <- 27000 else upper_bound <- 74000
+  
+  breaks <- plyr::round_any(seq(0,upper_bound, length.out = 3), 5000, f = floor)
+  
+  data_8.6.1.3 <- data_8.6.1.1 %>%
+    filter(Group_Income == Group_0)%>%
+    filter(Country != "IND" & Country != "IDN")
+  
+  data_8.6.1.4 <- data_8.6.1.2 %>%
+    filter(Group_Income == Group_0)
+  
+  P_8.6.1.1 <- ggplot()+
+    #geom_point(data = filter(data_4.3.1.2.4, Type == "Energy"), aes(x = hh_expenditures_USD_2014_pc,
+    #                                    y = Share), 
+    #           alpha = 0.01, shape = 21, colour = "black", fill = "#E64B35FF", size = 0.3)+
+    geom_vline(data = data_8.6.1.4, aes(xintercept = mean_hh_expenditures_USD_2014_pc), size = 0.5)+
+    # geom_histogram(data = data_8.6.1.3, aes(x = hh_expenditures_USD_2014_pc, weight = hh_weights), fill = "blue", alpha = 0.5)+
+    geom_smooth(data = data_8.6.1.3, 
+                aes(x = hh_expenditures_USD_2014_pc, weight = hh_weights, 
+                    y = Share, fill = Type, colour = Type),
+                level = 0.99, method = "loess", formula = y ~ x, fullrange = TRUE, se = FALSE)+
+    theme_bw()+
+    facet_wrap(. ~ Country_long, ncol = 4)+
+    xlab("Household expenditures per capita in US-$ (2014)") + ylab("Share of total expenditures")+
+    scale_fill_nejm()+
+    scale_colour_nejm()+
+    labs(colour = "", fill = "")+
+    coord_cartesian(xlim = c(0, upper_bound), ylim = c(0,0.8))+
+    scale_y_continuous(labels = scales::percent_format(accuracy = 1), expand = c(0,0))+
+    scale_x_continuous(labels = scales::dollar_format(accuracy = 1),  expand = c(0,0),
+                       breaks = breaks)+
+    ggtitle("")+
+    theme(axis.text.y = element_text(size = 7), 
+          axis.text.x = element_text(size = 7),
+          axis.title  = element_text(size = 7),
+          plot.title = element_text(size = 11),
+          legend.position = "bottom",
+          strip.text = element_text(size = 7),
+          strip.text.y = element_text(angle = 180),
+          #panel.grid.major = element_blank(),
+          panel.grid.minor = element_blank(),
+          axis.ticks = element_line(size = 0.2),
+          legend.text = element_text(size = 7),
+          legend.title = element_text(size = 7),
+          plot.margin = unit(c(0.3,0.5,0.3,0.3), "cm"),
+          panel.border = element_rect(size = 0.3))
+  
+  jpeg(sprintf("1_Figures/Analysis_Parametric_Engel_Curves/Parametric_EC_0_%s.jpg", Group_0), width = 15.5, height = 19.375, unit = "cm", res = 600)
+  print(P_4.3.1.3)
+  dev.off()
+  
+  # peg(sprintf("1_Figures/Analysis_Parametric_Engel_Curves/Parametric_EC_0_NP_%s.jpg", Group_0), width = 15.5, height = 19.375, unit = "cm", res = 200)
+  # rint(P_4.3.1.4)
+  # ev.off()
+  
+  rm(data_4.3.1.2.4, data_4.3.1.2.5, P_4.3.1.3)
+  
+}
