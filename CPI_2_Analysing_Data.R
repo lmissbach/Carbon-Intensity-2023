@@ -7724,7 +7724,13 @@ for (i in c(data_8.5.2.C$Country)){
         if(j == "LF"){
           data_8.5.2.2 <- data_8.5.2.2 %>%
             mutate(Variable = ifelse((Variable %in% c("Firewood", "Gas", "Other biomass")) & SHAP == 0 | i == "ETH" & Variable == "other" | i == "KEN" & Variable == "other", "Other lighting", Variable))
-        }
+        
+          if(i == "RWA"){
+            data_8.5.2.2 <- data_8.5.2.2 %>%
+              mutate(Variable = ifelse(Variable == "other", "Fuelwood or liquid", Variable))
+          }
+          
+          }
         
         if(j == "CF"){
           data_8.5.2.2 <- data_8.5.2.2 %>%
@@ -7852,12 +7858,17 @@ for (i in c(data_8.5.2.C$Country)){
           mutate(var_ID = cur_group_id())%>%
           ungroup()%>%
           mutate(Variable = ifelse((Var_imp == "0" & max(order_no)>5 & i != "SUR" & i != "EGY") | (Var_imp == "0" & max(var_ID)>5 & i != "SUR" & i != "EGY"), "Other", Variable))%>%
+          mutate(Variable = ifelse(i == "SUR" & (j == "District") & Var_imp == "0", "Other", 
+                                   ifelse(i == "SUR" & (j == "District") & Var_imp == "1", str_sub(Variable,4,-1), Variable)))%>%
+          mutate(Variable = ifelse(i == "SUR" & (j == "Religion") & Var_imp == "0", "Other", 
+                                   ifelse(i == "SUR" & (j == "Religion") & Var_imp == "1", str_sub(Variable,1,-1), Variable)))%>%
+          mutate(Variable = ifelse(i == "SUR" & j == "Ethnicity" & is.na(Variable), "Other", Variable))%>%
           mutate(Variable = ifelse(i == "NGA" & Variable != "Other", str_sub(Variable, 5,-1), Variable))%>%
           mutate(Variable = ifelse(i == "BFA" & Variable == "Centre Est", "Cen. Est", Variable))%>%
           mutate(Variable = ifelse(nchar(Variable) > 6, paste0(str_sub(Variable, 1,6),"."), Variable))
         
-        text_size_0 <- if(j == "Province"){text_size_0 <- 5}else{text_size_0 <- 6}
-        
+        text_size_0 <- if(j == "Province" | j == "District"){text_size_0 <- 5}else{text_size_0 <- 6}
+
         if(j == "Province" | j == "Ethnicity"){
           data_8.5.2.3 <- data_8.5.2.3 %>%
             mutate(Variable = str_to_title(Variable))}
