@@ -1,16 +1,16 @@
 Country,district,District,District_code
 ARG,2C,Buenos Aires,1
-ARG,4B,Chaco y Formosa,2
-ARG,6B,"Chubut, Santa Cruz y Tierra del Fuego",3
-ARG,1A,Ciudad Autónoma de Buenos Aires,4
-ARG,2A,Córdoba y La Pampa,5
-ARG,3A,"Jujuy, Salta y Tucumán",6
-ARG,3B,"La Rioja, Catamarca y Santiago del Estero",7
-ARG,4A,Misiones y Corrientes,8
-ARG,6A,Neuquén y Río Negro,9
-ARG,1B,Partidos del Gran Buenos Aires,10
-ARG,5,"San Juan, Mendoza y San Luis",11
-ARG,2B,Santa Fe y Entre Ríos,12
+ARG,4B,Chaco Y Formosa,2
+ARG,6B,"Chubut, Santa Cruz Y Tierra Del Fuego",3
+ARG,1A,Ciudad Autónoma De Buenos Aires,4
+ARG,2A,Córdoba Y La Pampa,5
+ARG,3A,"Jujuy, Salta Y Tucumán",6
+ARG,3B,"La Rioja, Catamarca Y Santiago Del Estero",7
+ARG,4A,Misiones Y Corrientes,8
+ARG,6A,Neuquén Y Río Negro,9
+ARG,1B,Partidos Del Gran Buenos Aires,10
+ARG,5,"San Juan, Mendoza Y San Luis",11
+ARG,2B,Santa Fe Y Entre Ríos,12
 ARM,2,Aragatsotn,13
 ARM,3,Ararat,14
 ARM,4,Armavir,15
@@ -31,86 +31,86 @@ AUT,6,Steiermark,29
 AUT,7,Tirol,30
 AUT,8,Vorarlberg,31
 AUT,9,Wien,32
-BEL,BE1,BE1,33
-BEL,BE2,BE2,34
-BEL,BE3,BE3,35
-BEN,1201,abomey,36
-BEN,301,ABOMEY-CALAVI,37
-BEN,1101,ADJA-OUERE,38
-BEN,1001,adjarra,39
-BEN,1002,adjohoun,40
-BEN,1102,afangni,41
-BEN,1202,agbangnizoun,42
-BEN,1003,aguegues,43
-BEN,1004,AKPRO-MISSERETE,44
-BEN,302,allada,45
-BEN,601,aplahoue,46
-BEN,901,athieme,47
-BEN,1005,avrankou,48
-BEN,101,banikoara,49
-BEN,501,bante,50
-BEN,701,bassila,51
-BEN,401,bembereke,52
-BEN,1203,bohicon,53
-BEN,1006,bonou,54
-BEN,902,bopa,55
-BEN,201,boukoumbe,56
-BEN,202,cobly,57
-BEN,903,come,58
-BEN,702,copargo,59
-BEN,801,cotonou,60
-BEN,1204,cove,61
-BEN,1007,dangbo,62
-BEN,502,DASSA-ZOUME,63
-BEN,602,djakotome,64
-BEN,1205,djidja,65
-BEN,703,djougou,66
-BEN,603,dogbo,67
-BEN,503,glazoue,68
-BEN,102,gogounou,69
-BEN,904,GRAND-POPO,70
-BEN,905,houeyogbe,71
-BEN,402,kalale,72
-BEN,103,kandi,73
-BEN,104,karimama,74
-BEN,203,kerou,75
-BEN,1103,ketou,76
-BEN,604,klouekanme,77
-BEN,204,kouande,78
-BEN,303,kpomasse,79
-BEN,605,lalo,80
-BEN,906,lokossa,81
-BEN,105,malanville,82
-BEN,205,materi,83
-BEN,403,N'DALI,84
-BEN,206,natitingou,85
-BEN,404,nikki,86
-BEN,704,ouake,87
-BEN,504,ouesse,88
-BEN,304,ouidah,89
-BEN,1206,ouinhi,90
-BEN,405,parakou,91
-BEN,207,pehunco,92
-BEN,406,perere,93
-BEN,1104,pobe,94
-BEN,1008,PORTO-NOVO,95
-BEN,1105,sakete,96
-BEN,505,savalou,97
-BEN,506,save,98
-BEN,106,segbana,99
-BEN,1009,SEME-KPODJI,100
-BEN,407,sinende,101
-BEN,305,SO-AVA,102
-BEN,208,tanguiete,103
-BEN,408,tchaourou,104
-BEN,306,toffo,105
-BEN,307,TORI-BOSSITO,106
-BEN,209,toucountouna,107
-BEN,606,toviklin,108
-BEN,1208,ZA-KPOTA,109
-BEN,1207,zagnanado,110
-BEN,308,ze,111
-BEN,1209,zogbodomey,112
+BEL,BE1,Be1,33
+BEL,BE2,Be2,34
+BEL,BE3,Be3,35
+BEN,1201,Abomey,36
+BEN,301,Abomey-Calavi,37
+BEN,1101,Adja-Ouere,38
+BEN,1001,Adjarra,39
+BEN,1002,Adjohoun,40
+BEN,1102,Afangni,41
+BEN,1202,Agbangnizoun,42
+BEN,1003,Aguegues,43
+BEN,1004,Akpro-Misserete,44
+BEN,302,Allada,45
+BEN,601,Aplahoue,46
+BEN,901,Athieme,47
+BEN,1005,Avrankou,48
+BEN,101,Banikoara,49
+BEN,501,Bante,50
+BEN,701,Bassila,51
+BEN,401,Bembereke,52
+BEN,1203,Bohicon,53
+BEN,1006,Bonou,54
+BEN,902,Bopa,55
+BEN,201,Boukoumbe,56
+BEN,202,Cobly,57
+BEN,903,Come,58
+BEN,702,Copargo,59
+BEN,801,Cotonou,60
+BEN,1204,Cove,61
+BEN,1007,Dangbo,62
+BEN,502,Dassa-Zoume,63
+BEN,602,Djakotome,64
+BEN,1205,Djidja,65
+BEN,703,Djougou,66
+BEN,603,Dogbo,67
+BEN,503,Glazoue,68
+BEN,102,Gogounou,69
+BEN,904,Grand-Popo,70
+BEN,905,Houeyogbe,71
+BEN,402,Kalale,72
+BEN,103,Kandi,73
+BEN,104,Karimama,74
+BEN,203,Kerou,75
+BEN,1103,Ketou,76
+BEN,604,Klouekanme,77
+BEN,204,Kouande,78
+BEN,303,Kpomasse,79
+BEN,605,Lalo,80
+BEN,906,Lokossa,81
+BEN,105,Malanville,82
+BEN,205,Materi,83
+BEN,403,N'dali,84
+BEN,206,Natitingou,85
+BEN,404,Nikki,86
+BEN,704,Ouake,87
+BEN,504,Ouesse,88
+BEN,304,Ouidah,89
+BEN,1206,Ouinhi,90
+BEN,405,Parakou,91
+BEN,207,Pehunco,92
+BEN,406,Perere,93
+BEN,1104,Pobe,94
+BEN,1008,Porto-Novo,95
+BEN,1105,Sakete,96
+BEN,505,Savalou,97
+BEN,506,Save,98
+BEN,106,Segbana,99
+BEN,1009,Seme-Kpodji,100
+BEN,407,Sinende,101
+BEN,305,So-Ava,102
+BEN,208,Tanguiete,103
+BEN,408,Tchaourou,104
+BEN,306,Toffo,105
+BEN,307,Tori-Bossito,106
+BEN,209,Toucountouna,107
+BEN,606,Toviklin,108
+BEN,1208,Za-Kpota,109
+BEN,1207,Zagnanado,110
+BEN,308,Ze,111
+BEN,1209,Zogbodomey,112
 BFA,31,Balé,113
 BFA,1,Bam,114
 BFA,32,Banwa,115
@@ -128,7 +128,7 @@ BFA,11,Kadiogo,126
 BFA,12,Kénédougou,127
 BFA,34,Komandjoari,128
 BFA,35,Kompienga,129
-BFA,13,KOssi,130
+BFA,13,Kossi,130
 BFA,36,Koulpelgo,131
 BFA,14,Kouritenga,132
 BFA,37,Kourweogo,133
@@ -220,8 +220,8 @@ BGD,90,90,218
 BGD,91,91,219
 BGD,93,93,220
 BGD,94,94,221
-BGR,BG3,BG3,222
-BGR,BG4,BG4,223
+BGR,BG3,Bg3,222
+BGR,BG4,Bg4,223
 BOL,8,Beni,224
 BOL,1,Chuquisaca,225
 BOL,3,Cochabamba,226
@@ -231,581 +231,581 @@ BOL,9,Pando,229
 BOL,5,Potosí,230
 BOL,7,Santa Cruz,231
 BOL,6,Tarija,232
-BRA,1201,Acre_CAPITAL,233
-BRA,1202,Acre_RESTO_UF,234
-BRA,1203,Acre_RURAL,235
-BRA,1204,Acre_RURAL,236
-BRA,2702,Alagoas_CAPITAL,237
-BRA,2701,Alagoas_CAPITAL,238
-BRA,2703,Alagoas_CAPITAL,239
-BRA,2704,Alagoas_RESTO_RM,240
-BRA,2707,Alagoas_RESTO_UF,241
-BRA,2706,Alagoas_RESTO_UF,242
-BRA,2705,Alagoas_RESTO_UF,243
-BRA,2708,Alagoas_RESTO_UF,244
-BRA,2711,Alagoas_RURAL,245
-BRA,2712,Alagoas_RURAL,246
-BRA,2710,Alagoas_RURAL,247
-BRA,2713,Alagoas_RURAL,248
-BRA,2709,Alagoas_RURAL,249
-BRA,1601,Amapá_CAPITAL,250
-BRA,1602,Amapá_CAPITAL,251
-BRA,1603,Amapá_RESTO_RM,252
-BRA,1604,Amapá_RESTO_UF,253
-BRA,1605,Amapá_RURAL,254
-BRA,1607,Amapá_RURAL,255
-BRA,1606,Amapá_RURAL,256
-BRA,1302,Amazonas_CAPITAL,257
-BRA,1305,Amazonas_CAPITAL,258
-BRA,1304,Amazonas_CAPITAL,259
-BRA,1301,Amazonas_CAPITAL,260
-BRA,1306,Amazonas_CAPITAL,261
-BRA,1303,Amazonas_CAPITAL,262
-BRA,1307,Amazonas_RESTO_RM,263
-BRA,1310,Amazonas_RESTO_UF,264
-BRA,1309,Amazonas_RESTO_UF,265
-BRA,1308,Amazonas_RESTO_UF,266
-BRA,1315,Amazonas_RURAL,267
-BRA,1316,Amazonas_RURAL,268
-BRA,1314,Amazonas_RURAL,269
-BRA,1313,Amazonas_RURAL,270
-BRA,1311,Amazonas_RURAL,271
-BRA,1312,Amazonas_RURAL,272
-BRA,2903,Bahia_CAPITAL,273
-BRA,2901,Bahia_CAPITAL,274
-BRA,2904,Bahia_CAPITAL,275
-BRA,2905,Bahia_CAPITAL,276
-BRA,2902,Bahia_CAPITAL,277
-BRA,2906,Bahia_CAPITAL,278
-BRA,2908,Bahia_RESTO_RM,279
-BRA,2907,Bahia_RESTO_RM,280
-BRA,2909,Bahia_RESTO_RM,281
-BRA,2914,Bahia_RESTO_UF,282
-BRA,2923,Bahia_RESTO_UF,283
-BRA,2916,Bahia_RESTO_UF,284
-BRA,2915,Bahia_RESTO_UF,285
-BRA,2910,Bahia_RESTO_UF,286
-BRA,2919,Bahia_RESTO_UF,287
-BRA,2911,Bahia_RESTO_UF,288
-BRA,2917,Bahia_RESTO_UF,289
-BRA,2920,Bahia_RESTO_UF,290
-BRA,2924,Bahia_RESTO_UF,291
-BRA,2922,Bahia_RESTO_UF,292
-BRA,2925,Bahia_RESTO_UF,293
-BRA,2913,Bahia_RESTO_UF,294
-BRA,2921,Bahia_RESTO_UF,295
-BRA,2918,Bahia_RESTO_UF,296
-BRA,2912,Bahia_RESTO_UF,297
-BRA,2933,Bahia_RURAL,298
-BRA,2939,Bahia_RURAL,299
-BRA,2936,Bahia_RURAL,300
-BRA,2928,Bahia_RURAL,301
-BRA,2929,Bahia_RURAL,302
-BRA,2935,Bahia_RURAL,303
-BRA,2932,Bahia_RURAL,304
-BRA,2938,Bahia_RURAL,305
-BRA,2940,Bahia_RURAL,306
-BRA,2937,Bahia_RURAL,307
-BRA,2941,Bahia_RURAL,308
-BRA,2942,Bahia_RURAL,309
-BRA,2931,Bahia_RURAL,310
-BRA,2930,Bahia_RURAL,311
-BRA,2927,Bahia_RURAL,312
-BRA,2926,Bahia_RURAL,313
-BRA,2934,Bahia_RURAL,314
-BRA,2304,Ceará_CAPITAL,315
-BRA,2301,Ceará_CAPITAL,316
-BRA,2303,Ceará_CAPITAL,317
-BRA,2305,Ceará_CAPITAL,318
-BRA,2302,Ceará_CAPITAL,319
-BRA,2306,Ceará_CAPITAL,320
-BRA,2309,Ceará_RESTO_RM,321
-BRA,2307,Ceará_RESTO_RM,322
-BRA,2308,Ceará_RESTO_RM,323
-BRA,2317,Ceará_RESTO_UF,324
-BRA,2316,Ceará_RESTO_UF,325
-BRA,2312,Ceará_RESTO_UF,326
-BRA,2311,Ceará_RESTO_UF,327
-BRA,2320,Ceará_RESTO_UF,328
-BRA,2313,Ceará_RESTO_UF,329
-BRA,2310,Ceará_RESTO_UF,330
-BRA,2315,Ceará_RESTO_UF,331
-BRA,2318,Ceará_RESTO_UF,332
-BRA,2319,Ceará_RESTO_UF,333
-BRA,2314,Ceará_RESTO_UF,334
-BRA,2329,Ceará_RURAL,335
-BRA,2321,Ceará_RURAL,336
-BRA,2323,Ceará_RURAL,337
-BRA,2325,Ceará_RURAL,338
-BRA,2330,Ceará_RURAL,339
-BRA,2322,Ceará_RURAL,340
-BRA,2324,Ceará_RURAL,341
-BRA,2326,Ceará_RURAL,342
-BRA,2327,Ceará_RURAL,343
-BRA,2328,Ceará_RURAL,344
-BRA,5304,Distrito Federal_DF_URBANO,345
-BRA,5305,Distrito Federal_DF_URBANO,346
-BRA,5301,Distrito Federal_DF_URBANO,347
-BRA,5306,Distrito Federal_DF_URBANO,348
-BRA,5302,Distrito Federal_DF_URBANO,349
-BRA,5303,Distrito Federal_DF_URBANO,350
-BRA,5307,Distrito Federal_RURAL,351
-BRA,5308,Distrito Federal_RURAL,352
-BRA,3202,Espírito Santo_CAPITAL,353
-BRA,3201,Espírito Santo_CAPITAL,354
-BRA,3204,Espírito Santo_RESTO_RM,355
-BRA,3203,Espírito Santo_RESTO_RM,356
-BRA,3205,Espírito Santo_RESTO_RM,357
-BRA,3206,Espírito Santo_RESTO_UF,358
-BRA,3208,Espírito Santo_RESTO_UF,359
-BRA,3207,Espírito Santo_RESTO_UF,360
-BRA,3211,Espírito Santo_RESTO_UF,361
-BRA,3209,Espírito Santo_RESTO_UF,362
-BRA,3210,Espírito Santo_RESTO_UF,363
-BRA,3215,Espírito Santo_RURAL,364
-BRA,3213,Espírito Santo_RURAL,365
-BRA,3212,Espírito Santo_RURAL,366
-BRA,3214,Espírito Santo_RURAL,367
-BRA,5201,Goiás_CAPITAL,368
-BRA,5202,Goiás_CAPITAL,369
-BRA,5203,Goiás_CAPITAL,370
-BRA,5204,Goiás_RESTO_RM,371
-BRA,5205,Goiás_RESTO_RM,372
-BRA,5206,Goiás_RESTO_RM,373
-BRA,5207,Goiás_RESTO_UF,374
-BRA,5216,Goiás_RESTO_UF,375
-BRA,5208,Goiás_RESTO_UF,376
-BRA,5217,Goiás_RESTO_UF,377
-BRA,5212,Goiás_RESTO_UF,378
-BRA,5211,Goiás_RESTO_UF,379
-BRA,5213,Goiás_RESTO_UF,380
-BRA,5215,Goiás_RESTO_UF,381
-BRA,5209,Goiás_RESTO_UF,382
-BRA,5214,Goiás_RESTO_UF,383
-BRA,5210,Goiás_RESTO_UF,384
-BRA,5225,Goiás_RURAL,385
-BRA,5219,Goiás_RURAL,386
-BRA,5220,Goiás_RURAL,387
-BRA,5224,Goiás_RURAL,388
-BRA,5221,Goiás_RURAL,389
-BRA,5223,Goiás_RURAL,390
-BRA,5222,Goiás_RURAL,391
-BRA,5218,Goiás_RURAL,392
-BRA,2101,Maranhão_CAPITAL,393
-BRA,2102,Maranhão_CAPITAL,394
-BRA,2103,Maranhão_CAPITAL,395
-BRA,2104,Maranhão_RESTO_RM,396
-BRA,2107,Maranhão_RESTO_UF,397
-BRA,2109,Maranhão_RESTO_UF,398
-BRA,2110,Maranhão_RESTO_UF,399
-BRA,2108,Maranhão_RESTO_UF,400
-BRA,2106,Maranhão_RESTO_UF,401
-BRA,2105,Maranhão_RESTO_UF,402
-BRA,2112,Maranhão_RESTO_UF,403
-BRA,2111,Maranhão_RESTO_UF,404
-BRA,2113,Maranhão_RESTO_UF,405
-BRA,2119,Maranhão_RURAL,406
-BRA,2117,Maranhão_RURAL,407
-BRA,2123,Maranhão_RURAL,408
-BRA,2121,Maranhão_RURAL,409
-BRA,2124,Maranhão_RURAL,410
-BRA,2120,Maranhão_RURAL,411
-BRA,2116,Maranhão_RURAL,412
-BRA,2122,Maranhão_RURAL,413
-BRA,2125,Maranhão_RURAL,414
-BRA,2114,Maranhão_RURAL,415
-BRA,2115,Maranhão_RURAL,416
-BRA,2118,Maranhão_RURAL,417
-BRA,5002,Mato Grosso do Sul_CAPITAL,418
-BRA,5001,Mato Grosso do Sul_CAPITAL,419
-BRA,5003,Mato Grosso do Sul_CAPITAL,420
-BRA,5006,Mato Grosso do Sul_RESTO_UF,421
-BRA,5008,Mato Grosso do Sul_RESTO_UF,422
-BRA,5007,Mato Grosso do Sul_RESTO_UF,423
-BRA,5009,Mato Grosso do Sul_RESTO_UF,424
-BRA,5004,Mato Grosso do Sul_RESTO_UF,425
-BRA,5005,Mato Grosso do Sul_RESTO_UF,426
-BRA,5012,Mato Grosso do Sul_RURAL,427
-BRA,5011,Mato Grosso do Sul_RURAL,428
-BRA,5013,Mato Grosso do Sul_RURAL,429
-BRA,5010,Mato Grosso do Sul_RURAL,430
-BRA,5101,Mato Grosso_CAPITAL,431
-BRA,5102,Mato Grosso_CAPITAL,432
-BRA,5103,Mato Grosso_RESTO_RM,433
-BRA,5108,Mato Grosso_RESTO_UF,434
-BRA,5107,Mato Grosso_RESTO_UF,435
-BRA,5105,Mato Grosso_RESTO_UF,436
-BRA,5111,Mato Grosso_RESTO_UF,437
-BRA,5106,Mato Grosso_RESTO_UF,438
-BRA,5110,Mato Grosso_RESTO_UF,439
-BRA,5109,Mato Grosso_RESTO_UF,440
-BRA,5104,Mato Grosso_RESTO_UF,441
-BRA,5112,Mato Grosso_RESTO_UF,442
-BRA,5116,Mato Grosso_RURAL,443
-BRA,5113,Mato Grosso_RURAL,444
-BRA,5118,Mato Grosso_RURAL,445
-BRA,5114,Mato Grosso_RURAL,446
-BRA,5117,Mato Grosso_RURAL,447
-BRA,5115,Mato Grosso_RURAL,448
-BRA,3103,Minas Gerais_CAPITAL,449
-BRA,3101,Minas Gerais_CAPITAL,450
-BRA,3106,Minas Gerais_CAPITAL,451
-BRA,3105,Minas Gerais_CAPITAL,452
-BRA,3104,Minas Gerais_CAPITAL,453
-BRA,3102,Minas Gerais_CAPITAL,454
-BRA,3109,Minas Gerais_RESTO_RM,455
-BRA,3108,Minas Gerais_RESTO_RM,456
-BRA,3107,Minas Gerais_RESTO_RM,457
-BRA,3124,Minas Gerais_RESTO_UF,458
-BRA,3128,Minas Gerais_RESTO_UF,459
-BRA,3116,Minas Gerais_RESTO_UF,460
-BRA,3123,Minas Gerais_RESTO_UF,461
-BRA,3110,Minas Gerais_RESTO_UF,462
-BRA,3118,Minas Gerais_RESTO_UF,463
-BRA,3115,Minas Gerais_RESTO_UF,464
-BRA,3126,Minas Gerais_RESTO_UF,465
-BRA,3119,Minas Gerais_RESTO_UF,466
-BRA,3130,Minas Gerais_RESTO_UF,467
-BRA,3121,Minas Gerais_RESTO_UF,468
-BRA,3114,Minas Gerais_RESTO_UF,469
-BRA,3113,Minas Gerais_RESTO_UF,470
-BRA,3125,Minas Gerais_RESTO_UF,471
-BRA,3122,Minas Gerais_RESTO_UF,472
-BRA,3129,Minas Gerais_RESTO_UF,473
-BRA,3120,Minas Gerais_RESTO_UF,474
-BRA,3112,Minas Gerais_RESTO_UF,475
-BRA,3111,Minas Gerais_RESTO_UF,476
-BRA,3117,Minas Gerais_RESTO_UF,477
-BRA,3127,Minas Gerais_RESTO_UF,478
-BRA,3145,Minas Gerais_RURAL,479
-BRA,3136,Minas Gerais_RURAL,480
-BRA,3148,Minas Gerais_RURAL,481
-BRA,3139,Minas Gerais_RURAL,482
-BRA,3144,Minas Gerais_RURAL,483
-BRA,3140,Minas Gerais_RURAL,484
-BRA,3143,Minas Gerais_RURAL,485
-BRA,3142,Minas Gerais_RURAL,486
-BRA,3133,Minas Gerais_RURAL,487
-BRA,3131,Minas Gerais_RURAL,488
-BRA,3134,Minas Gerais_RURAL,489
-BRA,3137,Minas Gerais_RURAL,490
-BRA,3135,Minas Gerais_RURAL,491
-BRA,3149,Minas Gerais_RURAL,492
-BRA,3141,Minas Gerais_RURAL,493
-BRA,3147,Minas Gerais_RURAL,494
-BRA,3138,Minas Gerais_RURAL,495
-BRA,3146,Minas Gerais_RURAL,496
-BRA,3132,Minas Gerais_RURAL,497
-BRA,1503,Pará_CAPITAL,498
-BRA,1502,Pará_CAPITAL,499
-BRA,1501,Pará_CAPITAL,500
-BRA,1504,Pará_RESTO_RM,501
-BRA,1505,Pará_RESTO_RM,502
-BRA,1508,Pará_RESTO_UF,503
-BRA,1507,Pará_RESTO_UF,504
-BRA,1506,Pará_RESTO_UF,505
-BRA,1509,Pará_RESTO_UF,506
-BRA,1510,Pará_RESTO_UF,507
-BRA,1511,Pará_RESTO_UF,508
-BRA,1514,Pará_RURAL,509
-BRA,1518,Pará_RURAL,510
-BRA,1516,Pará_RURAL,511
-BRA,1515,Pará_RURAL,512
-BRA,1519,Pará_RURAL,513
-BRA,1512,Pará_RURAL,514
-BRA,1517,Pará_RURAL,515
-BRA,1513,Pará_RURAL,516
-BRA,2501,Paraíba_CAPITAL,517
-BRA,2503,Paraíba_CAPITAL,518
-BRA,2502,Paraíba_CAPITAL,519
-BRA,2504,Paraíba_RESTO_RM,520
-BRA,2505,Paraíba_RESTO_RM,521
-BRA,2506,Paraíba_RESTO_UF,522
-BRA,2507,Paraíba_RESTO_UF,523
-BRA,2511,Paraíba_RESTO_UF,524
-BRA,2509,Paraíba_RESTO_UF,525
-BRA,2508,Paraíba_RESTO_UF,526
-BRA,2510,Paraíba_RESTO_UF,527
-BRA,2512,Paraíba_RURAL,528
-BRA,2514,Paraíba_RURAL,529
-BRA,2518,Paraíba_RURAL,530
-BRA,2513,Paraíba_RURAL,531
-BRA,2517,Paraíba_RURAL,532
-BRA,2516,Paraíba_RURAL,533
-BRA,2515,Paraíba_RURAL,534
-BRA,4104,Paraná_CAPITAL,535
-BRA,4101,Paraná_CAPITAL,536
-BRA,4103,Paraná_CAPITAL,537
-BRA,4102,Paraná_CAPITAL,538
-BRA,4105,Paraná_CAPITAL,539
-BRA,4107,Paraná_RESTO_RM,540
-BRA,4106,Paraná_RESTO_RM,541
-BRA,4108,Paraná_RESTO_RM,542
-BRA,4119,Paraná_RESTO_UF,543
-BRA,4123,Paraná_RESTO_UF,544
-BRA,4110,Paraná_RESTO_UF,545
-BRA,4112,Paraná_RESTO_UF,546
-BRA,4122,Paraná_RESTO_UF,547
-BRA,4111,Paraná_RESTO_UF,548
-BRA,4120,Paraná_RESTO_UF,549
-BRA,4121,Paraná_RESTO_UF,550
-BRA,4109,Paraná_RESTO_UF,551
-BRA,4116,Paraná_RESTO_UF,552
-BRA,4115,Paraná_RESTO_UF,553
-BRA,4113,Paraná_RESTO_UF,554
-BRA,4118,Paraná_RESTO_UF,555
-BRA,4114,Paraná_RESTO_UF,556
-BRA,4117,Paraná_RESTO_UF,557
-BRA,4124,Paraná_RESTO_UF,558
-BRA,4132,Paraná_RURAL,559
-BRA,4130,Paraná_RURAL,560
-BRA,4126,Paraná_RURAL,561
-BRA,4129,Paraná_RURAL,562
-BRA,4125,Paraná_RURAL,563
-BRA,4133,Paraná_RURAL,564
-BRA,4127,Paraná_RURAL,565
-BRA,4131,Paraná_RURAL,566
-BRA,4128,Paraná_RURAL,567
-BRA,4135,Paraná_RURAL,568
-BRA,4134,Paraná_RURAL,569
-BRA,2601,Pernambuco_CAPITAL,570
-BRA,2602,Pernambuco_CAPITAL,571
-BRA,2603,Pernambuco_CAPITAL,572
-BRA,2604,Pernambuco_RESTO_RM,573
-BRA,2605,Pernambuco_RESTO_RM,574
-BRA,2606,Pernambuco_RESTO_RM,575
-BRA,2614,Pernambuco_RESTO_UF,576
-BRA,2607,Pernambuco_RESTO_UF,577
-BRA,2613,Pernambuco_RESTO_UF,578
-BRA,2608,Pernambuco_RESTO_UF,579
-BRA,2610,Pernambuco_RESTO_UF,580
-BRA,2611,Pernambuco_RESTO_UF,581
-BRA,2615,Pernambuco_RESTO_UF,582
-BRA,2612,Pernambuco_RESTO_UF,583
-BRA,2609,Pernambuco_RESTO_UF,584
-BRA,2624,Pernambuco_RURAL,585
-BRA,2618,Pernambuco_RURAL,586
-BRA,2620,Pernambuco_RURAL,587
-BRA,2617,Pernambuco_RURAL,588
-BRA,2621,Pernambuco_RURAL,589
-BRA,2616,Pernambuco_RURAL,590
-BRA,2622,Pernambuco_RURAL,591
-BRA,2619,Pernambuco_RURAL,592
-BRA,2623,Pernambuco_RURAL,593
-BRA,2202,Piauí_CAPITAL,594
-BRA,2201,Piauí_CAPITAL,595
-BRA,2203,Piauí_CAPITAL,596
-BRA,2209,Piauí_RESTO_UF,597
-BRA,2208,Piauí_RESTO_UF,598
-BRA,2205,Piauí_RESTO_UF,599
-BRA,2207,Piauí_RESTO_UF,600
-BRA,2204,Piauí_RESTO_UF,601
-BRA,2206,Piauí_RESTO_UF,602
-BRA,2213,Piauí_RURAL,603
-BRA,2214,Piauí_RURAL,604
-BRA,2210,Piauí_RURAL,605
-BRA,2216,Piauí_RURAL,606
-BRA,2217,Piauí_RURAL,607
-BRA,2215,Piauí_RURAL,608
-BRA,2211,Piauí_RURAL,609
-BRA,2212,Piauí_RURAL,610
-BRA,3307,Rio de Janeiro_CAPITAL,611
-BRA,3308,Rio de Janeiro_CAPITAL,612
-BRA,3305,Rio de Janeiro_CAPITAL,613
-BRA,3302,Rio de Janeiro_CAPITAL,614
-BRA,3309,Rio de Janeiro_CAPITAL,615
-BRA,3301,Rio de Janeiro_CAPITAL,616
-BRA,3304,Rio de Janeiro_CAPITAL,617
-BRA,3303,Rio de Janeiro_CAPITAL,618
-BRA,3306,Rio de Janeiro_CAPITAL,619
-BRA,3317,Rio de Janeiro_RESTO_RM,620
-BRA,3316,Rio de Janeiro_RESTO_RM,621
-BRA,3310,Rio de Janeiro_RESTO_RM,622
-BRA,3314,Rio de Janeiro_RESTO_RM,623
-BRA,3315,Rio de Janeiro_RESTO_RM,624
-BRA,3311,Rio de Janeiro_RESTO_RM,625
-BRA,3313,Rio de Janeiro_RESTO_RM,626
-BRA,3312,Rio de Janeiro_RESTO_RM,627
-BRA,3318,Rio de Janeiro_RESTO_RM,628
-BRA,3324,Rio de Janeiro_RESTO_UF,629
-BRA,3323,Rio de Janeiro_RESTO_UF,630
-BRA,3328,Rio de Janeiro_RESTO_UF,631
-BRA,3325,Rio de Janeiro_RESTO_UF,632
-BRA,3329,Rio de Janeiro_RESTO_UF,633
-BRA,3319,Rio de Janeiro_RESTO_UF,634
-BRA,3326,Rio de Janeiro_RESTO_UF,635
-BRA,3322,Rio de Janeiro_RESTO_UF,636
-BRA,3327,Rio de Janeiro_RESTO_UF,637
-BRA,3320,Rio de Janeiro_RESTO_UF,638
-BRA,3330,Rio de Janeiro_RESTO_UF,639
-BRA,3321,Rio de Janeiro_RESTO_UF,640
-BRA,3337,Rio de Janeiro_RURAL,641
-BRA,3336,Rio de Janeiro_RURAL,642
-BRA,3334,Rio de Janeiro_RURAL,643
-BRA,3331,Rio de Janeiro_RURAL,644
-BRA,3335,Rio de Janeiro_RURAL,645
-BRA,3332,Rio de Janeiro_RURAL,646
-BRA,3333,Rio de Janeiro_RURAL,647
-BRA,2401,Rio Grande do Norte_CAPITAL,648
-BRA,2402,Rio Grande do Norte_CAPITAL,649
-BRA,2403,Rio Grande do Norte_RESTO_RM,650
-BRA,2406,Rio Grande do Norte_RESTO_UF,651
-BRA,2407,Rio Grande do Norte_RESTO_UF,652
-BRA,2404,Rio Grande do Norte_RESTO_UF,653
-BRA,2408,Rio Grande do Norte_RESTO_UF,654
-BRA,2405,Rio Grande do Norte_RESTO_UF,655
-BRA,2409,Rio Grande do Norte_RURAL,656
-BRA,2410,Rio Grande do Norte_RURAL,657
-BRA,2412,Rio Grande do Norte_RURAL,658
-BRA,2411,Rio Grande do Norte_RURAL,659
-BRA,4302,Rio Grande Do Sul_CAPITAL,660
-BRA,4301,Rio Grande Do Sul_CAPITAL,661
-BRA,4304,Rio Grande Do Sul_CAPITAL,662
-BRA,4303,Rio Grande Do Sul_CAPITAL,663
-BRA,4306,Rio Grande Do Sul_CAPITAL,664
-BRA,4305,Rio Grande Do Sul_CAPITAL,665
-BRA,4307,Rio Grande Do Sul_RESTO_RM,666
-BRA,4308,Rio Grande Do Sul_RESTO_RM,667
-BRA,4309,Rio Grande Do Sul_RESTO_RM,668
-BRA,4324,Rio Grande Do Sul_RESTO_UF,669
-BRA,4312,Rio Grande Do Sul_RESTO_UF,670
-BRA,4322,Rio Grande Do Sul_RESTO_UF,671
-BRA,4316,Rio Grande Do Sul_RESTO_UF,672
-BRA,4320,Rio Grande Do Sul_RESTO_UF,673
-BRA,4317,Rio Grande Do Sul_RESTO_UF,674
-BRA,4313,Rio Grande Do Sul_RESTO_UF,675
-BRA,4323,Rio Grande Do Sul_RESTO_UF,676
-BRA,4318,Rio Grande Do Sul_RESTO_UF,677
-BRA,4319,Rio Grande Do Sul_RESTO_UF,678
-BRA,4310,Rio Grande Do Sul_RESTO_UF,679
-BRA,4314,Rio Grande Do Sul_RESTO_UF,680
-BRA,4315,Rio Grande Do Sul_RESTO_UF,681
-BRA,4311,Rio Grande Do Sul_RESTO_UF,682
-BRA,4321,Rio Grande Do Sul_RESTO_UF,683
-BRA,4330,Rio Grande Do Sul_RURAL,684
-BRA,4326,Rio Grande Do Sul_RURAL,685
-BRA,4328,Rio Grande Do Sul_RURAL,686
-BRA,4332,Rio Grande Do Sul_RURAL,687
-BRA,4329,Rio Grande Do Sul_RURAL,688
-BRA,4331,Rio Grande Do Sul_RURAL,689
-BRA,4325,Rio Grande Do Sul_RURAL,690
-BRA,4334,Rio Grande Do Sul_RURAL,691
-BRA,4327,Rio Grande Do Sul_RURAL,692
-BRA,4335,Rio Grande Do Sul_RURAL,693
-BRA,4333,Rio Grande Do Sul_RURAL,694
-BRA,1101,Rondônia_CAPITAL,695
-BRA,1102,Rondônia_CAPITAL,696
-BRA,1107,Rondônia_RESTO_UF,697
-BRA,1105,Rondônia_RESTO_UF,698
-BRA,1106,Rondônia_RESTO_UF,699
-BRA,1103,Rondônia_RESTO_UF,700
-BRA,1104,Rondônia_RESTO_UF,701
-BRA,1108,Rondônia_RURAL,702
-BRA,1111,Rondônia_RURAL,703
-BRA,1110,Rondônia_RURAL,704
-BRA,1109,Rondônia_RURAL,705
-BRA,1401,Roraima_CAPITAL,706
-BRA,1402,Roraima_CAPITAL,707
-BRA,1403,Roraima_RESTO_UF,708
-BRA,1404,Roraima_RURAL,709
-BRA,1405,Roraima_RURAL,710
-BRA,4201,Santa Catarina_CAPITAL,711
-BRA,4202,Santa Catarina_CAPITAL,712
-BRA,4204,Santa Catarina_RESTO_RM,713
-BRA,4203,Santa Catarina_RESTO_RM,714
-BRA,4213,Santa Catarina_RESTO_UF,715
-BRA,4207,Santa Catarina_RESTO_UF,716
-BRA,4212,Santa Catarina_RESTO_UF,717
-BRA,4216,Santa Catarina_RESTO_UF,718
-BRA,4215,Santa Catarina_RESTO_UF,719
-BRA,4209,Santa Catarina_RESTO_UF,720
-BRA,4205,Santa Catarina_RESTO_UF,721
-BRA,4210,Santa Catarina_RESTO_UF,722
-BRA,4211,Santa Catarina_RESTO_UF,723
-BRA,4206,Santa Catarina_RESTO_UF,724
-BRA,4208,Santa Catarina_RESTO_UF,725
-BRA,4217,Santa Catarina_RESTO_UF,726
-BRA,4214,Santa Catarina_RESTO_UF,727
-BRA,4225,Santa Catarina_RURAL,728
-BRA,4223,Santa Catarina_RURAL,729
-BRA,4226,Santa Catarina_RURAL,730
-BRA,4220,Santa Catarina_RURAL,731
-BRA,4222,Santa Catarina_RURAL,732
-BRA,4218,Santa Catarina_RURAL,733
-BRA,4221,Santa Catarina_RURAL,734
-BRA,4224,Santa Catarina_RURAL,735
-BRA,4219,Santa Catarina_RURAL,736
-BRA,3505,São Paulo_CAPITAL,737
-BRA,3508,São Paulo_CAPITAL,738
-BRA,3501,São Paulo_CAPITAL,739
-BRA,3509,São Paulo_CAPITAL,740
-BRA,3507,São Paulo_CAPITAL,741
-BRA,3502,São Paulo_CAPITAL,742
-BRA,3504,São Paulo_CAPITAL,743
-BRA,3506,São Paulo_CAPITAL,744
-BRA,3503,São Paulo_CAPITAL,745
-BRA,3514,São Paulo_RESTO_RM,746
-BRA,3511,São Paulo_RESTO_RM,747
-BRA,3510,São Paulo_RESTO_RM,748
-BRA,3512,São Paulo_RESTO_RM,749
-BRA,3513,São Paulo_RESTO_RM,750
-BRA,3515,São Paulo_RESTO_RM,751
-BRA,3535,São Paulo_RESTO_UF,752
-BRA,3517,São Paulo_RESTO_UF,753
-BRA,3524,São Paulo_RESTO_UF,754
-BRA,3534,São Paulo_RESTO_UF,755
-BRA,3516,São Paulo_RESTO_UF,756
-BRA,3525,São Paulo_RESTO_UF,757
-BRA,3523,São Paulo_RESTO_UF,758
-BRA,3528,São Paulo_RESTO_UF,759
-BRA,3531,São Paulo_RESTO_UF,760
-BRA,3526,São Paulo_RESTO_UF,761
-BRA,3522,São Paulo_RESTO_UF,762
-BRA,3520,São Paulo_RESTO_UF,763
-BRA,3536,São Paulo_RESTO_UF,764
-BRA,3521,São Paulo_RESTO_UF,765
-BRA,3532,São Paulo_RESTO_UF,766
-BRA,3519,São Paulo_RESTO_UF,767
-BRA,3518,São Paulo_RESTO_UF,768
-BRA,3529,São Paulo_RESTO_UF,769
-BRA,3527,São Paulo_RESTO_UF,770
-BRA,3533,São Paulo_RESTO_UF,771
-BRA,3530,São Paulo_RESTO_UF,772
-BRA,3539,São Paulo_RURAL,773
-BRA,3546,São Paulo_RURAL,774
-BRA,3548,São Paulo_RURAL,775
-BRA,3549,São Paulo_RURAL,776
-BRA,3540,São Paulo_RURAL,777
-BRA,3551,São Paulo_RURAL,778
-BRA,3542,São Paulo_RURAL,779
-BRA,3547,São Paulo_RURAL,780
-BRA,3537,São Paulo_RURAL,781
-BRA,3544,São Paulo_RURAL,782
-BRA,3553,São Paulo_RURAL,783
-BRA,3541,São Paulo_RURAL,784
-BRA,3552,São Paulo_RURAL,785
-BRA,3550,São Paulo_RURAL,786
-BRA,3538,São Paulo_RURAL,787
-BRA,3545,São Paulo_RURAL,788
-BRA,3543,São Paulo_RURAL,789
-BRA,2801,Sergipe_CAPITAL,790
-BRA,2802,Sergipe_CAPITAL,791
-BRA,2803,Sergipe_RESTO_RM,792
-BRA,2805,Sergipe_RESTO_UF,793
-BRA,2804,Sergipe_RESTO_UF,794
-BRA,2806,Sergipe_RESTO_UF,795
-BRA,2807,Sergipe_RURAL,796
-BRA,2809,Sergipe_RURAL,797
-BRA,2808,Sergipe_RURAL,798
-BRA,2810,Sergipe_RURAL,799
-BRA,1701,Tocantins_CAPITAL,800
-BRA,1703,Tocantins_RESTO_UF,801
-BRA,1704,Tocantins_RESTO_UF,802
-BRA,1705,Tocantins_RESTO_UF,803
-BRA,1702,Tocantins_RESTO_UF,804
-BRA,1706,Tocantins_RURAL,805
-BRA,1707,Tocantins_RURAL,806
-BRA,1708,Tocantins_RURAL,807
+BRA,1201,Acre_capital,233
+BRA,1202,Acre_resto_uf,234
+BRA,1203,Acre_rural,235
+BRA,1204,Acre_rural,236
+BRA,2702,Alagoas_capital,237
+BRA,2701,Alagoas_capital,238
+BRA,2703,Alagoas_capital,239
+BRA,2704,Alagoas_resto_rm,240
+BRA,2707,Alagoas_resto_uf,241
+BRA,2706,Alagoas_resto_uf,242
+BRA,2705,Alagoas_resto_uf,243
+BRA,2708,Alagoas_resto_uf,244
+BRA,2711,Alagoas_rural,245
+BRA,2712,Alagoas_rural,246
+BRA,2710,Alagoas_rural,247
+BRA,2713,Alagoas_rural,248
+BRA,2709,Alagoas_rural,249
+BRA,1601,Amapá_capital,250
+BRA,1602,Amapá_capital,251
+BRA,1603,Amapá_resto_rm,252
+BRA,1604,Amapá_resto_uf,253
+BRA,1605,Amapá_rural,254
+BRA,1607,Amapá_rural,255
+BRA,1606,Amapá_rural,256
+BRA,1302,Amazonas_capital,257
+BRA,1305,Amazonas_capital,258
+BRA,1304,Amazonas_capital,259
+BRA,1301,Amazonas_capital,260
+BRA,1306,Amazonas_capital,261
+BRA,1303,Amazonas_capital,262
+BRA,1307,Amazonas_resto_rm,263
+BRA,1310,Amazonas_resto_uf,264
+BRA,1309,Amazonas_resto_uf,265
+BRA,1308,Amazonas_resto_uf,266
+BRA,1315,Amazonas_rural,267
+BRA,1316,Amazonas_rural,268
+BRA,1314,Amazonas_rural,269
+BRA,1313,Amazonas_rural,270
+BRA,1311,Amazonas_rural,271
+BRA,1312,Amazonas_rural,272
+BRA,2903,Bahia_capital,273
+BRA,2901,Bahia_capital,274
+BRA,2904,Bahia_capital,275
+BRA,2905,Bahia_capital,276
+BRA,2902,Bahia_capital,277
+BRA,2906,Bahia_capital,278
+BRA,2908,Bahia_resto_rm,279
+BRA,2907,Bahia_resto_rm,280
+BRA,2909,Bahia_resto_rm,281
+BRA,2914,Bahia_resto_uf,282
+BRA,2923,Bahia_resto_uf,283
+BRA,2916,Bahia_resto_uf,284
+BRA,2915,Bahia_resto_uf,285
+BRA,2910,Bahia_resto_uf,286
+BRA,2919,Bahia_resto_uf,287
+BRA,2911,Bahia_resto_uf,288
+BRA,2917,Bahia_resto_uf,289
+BRA,2920,Bahia_resto_uf,290
+BRA,2924,Bahia_resto_uf,291
+BRA,2922,Bahia_resto_uf,292
+BRA,2925,Bahia_resto_uf,293
+BRA,2913,Bahia_resto_uf,294
+BRA,2921,Bahia_resto_uf,295
+BRA,2918,Bahia_resto_uf,296
+BRA,2912,Bahia_resto_uf,297
+BRA,2933,Bahia_rural,298
+BRA,2939,Bahia_rural,299
+BRA,2936,Bahia_rural,300
+BRA,2928,Bahia_rural,301
+BRA,2929,Bahia_rural,302
+BRA,2935,Bahia_rural,303
+BRA,2932,Bahia_rural,304
+BRA,2938,Bahia_rural,305
+BRA,2940,Bahia_rural,306
+BRA,2937,Bahia_rural,307
+BRA,2941,Bahia_rural,308
+BRA,2942,Bahia_rural,309
+BRA,2931,Bahia_rural,310
+BRA,2930,Bahia_rural,311
+BRA,2927,Bahia_rural,312
+BRA,2926,Bahia_rural,313
+BRA,2934,Bahia_rural,314
+BRA,2304,Ceará_capital,315
+BRA,2301,Ceará_capital,316
+BRA,2303,Ceará_capital,317
+BRA,2305,Ceará_capital,318
+BRA,2302,Ceará_capital,319
+BRA,2306,Ceará_capital,320
+BRA,2309,Ceará_resto_rm,321
+BRA,2307,Ceará_resto_rm,322
+BRA,2308,Ceará_resto_rm,323
+BRA,2317,Ceará_resto_uf,324
+BRA,2316,Ceará_resto_uf,325
+BRA,2312,Ceará_resto_uf,326
+BRA,2311,Ceará_resto_uf,327
+BRA,2320,Ceará_resto_uf,328
+BRA,2313,Ceará_resto_uf,329
+BRA,2310,Ceará_resto_uf,330
+BRA,2315,Ceará_resto_uf,331
+BRA,2318,Ceará_resto_uf,332
+BRA,2319,Ceará_resto_uf,333
+BRA,2314,Ceará_resto_uf,334
+BRA,2329,Ceará_rural,335
+BRA,2321,Ceará_rural,336
+BRA,2323,Ceará_rural,337
+BRA,2325,Ceará_rural,338
+BRA,2330,Ceará_rural,339
+BRA,2322,Ceará_rural,340
+BRA,2324,Ceará_rural,341
+BRA,2326,Ceará_rural,342
+BRA,2327,Ceará_rural,343
+BRA,2328,Ceará_rural,344
+BRA,5304,Distrito Federal_df_urbano,345
+BRA,5305,Distrito Federal_df_urbano,346
+BRA,5301,Distrito Federal_df_urbano,347
+BRA,5306,Distrito Federal_df_urbano,348
+BRA,5302,Distrito Federal_df_urbano,349
+BRA,5303,Distrito Federal_df_urbano,350
+BRA,5307,Distrito Federal_rural,351
+BRA,5308,Distrito Federal_rural,352
+BRA,3202,Espírito Santo_capital,353
+BRA,3201,Espírito Santo_capital,354
+BRA,3204,Espírito Santo_resto_rm,355
+BRA,3203,Espírito Santo_resto_rm,356
+BRA,3205,Espírito Santo_resto_rm,357
+BRA,3206,Espírito Santo_resto_uf,358
+BRA,3208,Espírito Santo_resto_uf,359
+BRA,3207,Espírito Santo_resto_uf,360
+BRA,3211,Espírito Santo_resto_uf,361
+BRA,3209,Espírito Santo_resto_uf,362
+BRA,3210,Espírito Santo_resto_uf,363
+BRA,3215,Espírito Santo_rural,364
+BRA,3213,Espírito Santo_rural,365
+BRA,3212,Espírito Santo_rural,366
+BRA,3214,Espírito Santo_rural,367
+BRA,5201,Goiás_capital,368
+BRA,5202,Goiás_capital,369
+BRA,5203,Goiás_capital,370
+BRA,5204,Goiás_resto_rm,371
+BRA,5205,Goiás_resto_rm,372
+BRA,5206,Goiás_resto_rm,373
+BRA,5207,Goiás_resto_uf,374
+BRA,5216,Goiás_resto_uf,375
+BRA,5208,Goiás_resto_uf,376
+BRA,5217,Goiás_resto_uf,377
+BRA,5212,Goiás_resto_uf,378
+BRA,5211,Goiás_resto_uf,379
+BRA,5213,Goiás_resto_uf,380
+BRA,5215,Goiás_resto_uf,381
+BRA,5209,Goiás_resto_uf,382
+BRA,5214,Goiás_resto_uf,383
+BRA,5210,Goiás_resto_uf,384
+BRA,5225,Goiás_rural,385
+BRA,5219,Goiás_rural,386
+BRA,5220,Goiás_rural,387
+BRA,5224,Goiás_rural,388
+BRA,5221,Goiás_rural,389
+BRA,5223,Goiás_rural,390
+BRA,5222,Goiás_rural,391
+BRA,5218,Goiás_rural,392
+BRA,2101,Maranhão_capital,393
+BRA,2102,Maranhão_capital,394
+BRA,2103,Maranhão_capital,395
+BRA,2104,Maranhão_resto_rm,396
+BRA,2107,Maranhão_resto_uf,397
+BRA,2109,Maranhão_resto_uf,398
+BRA,2110,Maranhão_resto_uf,399
+BRA,2108,Maranhão_resto_uf,400
+BRA,2106,Maranhão_resto_uf,401
+BRA,2105,Maranhão_resto_uf,402
+BRA,2112,Maranhão_resto_uf,403
+BRA,2111,Maranhão_resto_uf,404
+BRA,2113,Maranhão_resto_uf,405
+BRA,2119,Maranhão_rural,406
+BRA,2117,Maranhão_rural,407
+BRA,2123,Maranhão_rural,408
+BRA,2121,Maranhão_rural,409
+BRA,2124,Maranhão_rural,410
+BRA,2120,Maranhão_rural,411
+BRA,2116,Maranhão_rural,412
+BRA,2122,Maranhão_rural,413
+BRA,2125,Maranhão_rural,414
+BRA,2114,Maranhão_rural,415
+BRA,2115,Maranhão_rural,416
+BRA,2118,Maranhão_rural,417
+BRA,5002,Mato Grosso Do Sul_capital,418
+BRA,5001,Mato Grosso Do Sul_capital,419
+BRA,5003,Mato Grosso Do Sul_capital,420
+BRA,5006,Mato Grosso Do Sul_resto_uf,421
+BRA,5008,Mato Grosso Do Sul_resto_uf,422
+BRA,5007,Mato Grosso Do Sul_resto_uf,423
+BRA,5009,Mato Grosso Do Sul_resto_uf,424
+BRA,5004,Mato Grosso Do Sul_resto_uf,425
+BRA,5005,Mato Grosso Do Sul_resto_uf,426
+BRA,5012,Mato Grosso Do Sul_rural,427
+BRA,5011,Mato Grosso Do Sul_rural,428
+BRA,5013,Mato Grosso Do Sul_rural,429
+BRA,5010,Mato Grosso Do Sul_rural,430
+BRA,5101,Mato Grosso_capital,431
+BRA,5102,Mato Grosso_capital,432
+BRA,5103,Mato Grosso_resto_rm,433
+BRA,5108,Mato Grosso_resto_uf,434
+BRA,5107,Mato Grosso_resto_uf,435
+BRA,5105,Mato Grosso_resto_uf,436
+BRA,5111,Mato Grosso_resto_uf,437
+BRA,5106,Mato Grosso_resto_uf,438
+BRA,5110,Mato Grosso_resto_uf,439
+BRA,5109,Mato Grosso_resto_uf,440
+BRA,5104,Mato Grosso_resto_uf,441
+BRA,5112,Mato Grosso_resto_uf,442
+BRA,5116,Mato Grosso_rural,443
+BRA,5113,Mato Grosso_rural,444
+BRA,5118,Mato Grosso_rural,445
+BRA,5114,Mato Grosso_rural,446
+BRA,5117,Mato Grosso_rural,447
+BRA,5115,Mato Grosso_rural,448
+BRA,3103,Minas Gerais_capital,449
+BRA,3101,Minas Gerais_capital,450
+BRA,3106,Minas Gerais_capital,451
+BRA,3105,Minas Gerais_capital,452
+BRA,3104,Minas Gerais_capital,453
+BRA,3102,Minas Gerais_capital,454
+BRA,3109,Minas Gerais_resto_rm,455
+BRA,3108,Minas Gerais_resto_rm,456
+BRA,3107,Minas Gerais_resto_rm,457
+BRA,3124,Minas Gerais_resto_uf,458
+BRA,3128,Minas Gerais_resto_uf,459
+BRA,3116,Minas Gerais_resto_uf,460
+BRA,3123,Minas Gerais_resto_uf,461
+BRA,3110,Minas Gerais_resto_uf,462
+BRA,3118,Minas Gerais_resto_uf,463
+BRA,3115,Minas Gerais_resto_uf,464
+BRA,3126,Minas Gerais_resto_uf,465
+BRA,3119,Minas Gerais_resto_uf,466
+BRA,3130,Minas Gerais_resto_uf,467
+BRA,3121,Minas Gerais_resto_uf,468
+BRA,3114,Minas Gerais_resto_uf,469
+BRA,3113,Minas Gerais_resto_uf,470
+BRA,3125,Minas Gerais_resto_uf,471
+BRA,3122,Minas Gerais_resto_uf,472
+BRA,3129,Minas Gerais_resto_uf,473
+BRA,3120,Minas Gerais_resto_uf,474
+BRA,3112,Minas Gerais_resto_uf,475
+BRA,3111,Minas Gerais_resto_uf,476
+BRA,3117,Minas Gerais_resto_uf,477
+BRA,3127,Minas Gerais_resto_uf,478
+BRA,3145,Minas Gerais_rural,479
+BRA,3136,Minas Gerais_rural,480
+BRA,3148,Minas Gerais_rural,481
+BRA,3139,Minas Gerais_rural,482
+BRA,3144,Minas Gerais_rural,483
+BRA,3140,Minas Gerais_rural,484
+BRA,3143,Minas Gerais_rural,485
+BRA,3142,Minas Gerais_rural,486
+BRA,3133,Minas Gerais_rural,487
+BRA,3131,Minas Gerais_rural,488
+BRA,3134,Minas Gerais_rural,489
+BRA,3137,Minas Gerais_rural,490
+BRA,3135,Minas Gerais_rural,491
+BRA,3149,Minas Gerais_rural,492
+BRA,3141,Minas Gerais_rural,493
+BRA,3147,Minas Gerais_rural,494
+BRA,3138,Minas Gerais_rural,495
+BRA,3146,Minas Gerais_rural,496
+BRA,3132,Minas Gerais_rural,497
+BRA,1503,Pará_capital,498
+BRA,1502,Pará_capital,499
+BRA,1501,Pará_capital,500
+BRA,1504,Pará_resto_rm,501
+BRA,1505,Pará_resto_rm,502
+BRA,1508,Pará_resto_uf,503
+BRA,1507,Pará_resto_uf,504
+BRA,1506,Pará_resto_uf,505
+BRA,1509,Pará_resto_uf,506
+BRA,1510,Pará_resto_uf,507
+BRA,1511,Pará_resto_uf,508
+BRA,1514,Pará_rural,509
+BRA,1518,Pará_rural,510
+BRA,1516,Pará_rural,511
+BRA,1515,Pará_rural,512
+BRA,1519,Pará_rural,513
+BRA,1512,Pará_rural,514
+BRA,1517,Pará_rural,515
+BRA,1513,Pará_rural,516
+BRA,2501,Paraíba_capital,517
+BRA,2503,Paraíba_capital,518
+BRA,2502,Paraíba_capital,519
+BRA,2504,Paraíba_resto_rm,520
+BRA,2505,Paraíba_resto_rm,521
+BRA,2506,Paraíba_resto_uf,522
+BRA,2507,Paraíba_resto_uf,523
+BRA,2511,Paraíba_resto_uf,524
+BRA,2509,Paraíba_resto_uf,525
+BRA,2508,Paraíba_resto_uf,526
+BRA,2510,Paraíba_resto_uf,527
+BRA,2512,Paraíba_rural,528
+BRA,2514,Paraíba_rural,529
+BRA,2518,Paraíba_rural,530
+BRA,2513,Paraíba_rural,531
+BRA,2517,Paraíba_rural,532
+BRA,2516,Paraíba_rural,533
+BRA,2515,Paraíba_rural,534
+BRA,4104,Paraná_capital,535
+BRA,4101,Paraná_capital,536
+BRA,4103,Paraná_capital,537
+BRA,4102,Paraná_capital,538
+BRA,4105,Paraná_capital,539
+BRA,4107,Paraná_resto_rm,540
+BRA,4106,Paraná_resto_rm,541
+BRA,4108,Paraná_resto_rm,542
+BRA,4119,Paraná_resto_uf,543
+BRA,4123,Paraná_resto_uf,544
+BRA,4110,Paraná_resto_uf,545
+BRA,4112,Paraná_resto_uf,546
+BRA,4122,Paraná_resto_uf,547
+BRA,4111,Paraná_resto_uf,548
+BRA,4120,Paraná_resto_uf,549
+BRA,4121,Paraná_resto_uf,550
+BRA,4109,Paraná_resto_uf,551
+BRA,4116,Paraná_resto_uf,552
+BRA,4115,Paraná_resto_uf,553
+BRA,4113,Paraná_resto_uf,554
+BRA,4118,Paraná_resto_uf,555
+BRA,4114,Paraná_resto_uf,556
+BRA,4117,Paraná_resto_uf,557
+BRA,4124,Paraná_resto_uf,558
+BRA,4132,Paraná_rural,559
+BRA,4130,Paraná_rural,560
+BRA,4126,Paraná_rural,561
+BRA,4129,Paraná_rural,562
+BRA,4125,Paraná_rural,563
+BRA,4133,Paraná_rural,564
+BRA,4127,Paraná_rural,565
+BRA,4131,Paraná_rural,566
+BRA,4128,Paraná_rural,567
+BRA,4135,Paraná_rural,568
+BRA,4134,Paraná_rural,569
+BRA,2601,Pernambuco_capital,570
+BRA,2602,Pernambuco_capital,571
+BRA,2603,Pernambuco_capital,572
+BRA,2604,Pernambuco_resto_rm,573
+BRA,2605,Pernambuco_resto_rm,574
+BRA,2606,Pernambuco_resto_rm,575
+BRA,2614,Pernambuco_resto_uf,576
+BRA,2607,Pernambuco_resto_uf,577
+BRA,2613,Pernambuco_resto_uf,578
+BRA,2608,Pernambuco_resto_uf,579
+BRA,2610,Pernambuco_resto_uf,580
+BRA,2611,Pernambuco_resto_uf,581
+BRA,2615,Pernambuco_resto_uf,582
+BRA,2612,Pernambuco_resto_uf,583
+BRA,2609,Pernambuco_resto_uf,584
+BRA,2624,Pernambuco_rural,585
+BRA,2618,Pernambuco_rural,586
+BRA,2620,Pernambuco_rural,587
+BRA,2617,Pernambuco_rural,588
+BRA,2621,Pernambuco_rural,589
+BRA,2616,Pernambuco_rural,590
+BRA,2622,Pernambuco_rural,591
+BRA,2619,Pernambuco_rural,592
+BRA,2623,Pernambuco_rural,593
+BRA,2202,Piauí_capital,594
+BRA,2201,Piauí_capital,595
+BRA,2203,Piauí_capital,596
+BRA,2209,Piauí_resto_uf,597
+BRA,2208,Piauí_resto_uf,598
+BRA,2205,Piauí_resto_uf,599
+BRA,2207,Piauí_resto_uf,600
+BRA,2204,Piauí_resto_uf,601
+BRA,2206,Piauí_resto_uf,602
+BRA,2213,Piauí_rural,603
+BRA,2214,Piauí_rural,604
+BRA,2210,Piauí_rural,605
+BRA,2216,Piauí_rural,606
+BRA,2217,Piauí_rural,607
+BRA,2215,Piauí_rural,608
+BRA,2211,Piauí_rural,609
+BRA,2212,Piauí_rural,610
+BRA,3307,Rio De Janeiro_capital,611
+BRA,3308,Rio De Janeiro_capital,612
+BRA,3305,Rio De Janeiro_capital,613
+BRA,3302,Rio De Janeiro_capital,614
+BRA,3309,Rio De Janeiro_capital,615
+BRA,3301,Rio De Janeiro_capital,616
+BRA,3304,Rio De Janeiro_capital,617
+BRA,3303,Rio De Janeiro_capital,618
+BRA,3306,Rio De Janeiro_capital,619
+BRA,3317,Rio De Janeiro_resto_rm,620
+BRA,3316,Rio De Janeiro_resto_rm,621
+BRA,3310,Rio De Janeiro_resto_rm,622
+BRA,3314,Rio De Janeiro_resto_rm,623
+BRA,3315,Rio De Janeiro_resto_rm,624
+BRA,3311,Rio De Janeiro_resto_rm,625
+BRA,3313,Rio De Janeiro_resto_rm,626
+BRA,3312,Rio De Janeiro_resto_rm,627
+BRA,3318,Rio De Janeiro_resto_rm,628
+BRA,3324,Rio De Janeiro_resto_uf,629
+BRA,3323,Rio De Janeiro_resto_uf,630
+BRA,3328,Rio De Janeiro_resto_uf,631
+BRA,3325,Rio De Janeiro_resto_uf,632
+BRA,3329,Rio De Janeiro_resto_uf,633
+BRA,3319,Rio De Janeiro_resto_uf,634
+BRA,3326,Rio De Janeiro_resto_uf,635
+BRA,3322,Rio De Janeiro_resto_uf,636
+BRA,3327,Rio De Janeiro_resto_uf,637
+BRA,3320,Rio De Janeiro_resto_uf,638
+BRA,3330,Rio De Janeiro_resto_uf,639
+BRA,3321,Rio De Janeiro_resto_uf,640
+BRA,3337,Rio De Janeiro_rural,641
+BRA,3336,Rio De Janeiro_rural,642
+BRA,3334,Rio De Janeiro_rural,643
+BRA,3331,Rio De Janeiro_rural,644
+BRA,3335,Rio De Janeiro_rural,645
+BRA,3332,Rio De Janeiro_rural,646
+BRA,3333,Rio De Janeiro_rural,647
+BRA,2401,Rio Grande Do Norte_capital,648
+BRA,2402,Rio Grande Do Norte_capital,649
+BRA,2403,Rio Grande Do Norte_resto_rm,650
+BRA,2406,Rio Grande Do Norte_resto_uf,651
+BRA,2407,Rio Grande Do Norte_resto_uf,652
+BRA,2404,Rio Grande Do Norte_resto_uf,653
+BRA,2408,Rio Grande Do Norte_resto_uf,654
+BRA,2405,Rio Grande Do Norte_resto_uf,655
+BRA,2409,Rio Grande Do Norte_rural,656
+BRA,2410,Rio Grande Do Norte_rural,657
+BRA,2412,Rio Grande Do Norte_rural,658
+BRA,2411,Rio Grande Do Norte_rural,659
+BRA,4302,Rio Grande Do Sul_capital,660
+BRA,4301,Rio Grande Do Sul_capital,661
+BRA,4304,Rio Grande Do Sul_capital,662
+BRA,4303,Rio Grande Do Sul_capital,663
+BRA,4306,Rio Grande Do Sul_capital,664
+BRA,4305,Rio Grande Do Sul_capital,665
+BRA,4307,Rio Grande Do Sul_resto_rm,666
+BRA,4308,Rio Grande Do Sul_resto_rm,667
+BRA,4309,Rio Grande Do Sul_resto_rm,668
+BRA,4324,Rio Grande Do Sul_resto_uf,669
+BRA,4312,Rio Grande Do Sul_resto_uf,670
+BRA,4322,Rio Grande Do Sul_resto_uf,671
+BRA,4316,Rio Grande Do Sul_resto_uf,672
+BRA,4320,Rio Grande Do Sul_resto_uf,673
+BRA,4317,Rio Grande Do Sul_resto_uf,674
+BRA,4313,Rio Grande Do Sul_resto_uf,675
+BRA,4323,Rio Grande Do Sul_resto_uf,676
+BRA,4318,Rio Grande Do Sul_resto_uf,677
+BRA,4319,Rio Grande Do Sul_resto_uf,678
+BRA,4310,Rio Grande Do Sul_resto_uf,679
+BRA,4314,Rio Grande Do Sul_resto_uf,680
+BRA,4315,Rio Grande Do Sul_resto_uf,681
+BRA,4311,Rio Grande Do Sul_resto_uf,682
+BRA,4321,Rio Grande Do Sul_resto_uf,683
+BRA,4330,Rio Grande Do Sul_rural,684
+BRA,4326,Rio Grande Do Sul_rural,685
+BRA,4328,Rio Grande Do Sul_rural,686
+BRA,4332,Rio Grande Do Sul_rural,687
+BRA,4329,Rio Grande Do Sul_rural,688
+BRA,4331,Rio Grande Do Sul_rural,689
+BRA,4325,Rio Grande Do Sul_rural,690
+BRA,4334,Rio Grande Do Sul_rural,691
+BRA,4327,Rio Grande Do Sul_rural,692
+BRA,4335,Rio Grande Do Sul_rural,693
+BRA,4333,Rio Grande Do Sul_rural,694
+BRA,1101,Rondônia_capital,695
+BRA,1102,Rondônia_capital,696
+BRA,1107,Rondônia_resto_uf,697
+BRA,1105,Rondônia_resto_uf,698
+BRA,1106,Rondônia_resto_uf,699
+BRA,1103,Rondônia_resto_uf,700
+BRA,1104,Rondônia_resto_uf,701
+BRA,1108,Rondônia_rural,702
+BRA,1111,Rondônia_rural,703
+BRA,1110,Rondônia_rural,704
+BRA,1109,Rondônia_rural,705
+BRA,1401,Roraima_capital,706
+BRA,1402,Roraima_capital,707
+BRA,1403,Roraima_resto_uf,708
+BRA,1404,Roraima_rural,709
+BRA,1405,Roraima_rural,710
+BRA,4201,Santa Catarina_capital,711
+BRA,4202,Santa Catarina_capital,712
+BRA,4204,Santa Catarina_resto_rm,713
+BRA,4203,Santa Catarina_resto_rm,714
+BRA,4213,Santa Catarina_resto_uf,715
+BRA,4207,Santa Catarina_resto_uf,716
+BRA,4212,Santa Catarina_resto_uf,717
+BRA,4216,Santa Catarina_resto_uf,718
+BRA,4215,Santa Catarina_resto_uf,719
+BRA,4209,Santa Catarina_resto_uf,720
+BRA,4205,Santa Catarina_resto_uf,721
+BRA,4210,Santa Catarina_resto_uf,722
+BRA,4211,Santa Catarina_resto_uf,723
+BRA,4206,Santa Catarina_resto_uf,724
+BRA,4208,Santa Catarina_resto_uf,725
+BRA,4217,Santa Catarina_resto_uf,726
+BRA,4214,Santa Catarina_resto_uf,727
+BRA,4225,Santa Catarina_rural,728
+BRA,4223,Santa Catarina_rural,729
+BRA,4226,Santa Catarina_rural,730
+BRA,4220,Santa Catarina_rural,731
+BRA,4222,Santa Catarina_rural,732
+BRA,4218,Santa Catarina_rural,733
+BRA,4221,Santa Catarina_rural,734
+BRA,4224,Santa Catarina_rural,735
+BRA,4219,Santa Catarina_rural,736
+BRA,3505,São Paulo_capital,737
+BRA,3508,São Paulo_capital,738
+BRA,3501,São Paulo_capital,739
+BRA,3509,São Paulo_capital,740
+BRA,3507,São Paulo_capital,741
+BRA,3502,São Paulo_capital,742
+BRA,3504,São Paulo_capital,743
+BRA,3506,São Paulo_capital,744
+BRA,3503,São Paulo_capital,745
+BRA,3514,São Paulo_resto_rm,746
+BRA,3511,São Paulo_resto_rm,747
+BRA,3510,São Paulo_resto_rm,748
+BRA,3512,São Paulo_resto_rm,749
+BRA,3513,São Paulo_resto_rm,750
+BRA,3515,São Paulo_resto_rm,751
+BRA,3535,São Paulo_resto_uf,752
+BRA,3517,São Paulo_resto_uf,753
+BRA,3524,São Paulo_resto_uf,754
+BRA,3534,São Paulo_resto_uf,755
+BRA,3516,São Paulo_resto_uf,756
+BRA,3525,São Paulo_resto_uf,757
+BRA,3523,São Paulo_resto_uf,758
+BRA,3528,São Paulo_resto_uf,759
+BRA,3531,São Paulo_resto_uf,760
+BRA,3526,São Paulo_resto_uf,761
+BRA,3522,São Paulo_resto_uf,762
+BRA,3520,São Paulo_resto_uf,763
+BRA,3536,São Paulo_resto_uf,764
+BRA,3521,São Paulo_resto_uf,765
+BRA,3532,São Paulo_resto_uf,766
+BRA,3519,São Paulo_resto_uf,767
+BRA,3518,São Paulo_resto_uf,768
+BRA,3529,São Paulo_resto_uf,769
+BRA,3527,São Paulo_resto_uf,770
+BRA,3533,São Paulo_resto_uf,771
+BRA,3530,São Paulo_resto_uf,772
+BRA,3539,São Paulo_rural,773
+BRA,3546,São Paulo_rural,774
+BRA,3548,São Paulo_rural,775
+BRA,3549,São Paulo_rural,776
+BRA,3540,São Paulo_rural,777
+BRA,3551,São Paulo_rural,778
+BRA,3542,São Paulo_rural,779
+BRA,3547,São Paulo_rural,780
+BRA,3537,São Paulo_rural,781
+BRA,3544,São Paulo_rural,782
+BRA,3553,São Paulo_rural,783
+BRA,3541,São Paulo_rural,784
+BRA,3552,São Paulo_rural,785
+BRA,3550,São Paulo_rural,786
+BRA,3538,São Paulo_rural,787
+BRA,3545,São Paulo_rural,788
+BRA,3543,São Paulo_rural,789
+BRA,2801,Sergipe_capital,790
+BRA,2802,Sergipe_capital,791
+BRA,2803,Sergipe_resto_rm,792
+BRA,2805,Sergipe_resto_uf,793
+BRA,2804,Sergipe_resto_uf,794
+BRA,2806,Sergipe_resto_uf,795
+BRA,2807,Sergipe_rural,796
+BRA,2809,Sergipe_rural,797
+BRA,2808,Sergipe_rural,798
+BRA,2810,Sergipe_rural,799
+BRA,1701,Tocantins_capital,800
+BRA,1703,Tocantins_resto_uf,801
+BRA,1704,Tocantins_resto_uf,802
+BRA,1705,Tocantins_resto_uf,803
+BRA,1702,Tocantins_resto_uf,804
+BRA,1706,Tocantins_rural,805
+BRA,1707,Tocantins_rural,806
+BRA,1708,Tocantins_rural,807
 BRB,1,1,808
 BRB,100,100,809
 BRB,104,104,810
@@ -1093,171 +1093,171 @@ CHE,21,Tessin,1091
 CHE,22,Waadt,1092
 CHE,1,Zürich,1093
 CHL,NA,NA,1094
-CIV,1,abengourou,1095
-CIV,2,abidjan,1096
-CIV,3,aboisso,1097
-CIV,51,adiake,1098
-CIV,4,adzope,1099
-CIV,5,agboville,1100
-CIV,6,agnibilekrou,1101
-CIV,60,akoupe,1102
-CIV,52,alepe,1103
-CIV,71,arrha,1104
-CIV,72,attiegouakro,1105
-CIV,7,bangolo,1106
-CIV,8,beoumi,1107
-CIV,73,bettie,1108
-CIV,9,biankouma,1109
-CIV,59,blolequin,1110
-CIV,53,bocanda,1111
-CIV,10,bondoukou,1112
-CIV,11,bongouanou,1113
-CIV,74,botro,1114
-CIV,12,bouafle,1115
-CIV,13,bouake,1116
-CIV,14,bouna,1117
-CIV,15,boundiali,1118
-CIV,96,buyo,1119
-CIV,16,dabakala,1120
-CIV,54,dabou,1121
-CIV,17,daloa,1122
-CIV,18,danane,1123
-CIV,19,daoukro,1124
-CIV,97,dianra,1125
-CIV,61,didievi,1126
-CIV,75,dikodougou,1127
-CIV,20,dimbokro,1128
-CIV,21,divo,1129
-CIV,98,djekanou,1130
-CIV,76,doropo,1131
-CIV,22,duekoue,1132
-CIV,99,facobly,1133
-CIV,23,ferkessedougou,1134
-CIV,77,fresco,1135
-CIV,24,gagnoa,1136
-CIV,55,GRAND-BASSAM,1137
-CIV,25,GRAND-LAHOU,1138
-CIV,78,gueyo,1139
-CIV,26,guiglo,1140
-CIV,79,guitry,1141
-CIV,27,issia,1142
-CIV,56,jacqueville,1143
-CIV,80,kani,1144
-CIV,81,kaniasso,1145
-CIV,28,katiola,1146
-CIV,101,kong,1147
-CIV,29,korhogo,1148
-CIV,82,koro,1149
-CIV,102,KOUASSI-KOUASSIKRO,1150
-CIV,62,kouibly,1151
-CIV,70,KOUN-FAO,1152
-CIV,69,kounahiri,1153
-CIV,83,kouto,1154
-CIV,30,lakota,1155
-CIV,33,M'BAHIAKRO,1156
-CIV,84,M'BATTO,1157
-CIV,103,M'BENGUE,1158
-CIV,67,madinani,1159
-CIV,31,man,1160
-CIV,32,mankono,1161
-CIV,104,meagui,1162
-CIV,68,minignan,1163
-CIV,63,nassian,1164
-CIV,85,niakaramadougou,1165
-CIV,34,odienne,1166
-CIV,86,ouangolodougou,1167
-CIV,87,ouaninou,1168
-CIV,35,oume,1169
-CIV,64,prikro,1170
-CIV,36,sakassou,1171
-CIV,88,samatiguila,1172
-CIV,37,SAN-PEDRO,1173
-CIV,89,sandegue,1174
-CIV,38,sassandra,1175
-CIV,39,seguela,1176
-CIV,105,seguelon,1177
-CIV,65,sikensi,1178
-CIV,90,sinematiali,1179
-CIV,40,sinfra,1180
-CIV,106,sipilou,1181
-CIV,41,soubre,1182
-CIV,107,taabo,1183
-CIV,42,tabou,1184
-CIV,108,taÏ,1185
-CIV,43,tanda,1186
-CIV,91,tehini,1187
-CIV,44,tengrela,1188
-CIV,92,tiapoum,1189
-CIV,45,tiassale,1190
-CIV,57,tiebissou,1191
-CIV,46,touba,1192
-CIV,58,toulepleu,1193
-CIV,47,toumodi,1194
-CIV,93,transua,1195
+CIV,1,Abengourou,1095
+CIV,2,Abidjan,1096
+CIV,3,Aboisso,1097
+CIV,51,Adiake,1098
+CIV,4,Adzope,1099
+CIV,5,Agboville,1100
+CIV,6,Agnibilekrou,1101
+CIV,60,Akoupe,1102
+CIV,52,Alepe,1103
+CIV,71,Arrha,1104
+CIV,72,Attiegouakro,1105
+CIV,7,Bangolo,1106
+CIV,8,Beoumi,1107
+CIV,73,Bettie,1108
+CIV,9,Biankouma,1109
+CIV,59,Blolequin,1110
+CIV,53,Bocanda,1111
+CIV,10,Bondoukou,1112
+CIV,11,Bongouanou,1113
+CIV,74,Botro,1114
+CIV,12,Bouafle,1115
+CIV,13,Bouake,1116
+CIV,14,Bouna,1117
+CIV,15,Boundiali,1118
+CIV,96,Buyo,1119
+CIV,16,Dabakala,1120
+CIV,54,Dabou,1121
+CIV,17,Daloa,1122
+CIV,18,Danane,1123
+CIV,19,Daoukro,1124
+CIV,97,Dianra,1125
+CIV,61,Didievi,1126
+CIV,75,Dikodougou,1127
+CIV,20,Dimbokro,1128
+CIV,21,Divo,1129
+CIV,98,Djekanou,1130
+CIV,76,Doropo,1131
+CIV,22,Duekoue,1132
+CIV,99,Facobly,1133
+CIV,23,Ferkessedougou,1134
+CIV,77,Fresco,1135
+CIV,24,Gagnoa,1136
+CIV,55,Grand-Bassam,1137
+CIV,25,Grand-Lahou,1138
+CIV,78,Gueyo,1139
+CIV,26,Guiglo,1140
+CIV,79,Guitry,1141
+CIV,27,Issia,1142
+CIV,56,Jacqueville,1143
+CIV,80,Kani,1144
+CIV,81,Kaniasso,1145
+CIV,28,Katiola,1146
+CIV,101,Kong,1147
+CIV,29,Korhogo,1148
+CIV,82,Koro,1149
+CIV,102,Kouassi-Kouassikro,1150
+CIV,62,Kouibly,1151
+CIV,70,Koun-Fao,1152
+CIV,69,Kounahiri,1153
+CIV,83,Kouto,1154
+CIV,30,Lakota,1155
+CIV,33,M'bahiakro,1156
+CIV,84,M'batto,1157
+CIV,103,M'bengue,1158
+CIV,67,Madinani,1159
+CIV,31,Man,1160
+CIV,32,Mankono,1161
+CIV,104,Meagui,1162
+CIV,68,Minignan,1163
+CIV,63,Nassian,1164
+CIV,85,Niakaramadougou,1165
+CIV,34,Odienne,1166
+CIV,86,Ouangolodougou,1167
+CIV,87,Ouaninou,1168
+CIV,35,Oume,1169
+CIV,64,Prikro,1170
+CIV,36,Sakassou,1171
+CIV,88,Samatiguila,1172
+CIV,37,San-Pedro,1173
+CIV,89,Sandegue,1174
+CIV,38,Sassandra,1175
+CIV,39,Seguela,1176
+CIV,105,Seguelon,1177
+CIV,65,Sikensi,1178
+CIV,90,Sinematiali,1179
+CIV,40,Sinfra,1180
+CIV,106,Sipilou,1181
+CIV,41,Soubre,1182
+CIV,107,Taabo,1183
+CIV,42,Tabou,1184
+CIV,108,Taï,1185
+CIV,43,Tanda,1186
+CIV,91,Tehini,1187
+CIV,44,Tengrela,1188
+CIV,92,Tiapoum,1189
+CIV,45,Tiassale,1190
+CIV,57,Tiebissou,1191
+CIV,46,Touba,1192
+CIV,58,Toulepleu,1193
+CIV,47,Toumodi,1194
+CIV,93,Transua,1195
 CIV,100,Unknown,1196
-CIV,48,vavoua,1197
-CIV,94,YAKASSE-ATTOBROU,1198
-CIV,49,yamoussoukro,1199
-CIV,66,ZOUAN-HOUNIEN,1200
-CIV,95,zoukougbeu,1201
-CIV,50,zuenoula,1202
-COL,1,ARAUCA,1203
-COL,2,ARMENIA,1204
-COL,3,BARRANCABERMEJA,1205
-COL,4,BARRANQUILLA,1206
-COL,5,BOGOTÁ,1207
-COL,6,BUCARAMANGA Y A.M.,1208
-COL,7,BUENAVENTURA,1209
-COL,8,CALI,1210
-COL,9,CARTAGENA,1211
-COL,10,CENTRO POBLADO,1212
-COL,11,CÚCUTA Y A.M.,1213
-COL,12,FLORENCIA,1214
-COL,13,IBAGUÉ,1215
-COL,14,INÍRIDA,1216
-COL,15,LETICIA,1217
-COL,16,MANIZALEZ Y A.M.,1218
-COL,17,MEDELLÍN Y A.M.,1219
-COL,18,MITÚ,1220
-COL,19,MOCOA,1221
-COL,20,MONTERÍA,1222
-COL,21,NEIVA,1223
-COL,22,OTRAS CABECERAS,1224
-COL,23,PASTO,1225
-COL,24,PEREIRA Y A.M.,1226
-COL,25,POPAYÁN,1227
-COL,26,PUERTO CARREÑO,1228
-COL,27,QUIBDÓ,1229
-COL,28,RIOHACHA,1230
-COL,29,RIONEGRO,1231
-COL,30,RURAL DISPERSO,1232
-COL,31,SAN ANDRÉS,1233
-COL,32,SAN JOSÉ DEL GUAVIARE,1234
-COL,33,SANTA MARTA,1235
-COL,34,SINCELEJO,1236
-COL,35,SOLEDAD,1237
-COL,36,TUMACO,1238
-COL,37,TUNJA,1239
-COL,38,VALLEDUPAR,1240
-COL,39,VILLAVICENCIO,1241
-COL,40,YOPAL,1242
-COL,41,YUMBO,1243
+CIV,48,Vavoua,1197
+CIV,94,Yakasse-Attobrou,1198
+CIV,49,Yamoussoukro,1199
+CIV,66,Zouan-Hounien,1200
+CIV,95,Zoukougbeu,1201
+CIV,50,Zuenoula,1202
+COL,1,Arauca,1203
+COL,2,Armenia,1204
+COL,3,Barrancabermeja,1205
+COL,4,Barranquilla,1206
+COL,5,Bogotá,1207
+COL,6,Bucaramanga Y A.m.,1208
+COL,7,Buenaventura,1209
+COL,8,Cali,1210
+COL,9,Cartagena,1211
+COL,10,Centro Poblado,1212
+COL,11,Cúcuta Y A.m.,1213
+COL,12,Florencia,1214
+COL,13,Ibagué,1215
+COL,14,Inírida,1216
+COL,15,Leticia,1217
+COL,16,Manizalez Y A.m.,1218
+COL,17,Medellín Y A.m.,1219
+COL,18,Mitú,1220
+COL,19,Mocoa,1221
+COL,20,Montería,1222
+COL,21,Neiva,1223
+COL,22,Otras Cabeceras,1224
+COL,23,Pasto,1225
+COL,24,Pereira Y A.m.,1226
+COL,25,Popayán,1227
+COL,26,Puerto Carreño,1228
+COL,27,Quibdó,1229
+COL,28,Riohacha,1230
+COL,29,Rionegro,1231
+COL,30,Rural Disperso,1232
+COL,31,San Andrés,1233
+COL,32,San José Del Guaviare,1234
+COL,33,Santa Marta,1235
+COL,34,Sincelejo,1236
+COL,35,Soledad,1237
+COL,36,Tumaco,1238
+COL,37,Tunja,1239
+COL,38,Valledupar,1240
+COL,39,Villavicencio,1241
+COL,40,Yopal,1242
+COL,41,Yumbo,1243
 CRI,NA,NA,1244
-CYP,CY0,CY0,1245
-CZE,CZ0,CZ0,1246
-DEU,DE0,DE0,1247
-DEU,DE3,DE3,1248
-DEU,DE4,DE4,1249
-DEU,DE5,DE5,1250
-DNK,DK0,DK0,1251
-DOM,60502,Agua Santa del Yuna,1252
+CYP,CY0,Cy0,1245
+CZE,CZ0,Cz0,1246
+DEU,DE0,De0,1247
+DEU,DE3,De3,1248
+DEU,DE4,De4,1249
+DEU,DE5,De5,1250
+DNK,DK0,Dk0,1251
+DOM,60502,Agua Santa Del Yuna,1252
 DOM,270102,Ámina,1253
 DOM,240403,Angelina,1254
 DOM,140104,Arroyo Al Medio,1255
 DOM,200103,Arroyo Barril,1256
 DOM,140202,Arroyo Salado,1257
 DOM,20101,Azua,1258
-DOM,210301,Bajos de Haina,1259
+DOM,210301,Bajos De Haina,1259
 DOM,170101,Baní,1260
 DOM,40101,Barahona,1261
 DOM,20106,Barreras,1262
@@ -1279,7 +1279,7 @@ DOM,150304,Cana Chapetón,1277
 DOM,250803,Canabacoa,1278
 DOM,250602,Canca La Piedra,1279
 DOM,50202,Capotillo,1280
-DOM,220503,Carrera de Yeguas,1281
+DOM,220503,Carrera De Yeguas,1281
 DOM,150201,Castañuelas,1282
 DOM,60301,Castillo,1283
 DOM,90201,Cayetano Germosén,1284
@@ -1325,8 +1325,8 @@ DOM,230601,Guayacanes,1323
 DOM,120201,Guaymate,1324
 DOM,150301,Guayubín,1325
 DOM,210102,Hato Damas,1326
-DOM,220106,Hato del Padre,1327
-DOM,250107,Hato del Yaque,1328
+DOM,220106,Hato Del Padre,1327
+DOM,250107,Hato Del Yaque,1328
 DOM,300101,Hato Mayor,1329
 DOM,240404,Hernando Alonzo,1330
 DOM,110101,Higüey,1331
@@ -1342,7 +1342,7 @@ DOM,280105,Jayaco,1340
 DOM,130401,Jima Abajo,1341
 DOM,100101,Jimaní,1342
 DOM,90102,José Contreras,1343
-DOM,220401,Juan de Herrera,1344
+DOM,220401,Juan De Herrera,1344
 DOM,90104,Juan López,1345
 DOM,160202,Juancho,1346
 DOM,280103,Juma Bejucal,1347
@@ -1373,12 +1373,12 @@ DOM,200104,Las Galeras,1371
 DOM,140103,Las Gordas,1372
 DOM,60601,Las Guáranas,1373
 DOM,90105,Las Lagunas,1374
-DOM,110102,Las Lagunas de Nisibón,1375
-DOM,220501,Las Matas de Farfán,1376
+DOM,110102,Las Lagunas De Nisibón,1375
+DOM,220501,Las Matas De Farfán,1376
 DOM,250402,Las Palomas,1377
 DOM,60504,Las Taranas,1378
 DOM,200301,Las Terrenas,1379
-DOM,20301,Las Yayas de Viajama,1380
+DOM,20301,Las Yayas De Viajama,1380
 DOM,220111,Las Zanjas,1381
 DOM,250401,Licey Al Medio,1382
 DOM,320601,Los Alcarrizos,1383
@@ -1434,35 +1434,35 @@ DOM,250801,Puñal,1432
 DOM,230501,Quisqueya,1433
 DOM,230301,Ramón Santana,1434
 DOM,310301,Rancho Arriba,1435
-DOM,70402,Rancho de La Guardia,1436
+DOM,70402,Rancho De La Guardia,1436
 DOM,180202,Río Grande,1437
 DOM,140401,Río San Juan,1438
 DOM,130102,Río Verde Arriba,1439
-DOM,300201,Sabana de La Mar,1440
-DOM,280102,Sabana del Puerto,1441
-DOM,290301,Sabana Grande de Boyá,1442
-DOM,210201,Sabana Grande de Palenque,1443
+DOM,300201,Sabana De La Mar,1440
+DOM,280102,Sabana Del Puerto,1441
+DOM,290301,Sabana Grande De Boyá,1442
+DOM,210201,Sabana Grande De Palenque,1443
 DOM,250901,Sabana Iglesia,1444
 DOM,310201,Sabana Larga,1445
 DOM,20601,Sabana Yegua,1446
 DOM,220103,Sabaneta,1447
 DOM,190101,Salcedo,1448
 DOM,200101,Samaná,1449
-DOM,320501,San Antonio de Guerra,1450
+DOM,320501,San Antonio De Guerra,1450
 DOM,210101,San Cristóbal,1451
 DOM,80103,San Francisco-Vicentillo,1452
-DOM,250106,San Francisco de Jacagua,1453
-DOM,60101,San Francisco de Macorís,1454
-DOM,210701,San Gregorio de Nigua,1455
-DOM,260101,San Ignacio de Sabaneta,1456
-DOM,250501,San José de Las Matas,1457
-DOM,140102,San José de Matanzas,1458
-DOM,310101,San José de Ocoa,1459
-DOM,210502,San José del Puerto,1460
+DOM,250106,San Francisco De Jacagua,1453
+DOM,60101,San Francisco De Macorís,1454
+DOM,210701,San Gregorio De Nigua,1455
+DOM,260101,San Ignacio De Sabaneta,1456
+DOM,250501,San José De Las Matas,1457
+DOM,140102,San José De Matanzas,1458
+DOM,310101,San José De Ocoa,1459
+DOM,210502,San José Del Puerto,1460
 DOM,220101,San Juan,1461
 DOM,320102,San Luis,1462
-DOM,230101,San Pedro de Macorís,1463
-DOM,110201,San Rafael del Yuma,1464
+DOM,230101,San Pedro De Macorís,1463
+DOM,110201,San Rafael Del Yuma,1464
 DOM,90103,San Víctor,1465
 DOM,200201,Sánchez,1466
 DOM,30307,Santa Bárbara El 6,1467
@@ -1470,7 +1470,7 @@ DOM,80104,Santa Lucía,1468
 DOM,170203,Santana,1469
 DOM,30303,Santana,1470
 DOM,250101,Santiago,1471
-DOM,10101,Santo Domingo de Guzmán,1472
+DOM,10101,Santo Domingo De Guzmán,1472
 DOM,320101,Santo Domingo Este,1473
 DOM,320301,Santo Domingo Norte,1474
 DOM,320201,Santo Domingo Oeste,1475
@@ -1486,7 +1486,7 @@ DOM,110104,Verón Punta Cana,1484
 DOM,40501,Vicente Noble,1485
 DOM,210501,Villa Altagracia,1486
 DOM,40104,Villa Central,1487
-DOM,280302,Villa de Sonador,1488
+DOM,280302,Villa De Sonador,1488
 DOM,170103,Villa Fundación,1489
 DOM,250701,Villa González,1490
 DOM,120301,Villa Hermosa,1491
@@ -1524,7 +1524,7 @@ ECU,17,Orellana,1522
 ECU,18,Pastaza,1523
 ECU,19,Pichincha,1524
 ECU,20,Santa Elena,1525
-ECU,21,Santo Domingo de los Tsachilas,1526
+ECU,21,Santo Domingo De Los Tsachilas,1526
 ECU,22,Sucumbios,1527
 ECU,23,Tungurahua,1528
 ECU,24,Zamora Chinchipe,1529
@@ -1551,15 +1551,15 @@ EGY,14,Qualioubia,1549
 EGY,13,Sharkia,1550
 EGY,26,Sohag,1551
 EGY,4,Suez,1552
-ESP,ES0,ES0,1553
-ESP,ES1,ES1,1554
-ESP,ES2,ES2,1555
-ESP,ES3,ES3,1556
-ESP,ES4,ES4,1557
-ESP,ES5,ES5,1558
-ESP,ES6,ES6,1559
-ESP,ES7,ES7,1560
-EST,EE0,EE0,1561
+ESP,ES0,Es0,1553
+ESP,ES1,Es1,1554
+ESP,ES2,Es2,1555
+ESP,ES3,Es3,1556
+ESP,ES4,Es4,1557
+ESP,ES5,Es5,1558
+ESP,ES6,Es6,1559
+ESP,ES7,Es7,1560
+EST,EE0,Ee0,1561
 ETH,01,01,1562
 ETH,02,02,1563
 ETH,03,03,1564
@@ -1587,18 +1587,18 @@ ETH,28,28,1585
 ETH,30,30,1586
 ETH,31,31,1587
 ETH,35,35,1588
-FIN,FI1,FI1,1589
-FIN,FI2,FI2,1590
-FRA,FR0,FR0,1591
-FRA,FR1,FR1,1592
-FRA,FR2,FR2,1593
-FRA,FR3,FR3,1594
-FRA,FR4,FR4,1595
-FRA,FR5,FR5,1596
-FRA,FR6,FR6,1597
-FRA,FR7,FR7,1598
-FRA,FR8,FR8,1599
-FRA,FRA,FRA,1600
+FIN,FI1,Fi1,1589
+FIN,FI2,Fi2,1590
+FRA,FR0,Fr0,1591
+FRA,FR1,Fr1,1592
+FRA,FR2,Fr2,1593
+FRA,FR3,Fr3,1594
+FRA,FR4,Fr4,1595
+FRA,FR5,Fr5,1596
+FRA,FR6,Fr6,1597
+FRA,FR7,Fr7,1598
+FRA,FR8,Fr8,1599
+FRA,FRA,Fra,1600
 GBR,NA,NA,1601
 GEO,NA,NA,1602
 GHA,1001,1001,1603
@@ -1815,56 +1815,56 @@ GHA,910,910,1813
 GHA,911,911,1814
 GHA,912,912,1815
 GHA,913,913,1816
-GNB,61,bafata,1817
-GNB,64,bambandinca,1818
-GNB,13,bedanda,1819
-GNB,85,bigene,1820
-GNB,34,bissorÃ,1821
-GNB,72,boe,1822
-GNB,51,bolama,1823
-GNB,21,buba,1824
-GNB,52,bubaque,1825
-GNB,84,bula,1826
-GNB,81,cacheu,1827
-GNB,82,cachungo,1828
-GNB,14,cacine,1829
-GNB,83,caio,1830
-GNB,54,caravela,1831
-GNB,11,catio,1832
-GNB,62,contuboel,1833
-GNB,65,cosse,1834
-GNB,24,empada,1835
-GNB,31,farim,1836
-GNB,22,fulacunda,1837
-GNB,71,gabu,1838
-GNB,66,gÃnadu,1839
-GNB,12,komo,1840
-GNB,32,mansaba,1841
-GNB,33,mansoa,1842
-GNB,35,nhacra,1843
-GNB,74,pirada,1844
-GNB,73,pitche,1845
-GNB,43,prabis,1846
-GNB,15,quebo,1847
-GNB,41,quinhamel,1848
-GNB,42,safim,1849
-GNB,86,SÃO-DOMINGOS,1850
-GNB,91,SETOR1,1851
-GNB,92,SETOR2,1852
-GNB,93,SETOR3,1853
-GNB,94,SETOR4,1854
-GNB,95,SETOR5,1855
-GNB,96,SETOR6,1856
-GNB,97,SETOR7,1857
-GNB,98,SETOR8,1858
-GNB,75,sonaco,1859
-GNB,23,tite,1860
-GNB,53,uno,1861
-GNB,63,xitole,1862
-GRC,EL3,EL3,1863
-GRC,EL4,EL4,1864
-GRC,EL5,EL5,1865
-GRC,EL6,EL6,1866
+GNB,61,Bafata,1817
+GNB,64,Bambandinca,1818
+GNB,13,Bedanda,1819
+GNB,85,Bigene,1820
+GNB,34,Bissorã,1821
+GNB,72,Boe,1822
+GNB,51,Bolama,1823
+GNB,21,Buba,1824
+GNB,52,Bubaque,1825
+GNB,84,Bula,1826
+GNB,81,Cacheu,1827
+GNB,82,Cachungo,1828
+GNB,14,Cacine,1829
+GNB,83,Caio,1830
+GNB,54,Caravela,1831
+GNB,11,Catio,1832
+GNB,62,Contuboel,1833
+GNB,65,Cosse,1834
+GNB,24,Empada,1835
+GNB,31,Farim,1836
+GNB,22,Fulacunda,1837
+GNB,71,Gabu,1838
+GNB,66,Gãnadu,1839
+GNB,12,Komo,1840
+GNB,32,Mansaba,1841
+GNB,33,Mansoa,1842
+GNB,35,Nhacra,1843
+GNB,74,Pirada,1844
+GNB,73,Pitche,1845
+GNB,43,Prabis,1846
+GNB,15,Quebo,1847
+GNB,41,Quinhamel,1848
+GNB,42,Safim,1849
+GNB,86,São-Domingos,1850
+GNB,91,Setor1,1851
+GNB,92,Setor2,1852
+GNB,93,Setor3,1853
+GNB,94,Setor4,1854
+GNB,95,Setor5,1855
+GNB,96,Setor6,1856
+GNB,97,Setor7,1857
+GNB,98,Setor8,1858
+GNB,75,Sonaco,1859
+GNB,23,Tite,1860
+GNB,53,Uno,1861
+GNB,63,Xitole,1862
+GRC,EL3,El3,1863
+GRC,EL4,El4,1864
+GRC,EL5,El5,1865
+GRC,EL6,El6,1866
 GTM,16,Alta Verapaz,1867
 GTM,15,Baja Verapaz,1868
 GTM,4,Chimaltenango,1869
@@ -1887,10 +1887,10 @@ GTM,7,Sololá,1885
 GTM,10,Suchitepéquez,1886
 GTM,8,Totonicapán,1887
 GTM,19,Zacapa,1888
-HRV,HR0,HR0,1889
-HUN,HU1,HU1,1890
-HUN,HU2,HU2,1891
-HUN,HU3,HU3,1892
+HRV,HR0,Hr0,1889
+HUN,HU1,Hu1,1890
+HUN,HU2,Hu2,1891
+HUN,HU3,Hu3,1892
 IDN,1,1,1893
 IDN,10,10,1894
 IDN,11,11,1895
@@ -2561,25 +2561,25 @@ IND,3404,3404,2559
 IND,3501,3501,2560
 IND,3502,3502,2561
 IND,3503,3503,2562
-IRL,IE0,IE0,2563
-IRQ,22,ANBAR,2564
-IRQ,24,BABYLON,2565
-IRQ,23,BAGHDAD,2566
-IRQ,35,BASRAH,2567
-IRQ,21,DIYALA,2568
-IRQ,11,DUHOK,2569
-IRQ,15,ERBIL,2570
-IRQ,25,KERBELA,2571
-IRQ,14,KIRKUK,2572
-IRQ,34,MAYSAN,2573
-IRQ,32,MUTHANNA,2574
-IRQ,12,NAINAWA,2575
-IRQ,28,NAJAF,2576
-IRQ,31,QADISIYA,2577
-IRQ,27,SALAH AL-DEEN,2578
-IRQ,13,SULAIMANIYA,2579
-IRQ,33,THI-QAR,2580
-IRQ,26,WASIT,2581
+IRL,IE0,Ie0,2563
+IRQ,22,Anbar,2564
+IRQ,24,Babylon,2565
+IRQ,23,Baghdad,2566
+IRQ,35,Basrah,2567
+IRQ,21,Diyala,2568
+IRQ,11,Duhok,2569
+IRQ,15,Erbil,2570
+IRQ,25,Kerbela,2571
+IRQ,14,Kirkuk,2572
+IRQ,34,Maysan,2573
+IRQ,32,Muthanna,2574
+IRQ,12,Nainawa,2575
+IRQ,28,Najaf,2576
+IRQ,31,Qadisiya,2577
+IRQ,27,Salah Al-Deen,2578
+IRQ,13,Sulaimaniya,2579
+IRQ,33,Thi-Qar,2580
+IRQ,26,Wasit,2581
 ISR,7700,Afula,2582
 ISR,0070,Ashdod,2583
 ISR,7100,Ashkelon,2584
@@ -2610,15 +2610,15 @@ ISR,8700,Raanana,2608
 ISR,8600,Ramat Gan,2609
 ISR,8500,Ramla,2610
 ISR,8300,Rishon Lezion,2611
-ISR,2640,Rosh HaAyin,2612
+ISR,2640,Rosh Haayin,2612
 ISR,0000,Rural,2613
 ISR,8400,Streets,2614
 ISR,5000,Tel Aviv Jaffa,2615
-ITA,ITC,ITC,2616
-ITA,ITF,ITF,2617
-ITA,ITG,ITG,2618
-ITA,ITH,ITH,2619
-ITA,ITI,ITI,2620
+ITA,ITC,Itc,2616
+ITA,ITF,Itf,2617
+ITA,ITG,Itg,2618
+ITA,ITH,Ith,2619
+ITA,ITI,Iti,2620
 JOR,24,Ajloun,2621
 JOR,34,Al-Aqaba,2622
 JOR,12,Al-Balqa,2623
@@ -2761,7 +2761,7 @@ LBR,102,Butaw,2759
 LBR,92,Buu-Yao,2760
 LBR,72,Careysburg,2761
 LBR,35,Cavala,2762
-LBR,96,Central RiverCess,2763
+LBR,96,Central Rivercess,2763
 LBR,118,Chedepo,2764
 LBR,21,Commonwealth,2765
 LBR,17,District # 1,2766
@@ -2793,7 +2793,7 @@ LBR,29,Gboe-Ploe,2791
 LBR,86,Gbor,2792
 LBR,45,Gee,2793
 LBR,62,Gibi,2794
-LBR,124,glaro,2795
+LBR,124,Glaro,2795
 LBR,32,Glio-Twarbo,2796
 LBR,25,Golakonneh,2797
 LBR,133,Gounwolaila,2798
@@ -2877,126 +2877,126 @@ LBR,100,Zartlahn,2875
 LBR,87,Zoe-Gbao,2876
 LBR,59,Zorzor,2877
 LBR,12,Zota,2878
-LTU,LT0,LT0,2879
-LUX,LU0,LU0,2880
-LVA,LV0,LV0,2881
+LTU,LT0,Lt0,2879
+LUX,LU0,Lu0,2880
+LVA,LV0,Lv0,2881
 MAR,NA,NA,2882
 MDV,NA,NA,2883
 MEX,31001,Abalá (Yucatán),2884
 MEX,11001,Abasolo (Guanajuato),2885
 MEX,19001,Abasolo (Nuevo León),2886
 MEX,11002,Acámbaro (Guanajuato),2887
-MEX,15001,Acambay de Ruíz Castañeda (México),2888
+MEX,15001,Acambay De Ruíz Castañeda (México),2888
 MEX,18001,Acaponeta (Nayarit),2889
-MEX,12001,Acapulco de Juárez (Guerrero),2890
+MEX,12001,Acapulco De Juárez (Guerrero),2890
 MEX,12076,Acatepec (Guerrero),2891
-MEX,20002,Acatlán de Pérez Figueroa (Oaxaca),2892
+MEX,20002,Acatlán De Pérez Figueroa (Oaxaca),2892
 MEX,21004,Acatzingo (Puebla),2893
 MEX,13002,Acaxochitlán (Hidalgo),2894
-MEX,30003,Acayucan (Veracruz de Ignacio de la Llave),2895
+MEX,30003,Acayucan (Veracruz De Ignacio De La Llave),2895
 MEX,15002,Acolman (México),2896
 MEX,26001,Aconchi (Sonora),2897
 MEX,21005,Acteopan (Puebla),2898
 MEX,13003,Actopan (Hidalgo),2899
 MEX,15003,Aculco (México),2900
-MEX,30006,Acultzingo (Veracruz de Ignacio de la Llave),2901
-MEX,05002,Acuña (Coahuila de Zaragoza),2902
-MEX,13004,Agua Blanca de Iturbide (Hidalgo),2903
+MEX,30006,Acultzingo (Veracruz De Ignacio De La Llave),2901
+MEX,05002,Acuña (Coahuila De Zaragoza),2902
+MEX,13004,Agua Blanca De Iturbide (Hidalgo),2903
 MEX,26002,Agua Prieta (Sonora),2904
 MEX,01001,Aguascalientes (Aguascalientes),2905
 MEX,25001,Ahome (Sinaloa),2906
 MEX,21008,Ahuazotepec (Puebla),2907
 MEX,08001,Ahumada (Chihuahua),2908
 MEX,21010,Ajalpan (Puebla),2909
-MEX,12003,Ajuchitlán del Progreso (Guerrero),2910
+MEX,12003,Ajuchitlán Del Progreso (Guerrero),2910
 MEX,26003,Álamos (Sonora),2911
-MEX,12004,Alcozauca de Guerrero (Guerrero),2912
+MEX,12004,Alcozauca De Guerrero (Guerrero),2912
 MEX,08002,Aldama (Chihuahua),2913
-MEX,05003,Allende (Coahuila de Zaragoza),2914
+MEX,05003,Allende (Coahuila De Zaragoza),2914
 MEX,19004,Allende (Nuevo León),2915
-MEX,15005,Almoloya de Juárez (México),2916
-MEX,30008,Alpatláhuac (Veracruz de Ignacio de la Llave),2917
+MEX,15005,Almoloya De Juárez (México),2916
+MEX,30008,Alpatláhuac (Veracruz De Ignacio De La Llave),2917
 MEX,28003,Altamira (Tamaulipas),2918
 MEX,07004,Altamirano (Chiapas),2919
 MEX,26004,Altar (Sonora),2920
-MEX,30010,Altotonga (Veracruz de Ignacio de la Llave),2921
-MEX,09010,Álvaro Obregón (Ciudad de México),2922
-MEX,16003,Álvaro Obregón (Michoacán de Ocampo),2923
+MEX,30010,Altotonga (Veracruz De Ignacio De La Llave),2921
+MEX,09010,Álvaro Obregón (Ciudad De México),2922
+MEX,16003,Álvaro Obregón (Michoacán De Ocampo),2923
 MEX,17001,Amacuzac (Morelos),2924
 MEX,15007,Amanalco (México),2925
-MEX,07006,Amatenango de la Frontera (Chiapas),2926
+MEX,07006,Amatenango De La Frontera (Chiapas),2926
 MEX,14005,Amatitán (Jalisco),2927
-MEX,29001,Amaxac de Guerrero (Tlaxcala),2928
-MEX,22001,Amealco de Bonfil (Querétaro),2929
+MEX,29001,Amaxac De Guerrero (Tlaxcala),2928
+MEX,22001,Amealco De Bonfil (Querétaro),2929
 MEX,14006,Ameca (Jalisco),2930
 MEX,21015,Amozoc (Puebla),2931
 MEX,19005,Anáhuac (Nuevo León),2932
-MEX,16004,Angamacutiro (Michoacán de Ocampo),2933
-MEX,30015,Angel R. Cabada (Veracruz de Ignacio de la Llave),2934
+MEX,16004,Angamacutiro (Michoacán De Ocampo),2933
+MEX,30015,Angel R. Cabada (Veracruz De Ignacio De La Llave),2934
 MEX,25002,Angostura (Sinaloa),2935
 MEX,13008,Apan (Hidalgo),2936
-MEX,11005,Apaseo el Grande (Guanajuato),2937
+MEX,11005,Apaseo El Grande (Guanajuato),2937
 MEX,15010,Apaxco (México),2938
-MEX,29002,Apetatitlán de Antonio Carvajal (Tlaxcala),2939
+MEX,29002,Apetatitlán De Antonio Carvajal (Tlaxcala),2939
 MEX,29005,Apizaco (Tlaxcala),2940
 MEX,19006,Apodaca (Nuevo León),2941
 MEX,32001,Apozol (Zacatecas),2942
 MEX,08004,Aquiles Serdán (Chihuahua),2943
 MEX,14008,Arandas (Jalisco),2944
 MEX,12007,Arcelia (Guerrero),2945
-MEX,16009,Ario (Michoacán de Ocampo),2946
+MEX,16009,Ario (Michoacán De Ocampo),2946
 MEX,06001,Armería (Colima),2947
 MEX,22003,Arroyo Seco (Querétaro),2948
-MEX,05004,Arteaga (Coahuila de Zaragoza),2949
+MEX,05004,Arteaga (Coahuila De Zaragoza),2949
 MEX,01002,Asientos (Aguascalientes),2950
 MEX,20005,Asunción Ixtaltepec (Oaxaca),2951
 MEX,15011,Atenco (México),2952
 MEX,14011,Atengo (Jalisco),2953
 MEX,14012,Atenguillo (Jalisco),2954
 MEX,26007,Atil (Sonora),2955
-MEX,15013,Atizapán de Zaragoza (México),2956
+MEX,15013,Atizapán De Zaragoza (México),2956
 MEX,17002,Atlatlahucan (Morelos),2957
 MEX,15015,Atlautla (México),2958
 MEX,21019,Atlixco (Puebla),2959
 MEX,12010,Atlixtac (Guerrero),2960
-MEX,13013,Atotonilco de Tula (Hidalgo),2961
-MEX,14013,Atotonilco el Alto (Jalisco),2962
-MEX,13012,Atotonilco el Grande (Hidalgo),2963
-MEX,30021,Atoyac (Veracruz de Ignacio de la Llave),2964
-MEX,12011,Atoyac de Álvarez (Guerrero),2965
+MEX,13013,Atotonilco De Tula (Hidalgo),2961
+MEX,14013,Atotonilco El Alto (Jalisco),2962
+MEX,13012,Atotonilco El Grande (Hidalgo),2963
+MEX,30021,Atoyac (Veracruz De Ignacio De La Llave),2964
+MEX,12011,Atoyac De Álvarez (Guerrero),2965
 MEX,17003,Axochiapan (Morelos),2966
-MEX,24053,Axtla de Terrazas (San Luis Potosí),2967
+MEX,24053,Axtla De Terrazas (San Luis Potosí),2967
 MEX,17004,Ayala (Morelos),2968
 MEX,15017,Ayapango (México),2969
-MEX,20398,Ayoquezco de Aldama (Oaxaca),2970
+MEX,20398,Ayoquezco De Aldama (Oaxaca),2970
 MEX,14017,Ayutla (Jalisco),2971
-MEX,12012,Ayutla de los Libres (Guerrero),2972
-MEX,09002,Azcapotzalco (Ciudad de México),2973
+MEX,12012,Ayutla De Los Libres (Guerrero),2972
+MEX,09002,Azcapotzalco (Ciudad De México),2973
 MEX,26008,Bacadéhuachi (Sonora),2974
 MEX,23010,Bacalar (Quintana Roo),2975
 MEX,08006,Bachíniva (Chihuahua),2976
 MEX,26012,Bácum (Sonora),2977
 MEX,25003,Badiraguato (Sinaloa),2978
-MEX,18020,Bahía de Banderas (Nayarit),2979
+MEX,18020,Bahía De Banderas (Nayarit),2979
 MEX,27001,Balancán (Tabasco),2980
 MEX,08007,Balleza (Chihuahua),2981
-MEX,30026,Banderilla (Veracruz de Ignacio de la Llave),2982
-MEX,08008,Batopilas de Manuel Gómez Morín (Chihuahua),2983
-MEX,09014,Benito Juárez (Ciudad de México),2984
+MEX,30026,Banderilla (Veracruz De Ignacio De La Llave),2982
+MEX,08008,Batopilas De Manuel Gómez Morín (Chihuahua),2983
+MEX,09014,Benito Juárez (Ciudad De México),2984
 MEX,23005,Benito Juárez (Quintana Roo),2985
 MEX,26071,Benito Juárez (Sonora),2986
-MEX,30028,Boca del Río (Veracruz de Ignacio de la Llave),2987
+MEX,30028,Boca Del Río (Veracruz De Ignacio De La Llave),2987
 MEX,07013,Bochil (Chiapas),2988
 MEX,08009,Bocoyna (Chihuahua),2989
 MEX,31006,Buctzotz (Yucatán),2990
 MEX,08010,Buenaventura (Chihuahua),2991
-MEX,12015,Buenavista de Cuéllar (Guerrero),2992
+MEX,12015,Buenavista De Cuéllar (Guerrero),2992
 MEX,28005,Burgos (Tamaulipas),2993
 MEX,28006,Bustamante (Tamaulipas),2994
 MEX,26017,Caborca (Sonora),2995
 MEX,07015,Cacahoatán (Chiapas),2996
 MEX,31007,Cacalchén (Yucatán),2997
-MEX,22004,Cadereyta de Montes (Querétaro),2998
+MEX,22004,Cadereyta De Montes (Querétaro),2998
 MEX,19009,Cadereyta Jiménez (Nuevo León),2999
 MEX,26018,Cajeme (Sonora),3000
 MEX,04010,Calakmul (Campeche),3001
@@ -3011,32 +3011,32 @@ MEX,04002,Campeche (Campeche),3009
 MEX,26019,Cananea (Sonora),3010
 MEX,10001,Canatlán (Durango),3011
 MEX,04011,Candelaria (Campeche),3012
-MEX,32006,Cañitas de Felipe Pescador (Zacatecas),3013
-MEX,20247,Capulálpam de Méndez (Oaxaca),3014
+MEX,32006,Cañitas De Felipe Pescador (Zacatecas),3013
+MEX,20247,Capulálpam De Méndez (Oaxaca),3014
 MEX,27002,Cárdenas (Tabasco),3015
 MEX,13015,Cardonal (Hidalgo),3016
 MEX,08012,Carichí (Chihuahua),3017
 MEX,04003,Carmen (Campeche),3018
-MEX,30031,Carrillo Puerto (Veracruz de Ignacio de la Llave),3019
-MEX,05006,Castaños (Coahuila de Zaragoza),3020
+MEX,30031,Carrillo Puerto (Veracruz De Ignacio De La Llave),3019
+MEX,05006,Castaños (Coahuila De Zaragoza),3020
 MEX,11007,Celaya (Guanajuato),3021
 MEX,31012,Cenotillo (Yucatán),3022
 MEX,27003,Centla (Tabasco),3023
 MEX,27004,Centro (Tabasco),3024
 MEX,19011,Cerralvo (Nuevo León),3025
 MEX,24008,Cerritos (San Luis Potosí),3026
-MEX,30034,Cerro Azul (Veracruz de Ignacio de la Llave),3027
+MEX,30034,Cerro Azul (Veracruz De Ignacio De La Llave),3027
 MEX,32009,Chalchihuites (Zacatecas),3028
 MEX,15025,Chalco (México),3029
 MEX,04004,Champotón (Campeche),3030
-MEX,15026,Chapa de Mota (México),3031
+MEX,15026,Chapa De Mota (México),3031
 MEX,31018,Chapab (Yucatán),3032
 MEX,14030,Chapala (Jalisco),3033
 MEX,13017,Chapantongo (Hidalgo),3034
 MEX,13018,Chapulhuacán (Hidalgo),3035
 MEX,31019,Chemax (Yucatán),3036
 MEX,07026,Chenalhó (Chiapas),3037
-MEX,07027,Chiapa de Corzo (Chiapas),3038
+MEX,07027,Chiapa De Corzo (Chiapas),3038
 MEX,29010,Chiautempan (Tlaxcala),3039
 MEX,15028,Chiautla (México),3040
 MEX,21048,Chiautzingo (Puebla),3041
@@ -3047,97 +3047,97 @@ MEX,15030,Chiconcuac (México),3045
 MEX,21051,Chietla (Puebla),3046
 MEX,21053,Chignahuapan (Puebla),3047
 MEX,08019,Chihuahua (Chihuahua),3048
-MEX,12028,Chilapa de Álvarez (Guerrero),3049
-MEX,16025,Chilchota (Michoacán de Ocampo),3050
+MEX,12028,Chilapa De Álvarez (Guerrero),3049
+MEX,16025,Chilchota (Michoacán De Ocampo),3050
 MEX,07031,Chilón (Chiapas),3051
-MEX,12029,Chilpancingo de los Bravo (Guerrero),3052
+MEX,12029,Chilpancingo De Los Bravo (Guerrero),3052
 MEX,15031,Chimalhuacán (México),3053
 MEX,19013,China (Nuevo León),3054
 MEX,08020,Chínipas (Chihuahua),3055
-MEX,30062,Chocamán (Veracruz de Ignacio de la Llave),3056
+MEX,30062,Chocamán (Veracruz De Ignacio De La Llave),3056
 MEX,25007,Choix (Sinaloa),3057
-MEX,19012,Ciénega de Flores (Nuevo León),3058
+MEX,19012,Ciénega De Flores (Nuevo León),3058
 MEX,14022,Cihuatlán (Jalisco),3059
-MEX,07017,Cintalapa de Figueroa (Chiapas),3060
-MEX,24010,Ciudad del Maíz (San Luis Potosí),3061
+MEX,07017,Cintalapa De Figueroa (Chiapas),3060
+MEX,24010,Ciudad Del Maíz (San Luis Potosí),3061
 MEX,24011,Ciudad Fernández (San Luis Potosí),3062
 MEX,28009,Ciudad Madero (Tamaulipas),3063
 MEX,24013,Ciudad Valles (San Luis Potosí),3064
-MEX,15020,Coacalco de Berriozábal (México),3065
-MEX,16014,Coahuayana (Michoacán de Ocampo),3066
-MEX,12016,Coahuayutla de José María Izazaga (Guerrero),3067
+MEX,15020,Coacalco De Berriozábal (México),3065
+MEX,16014,Coahuayana (Michoacán De Ocampo),3066
+MEX,12016,Coahuayutla De José María Izazaga (Guerrero),3067
 MEX,20015,Coatecas Altas (Oaxaca),3068
-MEX,30038,Coatepec (Veracruz de Ignacio de la Llave),3069
-MEX,17005,Coatlán del Río (Morelos),3070
-MEX,30039,Coatzacoalcos (Veracruz de Ignacio de la Llave),3071
-MEX,30040,Coatzintla (Veracruz de Ignacio de la Llave),3072
+MEX,30038,Coatepec (Veracruz De Ignacio De La Llave),3069
+MEX,17005,Coatlán Del Río (Morelos),3070
+MEX,30039,Coatzacoalcos (Veracruz De Ignacio De La Llave),3071
+MEX,30040,Coatzintla (Veracruz De Ignacio De La Llave),3072
 MEX,06002,Colima (Colima),3073
 MEX,22005,Colón (Querétaro),3074
 MEX,06003,Comala (Colima),3075
 MEX,27005,Comalcalco (Tabasco),3076
-MEX,30043,Comapa (Veracruz de Ignacio de la Llave),3077
-MEX,07019,Comitán de Domínguez (Chiapas),3078
+MEX,30043,Comapa (Veracruz De Ignacio De La Llave),3077
+MEX,07019,Comitán De Domínguez (Chiapas),3078
 MEX,03001,Comondú (Baja California Sur),3079
 MEX,11009,Comonfort (Guanajuato),3080
 MEX,18004,Compostela (Nayarit),3081
 MEX,25004,Concordia (Sinaloa),3082
 MEX,31013,Conkal (Yucatán),3083
-MEX,16017,Contepec (Michoacán de Ocampo),3084
-MEX,29018,Contla de Juan Cuamatzi (Tlaxcala),3085
+MEX,16017,Contepec (Michoacán De Ocampo),3084
+MEX,29018,Contla De Juan Cuamatzi (Tlaxcala),3085
 MEX,12020,Copanatoyac (Guerrero),3086
 MEX,06004,Coquimatlán (Colima),3087
-MEX,30044,Córdoba (Veracruz de Ignacio de la Llave),3088
+MEX,30044,Córdoba (Veracruz De Ignacio De La Llave),3088
 MEX,21034,Coronango (Puebla),3089
 MEX,22006,Corregidora (Querétaro),3090
 MEX,25005,Cosalá (Sinaloa),3091
-MEX,30045,Cosamaloapan de Carpio (Veracruz de Ignacio de la Llave),3092
+MEX,30045,Cosamaloapan De Carpio (Veracruz De Ignacio De La Llave),3092
 MEX,20021,Cosolapa (Oaxaca),3093
-MEX,30048,Cosoleacaque (Veracruz de Ignacio de la Llave),3094
-MEX,30049,Cotaxtla (Veracruz de Ignacio de la Llave),3095
-MEX,16019,Cotija (Michoacán de Ocampo),3096
+MEX,30048,Cosoleacaque (Veracruz De Ignacio De La Llave),3094
+MEX,30049,Cotaxtla (Veracruz De Ignacio De La Llave),3095
+MEX,16019,Cotija (Michoacán De Ocampo),3096
 MEX,24014,Coxcatlán (San Luis Potosí),3097
-MEX,09003,Coyoacán (Ciudad de México),3098
+MEX,09003,Coyoacán (Ciudad De México),3098
 MEX,15023,Coyotepec (México),3099
-MEX,12021,Coyuca de Benítez (Guerrero),3100
-MEX,12022,Coyuca de Catalán (Guerrero),3101
+MEX,12021,Coyuca De Benítez (Guerrero),3100
+MEX,12022,Coyuca De Catalán (Guerrero),3101
 MEX,23001,Cozumel (Quintana Roo),3102
-MEX,09004,Cuajimalpa de Morelos (Ciudad de México),3103
+MEX,09004,Cuajimalpa De Morelos (Ciudad De México),3103
 MEX,12023,Cuajinicuilapa (Guerrero),3104
 MEX,29008,Cuapiaxtla (Tlaxcala),3105
 MEX,08017,Cuauhtémoc (Chihuahua),3106
-MEX,09015,Cuauhtémoc (Ciudad de México),3107
+MEX,09015,Cuauhtémoc (Ciudad De México),3107
 MEX,06005,Cuauhtémoc (Colima),3108
 MEX,32008,Cuauhtémoc (Zacatecas),3109
-MEX,13016,Cuautepec de Hinojosa (Hidalgo),3110
+MEX,13016,Cuautepec De Hinojosa (Hidalgo),3110
 MEX,15024,Cuautitlán (México),3111
-MEX,14027,Cuautitlán de García Barragán (Jalisco),3112
+MEX,14027,Cuautitlán De García Barragán (Jalisco),3112
 MEX,15121,Cuautitlán Izcalli (México),3113
 MEX,17006,Cuautla (Morelos),3114
 MEX,21041,Cuautlancingo (Puebla),3115
 MEX,29009,Cuaxomulco (Tlaxcala),3116
 MEX,10004,Cuencamé (Durango),3117
 MEX,17007,Cuernavaca (Morelos),3118
-MEX,30053,Cuitláhuac (Veracruz de Ignacio de la Llave),3119
-MEX,16020,Cuitzeo (Michoacán de Ocampo),3120
+MEX,30053,Cuitláhuac (Veracruz De Ignacio De La Llave),3119
+MEX,16020,Cuitzeo (Michoacán De Ocampo),3120
 MEX,25006,Culiacán (Sinaloa),3121
 MEX,27006,Cunduacán (Tabasco),3122
 MEX,08018,Cusihuiriachi (Chihuahua),3123
-MEX,12027,Cutzamala de Pinzón (Guerrero),3124
+MEX,12027,Cutzamala De Pinzón (Guerrero),3124
 MEX,18009,Del Nayar (Nayarit),3125
 MEX,08021,Delicias (Chihuahua),3126
 MEX,19014,Doctor Arroyo (Nuevo León),3127
 MEX,19016,Doctor González (Nuevo León),3128
-MEX,11014,Dolores Hidalgo Cuna de la Independencia Nacional (Guanajuato),3129
+MEX,11014,Dolores Hidalgo Cuna De La Independencia Nacional (Guanajuato),3129
 MEX,15032,Donato Guerra (México),3130
 MEX,10005,Durango (Durango),3131
 MEX,31027,Dzidzantún (Yucatán),3132
 MEX,24016,Ebano (San Luis Potosí),3133
-MEX,15033,Ecatepec de Morelos (México),3134
-MEX,16030,Ecuandureo (Michoacán de Ocampo),3135
+MEX,15033,Ecatepec De Morelos (México),3134
+MEX,16030,Ecuandureo (Michoacán De Ocampo),3135
 MEX,12075,Eduardo Neri (Guerrero),3136
 MEX,29007,El Carmen Tequexquitla (Tlaxcala),3137
 MEX,25010,El Fuerte (Sinaloa),3138
-MEX,30205,El Higo (Veracruz de Ignacio de la Llave),3139
+MEX,30205,El Higo (Veracruz De Ignacio De La Llave),3139
 MEX,01010,El Llano (Aguascalientes),3140
 MEX,28021,El Mante (Tamaulipas),3141
 MEX,22011,El Marqués (Querétaro),3142
@@ -3150,30 +3150,30 @@ MEX,17008,Emiliano Zapata (Morelos),3148
 MEX,27007,Emiliano Zapata (Tabasco),3149
 MEX,29046,Emiliano Zapata (Tlaxcala),3150
 MEX,26025,Empalme (Sonora),3151
-MEX,14035,Encarnación de Díaz (Jalisco),3152
+MEX,14035,Encarnación De Díaz (Jalisco),3152
 MEX,02001,Ensenada (Baja California),3153
 MEX,21062,Epatlán (Puebla),3154
 MEX,13022,Epazoyucan (Hidalgo),3155
-MEX,16031,Epitacio Huerta (Michoacán de Ocampo),3156
+MEX,16031,Epitacio Huerta (Michoacán De Ocampo),3156
 MEX,04009,Escárcega (Campeche),3157
 MEX,25009,Escuinapa (Sinaloa),3158
 MEX,31032,Espita (Yucatán),3159
 MEX,26026,Etchojoa (Sonora),3160
 MEX,22007,Ezequiel Montes (Querétaro),3161
 MEX,23002,Felipe Carrillo Puerto (Quintana Roo),3162
-MEX,30068,Fortín (Veracruz de Ignacio de la Llave),3163
-MEX,05009,Francisco I. Madero (Coahuila de Zaragoza),3164
+MEX,30068,Fortín (Veracruz De Ignacio De La Llave),3163
+MEX,05009,Francisco I. Madero (Coahuila De Zaragoza),3164
 MEX,13023,Francisco I. Madero (Hidalgo),3165
 MEX,32010,Fresnillo (Zacatecas),3166
-MEX,05010,Frontera (Coahuila de Zaragoza),3167
+MEX,05010,Frontera (Coahuila De Zaragoza),3167
 MEX,07034,Frontera Comalapa (Chiapas),3168
 MEX,07035,Frontera Hidalgo (Chiapas),3169
-MEX,16033,Gabriel Zamora (Michoacán de Ocampo),3170
+MEX,16033,Gabriel Zamora (Michoacán De Ocampo),3170
 MEX,08023,Galeana (Chihuahua),3171
 MEX,19017,Galeana (Nuevo León),3172
 MEX,19018,García (Nuevo León),3173
 MEX,32012,Genaro Codina (Zacatecas),3174
-MEX,05011,General Cepeda (Coahuila de Zaragoza),3175
+MEX,05011,General Cepeda (Coahuila De Zaragoza),3175
 MEX,19021,General Escobedo (Nuevo León),3176
 MEX,21065,General Felipe Ángeles (Puebla),3177
 MEX,32016,General Pánfilo Natera (Zacatecas),3178
@@ -3188,135 +3188,135 @@ MEX,24017,Guadalcázar (San Luis Potosí),3186
 MEX,08028,Guadalupe (Chihuahua),3187
 MEX,19026,Guadalupe (Nuevo León),3188
 MEX,32017,Guadalupe (Zacatecas),3189
-MEX,08029,Guadalupe y Calvo (Chihuahua),3190
+MEX,08029,Guadalupe Y Calvo (Chihuahua),3190
 MEX,11015,Guanajuato (Guanajuato),3191
 MEX,25011,Guasave (Sinaloa),3192
 MEX,26029,Guaymas (Sonora),3193
 MEX,08030,Guazapares (Chihuahua),3194
 MEX,28013,Güémez (Tamaulipas),3195
 MEX,08031,Guerrero (Chihuahua),3196
-MEX,05012,Guerrero (Coahuila de Zaragoza),3197
-MEX,09005,Gustavo A. Madero (Ciudad de México),3198
+MEX,05012,Guerrero (Coahuila De Zaragoza),3197
+MEX,09005,Gustavo A. Madero (Ciudad De México),3198
 MEX,28015,Gustavo Díaz Ordaz (Tamaulipas),3199
 MEX,31033,Halachó (Yucatán),3200
 MEX,04005,Hecelchakán (Campeche),3201
 MEX,26030,Hermosillo (Sonora),3202
-MEX,20039,Heroica Ciudad de Huajuapan de León (Oaxaca),3203
-MEX,20397,Heroica Ciudad de Tlaxiaco (Oaxaca),3204
-MEX,20124,Heroica Villa de San Blas Atempa (Oaxaca),3205
+MEX,20039,Heroica Ciudad De Huajuapan De León (Oaxaca),3203
+MEX,20397,Heroica Ciudad De Tlaxiaco (Oaxaca),3204
+MEX,20124,Heroica Villa De San Blas Atempa (Oaxaca),3205
 MEX,10010,Hidalgo (Durango),3206
 MEX,19047,Hidalgo (Nuevo León),3207
-MEX,08032,Hidalgo del Parral (Chihuahua),3208
-MEX,30070,Hidalgotitlán (Veracruz de Ignacio de la Llave),3209
+MEX,08032,Hidalgo Del Parral (Chihuahua),3208
+MEX,30070,Hidalgotitlán (Veracruz De Ignacio De La Llave),3209
 MEX,31034,Hocabá (Yucatán),3210
 MEX,31036,Homún (Yucatán),3211
 MEX,04006,Hopelchén (Campeche),3212
 MEX,29013,Huamantla (Tlaxcala),3213
 MEX,12033,Huamuxtitlán (Guerrero),3214
 MEX,11016,Huanímaro (Guanajuato),3215
-MEX,16037,Huaniqueo (Michoacán de Ocampo),3216
+MEX,16037,Huaniqueo (Michoacán De Ocampo),3216
 MEX,21069,Huaquechula (Puebla),3217
 MEX,26032,Huásabas (Sonora),3218
 MEX,26033,Huatabampo (Sonora),3219
-MEX,20041,Huautla de Jiménez (Oaxaca),3220
+MEX,20041,Huautla De Jiménez (Oaxaca),3220
 MEX,13026,Huazalingo (Hidalgo),3221
 MEX,07037,Huehuetán (Chiapas),3222
 MEX,24018,Huehuetlán (San Luis Potosí),3223
-MEX,21150,Huehuetlán el Grande (Puebla),3224
-MEX,13028,Huejutla de Reyes (Hidalgo),3225
-MEX,30073,Hueyapan de Ocampo (Veracruz de Ignacio de la Llave),3226
+MEX,21150,Huehuetlán El Grande (Puebla),3224
+MEX,13028,Huejutla De Reyes (Hidalgo),3225
+MEX,30073,Hueyapan De Ocampo (Veracruz De Ignacio De La Llave),3226
 MEX,29014,Hueyotlipan (Tlaxcala),3227
 MEX,13029,Huichapan (Hidalgo),3228
 MEX,27008,Huimanguillo (Tabasco),3229
 MEX,22008,Huimilpan (Querétaro),3230
 MEX,07039,Huitiupán (Chiapas),3231
 MEX,21079,Huitziltepec (Puebla),3232
-MEX,12034,Huitzuco de los Figueroa (Guerrero),3233
+MEX,12034,Huitzuco De Los Figueroa (Guerrero),3233
 MEX,15037,Huixquilucan (México),3234
 MEX,31038,Hunucmá (Yucatán),3235
 MEX,08034,Ignacio Zaragoza (Chihuahua),3236
-MEX,12035,Iguala de la Independencia (Guerrero),3237
+MEX,12035,Iguala De La Independencia (Guerrero),3237
 MEX,11017,Irapuato (Guanajuato),3238
 MEX,15038,Isidro Fabela (México),3239
-MEX,30077,Isla (Veracruz de Ignacio de la Llave),3240
+MEX,30077,Isla (Veracruz De Ignacio De La Llave),3240
 MEX,23003,Isla Mujeres (Quintana Roo),3241
 MEX,21082,Ixcaquixtla (Puebla),3242
-MEX,30083,Ixhuatlán de Madero (Veracruz de Ignacio de la Llave),3243
-MEX,30080,Ixhuatlán del Café (Veracruz de Ignacio de la Llave),3244
+MEX,30083,Ixhuatlán De Madero (Veracruz De Ignacio De La Llave),3243
+MEX,30080,Ixhuatlán Del Café (Veracruz De Ignacio De La Llave),3244
 MEX,13030,Ixmiquilpan (Hidalgo),3245
-MEX,29015,Ixtacuixtla de Mariano Matamoros (Tlaxcala),3246
-MEX,30085,Ixtaczoquitlán (Veracruz de Ignacio de la Llave),3247
+MEX,29015,Ixtacuixtla De Mariano Matamoros (Tlaxcala),3246
+MEX,30085,Ixtaczoquitlán (Veracruz De Ignacio De La Llave),3247
 MEX,15039,Ixtapaluca (México),3248
-MEX,15040,Ixtapan de la Sal (México),3249
+MEX,15040,Ixtapan De La Sal (México),3249
 MEX,15042,Ixtlahuaca (México),3250
 MEX,06006,Ixtlahuacán (Colima),3251
-MEX,14045,Ixtlahuacán del Río (Jalisco),3252
-MEX,20042,Ixtlán de Juárez (Oaxaca),3253
+MEX,14045,Ixtlahuacán Del Río (Jalisco),3252
+MEX,20042,Ixtlán De Juárez (Oaxaca),3253
 MEX,31040,Izamal (Yucatán),3254
-MEX,09006,Iztacalco (Ciudad de México),3255
-MEX,09007,Iztapalapa (Ciudad de México),3256
-MEX,21085,Izúcar de Matamoros (Puebla),3257
-MEX,16043,Jacona (Michoacán de Ocampo),3258
+MEX,09006,Iztacalco (Ciudad De México),3255
+MEX,09007,Iztapalapa (Ciudad De México),3256
+MEX,21085,Izúcar De Matamoros (Puebla),3257
+MEX,16043,Jacona (Michoacán De Ocampo),3258
 MEX,32019,Jalpa (Zacatecas),3259
-MEX,27010,Jalpa de Méndez (Tabasco),3260
-MEX,22009,Jalpan de Serra (Querétaro),3261
+MEX,27010,Jalpa De Méndez (Tabasco),3260
+MEX,22009,Jalpan De Serra (Querétaro),3261
 MEX,15044,Jaltenco (México),3262
-MEX,30089,Jáltipan (Veracruz de Ignacio de la Llave),3263
+MEX,30089,Jáltipan (Veracruz De Ignacio De La Llave),3263
 MEX,08035,Janos (Chihuahua),3264
 MEX,17010,Jantetelco (Morelos),3265
-MEX,11018,Jaral del Progreso (Guanajuato),3266
+MEX,11018,Jaral Del Progreso (Guanajuato),3266
 MEX,28017,Jaumave (Tamaulipas),3267
 MEX,11019,Jerécuaro (Guanajuato),3268
 MEX,32020,Jerez (Zacatecas),3269
 MEX,01005,Jesús María (Aguascalientes),3270
 MEX,15045,Jilotepec (México),3271
 MEX,08036,Jiménez (Chihuahua),3272
-MEX,05014,Jiménez (Coahuila de Zaragoza),3273
-MEX,16044,Jiménez (Michoacán de Ocampo),3274
-MEX,16045,Jiquilpan (Michoacán de Ocampo),3275
+MEX,05014,Jiménez (Coahuila De Zaragoza),3273
+MEX,16044,Jiménez (Michoacán De Ocampo),3274
+MEX,16045,Jiquilpan (Michoacán De Ocampo),3275
 MEX,15047,Jiquipilco (México),3276
 MEX,07047,Jitotol (Chiapas),3277
 MEX,17011,Jiutepec (Morelos),3278
 MEX,14050,Jocotepec (Jalisco),3279
 MEX,17012,Jojutla (Morelos),3280
 MEX,21087,Jolalpan (Puebla),3281
-MEX,17013,Jonacatepec de Leandro Valle (Morelos),3282
+MEX,17013,Jonacatepec De Leandro Valle (Morelos),3282
 MEX,27011,Jonuta (Tabasco),3283
 MEX,21089,Jopala (Puebla),3284
 MEX,23006,José María Morelos (Quintana Roo),3285
 MEX,32022,Juan Aldama (Zacatecas),3286
 MEX,21090,Juan C. Bonilla (Puebla),3287
 MEX,12039,Juan R. Escudero (Guerrero),3288
-MEX,30094,Juan Rodríguez Clara (Veracruz de Ignacio de la Llave),3289
+MEX,30094,Juan Rodríguez Clara (Veracruz De Ignacio De La Llave),3289
 MEX,07048,Juárez (Chiapas),3290
 MEX,08037,Juárez (Chihuahua),3291
 MEX,19031,Juárez (Nuevo León),3292
 MEX,13033,Juárez Hidalgo (Hidalgo),3293
 MEX,12080,Juchitán (Guerrero),3294
-MEX,20043,Juchitán de Zaragoza (Oaxaca),3295
+MEX,20043,Juchitán De Zaragoza (Oaxaca),3295
 MEX,08038,Julimes (Chihuahua),3296
 MEX,31041,Kanasín (Yucatán),3297
 MEX,31043,Kaua (Yucatán),3298
 MEX,31044,Kinchil (Yucatán),3299
-MEX,30016,La Antigua (Veracruz de Ignacio de la Llave),3300
+MEX,30016,La Antigua (Veracruz De Ignacio De La Llave),3300
 MEX,08016,La Cruz (Chihuahua),3301
-MEX,16035,La Huacana (Michoacán de Ocampo),3302
-MEX,09008,La Magdalena Contreras (Ciudad de México),3303
+MEX,16035,La Huacana (Michoacán De Ocampo),3302
+MEX,09008,La Magdalena Contreras (Ciudad De México),3303
 MEX,29048,La Magdalena Tlaltelulco (Tlaxcala),3304
 MEX,03003,La Paz (Baja California Sur),3305
 MEX,15070,La Paz (México),3306
 MEX,20069,La Pe (Oaxaca),3307
-MEX,30127,La Perla (Veracruz de Ignacio de la Llave),3308
+MEX,30127,La Perla (Veracruz De Ignacio De La Llave),3308
 MEX,07099,La Trinitaria (Chiapas),3309
-MEX,22010,Landa de Matamoros (Querétaro),3310
-MEX,30061,Las Choapas (Veracruz de Ignacio de la Llave),3311
+MEX,22010,Landa De Matamoros (Querétaro),3310
+MEX,30061,Las Choapas (Veracruz De Ignacio De La Llave),3311
 MEX,07052,Las Margaritas (Chiapas),3312
 MEX,07075,Las Rosas (Chiapas),3313
-MEX,16052,Lázaro Cárdenas (Michoacán de Ocampo),3314
+MEX,16052,Lázaro Cárdenas (Michoacán De Ocampo),3314
 MEX,23007,Lázaro Cárdenas (Quintana Roo),3315
 MEX,11020,León (Guanajuato),3316
 MEX,10012,Lerdo (Durango),3317
-MEX,30097,Lerdo de Tejada (Veracruz de Ignacio de la Llave),3318
+MEX,30097,Lerdo De Tejada (Veracruz De Ignacio De La Llave),3318
 MEX,15051,Lerma (México),3319
 MEX,19033,Linares (Nuevo León),3320
 MEX,28019,Llera (Tamaulipas),3321
@@ -3326,13 +3326,13 @@ MEX,32024,Loreto (Zacatecas),3324
 MEX,03008,Los Cabos (Baja California Sur),3325
 MEX,19027,Los Herreras (Nuevo León),3326
 MEX,19042,Los Ramones (Nuevo León),3327
-MEX,16075,Los Reyes (Michoacán de Ocampo),3328
-MEX,21118,Los Reyes de Juárez (Puebla),3329
+MEX,16075,Los Reyes (Michoacán De Ocampo),3328
+MEX,21118,Los Reyes De Juárez (Puebla),3329
 MEX,15123,Luvianos (México),3330
 MEX,27012,Macuspana (Tabasco),3331
 MEX,08040,Madera (Chihuahua),3332
-MEX,16049,Madero (Michoacán de Ocampo),3333
-MEX,30098,Magdalena (Veracruz de Ignacio de la Llave),3334
+MEX,16049,Madero (Michoacán De Ocampo),3333
+MEX,30098,Magdalena (Veracruz De Ignacio De La Llave),3334
 MEX,20052,Magdalena Tequisistlán (Oaxaca),3335
 MEX,08041,Maguarichi (Chihuahua),3336
 MEX,15052,Malinalco (México),3337
@@ -3342,23 +3342,23 @@ MEX,11008,Manuel Doblado (Guanajuato),3340
 MEX,06007,Manzanillo (Colima),3341
 MEX,07051,Mapastepec (Chiapas),3342
 MEX,10013,Mapimí (Durango),3343
-MEX,16050,Maravatío (Michoacán de Ocampo),3344
+MEX,16050,Maravatío (Michoacán De Ocampo),3344
 MEX,07115,Maravilla Tenejapa (Chiapas),3345
 MEX,19034,Marín (Nuevo León),3346
-MEX,30102,Martínez de la Torre (Veracruz de Ignacio de la Llave),3347
+MEX,30102,Martínez De La Torre (Veracruz De Ignacio De La Llave),3347
 MEX,08043,Matachí (Chihuahua),3348
-MEX,05017,Matamoros (Coahuila de Zaragoza),3349
+MEX,05017,Matamoros (Coahuila De Zaragoza),3349
 MEX,28022,Matamoros (Tamaulipas),3350
 MEX,24020,Matehuala (San Luis Potosí),3351
 MEX,24057,Matlapa (San Luis Potosí),3352
 MEX,31048,Maxcanú (Yucatán),3353
-MEX,07053,Mazapa de Madero (Chiapas),3354
-MEX,21096,Mazapiltepec de Juárez (Puebla),3355
+MEX,07053,Mazapa De Madero (Chiapas),3354
+MEX,21096,Mazapiltepec De Juárez (Puebla),3355
 MEX,26037,Mazatán (Sonora),3356
-MEX,29017,Mazatecochco de José María Morelos (Tlaxcala),3357
+MEX,29017,Mazatecochco De José María Morelos (Tlaxcala),3357
 MEX,25012,Mazatlán (Sinaloa),3358
-MEX,30103,Mecatlán (Veracruz de Ignacio de la Llave),3359
-MEX,30104,Mecayapan (Veracruz de Ignacio de la Llave),3360
+MEX,30103,Mecatlán (Veracruz De Ignacio De La Llave),3359
+MEX,30104,Mecayapan (Veracruz De Ignacio De La Llave),3360
 MEX,19035,Melchor Ocampo (Nuevo León),3361
 MEX,08045,Meoqui (Chihuahua),3362
 MEX,31050,Mérida (Yucatán),3363
@@ -3366,127 +3366,127 @@ MEX,07055,Metapa (Chiapas),3364
 MEX,15054,Metepec (México),3365
 MEX,13037,Metztitlán (Hidalgo),3366
 MEX,02002,Mexicali (Baja California),3367
-MEX,24021,Mexquitic de Carmona (San Luis Potosí),3368
+MEX,24021,Mexquitic De Carmona (San Luis Potosí),3368
 MEX,17015,Miacatlán (Morelos),3369
-MEX,20059,Miahuatlán de Porfirio Díaz (Oaxaca),3370
-MEX,09016,Miguel Hidalgo (Ciudad de México),3371
-MEX,09009,Milpa Alta (Ciudad de México),3372
+MEX,20059,Miahuatlán De Porfirio Díaz (Oaxaca),3370
+MEX,09016,Miguel Hidalgo (Ciudad De México),3371
+MEX,09009,Milpa Alta (Ciudad De México),3372
 MEX,06008,Minatitlán (Colima),3373
-MEX,30108,Minatitlán (Veracruz de Ignacio de la Llave),3374
-MEX,13051,Mineral de la Reforma (Hidalgo),3375
-MEX,30109,Misantla (Veracruz de Ignacio de la Llave),3376
-MEX,13041,Mixquiahuala de Juárez (Hidalgo),3377
-MEX,30110,Mixtla de Altamirano (Veracruz de Ignacio de la Llave),3378
+MEX,30108,Minatitlán (Veracruz De Ignacio De La Llave),3374
+MEX,13051,Mineral De La Reforma (Hidalgo),3375
+MEX,30109,Misantla (Veracruz De Ignacio De La Llave),3376
+MEX,13041,Mixquiahuala De Juárez (Hidalgo),3377
+MEX,30110,Mixtla De Altamirano (Veracruz De Ignacio De La Llave),3378
 MEX,14062,Mixtlán (Jalisco),3379
 MEX,12044,Mochitlán (Guerrero),3380
 MEX,25013,Mocorito (Sinaloa),3381
 MEX,24022,Moctezuma (San Luis Potosí),3382
-MEX,05018,Monclova (Coahuila de Zaragoza),3383
+MEX,05018,Monclova (Coahuila De Zaragoza),3383
 MEX,32031,Monte Escobedo (Zacatecas),3384
 MEX,19038,Montemorelos (Nuevo León),3385
 MEX,19039,Monterrey (Nuevo León),3386
-MEX,16053,Morelia (Michoacán de Ocampo),3387
+MEX,16053,Morelia (Michoacán De Ocampo),3387
 MEX,08047,Moris (Chihuahua),3388
 MEX,11021,Moroleón (Guanajuato),3389
 MEX,07057,Motozintla (Chiapas),3390
 MEX,31052,Motul (Yucatán),3391
-MEX,16055,Múgica (Michoacán de Ocampo),3392
+MEX,16055,Múgica (Michoacán De Ocampo),3392
 MEX,03002,Mulegé (Baja California Sur),3393
 MEX,31054,Muxupip (Yucatán),3394
-MEX,05020,Múzquiz (Coahuila de Zaragoza),3395
+MEX,05020,Múzquiz (Coahuila De Zaragoza),3395
 MEX,27013,Nacajuca (Tabasco),3396
-MEX,05021,Nadadores (Coahuila de Zaragoza),3397
+MEX,05021,Nadadores (Coahuila De Zaragoza),3397
 MEX,08048,Namiquipa (Chihuahua),3398
-MEX,29021,Nanacamilpa de Mariano Arista (Tlaxcala),3399
-MEX,30206,Nanchital de Lázaro Cárdenas del Río (Veracruz de Ignacio de la Llave),3400
+MEX,29021,Nanacamilpa De Mariano Arista (Tlaxcala),3399
+MEX,30206,Nanchital De Lázaro Cárdenas Del Río (Veracruz De Ignacio De La Llave),3400
 MEX,29023,Natívitas (Tlaxcala),3401
-MEX,15057,Naucalpan de Juárez (México),3402
-MEX,05022,Nava (Coahuila de Zaragoza),3403
+MEX,15057,Naucalpan De Juárez (México),3402
+MEX,05022,Nava (Coahuila De Zaragoza),3403
 MEX,26042,Navojoa (Sonora),3404
 MEX,25018,Navolato (Sinaloa),3405
 MEX,10015,Nazas (Durango),3406
 MEX,15058,Nezahualcóyotl (México),3407
 MEX,15060,Nicolás Romero (México),3408
-MEX,32034,Nochistlán de Mejía (Zacatecas),3409
+MEX,32034,Nochistlán De Mejía (Zacatecas),3409
 MEX,26043,Nogales (Sonora),3410
-MEX,30115,Nogales (Veracruz de Ignacio de la Llave),3411
-MEX,10016,Nombre de Dios (Durango),3412
-MEX,32035,Noria de Ángeles (Zacatecas),3413
+MEX,30115,Nogales (Veracruz De Ignacio De La Llave),3411
+MEX,10016,Nombre De Dios (Durango),3412
+MEX,32035,Noria De Ángeles (Zacatecas),3413
 MEX,08050,Nuevo Casas Grandes (Chihuahua),3414
 MEX,28027,Nuevo Laredo (Tamaulipas),3415
-MEX,20067,Oaxaca de Juárez (Oaxaca),3416
+MEX,20067,Oaxaca De Juárez (Oaxaca),3416
 MEX,08051,Ocampo (Chihuahua),3417
-MEX,05023,Ocampo (Coahuila de Zaragoza),3418
-MEX,16061,Ocampo (Michoacán de Ocampo),3419
+MEX,05023,Ocampo (Coahuila De Zaragoza),3418
+MEX,16061,Ocampo (Michoacán De Ocampo),3419
 MEX,28029,Ocampo (Tamaulipas),3420
 MEX,07059,Ocosingo (Chiapas),3421
 MEX,14063,Ocotlán (Jalisco),3422
 MEX,15062,Ocoyoacac (México),3423
 MEX,21106,Ocoyucan (Puebla),3424
-MEX,07061,Ocozocoautla de Espinosa (Chiapas),3425
+MEX,07061,Ocozocoautla De Espinosa (Chiapas),3425
 MEX,15063,Ocuilan (México),3426
 MEX,08052,Ojinaga (Chihuahua),3427
 MEX,32036,Ojocaliente (Zacatecas),3428
 MEX,12045,Olinalá (Guerrero),3429
 MEX,12046,Ometepec (Guerrero),3430
-MEX,30118,Orizaba (Veracruz de Ignacio de la Llave),3431
+MEX,30118,Orizaba (Veracruz De Ignacio De La Llave),3431
 MEX,23004,Othón P. Blanco (Quintana Roo),3432
 MEX,15067,Otzolotepec (México),3433
 MEX,31056,Oxkutzcab (Yucatán),3434
 MEX,15068,Ozumba (México),3435
-MEX,01006,Pabellón de Arteaga (Aguascalientes),3436
-MEX,13048,Pachuca de Soto (Hidalgo),3437
+MEX,01006,Pabellón De Arteaga (Aguascalientes),3436
+MEX,13048,Pachuca De Soto (Hidalgo),3437
 MEX,13047,Pacula (Hidalgo),3438
 MEX,28030,Padilla (Tamaulipas),3439
-MEX,30122,Pajapan (Veracruz de Ignacio de la Llave),3440
+MEX,30122,Pajapan (Veracruz De Ignacio De La Llave),3440
 MEX,07065,Palenque (Chiapas),3441
 MEX,29024,Panotla (Tlaxcala),3442
 MEX,21111,Pantepec (Puebla),3443
-MEX,30123,Pánuco (Veracruz de Ignacio de la Llave),3444
-MEX,29041,Papalotla de Xicohténcatl (Tlaxcala),3445
-MEX,30124,Papantla (Veracruz de Ignacio de la Llave),3446
-MEX,16065,Paracho (Michoacán de Ocampo),3447
+MEX,30123,Pánuco (Veracruz De Ignacio De La Llave),3444
+MEX,29041,Papalotla De Xicohténcatl (Tlaxcala),3445
+MEX,30124,Papantla (Veracruz De Ignacio De La Llave),3446
+MEX,16065,Paracho (Michoacán De Ocampo),3447
 MEX,27014,Paraíso (Tabasco),3448
-MEX,05024,Parras (Coahuila de Zaragoza),3449
-MEX,30126,Paso de Ovejas (Veracruz de Ignacio de la Llave),3450
-MEX,16066,Pátzcuaro (Michoacán de Ocampo),3451
+MEX,05024,Parras (Coahuila De Zaragoza),3449
+MEX,30126,Paso De Ovejas (Veracruz De Ignacio De La Llave),3450
+MEX,16066,Pátzcuaro (Michoacán De Ocampo),3451
 MEX,22012,Pedro Escobedo (Querétaro),3452
 MEX,11023,Pénjamo (Guanajuato),3453
 MEX,10021,Peñón Blanco (Durango),3454
-MEX,30128,Perote (Veracruz de Ignacio de la Llave),3455
+MEX,30128,Perote (Veracruz De Ignacio De La Llave),3455
 MEX,19041,Pesquería (Nuevo León),3456
 MEX,12048,Petatlán (Guerrero),3457
 MEX,31058,Peto (Yucatán),3458
 MEX,07068,Pichucalco (Chiapas),3459
-MEX,05025,Piedras Negras (Coahuila de Zaragoza),3460
+MEX,05025,Piedras Negras (Coahuila De Zaragoza),3460
 MEX,12049,Pilcaya (Guerrero),3461
 MEX,32038,Pinos (Zacatecas),3462
-MEX,02005,Playas de Rosarito (Baja California),3463
+MEX,02005,Playas De Rosarito (Baja California),3463
 MEX,10022,Poanas (Durango),3464
 MEX,14066,Poncitlán (Jalisco),3465
-MEX,30131,Poza Rica de Hidalgo (Veracruz de Ignacio de la Llave),3466
+MEX,30131,Poza Rica De Hidalgo (Veracruz De Ignacio De La Llave),3466
 MEX,08053,Praxedis G. Guerrero (Chihuahua),3467
 MEX,31059,Progreso (Yucatán),3468
-MEX,13050,Progreso de Obregón (Hidalgo),3469
+MEX,13050,Progreso De Obregón (Hidalgo),3469
 MEX,21114,Puebla (Puebla),3470
 MEX,10023,Pueblo Nuevo (Durango),3471
-MEX,30133,Pueblo Viejo (Veracruz de Ignacio de la Llave),3472
-MEX,17017,Puente de Ixtla (Morelos),3473
+MEX,30133,Pueblo Viejo (Veracruz De Ignacio De La Llave),3472
+MEX,17017,Puente De Ixtla (Morelos),3473
 MEX,26048,Puerto Peñasco (Sonora),3474
 MEX,14067,Puerto Vallarta (Jalisco),3475
-MEX,11025,Purísima del Rincón (Guanajuato),3476
-MEX,16071,Puruándiro (Michoacán de Ocampo),3477
+MEX,11025,Purísima Del Rincón (Guanajuato),3476
+MEX,16071,Puruándiro (Michoacán De Ocampo),3477
 MEX,22014,Querétaro (Querétaro),3478
-MEX,16073,Quiroga (Michoacán de Ocampo),3479
+MEX,16073,Quiroga (Michoacán De Ocampo),3479
 MEX,14069,Quitupan (Jalisco),3480
-MEX,30135,Rafael Delgado (Veracruz de Ignacio de la Llave),3481
+MEX,30135,Rafael Delgado (Veracruz De Ignacio De La Llave),3481
 MEX,21117,Rafael Lara Grajales (Puebla),3482
-MEX,30136,Rafael Lucio (Veracruz de Ignacio de la Llave),3483
-MEX,05027,Ramos Arizpe (Coahuila de Zaragoza),3484
+MEX,30136,Rafael Lucio (Veracruz De Ignacio De La Llave),3483
+MEX,05027,Ramos Arizpe (Coahuila De Zaragoza),3484
 MEX,07074,Reforma (Chiapas),3485
 MEX,28032,Reynosa (Tamaulipas),3486
-MEX,01007,Rincón de Romos (Aguascalientes),3487
-MEX,30138,Río Blanco (Veracruz de Ignacio de la Llave),3488
+MEX,01007,Rincón De Romos (Aguascalientes),3487
+MEX,30138,Río Blanco (Veracruz De Ignacio De La Llave),3488
 MEX,28033,Río Bravo (Tamaulipas),3489
 MEX,32039,Río Grande (Zacatecas),3490
 MEX,31061,Río Lagartos (Yucatán),3491
@@ -3498,37 +3498,37 @@ MEX,08055,Rosales (Chihuahua),3496
 MEX,18010,Rosamorada (Nayarit),3497
 MEX,25014,Rosario (Sinaloa),3498
 MEX,18011,Ruíz (Nayarit),3499
-MEX,05028,Sabinas (Coahuila de Zaragoza),3500
-MEX,16076,Sahuayo (Michoacán de Ocampo),3501
+MEX,05028,Sabinas (Coahuila De Zaragoza),3500
+MEX,16076,Sahuayo (Michoacán De Ocampo),3501
 MEX,32040,Sain Alto (Zacatecas),3502
 MEX,11027,Salamanca (Guanajuato),3503
 MEX,20079,Salina Cruz (Oaxaca),3504
 MEX,24025,Salinas (San Luis Potosí),3505
-MEX,05030,Saltillo (Coahuila de Zaragoza),3506
+MEX,05030,Saltillo (Coahuila De Zaragoza),3506
 MEX,25015,Salvador Alvarado (Sinaloa),3507
-MEX,16079,Salvador Escalante (Michoacán de Ocampo),3508
+MEX,16079,Salvador Escalante (Michoacán De Ocampo),3508
 MEX,11028,Salvatierra (Guanajuato),3509
 MEX,31063,Samahil (Yucatán),3510
-MEX,20083,San Agustín de las Juntas (Oaxaca),3511
+MEX,20083,San Agustín De Las Juntas (Oaxaca),3511
 MEX,20085,San Agustín Loxicha (Oaxaca),3512
 MEX,13036,San Agustín Metzquititlán (Hidalgo),3513
 MEX,13052,San Agustín Tlaxiaca (Hidalgo),3514
 MEX,21119,San Andrés Cholula (Puebla),3515
-MEX,30141,San Andrés Tuxtla (Veracruz de Ignacio de la Llave),3516
-MEX,20107,San Antonio de la Cal (Oaxaca),3517
+MEX,30141,San Andrés Tuxtla (Veracruz De Ignacio De La Llave),3516
+MEX,20107,San Antonio De La Cal (Oaxaca),3517
 MEX,20112,San Baltazar Chichicápam (Oaxaca),3518
 MEX,13053,San Bartolo Tutotepec (Hidalgo),3519
 MEX,18012,San Blas (Nayarit),3520
-MEX,05031,San Buenaventura (Coahuila de Zaragoza),3521
+MEX,05031,San Buenaventura (Coahuila De Zaragoza),3521
 MEX,28034,San Carlos (Tamaulipas),3522
-MEX,07078,San Cristóbal de las Casas (Chiapas),3523
+MEX,07078,San Cristóbal De Las Casas (Chiapas),3523
 MEX,29049,San Damián Texóloc (Tlaxcala),3524
-MEX,20130,San Dionisio del Mar (Oaxaca),3525
+MEX,20130,San Dionisio Del Mar (Oaxaca),3525
 MEX,11030,San Felipe (Guanajuato),3526
 MEX,13046,San Felipe Orizatlán (Hidalgo),3527
 MEX,07079,San Fernando (Chiapas),3528
-MEX,01011,San Francisco de los Romo (Aguascalientes),3529
-MEX,11031,San Francisco del Rincón (Guanajuato),3530
+MEX,01011,San Francisco De Los Romo (Aguascalientes),3529
+MEX,11031,San Francisco Del Rincón (Guanajuato),3530
 MEX,20142,San Francisco Huehuetlán (Oaxaca),3531
 MEX,29050,San Francisco Tetlanohcan (Tlaxcala),3532
 MEX,14113,San Gabriel (Jalisco),3533
@@ -3537,19 +3537,19 @@ MEX,21125,San Gregorio Atzompa (Puebla),3535
 MEX,26072,San Ignacio Río Muerto (Sonora),3536
 MEX,29051,San Jerónimo Zacualpan (Tlaxcala),3537
 MEX,22015,San Joaquín (Querétaro),3538
-MEX,01008,San José de Gracia (Aguascalientes),3539
-MEX,20167,San José del Peñasco (Oaxaca),3540
-MEX,20072,San José del Progreso (Oaxaca),3541
-MEX,15124,San José del Rincón (México),3542
+MEX,01008,San José De Gracia (Aguascalientes),3539
+MEX,20167,San José Del Peñasco (Oaxaca),3540
+MEX,20072,San José Del Progreso (Oaxaca),3541
+MEX,15124,San José Del Rincón (México),3542
 MEX,11032,San José Iturbide (Guanajuato),3543
 MEX,20184,San Juan Bautista Tuxtepec (Oaxaca),3544
 MEX,20559,San Juan Bautista Valle Nacional (Oaxaca),3545
 MEX,20185,San Juan Cacahuatepec (Oaxaca),3546
-MEX,10027,San Juan de Guadalupe (Durango),3547
-MEX,14073,San Juan de los Lagos (Jalisco),3548
-MEX,05032,San Juan de Sabinas (Coahuila de Zaragoza),3549
-MEX,10028,San Juan del Río (Durango),3550
-MEX,22016,San Juan del Río (Querétaro),3551
+MEX,10027,San Juan De Guadalupe (Durango),3547
+MEX,14073,San Juan De Los Lagos (Jalisco),3548
+MEX,05032,San Juan De Sabinas (Coahuila De Zaragoza),3549
+MEX,10028,San Juan Del Río (Durango),3550
+MEX,22016,San Juan Del Río (Querétaro),3551
 MEX,20198,San Juan Guichicovi (Oaxaca),3552
 MEX,29053,San Juan Huactzinco (Tlaxcala),3553
 MEX,20207,San Juan Mazatlán (Oaxaca),3554
@@ -3559,7 +3559,7 @@ MEX,20225,San Lorenzo (Oaxaca),3557
 MEX,29054,San Lorenzo Axocomanitla (Tlaxcala),3558
 MEX,20227,San Lorenzo Cacaotepec (Oaxaca),3559
 MEX,12052,San Luis Acatlán (Guerrero),3560
-MEX,11033,San Luis de la Paz (Guanajuato),3561
+MEX,11033,San Luis De La Paz (Guanajuato),3561
 MEX,24028,San Luis Potosí (San Luis Potosí),3562
 MEX,26055,San Luis Río Colorado (Sonora),3563
 MEX,12053,San Marcos (Guerrero),3564
@@ -3568,18 +3568,18 @@ MEX,14077,San Martín Hidalgo (Jalisco),3566
 MEX,21132,San Martín Texmelucan (Puebla),3567
 MEX,15076,San Mateo Atenco (México),3568
 MEX,21134,San Matías Tlalancaleca (Puebla),3569
-MEX,11003,San Miguel de Allende (Guanajuato),3570
-MEX,14078,San Miguel el Alto (Jalisco),3571
+MEX,11003,San Miguel De Allende (Guanajuato),3570
+MEX,14078,San Miguel El Alto (Jalisco),3571
 MEX,20278,San Miguel Soyaltepec (Oaxaca),3572
 MEX,20285,San Miguel Tlacamama (Oaxaca),3573
 MEX,12054,San Miguel Totolapan (Guerrero),3574
 MEX,21136,San Miguel Xoxtla (Puebla),3575
-MEX,19046,San Nicolás de los Garza (Nuevo León),3576
-MEX,29025,San Pablo del Monte (Tlaxcala),3577
+MEX,19046,San Nicolás De Los Garza (Nuevo León),3576
+MEX,29025,San Pablo Del Monte (Tlaxcala),3577
 MEX,20293,San Pablo Etla (Oaxaca),3578
-MEX,05033,San Pedro (Coahuila de Zaragoza),3579
+MEX,05033,San Pedro (Coahuila De Zaragoza),3579
 MEX,21140,San Pedro Cholula (Puebla),3580
-MEX,26057,San Pedro de la Cueva (Sonora),3581
+MEX,26057,San Pedro De La Cueva (Sonora),3581
 MEX,19019,San Pedro Garza García (Nuevo León),3582
 MEX,20307,San Pedro Huamelula (Oaxaca),3583
 MEX,20309,San Pedro Ixcatlán (Oaxaca),3584
@@ -3589,7 +3589,7 @@ MEX,20318,San Pedro Mixtepec (Oaxaca),3587
 MEX,20324,San Pedro Pochutla (Oaxaca),3588
 MEX,20330,San Pedro Teutila (Oaxaca),3589
 MEX,14098,San Pedro Tlaquepaque (Jalisco),3590
-MEX,21143,San Salvador el Verde (Puebla),3591
+MEX,21143,San Salvador El Verde (Puebla),3591
 MEX,21144,San Salvador Huixcolotla (Puebla),3592
 MEX,20348,San Sebastián Tecomaxtlahuaca (Oaxaca),3593
 MEX,20349,San Sebastián Teitipac (Oaxaca),3594
@@ -3604,14 +3604,14 @@ MEX,29058,Santa Catarina Ayometla (Tlaxcala),3602
 MEX,20364,Santa Catarina Juquila (Oaxaca),3603
 MEX,20368,Santa Catarina Minas (Oaxaca),3604
 MEX,20375,Santa Cruz Amilpas (Oaxaca),3605
-MEX,11035,Santa Cruz de Juventino Rosas (Guanajuato),3606
+MEX,11035,Santa Cruz De Juventino Rosas (Guanajuato),3606
 MEX,29026,Santa Cruz Tlaxcala (Tlaxcala),3607
 MEX,20385,Santa Cruz Xoxocotlán (Oaxaca),3608
-MEX,20390,Santa Lucía del Camino (Oaxaca),3609
+MEX,20390,Santa Lucía Del Camino (Oaxaca),3609
 MEX,20399,Santa María Atzompa (Oaxaca),3610
 MEX,20406,Santa María Chilchotla (Oaxaca),3611
-MEX,18014,Santa María del Oro (Nayarit),3612
-MEX,24032,Santa María del Río (San Luis Potosí),3613
+MEX,18014,Santa María Del Oro (Nayarit),3612
+MEX,24032,Santa María Del Río (San Luis Potosí),3613
 MEX,20414,Santa María Huazolotitlán (Oaxaca),3614
 MEX,20421,Santa María Mixtequilla (Oaxaca),3615
 MEX,20424,Santa María Ozolotepec (Oaxaca),3616
@@ -3626,8 +3626,8 @@ MEX,20469,Santiago Juxtlahuaca (Oaxaca),3624
 MEX,20474,Santiago Llano Grande (Oaxaca),3625
 MEX,10032,Santiago Papasquiaro (Durango),3626
 MEX,20482,Santiago Pinotepa Nacional (Oaxaca),3627
-MEX,13056,Santiago Tulantepec de Lugo Guerrero (Hidalgo),3628
-MEX,30143,Santiago Tuxtla (Veracruz de Ignacio de la Llave),3629
+MEX,13056,Santiago Tulantepec De Lugo Guerrero (Hidalgo),3628
+MEX,30143,Santiago Tuxtla (Veracruz De Ignacio De La Llave),3629
 MEX,20515,Santo Domingo Tehuantepec (Oaxaca),3630
 MEX,20519,Santo Domingo Tomaltepec (Oaxaca),3631
 MEX,20525,Santo Domingo Zanatepec (Oaxaca),3632
@@ -3635,46 +3635,46 @@ MEX,20526,Santos Reyes Nopala (Oaxaca),3633
 MEX,20527,Santos Reyes Pápalo (Oaxaca),3634
 MEX,26060,Sáric (Sonora),3635
 MEX,08062,Saucillo (Chihuahua),3636
-MEX,30144,Sayula de Alemán (Veracruz de Ignacio de la Llave),3637
-MEX,16080,Senguio (Michoacán de Ocampo),3638
-MEX,11037,Silao de la Victoria (Guanajuato),3639
+MEX,30144,Sayula De Alemán (Veracruz De Ignacio De La Llave),3637
+MEX,16080,Senguio (Michoacán De Ocampo),3638
+MEX,11037,Silao De La Victoria (Guanajuato),3639
 MEX,25017,Sinaloa (Sinaloa),3640
 MEX,07083,Socoltenango (Chiapas),3641
-MEX,30148,Soledad de Doblado (Veracruz de Ignacio de la Llave),3642
-MEX,24035,Soledad de Graciano Sánchez (San Luis Potosí),3643
+MEX,30148,Soledad De Doblado (Veracruz De Ignacio De La Llave),3642
+MEX,24035,Soledad De Graciano Sánchez (San Luis Potosí),3643
 MEX,23008,Solidaridad (Quintana Roo),3644
 MEX,07084,Solosuchiapa (Chiapas),3645
 MEX,21152,Soltepec (Puebla),3646
 MEX,32042,Sombrerete (Zacatecas),3647
-MEX,30149,Soteapan (Veracruz de Ignacio de la Llave),3648
-MEX,28037,Soto la Marina (Tamaulipas),3649
+MEX,30149,Soteapan (Veracruz De Ignacio De La Llave),3648
+MEX,28037,Soto La Marina (Tamaulipas),3649
 MEX,07086,Suchiapa (Chiapas),3650
-MEX,16081,Susupuato (Michoacán de Ocampo),3651
+MEX,16081,Susupuato (Michoacán De Ocampo),3651
 MEX,32044,Tabasco (Zacatecas),3652
-MEX,16082,Tacámbaro (Michoacán de Ocampo),3653
+MEX,16082,Tacámbaro (Michoacán De Ocampo),3653
 MEX,27015,Tacotalpa (Tabasco),3654
 MEX,31073,Tahdziú (Yucatán),3655
 MEX,31074,Tahmek (Yucatán),3656
 MEX,14083,Tala (Jalisco),3657
-MEX,14084,Talpa de Allende (Jalisco),3658
+MEX,14084,Talpa De Allende (Jalisco),3658
 MEX,24036,Tamasopo (San Luis Potosí),3659
-MEX,14085,Tamazula de Gordiano (Jalisco),3660
+MEX,14085,Tamazula De Gordiano (Jalisco),3660
 MEX,24037,Tamazunchale (San Luis Potosí),3661
-MEX,30151,Tamiahua (Veracruz de Ignacio de la Llave),3662
+MEX,30151,Tamiahua (Veracruz De Ignacio De La Llave),3662
 MEX,24038,Tampacán (San Luis Potosí),3663
 MEX,28038,Tampico (Tamaulipas),3664
 MEX,24040,Tamuín (San Luis Potosí),3665
-MEX,24042,Tanquián de Escobedo (San Luis Potosí),3666
-MEX,30154,Tantima (Veracruz de Ignacio de la Llave),3667
-MEX,30155,Tantoyuca (Veracruz de Ignacio de la Llave),3668
+MEX,24042,Tanquián De Escobedo (San Luis Potosí),3666
+MEX,30154,Tantima (Veracruz De Ignacio De La Llave),3667
+MEX,30155,Tantoyuca (Veracruz De Ignacio De La Llave),3668
 MEX,07089,Tapachula (Chiapas),3669
-MEX,16087,Taretan (Michoacán de Ocampo),3670
-MEX,16088,Tarímbaro (Michoacán de Ocampo),3671
+MEX,16087,Taretan (Michoacán De Ocampo),3670
+MEX,16088,Tarímbaro (Michoacán De Ocampo),3671
 MEX,11039,Tarimoro (Guanajuato),3672
 MEX,13058,Tasquillo (Hidalgo),3673
-MEX,12055,Taxco de Alarcón (Guerrero),3674
+MEX,12055,Taxco De Alarcón (Guerrero),3674
 MEX,27016,Teapa (Tabasco),3675
-MEX,21153,Tecali de Herrera (Puebla),3676
+MEX,21153,Tecali De Herrera (Puebla),3676
 MEX,14087,Tecalitlán (Jalisco),3677
 MEX,15081,Tecámac (México),3678
 MEX,21154,Tecamachalco (Puebla),3679
@@ -3683,7 +3683,7 @@ MEX,12056,Tecoanapa (Guerrero),3681
 MEX,31076,Tecoh (Yucatán),3682
 MEX,06009,Tecomán (Colima),3683
 MEX,13059,Tecozautla (Hidalgo),3684
-MEX,12057,Técpan de Galeana (Guerrero),3685
+MEX,12057,Técpan De Galeana (Guerrero),3685
 MEX,18016,Tecuala (Nayarit),3686
 MEX,21156,Tehuacán (Puebla),3687
 MEX,31079,Tekax (Yucatán),3688
@@ -3698,68 +3698,68 @@ MEX,31085,Temozón (Yucatán),3696
 MEX,04008,Tenabo (Campeche),3697
 MEX,15088,Tenancingo (México),3698
 MEX,29027,Tenancingo (Tlaxcala),3699
-MEX,15090,Tenango del Valle (México),3700
-MEX,30163,Tenochtitlán (Veracruz de Ignacio de la Llave),3701
+MEX,15090,Tenango Del Valle (México),3700
+MEX,30163,Tenochtitlán (Veracruz De Ignacio De La Llave),3701
 MEX,27017,Tenosique (Tabasco),3702
 MEX,29028,Teolocholco (Tlaxcala),3703
 MEX,15091,Teoloyucan (México),3704
 MEX,15092,Teotihuacán (México),3705
 MEX,31086,Tepakán (Yucatán),3706
 MEX,17019,Tepalcingo (Morelos),3707
-MEX,14093,Tepatitlán de Morelos (Jalisco),3708
+MEX,14093,Tepatitlán De Morelos (Jalisco),3708
 MEX,32045,Tepechitlán (Zacatecas),3709
-MEX,12059,Tepecoacuilco de Trujano (Guerrero),3710
-MEX,13062,Tepehuacán de Guerrero (Hidalgo),3711
+MEX,12059,Tepecoacuilco De Trujano (Guerrero),3710
+MEX,13062,Tepehuacán De Guerrero (Hidalgo),3711
 MEX,10035,Tepehuanes (Durango),3712
-MEX,13063,Tepeji del Río de Ocampo (Hidalgo),3713
+MEX,13063,Tepeji Del Río De Ocampo (Hidalgo),3713
 MEX,32046,Tepetongo (Zacatecas),3714
 MEX,29029,Tepeyanco (Tlaxcala),3715
 MEX,01009,Tepezalá (Aguascalientes),3716
 MEX,18017,Tepic (Nayarit),3717
 MEX,17020,Tepoztlán (Morelos),3718
-MEX,30168,Tequila (Veracruz de Ignacio de la Llave),3719
+MEX,30168,Tequila (Veracruz De Ignacio De La Llave),3719
 MEX,22017,Tequisquiapan (Querétaro),3720
 MEX,17021,Tetecala (Morelos),3721
-MEX,17022,Tetela del Volcán (Morelos),3722
-MEX,29031,Tetla de la Solidaridad (Tlaxcala),3723
+MEX,17022,Tetela Del Volcán (Morelos),3722
+MEX,29031,Tetla De La Solidaridad (Tlaxcala),3723
 MEX,29032,Tetlatlahuca (Tlaxcala),3724
 MEX,15099,Texcoco (México),3725
 MEX,21174,Teziutlán (Puebla),3726
-MEX,30173,Tezonapa (Veracruz de Ignacio de la Llave),3727
-MEX,13067,Tezontepec de Aldama (Hidalgo),3728
+MEX,30173,Tezonapa (Veracruz De Ignacio De La Llave),3727
+MEX,13067,Tezontepec De Aldama (Hidalgo),3728
 MEX,15100,Tezoyuca (México),3729
 MEX,15101,Tianguistenco (México),3730
 MEX,13068,Tianguistengo (Hidalgo),3731
 MEX,31089,Ticul (Yucatán),3732
-MEX,30175,Tihuatlán (Veracruz de Ignacio de la Llave),3733
+MEX,30175,Tihuatlán (Veracruz De Ignacio De La Llave),3733
 MEX,02004,Tijuana (Baja California),3734
 MEX,07096,Tila (Chiapas),3735
-MEX,16091,Tingüindín (Michoacán de Ocampo),3736
+MEX,16091,Tingüindín (Michoacán De Ocampo),3736
 MEX,31091,Tinum (Yucatán),3737
 MEX,31093,Tixkokob (Yucatán),3738
-MEX,12061,Tixtla de Guerrero (Guerrero),3739
+MEX,12061,Tixtla De Guerrero (Guerrero),3739
 MEX,13069,Tizayuca (Hidalgo),3740
 MEX,31096,Tizimín (Yucatán),3741
 MEX,21179,Tlachichuca (Puebla),3742
 MEX,12062,Tlacoachistlahuaca (Guerrero),3743
-MEX,20551,Tlacolula de Matamoros (Oaxaca),3744
-MEX,30177,Tlacolulan (Veracruz de Ignacio de la Llave),3745
-MEX,30178,Tlacotalpan (Veracruz de Ignacio de la Llave),3746
-MEX,09011,Tláhuac (Ciudad de México),3747
+MEX,20551,Tlacolula De Matamoros (Oaxaca),3744
+MEX,30177,Tlacolulan (Veracruz De Ignacio De La Llave),3745
+MEX,30178,Tlacotalpan (Veracruz De Ignacio De La Llave),3746
+MEX,09011,Tláhuac (Ciudad De México),3747
 MEX,10036,Tlahualilo (Durango),3748
 MEX,13070,Tlahuelilpan (Hidalgo),3749
-MEX,14097,Tlajomulco de Zúñiga (Jalisco),3750
+MEX,14097,Tlajomulco De Zúñiga (Jalisco),3750
 MEX,12064,Tlalchapa (Guerrero),3751
-MEX,30181,Tlalixcoyan (Veracruz de Ignacio de la Llave),3752
-MEX,20553,Tlalixtac de Cabrera (Oaxaca),3753
-MEX,30182,Tlalnelhuayocan (Veracruz de Ignacio de la Llave),3754
-MEX,15104,Tlalnepantla de Baz (México),3755
-MEX,09012,Tlalpan (Ciudad de México),3756
-MEX,32048,Tlaltenango de Sánchez Román (Zacatecas),3757
-MEX,17024,Tlaltizapán de Zapata (Morelos),3758
+MEX,30181,Tlalixcoyan (Veracruz De Ignacio De La Llave),3752
+MEX,20553,Tlalixtac De Cabrera (Oaxaca),3753
+MEX,30182,Tlalnelhuayocan (Veracruz De Ignacio De La Llave),3754
+MEX,15104,Tlalnepantla De Baz (México),3755
+MEX,09012,Tlalpan (Ciudad De México),3756
+MEX,32048,Tlaltenango De Sánchez Román (Zacatecas),3757
+MEX,17024,Tlaltizapán De Zapata (Morelos),3758
 MEX,13073,Tlanchinol (Hidalgo),3759
-MEX,12066,Tlapa de Comonfort (Guerrero),3760
-MEX,30183,Tlapacoyan (Veracruz de Ignacio de la Llave),3761
+MEX,12066,Tlapa De Comonfort (Guerrero),3760
+MEX,30183,Tlapacoyan (Veracruz De Ignacio De La Llave),3761
 MEX,17025,Tlaquiltenango (Morelos),3762
 MEX,15105,Tlatlaya (México),3763
 MEX,29033,Tlaxcala (Tlaxcala),3764
@@ -3767,21 +3767,21 @@ MEX,29034,Tlaxco (Tlaxcala),3765
 MEX,13074,Tlaxcoapan (Hidalgo),3766
 MEX,17026,Tlayacapan (Morelos),3767
 MEX,29035,Tocatlán (Tlaxcala),3768
-MEX,16095,Tocumbo (Michoacán de Ocampo),3769
+MEX,16095,Tocumbo (Michoacán De Ocampo),3769
 MEX,22018,Tolimán (Querétaro),3770
 MEX,15106,Toluca (México),3771
 MEX,14100,Tomatlán (Jalisco),3772
 MEX,07097,Tonalá (Chiapas),3773
 MEX,14101,Tonalá (Jalisco),3774
-MEX,05035,Torreón (Coahuila de Zaragoza),3775
+MEX,05035,Torreón (Coahuila De Zaragoza),3775
 MEX,29036,Totolac (Tlaxcala),3776
 MEX,14105,Tototlán (Jalisco),3777
-MEX,13076,Tula de Allende (Hidalgo),3778
-MEX,13077,Tulancingo de Bravo (Hidalgo),3779
+MEX,13076,Tula De Allende (Hidalgo),3778
+MEX,13077,Tulancingo De Bravo (Hidalgo),3779
 MEX,15109,Tultitlán (México),3780
 MEX,23009,Tulum (Quintana Roo),3781
 MEX,18018,Tuxpan (Nayarit),3782
-MEX,30189,Tuxpan (Veracruz de Ignacio de la Llave),3783
+MEX,30189,Tuxpan (Veracruz De Ignacio De La Llave),3783
 MEX,07102,Tuxtla Chico (Chiapas),3784
 MEX,07101,Tuxtla Gutiérrez (Chiapas),3785
 MEX,29038,Tzompantepec (Tlaxcala),3786
@@ -3789,34 +3789,34 @@ MEX,31098,Tzucacab (Yucatán),3787
 MEX,31101,Umán (Yucatán),3788
 MEX,11041,Uriangato (Guanajuato),3789
 MEX,08065,Urique (Chihuahua),3790
-MEX,30191,Ursulo Galván (Veracruz de Ignacio de la Llave),3791
-MEX,16102,Uruapan (Michoacán de Ocampo),3792
+MEX,30191,Ursulo Galván (Veracruz De Ignacio De La Llave),3791
+MEX,16102,Uruapan (Michoacán De Ocampo),3792
 MEX,31102,Valladolid (Yucatán),3793
-MEX,15122,Valle de Chalco Solidaridad (México),3794
-MEX,11042,Valle de Santiago (Guanajuato),3795
-MEX,08067,Valle de Zaragoza (Chihuahua),3796
+MEX,15122,Valle De Chalco Solidaridad (México),3794
+MEX,11042,Valle De Santiago (Guanajuato),3795
+MEX,08067,Valle De Zaragoza (Chihuahua),3796
 MEX,28040,Valle Hermoso (Tamaulipas),3797
 MEX,19050,Vallecillo (Nuevo León),3798
 MEX,32049,Valparaíso (Zacatecas),3799
 MEX,07106,Venustiano Carranza (Chiapas),3800
-MEX,09017,Venustiano Carranza (Ciudad de México),3801
-MEX,30193,Veracruz (Veracruz de Ignacio de la Llave),3802
+MEX,09017,Venustiano Carranza (Ciudad De México),3801
+MEX,30193,Veracruz (Veracruz De Ignacio De La Llave),3802
 MEX,32050,Vetagrande (Zacatecas),3803
 MEX,10038,Vicente Guerrero (Durango),3804
 MEX,11043,Victoria (Guanajuato),3805
 MEX,28041,Victoria (Tamaulipas),3806
-MEX,05036,Viesca (Coahuila de Zaragoza),3807
+MEX,05036,Viesca (Coahuila De Zaragoza),3807
 MEX,07107,Villa Corzo (Chiapas),3808
-MEX,15111,Villa de Allende (México),3809
-MEX,06010,Villa de Álvarez (Colima),3810
-MEX,24056,Villa de Arista (San Luis Potosí),3811
-MEX,24046,Villa de Arriaga (San Luis Potosí),3812
-MEX,32051,Villa de Cos (Zacatecas),3813
-MEX,24047,Villa de Guadalupe (San Luis Potosí),3814
-MEX,24049,Villa de Ramos (San Luis Potosí),3815
-MEX,24050,Villa de Reyes (San Luis Potosí),3816
-MEX,20334,Villa de Tututepec (Oaxaca),3817
-MEX,20565,Villa de Zaachila (Oaxaca),3818
+MEX,15111,Villa De Allende (México),3809
+MEX,06010,Villa De Álvarez (Colima),3810
+MEX,24056,Villa De Arista (San Luis Potosí),3811
+MEX,24046,Villa De Arriaga (San Luis Potosí),3812
+MEX,32051,Villa De Cos (Zacatecas),3813
+MEX,24047,Villa De Guadalupe (San Luis Potosí),3814
+MEX,24049,Villa De Ramos (San Luis Potosí),3815
+MEX,24050,Villa De Reyes (San Luis Potosí),3816
+MEX,20334,Villa De Tututepec (Oaxaca),3817
+MEX,20565,Villa De Zaachila (Oaxaca),3818
 MEX,32052,Villa García (Zacatecas),3819
 MEX,32053,Villa González Ortega (Zacatecas),3820
 MEX,14115,Villa Guerrero (Jalisco),3821
@@ -3824,12 +3824,12 @@ MEX,15113,Villa Guerrero (México),3822
 MEX,24051,Villa Hidalgo (San Luis Potosí),3823
 MEX,32054,Villa Hidalgo (Zacatecas),3824
 MEX,24052,Villa Juárez (San Luis Potosí),3825
-MEX,20277,Villa Sola de Vega (Oaxaca),3826
+MEX,20277,Villa Sola De Vega (Oaxaca),3826
 MEX,15114,Villa Victoria (México),3827
 MEX,07108,Villaflores (Chiapas),3828
 MEX,11044,Villagrán (Guanajuato),3829
-MEX,16105,Vista Hermosa (Michoacán de Ocampo),3830
-MEX,30087,Xalapa (Veracruz de Ignacio de la Llave),3831
+MEX,16105,Vista Hermosa (Michoacán De Ocampo),3830
+MEX,30087,Xalapa (Veracruz De Ignacio De La Llave),3831
 MEX,18008,Xalisco (Nayarit),3832
 MEX,29039,Xaloztoc (Tlaxcala),3833
 MEX,12069,Xalpatláhuac (Guerrero),3834
@@ -3839,7 +3839,7 @@ MEX,28043,Xicoténcatl (Tamaulipas),3837
 MEX,21197,Xicotepec (Puebla),3838
 MEX,24054,Xilitla (San Luis Potosí),3839
 MEX,21199,Xiutetelco (Puebla),3840
-MEX,09013,Xochimilco (Ciudad de México),3841
+MEX,09013,Xochimilco (Ciudad De México),3841
 MEX,17028,Xochitepec (Morelos),3842
 MEX,15115,Xonacatlán (México),3843
 MEX,13080,Yahualica (Hidalgo),3844
@@ -3851,38 +3851,38 @@ MEX,17030,Yecapixtla (Morelos),3849
 MEX,21205,Yehualtepec (Puebla),3850
 MEX,31106,Yobaín (Yucatán),3851
 MEX,11046,Yuriria (Guanajuato),3852
-MEX,16107,Zacapu (Michoacán de Ocampo),3853
+MEX,16107,Zacapu (Michoacán De Ocampo),3853
 MEX,32056,Zacatecas (Zacatecas),3854
 MEX,29044,Zacatelco (Tlaxcala),3855
 MEX,17031,Zacatepec (Morelos),3856
-MEX,14119,Zacoalco de Torres (Jalisco),3857
+MEX,14119,Zacoalco De Torres (Jalisco),3857
 MEX,15117,Zacualpan (México),3858
-MEX,17032,Zacualpan de Amilpas (Morelos),3859
-MEX,13081,Zacualtipán de Ángeles (Hidalgo),3860
-MEX,16108,Zamora (Michoacán de Ocampo),3861
+MEX,17032,Zacualpan De Amilpas (Morelos),3859
+MEX,13081,Zacualtipán De Ángeles (Hidalgo),3860
+MEX,16108,Zamora (Michoacán De Ocampo),3861
 MEX,14120,Zapopan (Jalisco),3862
 MEX,14121,Zapotiltic (Jalisco),3863
 MEX,12072,Zapotitlán Tablas (Guerrero),3864
-MEX,13082,Zapotlán de Juárez (Hidalgo),3865
-MEX,14023,Zapotlán el Grande (Jalisco),3866
+MEX,13082,Zapotlán De Juárez (Hidalgo),3865
+MEX,14023,Zapotlán El Grande (Jalisco),3866
 MEX,14124,Zapotlanejo (Jalisco),3867
-MEX,05038,Zaragoza (Coahuila de Zaragoza),3868
+MEX,05038,Zaragoza (Coahuila De Zaragoza),3868
 MEX,24055,Zaragoza (San Luis Potosí),3869
 MEX,13083,Zempoala (Hidalgo),3870
 MEX,21213,Zihuateutla (Puebla),3871
-MEX,20570,Zimatlán de Álvarez (Oaxaca),3872
+MEX,20570,Zimatlán De Álvarez (Oaxaca),3872
 MEX,07111,Zinacantán (Chiapas),3873
 MEX,15118,Zinacantepec (México),3874
-MEX,16111,Ziracuaretiro (Michoacán de Ocampo),3875
-MEX,16112,Zitácuaro (Michoacán de Ocampo),3876
+MEX,16111,Ziracuaretiro (Michoacán De Ocampo),3875
+MEX,16112,Zitácuaro (Michoacán De Ocampo),3876
 MEX,12074,Zitlala (Guerrero),3877
-MEX,30201,Zongolica (Veracruz de Ignacio de la Llave),3878
+MEX,30201,Zongolica (Veracruz De Ignacio De La Llave),3878
 MEX,15120,Zumpango (México),3879
 MLI,82,Abeibara,3880
-MLI,102,achouratt,3881
-MLI,103,alourche,3882
+MLI,102,Achouratt,3881
+MLI,103,Alourche,3882
 MLI,72,Ansongo,3883
-MLI,104,arawane,3884
+MLI,104,Arawane,3884
 MLI,12,Bafoulabe,3885
 MLI,22,Banamba,3886
 MLI,52,Bandiagara,3887
@@ -3891,14 +3891,14 @@ MLI,42,Baroueli,3889
 MLI,43,Bla,3890
 MLI,32,Bougouni,3891
 MLI,73,Bourem,3892
-MLI,105,bouzbeha,3893
+MLI,105,Bouzbeha,3893
 MLI,13,Diema,3894
 MLI,23,Dioila,3895
 MLI,62,Dire,3896
-MLI,91,District de Bamako,3897
+MLI,91,District De Bamako,3897
 MLI,54,Djenne,3898
 MLI,55,Douentza,3899
-MLI,106,FOUM ELBA,3900
+MLI,106,Foum Elba,3900
 MLI,71,Gao,3901
 MLI,63,Goundam,3902
 MLI,64,Gourma-Rha,3903
@@ -3915,8 +3915,8 @@ MLI,56,Koro,3913
 MLI,21,Koulikoro,3914
 MLI,35,Koutiala,3915
 MLI,44,Macina,3916
-MLI,111,menaka,3917
-MLI,74,Menaka,3918
+MLI,74,Menaka,3917
+MLI,111,Menaka,3918
 MLI,51,Mopti,3919
 MLI,27,Nara,3920
 MLI,65,Niafunke,3921
@@ -3925,7 +3925,7 @@ MLI,16,Nioro,3923
 MLI,46,San,3924
 MLI,41,Segou,3925
 MLI,31,Sikasso,3926
-MLI,101,taoudenit,3927
+MLI,101,Taoudenit,3927
 MLI,83,Tessalit,3928
 MLI,84,Tin-Essako,3929
 MLI,61,Tombouctou,3930
@@ -3942,7 +3942,7 @@ MMR,805,Gangaw,3940
 MMR,401,Hakha,3941
 MMR,1406,Hinthada,3942
 MMR,508,Hkamti,3943
-MMR,301,Hpa-an,3944
+MMR,301,Hpa-An,3944
 MMR,505,Kalay,3945
 MMR,504,Katha,3946
 MMR,304,Kawkareik,3947
@@ -3973,8 +3973,8 @@ MMR,303,Myawaddy,3971
 MMR,602,Myeik,3972
 MMR,904,Myingyan,3973
 MMR,101,Myitkyina,3974
-MMR,1502,NayPyitaw (South),3975
-MMR,1501,NayPyitaw(North),3976
+MMR,1502,Naypyitaw (South),3975
+MMR,1501,Naypyitaw(North),3976
 MMR,804,Pakokku,3977
 MMR,1401,Pathein,3978
 MMR,1402,Pyapon,3979
@@ -4018,150 +4018,150 @@ MNG,41,Tov,4016
 MNG,11,Ulaanbaatar,4017
 MNG,85,Uvs,4018
 MNG,81,Zavkhan,4019
-MOZ,1,ALTO MOLOCUE,4020
-MOZ,2,ANCUABE,4021
-MOZ,3,ANGOCHE,4022
-MOZ,4,ANGONIA,4023
-MOZ,5,BALAMA,4024
-MOZ,6,BARUE,4025
-MOZ,7,BILENE,4026
-MOZ,8,BOANE,4027
-MOZ,9,BUZI,4028
-MOZ,10,CAHORA-BASSA,4029
-MOZ,11,CAIA,4030
-MOZ,12,CHANGARA,4031
-MOZ,13,CHEMBA,4032
-MOZ,14,CHIBABAVA,4033
-MOZ,15,CHIBUTO,4034
-MOZ,16,CHICUALACUALA,4035
-MOZ,17,CHIFUNDE,4036
-MOZ,18,CHIGUBO,4037
-MOZ,19,CHINDE,4038
-MOZ,20,CHIURE,4039
-MOZ,21,CHIUTA,4040
-MOZ,22,CHOKWE,4041
-MOZ,23,CIDADE DA BEIRA,4042
-MOZ,24,CIDADE DE CHIMOIO,4043
-MOZ,25,CIDADE DE INHAMBANE,4044
-MOZ,26,CIDADE DE LICHINGA,4045
-MOZ,27,CIDADE DE MATOLA,4046
-MOZ,28,CIDADE DE MAXIXE,4047
-MOZ,29,CIDADE DE NAMPULA,4048
-MOZ,30,CIDADE DE PEMBA,4049
-MOZ,31,CIDADE DE QUELIMANE,4050
-MOZ,32,CIDADE DE TETE,4051
-MOZ,33,CIDADE DE XAI-XAI,4052
-MOZ,34,CIDADE ILHA DE MOCAMBIQUE,4053
-MOZ,35,CUAMBA,4054
-MOZ,36,DISTRITO DE KAMAVOTA,4055
-MOZ,37,DISTRITO DE KAMPFUMU,4056
-MOZ,38,DISTRITO DE KAMUBUKWANA,4057
-MOZ,39,DISTRITO DE KATEMBE,4058
-MOZ,40,DISTRITO DE NHLAMANKULU,4059
-MOZ,41,DISTRITO KAMAXAKENI,4060
-MOZ,42,DONDO,4061
-MOZ,43,FUNHALOURO,4062
-MOZ,44,GILE,4063
-MOZ,45,GONDOLA,4064
-MOZ,46,GORONGOSA,4065
-MOZ,47,GOVURO,4066
-MOZ,48,GUIJA,4067
-MOZ,49,GURO,4068
-MOZ,50,GURUE,4069
-MOZ,51,HOMOINE,4070
-MOZ,52,IBO,4071
-MOZ,53,ILE,4072
-MOZ,54,INHARRIME,4073
-MOZ,55,INHASSORO,4074
-MOZ,56,INHASSUNGE,4075
-MOZ,57,JANGAMO,4076
-MOZ,58,LAGO,4077
-MOZ,59,LALAUA,4078
-MOZ,60,LICHINGA,4079
-MOZ,61,LUGELA,4080
-MOZ,62,MABALANE,4081
-MOZ,63,MABOTE,4082
-MOZ,64,MACANGA,4083
-MOZ,65,MACHANGA,4084
-MOZ,66,MACHAZE,4085
-MOZ,67,MACOMIA,4086
-MOZ,68,MACOSSA,4087
-MOZ,69,MAGANJA DA COSTA,4088
-MOZ,70,MAGOE,4089
-MOZ,71,MAGUDE,4090
-MOZ,72,MAJUNE,4091
-MOZ,73,MALEMA,4092
-MOZ,74,MANDIMBA,4093
-MOZ,75,MANDLACAZE,4094
-MOZ,76,MANHIÇA,4095
-MOZ,77,MANICA,4096
-MOZ,78,MARAVIA,4097
-MOZ,79,MARINGUE,4098
-MOZ,80,MARRACUENE,4099
-MOZ,81,MARROMEU,4100
-MOZ,82,MARRUPA,4101
-MOZ,83,MASSANGENA,4102
-MOZ,84,MASSINGA,4103
-MOZ,85,MATUTUINE,4104
-MOZ,86,MAUA,4105
-MOZ,87,MAVAGO,4106
-MOZ,88,MECANHELAS,4107
-MOZ,89,MECONTA,4108
-MOZ,90,MECUBURI,4109
-MOZ,91,MECUFI,4110
-MOZ,92,MELUCO,4111
-MOZ,93,MEMBA,4112
-MOZ,94,METARICA,4113
-MOZ,95,MILANGE,4114
-MOZ,96,MOAMBA,4115
-MOZ,97,MOATIZE,4116
-MOZ,98,MOCIMBOA DA PRAIA,4117
-MOZ,99,MOCUBA,4118
-MOZ,100,MOGINCUAL,4119
-MOZ,101,MOGOVOLAS,4120
-MOZ,102,MOMA,4121
-MOZ,103,MONAPO,4122
-MOZ,104,MONTEPUEZ,4123
-MOZ,105,MOPEIA,4124
-MOZ,106,MORRUMBALA,4125
-MOZ,107,MORRUMBENE,4126
-MOZ,108,MOSSURIL,4127
-MOZ,109,MOSSURIZE,4128
-MOZ,110,MUANZA,4129
-MOZ,111,MUECATE,4130
-MOZ,112,MUEDA,4131
-MOZ,113,MUEMBE,4132
-MOZ,114,MUIDUMBE,4133
-MOZ,115,MURRUPULA,4134
-MOZ,116,MUTARARA,4135
-MOZ,117,N'GAUMA,4136
-MOZ,118,NACALA-PORTO,4137
-MOZ,119,NACALA-VELHA,4138
-MOZ,120,NACAROA,4139
-MOZ,121,NAMAACHA,4140
-MOZ,122,NAMACURRA,4141
-MOZ,123,NAMAPA-ERATI,4142
-MOZ,124,NAMARROI,4143
-MOZ,125,NAMPULA,4144
-MOZ,126,NAMUNO,4145
-MOZ,127,NANGADE,4146
-MOZ,128,NHAMATANDA,4147
-MOZ,129,NICOADALA,4148
-MOZ,130,NIPEPE,4149
-MOZ,131,PALMA,4150
-MOZ,132,PANDA,4151
-MOZ,133,PEBANE,4152
-MOZ,134,PEMBA - METUGE,4153
-MOZ,135,QUISSANGA,4154
-MOZ,136,RIBAUE,4155
-MOZ,137,SANGA,4156
-MOZ,138,SUSSUNDENGA,4157
-MOZ,139,TAMBARA,4158
-MOZ,140,TSANGANO,4159
-MOZ,141,VILANKULO,4160
-MOZ,142,XAI-XAI,4161
-MOZ,143,ZAVALA,4162
-MOZ,144,ZUMBO,4163
+MOZ,1,Alto Molocue,4020
+MOZ,2,Ancuabe,4021
+MOZ,3,Angoche,4022
+MOZ,4,Angonia,4023
+MOZ,5,Balama,4024
+MOZ,6,Barue,4025
+MOZ,7,Bilene,4026
+MOZ,8,Boane,4027
+MOZ,9,Buzi,4028
+MOZ,10,Cahora-Bassa,4029
+MOZ,11,Caia,4030
+MOZ,12,Changara,4031
+MOZ,13,Chemba,4032
+MOZ,14,Chibabava,4033
+MOZ,15,Chibuto,4034
+MOZ,16,Chicualacuala,4035
+MOZ,17,Chifunde,4036
+MOZ,18,Chigubo,4037
+MOZ,19,Chinde,4038
+MOZ,20,Chiure,4039
+MOZ,21,Chiuta,4040
+MOZ,22,Chokwe,4041
+MOZ,23,Cidade Da Beira,4042
+MOZ,24,Cidade De Chimoio,4043
+MOZ,25,Cidade De Inhambane,4044
+MOZ,26,Cidade De Lichinga,4045
+MOZ,27,Cidade De Matola,4046
+MOZ,28,Cidade De Maxixe,4047
+MOZ,29,Cidade De Nampula,4048
+MOZ,30,Cidade De Pemba,4049
+MOZ,31,Cidade De Quelimane,4050
+MOZ,32,Cidade De Tete,4051
+MOZ,33,Cidade De Xai-Xai,4052
+MOZ,34,Cidade Ilha De Mocambique,4053
+MOZ,35,Cuamba,4054
+MOZ,36,Distrito De Kamavota,4055
+MOZ,37,Distrito De Kampfumu,4056
+MOZ,38,Distrito De Kamubukwana,4057
+MOZ,39,Distrito De Katembe,4058
+MOZ,40,Distrito De Nhlamankulu,4059
+MOZ,41,Distrito Kamaxakeni,4060
+MOZ,42,Dondo,4061
+MOZ,43,Funhalouro,4062
+MOZ,44,Gile,4063
+MOZ,45,Gondola,4064
+MOZ,46,Gorongosa,4065
+MOZ,47,Govuro,4066
+MOZ,48,Guija,4067
+MOZ,49,Guro,4068
+MOZ,50,Gurue,4069
+MOZ,51,Homoine,4070
+MOZ,52,Ibo,4071
+MOZ,53,Ile,4072
+MOZ,54,Inharrime,4073
+MOZ,55,Inhassoro,4074
+MOZ,56,Inhassunge,4075
+MOZ,57,Jangamo,4076
+MOZ,58,Lago,4077
+MOZ,59,Lalaua,4078
+MOZ,60,Lichinga,4079
+MOZ,61,Lugela,4080
+MOZ,62,Mabalane,4081
+MOZ,63,Mabote,4082
+MOZ,64,Macanga,4083
+MOZ,65,Machanga,4084
+MOZ,66,Machaze,4085
+MOZ,67,Macomia,4086
+MOZ,68,Macossa,4087
+MOZ,69,Maganja Da Costa,4088
+MOZ,70,Magoe,4089
+MOZ,71,Magude,4090
+MOZ,72,Majune,4091
+MOZ,73,Malema,4092
+MOZ,74,Mandimba,4093
+MOZ,75,Mandlacaze,4094
+MOZ,76,Manhiça,4095
+MOZ,77,Manica,4096
+MOZ,78,Maravia,4097
+MOZ,79,Maringue,4098
+MOZ,80,Marracuene,4099
+MOZ,81,Marromeu,4100
+MOZ,82,Marrupa,4101
+MOZ,83,Massangena,4102
+MOZ,84,Massinga,4103
+MOZ,85,Matutuine,4104
+MOZ,86,Maua,4105
+MOZ,87,Mavago,4106
+MOZ,88,Mecanhelas,4107
+MOZ,89,Meconta,4108
+MOZ,90,Mecuburi,4109
+MOZ,91,Mecufi,4110
+MOZ,92,Meluco,4111
+MOZ,93,Memba,4112
+MOZ,94,Metarica,4113
+MOZ,95,Milange,4114
+MOZ,96,Moamba,4115
+MOZ,97,Moatize,4116
+MOZ,98,Mocimboa Da Praia,4117
+MOZ,99,Mocuba,4118
+MOZ,100,Mogincual,4119
+MOZ,101,Mogovolas,4120
+MOZ,102,Moma,4121
+MOZ,103,Monapo,4122
+MOZ,104,Montepuez,4123
+MOZ,105,Mopeia,4124
+MOZ,106,Morrumbala,4125
+MOZ,107,Morrumbene,4126
+MOZ,108,Mossuril,4127
+MOZ,109,Mossurize,4128
+MOZ,110,Muanza,4129
+MOZ,111,Muecate,4130
+MOZ,112,Mueda,4131
+MOZ,113,Muembe,4132
+MOZ,114,Muidumbe,4133
+MOZ,115,Murrupula,4134
+MOZ,116,Mutarara,4135
+MOZ,117,N'gauma,4136
+MOZ,118,Nacala-Porto,4137
+MOZ,119,Nacala-Velha,4138
+MOZ,120,Nacaroa,4139
+MOZ,121,Namaacha,4140
+MOZ,122,Namacurra,4141
+MOZ,123,Namapa-Erati,4142
+MOZ,124,Namarroi,4143
+MOZ,125,Nampula,4144
+MOZ,126,Namuno,4145
+MOZ,127,Nangade,4146
+MOZ,128,Nhamatanda,4147
+MOZ,129,Nicoadala,4148
+MOZ,130,Nipepe,4149
+MOZ,131,Palma,4150
+MOZ,132,Panda,4151
+MOZ,133,Pebane,4152
+MOZ,134,Pemba - Metuge,4153
+MOZ,135,Quissanga,4154
+MOZ,136,Ribaue,4155
+MOZ,137,Sanga,4156
+MOZ,138,Sussundenga,4157
+MOZ,139,Tambara,4158
+MOZ,140,Tsangano,4159
+MOZ,141,Vilankulo,4160
+MOZ,142,Xai-Xai,4161
+MOZ,143,Zavala,4162
+MOZ,144,Zumbo,4163
 MWI,312,Balaka,4164
 MWI,305,Blantyre,4165
 MWI,315,Blantyre City,4166
@@ -4194,814 +4194,814 @@ MWI,205,Salima,4192
 MWI,307,Thyolo,4193
 MWI,314,Zomba City,4194
 MWI,303,Zomba Non-City,4195
-NER,61,abala,4196
-NER,51,abalak,4197
-NER,11,aderbissinat,4198
-NER,41,aguie,4199
-NER,12,arlit,4200
-NER,62,ayerou,4201
-NER,52,bagaroua,4202
-NER,63,balleyara,4203
-NER,65,bankilare,4204
-NER,71,belbedji,4205
-NER,42,bermo,4206
-NER,53,BIRNI N'KONNI,4207
-NER,31,boboye,4208
-NER,54,bouza,4209
-NER,43,dakoro,4210
-NER,72,DAMAGARAM TAKAYA,4211
-NER,22,diffa,4212
-NER,32,dioundiou,4213
-NER,33,dogondoutchi,4214
-NER,34,dosso,4215
-NER,73,dungass,4216
-NER,35,falmey,4217
-NER,66,filingue,4218
-NER,36,gaya,4219
-NER,44,gazaoua,4220
-NER,67,gotheye,4221
-NER,23,goudoumaria,4222
-NER,74,goure,4223
-NER,45,GUIDAN-ROUMDJI,4224
-NER,14,iferouane,4225
-NER,55,illela,4226
-NER,15,ingall,4227
-NER,75,kantche,4228
-NER,56,keita,4229
-NER,68,kollo,4230
-NER,37,loga,4231
-NER,57,madaoua,4232
-NER,46,madarounfa,4233
-NER,76,magaria,4234
-NER,24,MAINE-SOROA,4235
-NER,58,malbaza,4236
-NER,47,mayahi,4237
-NER,77,mirriah,4238
-NER,25,N'GOURTI,4239
-NER,26,N'GUIGMI,4240
-NER,69,ouallam,4241
-NER,610,say,4242
-NER,59,tahoua,4243
-NER,78,takeita,4244
-NER,79,tanout,4245
-NER,511,tchintabaraden,4246
-NER,16,tchirozerine,4247
-NER,611,tera,4248
-NER,710,tesker,4249
-NER,48,tessaoua,4250
-NER,38,TIBIRI (DOUTCHI),4251
-NER,612,tillaberi,4252
-NER,613,torodi,4253
-NER,490,VILLE DE MARADI,4254
-NER,890,VILLE DE NIAMEY,4255
-NER,590,VILLE DE TAHOUA,4256
-NER,790,VILLE DE ZINDER,4257
-NGA,1001,1001. ANIOCHA NORTH,4258
-NGA,1003,1003. BOMADI,4259
-NGA,1004,1004. BURUTU,4260
-NGA,1005,1005. ETHIOPE EAST,4261
-NGA,1006,1006. ETHIOPE WEST,4262
-NGA,1007,1007. IKA NORTH-EAST,4263
-NGA,1008,1008. IKA SOUTH,4264
-NGA,1009,1009. ISOKO NORTH,4265
-NGA,101,101. ABA NORTH,4266
-NGA,1010,1010. ISOKO SOUTH,4267
-NGA,1012,1012. NDOKWA WEST,4268
-NGA,1013,1013. OKPE,4269
-NGA,1014,1014. OSHIMILI NORTH,4270
-NGA,1015,1015. OSHIMILI SOUTH,4271
-NGA,1016,1016. PATANI,4272
-NGA,1017,1017. SAPELE,4273
-NGA,1018,1018. UDU,4274
-NGA,1019,1019. UGHELLI NORTH,4275
-NGA,102,102. ABA SOUTH,4276
-NGA,1020,1020. UGHELLI SOUTH,4277
-NGA,1021,1021. UKWANI,4278
-NGA,1022,1022. UVWIE,4279
-NGA,1024,1024. WARRI SOUTH,4280
-NGA,1025,1025. WARRI SOUTH WEST,4281
-NGA,103,103. AROCHUKWU,4282
-NGA,104,104. BENDE,4283
-NGA,105,105. IKWUANO,4284
-NGA,106,106. ISIALA NGWA NORTH,4285
-NGA,107,107. ISIALA NGWA SOUTH,4286
-NGA,108,108. ISUIKWATO,4287
-NGA,109,109. OBINGWA,4288
-NGA,110,110. OHAFIA,4289
-NGA,1101,1101. ABAKALIKI,4290
-NGA,1102,1102. AFIKPO NORTH,4291
-NGA,1103,1103. AFIKPO SOUTH,4292
-NGA,1104,1104. EBONYI,4293
-NGA,1105,1105. EZZA NORTH,4294
-NGA,1106,1106. EZZA SOUTH,4295
-NGA,1107,1107. IKWO,4296
-NGA,1108,1108. ISHIELU,4297
-NGA,1109,1109. IVO,4298
-NGA,111,111. OSISIOMA NORTH,4299
-NGA,1110,1110. IZZI,4300
-NGA,1111,1111. OHAOZARA,4301
-NGA,1112,1112. OHAUKWU,4302
-NGA,1113,1113. ONICHA,4303
-NGA,112,112. UGWUNAGBO,4304
-NGA,113,113. UKWA EAST,4305
-NGA,114,114. UKWA WEST,4306
-NGA,115,115. UMUAHIA NORTH,4307
-NGA,116,116. UMUAHIA SOUTH,4308
-NGA,117,117. UMUNNEOCHI,4309
-NGA,1201,1201. AKOKO EDO,4310
-NGA,1202,1202. EGOR,4311
-NGA,1203,1203. ESAN CENTRAL,4312
-NGA,1204,1204. ESAN NORTH EAST,4313
-NGA,1205,1205. ESAN SOUTH EAST,4314
-NGA,1206,1206. ESAN WEST,4315
-NGA,1207,1207. ETSAKO CENTRAL,4316
-NGA,1208,1208. ETSAKO EAST,4317
-NGA,1209,1209. ETSAKO WEST,4318
-NGA,1210,1210. IGUGBEN,4319
-NGA,1211,1211. IKPOOBA OKHA,4320
-NGA,1212,1212. OREDO,4321
-NGA,1213,1213. ORHIONMWON,4322
-NGA,1214,1214. OVIA NORTH EAST,4323
-NGA,1215,1215. OVIA SOUTH WEST,4324
-NGA,1216,1216. OWAN EAST,4325
-NGA,1217,1217. OWAN WEST,4326
-NGA,1218,1218. UHUNMUONDE,4327
-NGA,1301,1301. ADO EKITI,4328
-NGA,1302,1302. EFON,4329
-NGA,1303,1303. EKITI EAST,4330
-NGA,1304,1304. EKITI SOUTH,4331
-NGA,1305,1305. EKITI WEST,4332
-NGA,1306,1306. EMURE,4333
-NGA,1307,1307. GBONYIN,4334
-NGA,1308,1308. IDO/OSI,4335
-NGA,1309,1309. IJERO,4336
-NGA,1310,1310. IKERE,4337
-NGA,1311,1311. IKOLE,4338
-NGA,1312,1312. ILEJEMEJE,4339
-NGA,1313,1313. IREPODUN/IFELODUN,4340
-NGA,1314,1314. ISE/ORUN,4341
-NGA,1315,1315. MOBA,4342
-NGA,1316,1316. OYE,4343
-NGA,1401,1401. ANINIRI,4344
-NGA,1402,1402. AWGU,4345
-NGA,1403,1403. ENUGU EAST,4346
-NGA,1404,1404. ENUGU NORTH,4347
-NGA,1405,1405. ENUGU SOUTH,4348
-NGA,1406,1406. EZEAGU,4349
-NGA,1407,1407. IGBO ETITI,4350
-NGA,1408,1408. IGBO-EZE NORTH,4351
-NGA,1409,1409. IGBO-EZE SOUTH,4352
-NGA,1410,1410. ISI-UZO,4353
-NGA,1411,1411. NKANU EAST,4354
-NGA,1412,1412. NKANU WEST,4355
-NGA,1413,1413. NSUKKA,4356
-NGA,1414,1414. OJI RIVER,4357
-NGA,1415,1415. UDENU,4358
-NGA,1416,1416. UDI,4359
-NGA,1417,1417. UZO-UWANI,4360
-NGA,1501,1501. AKKO,4361
-NGA,1502,1502. BALANGA,4362
-NGA,1503,1503. BILLIRI,4363
-NGA,1504,1504. DUKKU,4364
-NGA,1505,1505. FUNAKAYE,4365
-NGA,1506,1506. GOMBE,4366
-NGA,1507,1507. KALTUNGO,4367
-NGA,1508,1508. KWAMI,4368
-NGA,1509,1509. NAFADA,4369
-NGA,1510,1510. SHONGOM,4370
-NGA,1511,1511. YAMALTU-DEBA,4371
-NGA,1601,1601. ABOH MBAISE,4372
-NGA,1602,1602. AHIAZU MBAISE,4373
-NGA,1603,1603. EHIME MBANO,4374
-NGA,1604,1604. EZINIHITTE-MBAISE,4375
-NGA,1605,1605. IDEATO NORTH,4376
-NGA,1606,1606. IDEATO SOUTH,4377
-NGA,1607,1607. IHITTE-UBOMA,4378
-NGA,1608,1608. IKEDURU,4379
-NGA,1609,1609. ISIALA MBANO,4380
-NGA,1610,1610. ISU,4381
-NGA,1611,1611. MBAITOLI,4382
-NGA,1612,1612. NGOR OKPALA,4383
-NGA,1613,1613. NJABA,4384
-NGA,1614,1614. NKWERE,4385
-NGA,1615,1615. NWANGELE,4386
-NGA,1616,1616. OBOWO,4387
-NGA,1617,1617. OGUTA,4388
-NGA,1618,1618. OHAJI-EGBEMA,4389
-NGA,1619,1619. OKIGWE,4390
-NGA,1620,1620. ONO-IMO,4391
-NGA,1621,1621. ORLU,4392
-NGA,1622,1622. ORSU,4393
-NGA,1623,1623. ORU EAST,4394
-NGA,1624,1624. ORU WEST,4395
-NGA,1625,1625. OWERRI MUNICIPAL,4396
-NGA,1626,1626. OWERRI NORTH,4397
-NGA,1627,1627. OWERRI WEST,4398
-NGA,1701,1701. AUYO,4399
-NGA,1702,1702. BABURA,4400
-NGA,1703,1703. BIRNIN KUDU,4401
-NGA,1704,1704. BIRNIWA,4402
-NGA,1705,1705. BUJI,4403
-NGA,1706,1706. DUTSE,4404
-NGA,1707,1707. GAGARAWA,4405
-NGA,1708,1708. GARKI,4406
-NGA,1709,1709. GUMEL,4407
-NGA,1710,1710. GURI,4408
-NGA,1711,1711. GWARAM,4409
-NGA,1712,1712. GWIWA,4410
-NGA,1713,1713. HADEJIA,4411
-NGA,1714,1714. JAHUN,4412
-NGA,1715,1715. KAFIN HAUSA,4413
-NGA,1716,1716. KAUGAMA,4414
-NGA,1717,1717. KAZAURE,4415
-NGA,1718,1718. KIRIKA KASAMMA,4416
-NGA,1719,1719. KIYAWA,4417
-NGA,1720,1720. MAIGATAR,4418
-NGA,1721,1721. MALAM MADORI,4419
-NGA,1722,1722. MIGA,4420
-NGA,1723,1723. RINGIM,4421
-NGA,1724,1724. RONI,4422
-NGA,1725,1725. SULE TANKAR-KAR,4423
-NGA,1726,1726. TAURA,4424
-NGA,1727,1727. YAN-KWASHI,4425
-NGA,1801,1801. BIRNIN GWARI,4426
-NGA,1802,1802. CHIKUN,4427
-NGA,1803,1803. GIWA,4428
-NGA,1804,1804. IGABI,4429
-NGA,1805,1805. IKARA,4430
-NGA,1806,1806. JABA,4431
-NGA,1807,1807. JEMA'A,4432
-NGA,1808,1808. KACHIA,4433
-NGA,1809,1809. KADUNA NORTH,4434
-NGA,1810,1810. KADUNA SOUTH,4435
-NGA,1811,1811. KAGARKO,4436
-NGA,1813,1813. KAURA,4437
-NGA,1814,1814. KAURU,4438
-NGA,1815,1815. KUBAU,4439
-NGA,1816,1816. KUDAN,4440
-NGA,1817,1817. LERE,4441
-NGA,1818,1818. MAKARFI,4442
-NGA,1819,1819. SABON GARI,4443
-NGA,1820,1820. SANGA,4444
-NGA,1821,1821. SOBA,4445
-NGA,1822,1822. ZANGON KATAF,4446
-NGA,1823,1823. ZARIA,4447
-NGA,1901,1901. AJINGI,4448
-NGA,1902,1902. ALBASU,4449
-NGA,1904,1904. BEBEJI,4450
-NGA,1905,1905. BICHI,4451
-NGA,1906,1906. BUNKURE,4452
-NGA,1907,1907. DALA,4453
-NGA,1908,1908. DANBATTA,4454
-NGA,1909,1909. DAWAKIN KUDU,4455
-NGA,1910,1910. DAWAKIN TOFA,4456
-NGA,1911,1911. DOGUWA,4457
-NGA,1912,1912. FAGGE,4458
-NGA,1913,1913. GABASAWA,4459
-NGA,1914,1914. GARKO,4460
-NGA,1915,1915. GARUM MALLAM,4461
-NGA,1916,1916. GAYA,4462
-NGA,1917,1917. GEZAWA,4463
-NGA,1918,1918. GWALE,4464
-NGA,1920,1920. KABIYA,4465
-NGA,1921,1921. KABO,4466
-NGA,1922,1922. KANO MUNICIPAL,4467
-NGA,1923,1923. KARAYE,4468
-NGA,1924,1924. KIRU,4469
-NGA,1925,1925. KUMBOTSO,4470
-NGA,1926,1926. KUNCHI,4471
-NGA,1927,1927. KURA,4472
-NGA,1928,1928. MADOBI,4473
-NGA,1930,1930. MINJIBIR,4474
-NGA,1931,1931. NASARAWA (KANO),4475
-NGA,1932,1932. RANO,4476
-NGA,1933,1933. RIMIN GADO,4477
-NGA,1934,1934. ROGO,4478
-NGA,1935,1935. SHANONO,4479
-NGA,1936,1936. SUMAILA,4480
-NGA,1937,1937. TAKAI,4481
-NGA,1938,1938. TARAUNI,4482
-NGA,1939,1939. TOFA,4483
-NGA,1941,1941. TUDUN WADA,4484
-NGA,1942,1942. UNGOGO,4485
-NGA,1943,1943. WARAWA,4486
-NGA,1944,1944. WUDIL,4487
-NGA,2001,2001. BAKORI,4488
-NGA,2002,2002. BATAGARAWA,4489
-NGA,2003,2003. BATSARI,4490
-NGA,2004,2004. BAURE,4491
-NGA,2005,2005. BINDAWA,4492
-NGA,2006,2006. CHARANCHI,4493
-NGA,2007,2007. DAN MUSA,4494
-NGA,2008,2008. DANDUME,4495
-NGA,2009,2009. DANJA,4496
-NGA,201,201. DEMSA,4497
-NGA,2010,2010. DAURA,4498
-NGA,2011,2011. DUTSI,4499
-NGA,2012,2012. DUTSIN-MA,4500
-NGA,2013,2013. FASKARI,4501
-NGA,2014,2014. FUNTUA,4502
-NGA,2015,2015. INGAWA,4503
-NGA,2016,2016. JIBIA,4504
-NGA,2017,2017. KAFUR,4505
-NGA,2018,2018. KAITA,4506
-NGA,2019,2019. KANKARA,4507
-NGA,202,202. FUFORE/GURIN,4508
-NGA,2020,2020. KANKIA,4509
-NGA,2021,2021. KATSINA,4510
-NGA,2022,2022. KURFI,4511
-NGA,2023,2023. KUSADA,4512
-NGA,2024,2024. MAI'ADUA,4513
-NGA,2025,2025. MALUNFASHI,4514
-NGA,2026,2026. MANI,4515
-NGA,2027,2027. MASHI,4516
-NGA,2028,2028. MATAZU,4517
-NGA,2029,2029. MUSAWA,4518
-NGA,203,203. GANYE,4519
-NGA,2030,2030. RIMI,4520
-NGA,2031,2031. SABUWA,4521
-NGA,2032,2032. SAFANA,4522
-NGA,2033,2033. SANDAMU,4523
-NGA,2034,2034. ZANGO,4524
-NGA,204,204. GIREI,4525
-NGA,205,205. GOMBI,4526
-NGA,206,206. GUYUK,4527
-NGA,207,207. HONG,4528
-NGA,208,208. JADA,4529
-NGA,209,209. LAMURDE,4530
-NGA,210,210. MADAGALI,4531
-NGA,2101,2101. ALEIRO,4532
-NGA,2102,2102. AREWA,4533
-NGA,2103,2103. ARGUNGU,4534
-NGA,2104,2104. AUGIE,4535
-NGA,2105,2105. BAGUDO,4536
-NGA,2106,2106. BIRNIN KEBBI,4537
-NGA,2107,2107. BUNZA,4538
-NGA,2108,2108. DANDI,4539
-NGA,2109,2109. DANKO-WASAGU,4540
-NGA,211,211. MAIHA,4541
-NGA,2110,2110. FAKAI,4542
-NGA,2111,2111. GWANDU,4543
-NGA,2112,2112. JEGA,4544
-NGA,2113,2113. KALGO,4545
-NGA,2114,2114. KOKO BESSE,4546
-NGA,2115,2115. MAIYAMA,4547
-NGA,2116,2116. NGASKI,4548
-NGA,2117,2117. SAKABA,4549
-NGA,2118,2118. SHANGA,4550
-NGA,2119,2119. SURU,4551
-NGA,212,212. MAYO-BELWA,4552
-NGA,2120,2120. YAURI,4553
-NGA,2121,2121. ZURU,4554
-NGA,213,213. MICHIKA,4555
-NGA,214,214. MUBI NORTH,4556
-NGA,215,215. MUBI SOUTH,4557
-NGA,216,216. NUMAN,4558
-NGA,217,217. SHELLENG,4559
-NGA,218,218. SONG,4560
-NGA,219,219. TOUNGO,4561
-NGA,220,220. YOLA NORTH,4562
-NGA,2201,2201. ADAVI,4563
-NGA,2202,2202. AJAOKUTA,4564
-NGA,2203,2203. ANKPA,4565
-NGA,2204,2204. BASSA (KOGI),4566
-NGA,2205,2205. DEKINA,4567
-NGA,2206,2206. IBAJI,4568
-NGA,2207,2207. IDAH,4569
-NGA,2208,2208. IGALAMELA-ODOLU,4570
-NGA,2209,2209. IJUMU,4571
-NGA,221,221. YOLA SOUTH,4572
-NGA,2210,2210. KABBA/BUNU,4573
-NGA,2211,2211. KOGI(K.K),4574
-NGA,2212,2212. LOKOJA,4575
-NGA,2213,2213. MOPAMURO,4576
-NGA,2214,2214. OFU,4577
-NGA,2216,2216. OKEHI,4578
-NGA,2217,2217. OKENE,4579
-NGA,2218,2218. OLAMABORO,4580
-NGA,2219,2219. OMALA,4581
-NGA,2220,2220. YAGBA EAST,4582
-NGA,2221,2221. YAGBA WEST,4583
-NGA,2301,2301. ASA,4584
-NGA,2302,2302. BARUTEN,4585
-NGA,2303,2303. EDU,4586
-NGA,2304,2304. EKITI,4587
-NGA,2305,2305. IFELODUN (KWARA),4588
-NGA,2306,2306. ILORIN EAST,4589
-NGA,2307,2307. ILORIN SOUTH,4590
-NGA,2308,2308. ILORIN WEST,4591
-NGA,2309,2309. IREPODUN (KWARA),4592
-NGA,2310,2310. ISIN,4593
-NGA,2311,2311. KAIAMA,4594
-NGA,2312,2312. MORO,4595
-NGA,2313,2313. OFFA,4596
-NGA,2314,2314. OKE-ERO,4597
-NGA,2315,2315. OYUN,4598
-NGA,2316,2316. PATIGI,4599
-NGA,2401,2401. AGEGE,4600
-NGA,2402,2402. AJEROMI/IFELODUN,4601
-NGA,2403,2403. ALIMOSHO,4602
-NGA,2404,2404. AMUWO-ODOFIN,4603
-NGA,2405,2405. APAPA,4604
-NGA,2406,2406. BADAGRY,4605
-NGA,2407,2407. EPE,4606
-NGA,2408,2408. ETI-OSA,4607
-NGA,2409,2409. IBEJU-LEKKI,4608
-NGA,2410,2410. IFAKO-IJAYE,4609
-NGA,2412,2412. IKORORDU,4610
-NGA,2413,2413. KOSOFE,4611
-NGA,2414,2414. LAGOS ISLAND,4612
-NGA,2415,2415. LAGOS MAINLAND,4613
-NGA,2416,2416. MUSHIN,4614
-NGA,2417,2417. OJO,4615
-NGA,2418,2418. OSHODI/ISOLO,4616
-NGA,2419,2419. SHOMOLU,4617
-NGA,2420,2420. SURULERE (LAGOS),4618
-NGA,2501,2501. AKWANGA,4619
-NGA,2502,2502. AWE,4620
-NGA,2503,2503. DOMA,4621
-NGA,2504,2504. KARU,4622
-NGA,2505,2505. KEANA,4623
-NGA,2506,2506. KEFFI,4624
-NGA,2507,2507. KOKONA,4625
-NGA,2508,2508. LAFIA,4626
-NGA,2509,2509. NASARAWA (NASARAWA),4627
-NGA,2510,2510. NASARAWA EGGON,4628
-NGA,2511,2511. OBI (NASARAWA),4629
-NGA,2512,2512. TOTO,4630
-NGA,2513,2513. WAMBA,4631
-NGA,2601,2601. AGAIE,4632
-NGA,2602,2602. AGWARA,4633
-NGA,2603,2603. BIDA,4634
-NGA,2604,2604. BORGU,4635
-NGA,2605,2605. BOSSO,4636
-NGA,2606,2606. CHANCHAGA,4637
-NGA,2607,2607. EDATI-IDATI,4638
-NGA,2608,2608. GBAKO,4639
-NGA,2609,2609. GURARA,4640
-NGA,2610,2610. KATCHA,4641
-NGA,2611,2611. KONTAGORA,4642
-NGA,2612,2612. LAPAI,4643
-NGA,2613,2613. LAVUN,4644
-NGA,2614,2614. MAGAMA,4645
-NGA,2615,2615. MARIGA,4646
-NGA,2616,2616. MASHEGU,4647
-NGA,2617,2617. MOKWA,4648
-NGA,2618,2618. MUYA,4649
-NGA,2619,2619. PAIKORO,4650
-NGA,2620,2620. RAFI,4651
-NGA,2621,2621. RIJAU,4652
-NGA,2622,2622. SHIRORO,4653
-NGA,2623,2623. SULEJA,4654
-NGA,2624,2624. TAFA,4655
-NGA,2625,2625. WUSHISHI,4656
-NGA,2701,2701. ABEOKUTA NORTH,4657
-NGA,2702,2702. ABEOKUTA SOUTH,4658
-NGA,2703,2703. ADO-ODO/OTA,4659
-NGA,2704,2704. EGBADO-NORTH/YEWA,4660
-NGA,2705,2705. EGBADO-SOUTH/,4661
-NGA,2707,2707. IFO,4662
-NGA,2708,2708. IJEBU-EAST,4663
-NGA,2709,2709. IJEBU-NORTH,4664
-NGA,2710,2710. IJEBU-NORTH-EAST,4665
-NGA,2711,2711. IJEBU-ODE,4666
-NGA,2712,2712. IKENNE,4667
-NGA,2713,2713. IMEKO/AFON,4668
-NGA,2714,2714. IPOKIA,4669
-NGA,2715,2715. OBAFEMI-OWODE,4670
-NGA,2716,2716. ODEDA,4671
-NGA,2717,2717. ODOGBOLU,4672
-NGA,2718,2718. OGUN-WATERSIDE,4673
-NGA,2719,2719. REMO NORTH,4674
-NGA,2720,2720. SAGAMU,4675
-NGA,2801,2801. AKOKO NORTH EAST,4676
-NGA,2802,2802. AKOKO NORTH WEST,4677
-NGA,2803,2803. AKOKO SOUTH EAST,4678
-NGA,2804,2804. AKOKO SOUTH WEST,4679
-NGA,2805,2805. AKURE NORTH,4680
-NGA,2806,2806. AKURE SOUTH,4681
-NGA,2807,2807. ESE-ODO,4682
-NGA,2808,2808. IDANRE,4683
-NGA,2809,2809. IFEDORE,4684
-NGA,2810,2810. ILAJE,4685
-NGA,2811,2811. ILEOLUJI/OKEIGBO,4686
-NGA,2812,2812. IRELE,4687
-NGA,2813,2813. ODIGBO,4688
-NGA,2814,2814. OKITIPUPA,4689
-NGA,2815,2815. ONDO EAST,4690
-NGA,2816,2816. ONDO WEST,4691
-NGA,2817,2817. OSE,4692
-NGA,2818,2818. OWO,4693
-NGA,2901,2901. ATAKUMOSA EAST,4694
-NGA,2902,2902. ATAKUMOSA WEST,4695
-NGA,2903,2903. AYEDADE,4696
-NGA,2904,2904. AYEDIRE,4697
-NGA,2905,2905. BOLOWADURO,4698
-NGA,2906,2906. BORIPE,4699
-NGA,2907,2907. EDE NORTH,4700
-NGA,2908,2908. EDE SOUTH,4701
-NGA,2909,2909. EGBEDORE,4702
-NGA,2910,2910. EJIGBO,4703
-NGA,2911,2911. IFE CENTRAL,4704
-NGA,2912,2912. IFE EAST,4705
-NGA,2913,2913. IFE NORTH,4706
-NGA,2915,2915. IFEDAYO,4707
-NGA,2917,2917. ILA,4708
-NGA,2918,2918. ILESA EAST,4709
-NGA,2919,2919. ILESA WEST,4710
-NGA,2920,2920. IREPODUN (OSUN),4711
-NGA,2921,2921. IREWOLE,4712
-NGA,2922,2922. ISOKAN,4713
-NGA,2923,2923. IWO,4714
-NGA,2924,2924. OBOKUN,4715
-NGA,2925,2925. ODO-OTIN,4716
-NGA,2926,2926. OLA-OLUWA,4717
-NGA,2927,2927. OLORUNDA,4718
-NGA,2928,2928. ORIADE,4719
-NGA,2929,2929. OROLU,4720
-NGA,2930,2930. OSOGBO,4721
-NGA,3002,3002. AKINYELE,4722
-NGA,3003,3003. ATIBA,4723
-NGA,3004,3004. ATIGBO,4724
-NGA,3005,3005. EGBEDA,4725
-NGA,3006,3006. IBADAN NORTH,4726
-NGA,3007,3007. IBADAN NORTH EAST,4727
-NGA,3008,3008. IBADAN NORTH WEST,4728
-NGA,3009,3009. IBADAN SOUTH EAST,4729
-NGA,301,301. ABAK,4730
-NGA,3010,3010. IBADAN SOUTH WEST,4731
-NGA,3011,3011. IBARAPA CENTRAL,4732
-NGA,3012,3012. IBARAPA EAST,4733
-NGA,3013,3013. IBARAPA NORTH,4734
-NGA,3014,3014. IDO,4735
-NGA,3015,3015. IREPO,4736
-NGA,3016,3016. ISEYIN,4737
-NGA,3017,3017. ITESIWAJU,4738
-NGA,3018,3018. IWAJOWA,4739
-NGA,3019,3019. KAJOLA,4740
-NGA,3020,3020. LAGELU,4741
-NGA,3021,3021. OGBOMOSO NORTH,4742
-NGA,3022,3022. OGBOMOSO SOUTH,4743
-NGA,3024,3024. OLORUNSOGO,4744
-NGA,3025,3025. OLUYOLE,4745
-NGA,3026,3026. ONA-ARA,4746
-NGA,3027,3027. ORELOPE,4747
-NGA,3029,3029. OYO EAST,4748
-NGA,303,303. EKET,4749
-NGA,3030,3030. OYO WEST,4750
-NGA,3031,3031. SAKI EAST,4751
-NGA,3032,3032. SAKI WEST,4752
-NGA,3033,3033. SURULERE (OYO),4753
-NGA,304,304. ESSIEN UDIM,4754
-NGA,305,305. ETIM EKPO,4755
-NGA,306,306. ETINAN,4756
-NGA,307,307. IBENO,4757
-NGA,308,308. IBESIKPO ASUTAN,4758
-NGA,309,309. IBIONO IBOM,4759
-NGA,310,310. IKA,4760
-NGA,3101,3101. BARKIN LADI,4761
-NGA,3102,3102. BASSA (PLATEAU),4762
-NGA,3103,3103. BOKKOS,4763
-NGA,3104,3104. JOS EAST,4764
-NGA,3105,3105. JOS NORTH,4765
-NGA,3106,3106. JOS SOUTH,4766
-NGA,3107,3107. KANAM,4767
-NGA,3108,3108. KANKE,4768
-NGA,3109,3109. LANTANG NORTH,4769
-NGA,311,311. IKONO,4770
-NGA,3110,3110. LANTANG SOUTH,4771
-NGA,3111,3111. MANGU,4772
-NGA,3112,3112. MIKANG,4773
-NGA,3113,3113. PANKSHIN,4774
-NGA,3114,3114. QUA'AN PAN,4775
-NGA,3115,3115. RIYOM,4776
-NGA,3116,3116. SHENDAM,4777
-NGA,3117,3117. WASE,4778
-NGA,312,312. IKOT ABASI,4779
-NGA,313,313. IKOT EKPENE,4780
-NGA,314,314. INI,4781
-NGA,315,315. ITU,4782
-NGA,316,316. MBO,4783
-NGA,317,317. MKPAT ENIN,4784
-NGA,318,318. NSIT ATAI,4785
-NGA,319,319. NSIT EKET,4786
-NGA,320,320. NSIT IBOM,4787
-NGA,3201,3201. ABUA-ODUA,4788
-NGA,3202,3202. AHOADA EAST,4789
-NGA,3203,3203. AHOADA WEST,4790
-NGA,3204,3204. AKUKU-TORU,4791
-NGA,3205,3205. ANDONI,4792
-NGA,3206,3206. ASARI-TORU,4793
-NGA,3208,3208. DEGEMA,4794
-NGA,3209,3209. ELEME,4795
-NGA,321,321. NSIT UBIUM,4796
-NGA,3210,3210. EMOHU,4797
-NGA,3211,3211. ETCHE,4798
-NGA,3212,3212. GOKANA,4799
-NGA,3213,3213. IKWERRE,4800
-NGA,3214,3214. KHANA,4801
-NGA,3215,3215. OBIO AKPOR,4802
-NGA,3216,3216. OGBA/EGBEMA/NDONI,4803
-NGA,3218,3218. OKIRIKA,4804
-NGA,3219,3219. OMUMMA,4805
-NGA,322,322. OBOT AKARA,4806
-NGA,3221,3221. OYIGBO,4807
-NGA,3222,3222. PORT HARCOURT,4808
-NGA,3223,3223. TAI,4809
-NGA,323,323. OKOBO,4810
-NGA,324,324. ONNA,4811
-NGA,325,325. ORON,4812
-NGA,326,326. ORUK ANAM,4813
-NGA,327,327. UDUNG UKO,4814
-NGA,328,328. UKANAFUN,4815
-NGA,329,329. URUAN,4816
-NGA,330,330. URUE OFFONG/ORUKO,4817
-NGA,3301,3301. BINJI,4818
-NGA,3302,3302. BODINGA,4819
-NGA,3303,3303. DANGE SHUNI,4820
-NGA,3304,3304. GADA,4821
-NGA,3305,3305. GORONYO,4822
-NGA,3306,3306. GUDU,4823
-NGA,3307,3307. GWADABAWA,4824
-NGA,3308,3308. ILLELA,4825
-NGA,3309,3309. ISA,4826
-NGA,331,331. UYO,4827
-NGA,3310,3310. KEBBE,4828
-NGA,3311,3311. KWARE,4829
-NGA,3312,3312. RABAH,4830
-NGA,3313,3313. SABON BIRNIN,4831
-NGA,3314,3314. SHAGARI,4832
-NGA,3315,3315. SILAME,4833
-NGA,3316,3316. SOKOTO NORTH,4834
-NGA,3317,3317. SOKOTO SOUTH,4835
-NGA,3318,3318. TAMBUWAI,4836
-NGA,3319,3319. TANGAZA,4837
-NGA,3320,3320. TURETA,4838
-NGA,3321,3321. WAMAKKO,4839
-NGA,3322,3322. WURNO,4840
-NGA,3323,3323. YABO BODINGO,4841
-NGA,3401,3401. ARDO-KOLA,4842
-NGA,3402,3402. BALI,4843
-NGA,3403,3403. DONGA,4844
-NGA,3404,3404. GASHAKA,4845
-NGA,3405,3405. GASSOL,4846
-NGA,3406,3406. IBI,4847
-NGA,3407,3407. JALINGO,4848
-NGA,3408,3408. KARIM-LAMIDO,4849
-NGA,3409,3409. KURMI,4850
-NGA,3410,3410. LAU,4851
-NGA,3411,3411. SARDAUNA,4852
-NGA,3412,3412. TAKUM,4853
-NGA,3413,3413. USSA,4854
-NGA,3414,3414. WUKARI,4855
-NGA,3415,3415. YORRO,4856
-NGA,3416,3416. ZING,4857
-NGA,3501,3501. BADE,4858
-NGA,3502,3502. BURSARI,4859
-NGA,3503,3503. DAMATURU,4860
-NGA,3504,3504. FIKA,4861
-NGA,3505,3505. FUNE,4862
-NGA,3506,3506. GEIDAM,4863
-NGA,3507,3507. GUJBA,4864
-NGA,3508,3508. GULANI,4865
-NGA,3509,3509. JAKUSKO,4866
-NGA,3510,3510. KARASUWA,4867
-NGA,3511,3511. MACHINA,4868
-NGA,3512,3512. NANGERE,4869
-NGA,3513,3513. NGURU,4870
-NGA,3514,3514. POTISKUM,4871
-NGA,3515,3515. TARMUWA,4872
-NGA,3516,3516. YUNUSARI,4873
-NGA,3517,3517. YUSUFARI,4874
-NGA,3601,3601. ANKA,4875
-NGA,3602,3602. BAKURA,4876
-NGA,3603,3603. BIRNIN MAGAJI,4877
-NGA,3604,3604. BUKKUYUM,4878
-NGA,3605,3605. BUNGUDU,4879
-NGA,3606,3606. GUMMI,4880
-NGA,3607,3607. GUSAU,4881
-NGA,3608,3608. KAURA NAMODA,4882
-NGA,3610,3610. MARU,4883
-NGA,3611,3611. SHINKAFI,4884
-NGA,3612,3612. TALATA MAFARA,4885
-NGA,3613,3613. TSAFE,4886
-NGA,3614,3614. ZURMI,4887
-NGA,3701,3701. ABAJI AREA COUNCIL,4888
-NGA,3702,3702. BWARI AREA COUNCIL,4889
-NGA,3703,3703. GWAGWALADA AREA COUNCIL,4890
-NGA,3704,3704. KUJE AREA COUNCIL,4891
-NGA,3705,3705. KWALI AREA COUNCIL,4892
-NGA,3706,3706. MUNICIPAL AREA COUNCIL,4893
-NGA,401,401. AGUATA,4894
-NGA,402,402. ANAMBRA EAST,4895
-NGA,403,403. ANAMBRA WEST,4896
-NGA,404,404. ANAOCHA,4897
-NGA,405,405. AWKA NORTH,4898
-NGA,406,406. AWKA SOUTH,4899
-NGA,407,407. AYAMELUM,4900
-NGA,408,408. DUNUKOFIA,4901
-NGA,409,409. EKWUSIGO,4902
-NGA,410,410. IDEMILI NORTH,4903
-NGA,411,411. IDEMILI SOUTH,4904
-NGA,412,412. IHIALA,4905
-NGA,413,413. NJIKOKA,4906
-NGA,414,414. NNEWI NORTH,4907
-NGA,415,415. NNEWI SOUTH,4908
-NGA,416,416. OGBARU,4909
-NGA,417,417. ONITSHA NORTH,4910
-NGA,418,418. ONITSHA SOUTH,4911
-NGA,419,419. ORUMBA NORTH,4912
-NGA,420,420. ORUMBA SOUTH,4913
-NGA,421,421. OYI,4914
-NGA,501,501. ALKALERI,4915
-NGA,502,502. BAUCHI,4916
-NGA,503,503. BOGORO,4917
-NGA,504,504. DAMBAN,4918
-NGA,505,505. DARAZO,4919
-NGA,506,506. DASS,4920
-NGA,507,507. GAMAWA,4921
-NGA,508,508. GANJUWA,4922
-NGA,509,509. GIADE,4923
-NGA,510,510. ITAS-GADAU,4924
-NGA,511,511. JAMA'ARE,4925
-NGA,512,512. KATAGUM,4926
-NGA,513,513. KIRFI,4927
-NGA,514,514. MISAU,4928
-NGA,515,515. NINGI,4929
-NGA,516,516. SHIRA,4930
-NGA,517,517. TAFAWA BALEWA,4931
-NGA,518,518. TORO,4932
-NGA,519,519. WARJI,4933
-NGA,520,520. ZAKI,4934
-NGA,601,601. BRASS,4935
-NGA,602,602. EKEREMOR,4936
-NGA,603,603. KOLOKUMA/OPOKUMA,4937
-NGA,604,604. NEMBE,4938
-NGA,605,605. OGBIA,4939
-NGA,606,606. SAGBAMA,4940
-NGA,607,607. SOUTHERN IJAW,4941
-NGA,608,608. YENAGOA,4942
-NGA,701,701. ADOR,4943
-NGA,702,702. AGATU,4944
-NGA,703,703. APA,4945
-NGA,704,704. BURUKU,4946
-NGA,705,705. GBOKO,4947
-NGA,706,706. GUMA,4948
-NGA,707,707. GWER-EAST,4949
-NGA,708,708. GWER-WEST,4950
-NGA,709,709. KATSINA-ALA,4951
-NGA,710,710. KONSHISHA,4952
-NGA,711,711. KWANDE,4953
-NGA,712,712. LOGO,4954
-NGA,713,713. MAKURDI,4955
-NGA,714,714. OBI (BENUE),4956
-NGA,715,715. OGBADIBO,4957
-NGA,716,716. OHIMINI,4958
-NGA,717,717. OJU,4959
-NGA,718,718. OKPOKWU,4960
-NGA,719,719. OTUKPO,4961
-NGA,720,720. TARKA,4962
-NGA,721,721. UKUM,4963
-NGA,722,722. USHONGO,4964
-NGA,723,723. VANDEIKYA,4965
-NGA,802,802. ASIKIRA/UBA,4966
-NGA,803,803. BAMA,4967
-NGA,804,804. BAYO,4968
-NGA,805,805. BIU,4969
-NGA,806,806. CHIBOK,4970
-NGA,807,807. DAMABOA,4971
-NGA,809,809. GUBIO,4972
-NGA,812,812. HAWUL,4973
-NGA,813,813. JERE,4974
-NGA,814,814. KAGA,4975
-NGA,818,818. KWAYA KUSAR,4976
-NGA,819,819. MAFA,4977
-NGA,821,821. MAIDUGURI METROPOLITAN,4978
-NGA,824,824. MONGUNO,4979
-NGA,827,827. SHANI,4980
-NGA,901,901. UGEP SOUTH-ABI,4981
-NGA,902,902. AKAMKPA  BUYO,4982
-NGA,903,903. AKPABUYO,4983
-NGA,904,904. BAKASSI,4984
-NGA,905,905. BEKWARRA,4985
-NGA,906,906. BIASE,4986
-NGA,907,907. BOKI,4987
-NGA,908,908. CALABAR MUNICIPAL,4988
-NGA,909,909. CALABAR SOUTH,4989
-NGA,910,910. ETUNG,4990
-NGA,911,911. IKOM,4991
-NGA,912,912. OBANLIKU,4992
-NGA,913,913. OBUBRA,4993
-NGA,914,914. OBUDU,4994
-NGA,915,915. ODUKPANI,4995
-NGA,916,916. OGOJA,4996
-NGA,917,917. YAKURR-UGEP NORTH,4997
-NGA,918,918. YALLA,4998
+NER,61,Abala,4196
+NER,51,Abalak,4197
+NER,11,Aderbissinat,4198
+NER,41,Aguie,4199
+NER,12,Arlit,4200
+NER,62,Ayerou,4201
+NER,52,Bagaroua,4202
+NER,63,Balleyara,4203
+NER,65,Bankilare,4204
+NER,71,Belbedji,4205
+NER,42,Bermo,4206
+NER,53,Birni N'konni,4207
+NER,31,Boboye,4208
+NER,54,Bouza,4209
+NER,43,Dakoro,4210
+NER,72,Damagaram Takaya,4211
+NER,22,Diffa,4212
+NER,32,Dioundiou,4213
+NER,33,Dogondoutchi,4214
+NER,34,Dosso,4215
+NER,73,Dungass,4216
+NER,35,Falmey,4217
+NER,66,Filingue,4218
+NER,36,Gaya,4219
+NER,44,Gazaoua,4220
+NER,67,Gotheye,4221
+NER,23,Goudoumaria,4222
+NER,74,Goure,4223
+NER,45,Guidan-Roumdji,4224
+NER,14,Iferouane,4225
+NER,55,Illela,4226
+NER,15,Ingall,4227
+NER,75,Kantche,4228
+NER,56,Keita,4229
+NER,68,Kollo,4230
+NER,37,Loga,4231
+NER,57,Madaoua,4232
+NER,46,Madarounfa,4233
+NER,76,Magaria,4234
+NER,24,Maine-Soroa,4235
+NER,58,Malbaza,4236
+NER,47,Mayahi,4237
+NER,77,Mirriah,4238
+NER,25,N'gourti,4239
+NER,26,N'guigmi,4240
+NER,69,Ouallam,4241
+NER,610,Say,4242
+NER,59,Tahoua,4243
+NER,78,Takeita,4244
+NER,79,Tanout,4245
+NER,511,Tchintabaraden,4246
+NER,16,Tchirozerine,4247
+NER,611,Tera,4248
+NER,710,Tesker,4249
+NER,48,Tessaoua,4250
+NER,38,Tibiri (Doutchi),4251
+NER,612,Tillaberi,4252
+NER,613,Torodi,4253
+NER,490,Ville De Maradi,4254
+NER,890,Ville De Niamey,4255
+NER,590,Ville De Tahoua,4256
+NER,790,Ville De Zinder,4257
+NGA,1001,1001. Aniocha North,4258
+NGA,1003,1003. Bomadi,4259
+NGA,1004,1004. Burutu,4260
+NGA,1005,1005. Ethiope East,4261
+NGA,1006,1006. Ethiope West,4262
+NGA,1007,1007. Ika North-East,4263
+NGA,1008,1008. Ika South,4264
+NGA,1009,1009. Isoko North,4265
+NGA,101,101. Aba North,4266
+NGA,1010,1010. Isoko South,4267
+NGA,1012,1012. Ndokwa West,4268
+NGA,1013,1013. Okpe,4269
+NGA,1014,1014. Oshimili North,4270
+NGA,1015,1015. Oshimili South,4271
+NGA,1016,1016. Patani,4272
+NGA,1017,1017. Sapele,4273
+NGA,1018,1018. Udu,4274
+NGA,1019,1019. Ughelli North,4275
+NGA,102,102. Aba South,4276
+NGA,1020,1020. Ughelli South,4277
+NGA,1021,1021. Ukwani,4278
+NGA,1022,1022. Uvwie,4279
+NGA,1024,1024. Warri South,4280
+NGA,1025,1025. Warri South West,4281
+NGA,103,103. Arochukwu,4282
+NGA,104,104. Bende,4283
+NGA,105,105. Ikwuano,4284
+NGA,106,106. Isiala Ngwa North,4285
+NGA,107,107. Isiala Ngwa South,4286
+NGA,108,108. Isuikwato,4287
+NGA,109,109. Obingwa,4288
+NGA,110,110. Ohafia,4289
+NGA,1101,1101. Abakaliki,4290
+NGA,1102,1102. Afikpo North,4291
+NGA,1103,1103. Afikpo South,4292
+NGA,1104,1104. Ebonyi,4293
+NGA,1105,1105. Ezza North,4294
+NGA,1106,1106. Ezza South,4295
+NGA,1107,1107. Ikwo,4296
+NGA,1108,1108. Ishielu,4297
+NGA,1109,1109. Ivo,4298
+NGA,111,111. Osisioma North,4299
+NGA,1110,1110. Izzi,4300
+NGA,1111,1111. Ohaozara,4301
+NGA,1112,1112. Ohaukwu,4302
+NGA,1113,1113. Onicha,4303
+NGA,112,112. Ugwunagbo,4304
+NGA,113,113. Ukwa East,4305
+NGA,114,114. Ukwa West,4306
+NGA,115,115. Umuahia North,4307
+NGA,116,116. Umuahia South,4308
+NGA,117,117. Umunneochi,4309
+NGA,1201,1201. Akoko Edo,4310
+NGA,1202,1202. Egor,4311
+NGA,1203,1203. Esan Central,4312
+NGA,1204,1204. Esan North East,4313
+NGA,1205,1205. Esan South East,4314
+NGA,1206,1206. Esan West,4315
+NGA,1207,1207. Etsako Central,4316
+NGA,1208,1208. Etsako East,4317
+NGA,1209,1209. Etsako West,4318
+NGA,1210,1210. Igugben,4319
+NGA,1211,1211. Ikpooba Okha,4320
+NGA,1212,1212. Oredo,4321
+NGA,1213,1213. Orhionmwon,4322
+NGA,1214,1214. Ovia North East,4323
+NGA,1215,1215. Ovia South West,4324
+NGA,1216,1216. Owan East,4325
+NGA,1217,1217. Owan West,4326
+NGA,1218,1218. Uhunmuonde,4327
+NGA,1301,1301. Ado Ekiti,4328
+NGA,1302,1302. Efon,4329
+NGA,1303,1303. Ekiti East,4330
+NGA,1304,1304. Ekiti South,4331
+NGA,1305,1305. Ekiti West,4332
+NGA,1306,1306. Emure,4333
+NGA,1307,1307. Gbonyin,4334
+NGA,1308,1308. Ido/Osi,4335
+NGA,1309,1309. Ijero,4336
+NGA,1310,1310. Ikere,4337
+NGA,1311,1311. Ikole,4338
+NGA,1312,1312. Ilejemeje,4339
+NGA,1313,1313. Irepodun/Ifelodun,4340
+NGA,1314,1314. Ise/Orun,4341
+NGA,1315,1315. Moba,4342
+NGA,1316,1316. Oye,4343
+NGA,1401,1401. Aniniri,4344
+NGA,1402,1402. Awgu,4345
+NGA,1403,1403. Enugu East,4346
+NGA,1404,1404. Enugu North,4347
+NGA,1405,1405. Enugu South,4348
+NGA,1406,1406. Ezeagu,4349
+NGA,1407,1407. Igbo Etiti,4350
+NGA,1408,1408. Igbo-Eze North,4351
+NGA,1409,1409. Igbo-Eze South,4352
+NGA,1410,1410. Isi-Uzo,4353
+NGA,1411,1411. Nkanu East,4354
+NGA,1412,1412. Nkanu West,4355
+NGA,1413,1413. Nsukka,4356
+NGA,1414,1414. Oji River,4357
+NGA,1415,1415. Udenu,4358
+NGA,1416,1416. Udi,4359
+NGA,1417,1417. Uzo-Uwani,4360
+NGA,1501,1501. Akko,4361
+NGA,1502,1502. Balanga,4362
+NGA,1503,1503. Billiri,4363
+NGA,1504,1504. Dukku,4364
+NGA,1505,1505. Funakaye,4365
+NGA,1506,1506. Gombe,4366
+NGA,1507,1507. Kaltungo,4367
+NGA,1508,1508. Kwami,4368
+NGA,1509,1509. Nafada,4369
+NGA,1510,1510. Shongom,4370
+NGA,1511,1511. Yamaltu-Deba,4371
+NGA,1601,1601. Aboh Mbaise,4372
+NGA,1602,1602. Ahiazu Mbaise,4373
+NGA,1603,1603. Ehime Mbano,4374
+NGA,1604,1604. Ezinihitte-Mbaise,4375
+NGA,1605,1605. Ideato North,4376
+NGA,1606,1606. Ideato South,4377
+NGA,1607,1607. Ihitte-Uboma,4378
+NGA,1608,1608. Ikeduru,4379
+NGA,1609,1609. Isiala Mbano,4380
+NGA,1610,1610. Isu,4381
+NGA,1611,1611. Mbaitoli,4382
+NGA,1612,1612. Ngor Okpala,4383
+NGA,1613,1613. Njaba,4384
+NGA,1614,1614. Nkwere,4385
+NGA,1615,1615. Nwangele,4386
+NGA,1616,1616. Obowo,4387
+NGA,1617,1617. Oguta,4388
+NGA,1618,1618. Ohaji-Egbema,4389
+NGA,1619,1619. Okigwe,4390
+NGA,1620,1620. Ono-Imo,4391
+NGA,1621,1621. Orlu,4392
+NGA,1622,1622. Orsu,4393
+NGA,1623,1623. Oru East,4394
+NGA,1624,1624. Oru West,4395
+NGA,1625,1625. Owerri Municipal,4396
+NGA,1626,1626. Owerri North,4397
+NGA,1627,1627. Owerri West,4398
+NGA,1701,1701. Auyo,4399
+NGA,1702,1702. Babura,4400
+NGA,1703,1703. Birnin Kudu,4401
+NGA,1704,1704. Birniwa,4402
+NGA,1705,1705. Buji,4403
+NGA,1706,1706. Dutse,4404
+NGA,1707,1707. Gagarawa,4405
+NGA,1708,1708. Garki,4406
+NGA,1709,1709. Gumel,4407
+NGA,1710,1710. Guri,4408
+NGA,1711,1711. Gwaram,4409
+NGA,1712,1712. Gwiwa,4410
+NGA,1713,1713. Hadejia,4411
+NGA,1714,1714. Jahun,4412
+NGA,1715,1715. Kafin Hausa,4413
+NGA,1716,1716. Kaugama,4414
+NGA,1717,1717. Kazaure,4415
+NGA,1718,1718. Kirika Kasamma,4416
+NGA,1719,1719. Kiyawa,4417
+NGA,1720,1720. Maigatar,4418
+NGA,1721,1721. Malam Madori,4419
+NGA,1722,1722. Miga,4420
+NGA,1723,1723. Ringim,4421
+NGA,1724,1724. Roni,4422
+NGA,1725,1725. Sule Tankar-Kar,4423
+NGA,1726,1726. Taura,4424
+NGA,1727,1727. Yan-Kwashi,4425
+NGA,1801,1801. Birnin Gwari,4426
+NGA,1802,1802. Chikun,4427
+NGA,1803,1803. Giwa,4428
+NGA,1804,1804. Igabi,4429
+NGA,1805,1805. Ikara,4430
+NGA,1806,1806. Jaba,4431
+NGA,1807,1807. Jema'a,4432
+NGA,1808,1808. Kachia,4433
+NGA,1809,1809. Kaduna North,4434
+NGA,1810,1810. Kaduna South,4435
+NGA,1811,1811. Kagarko,4436
+NGA,1813,1813. Kaura,4437
+NGA,1814,1814. Kauru,4438
+NGA,1815,1815. Kubau,4439
+NGA,1816,1816. Kudan,4440
+NGA,1817,1817. Lere,4441
+NGA,1818,1818. Makarfi,4442
+NGA,1819,1819. Sabon Gari,4443
+NGA,1820,1820. Sanga,4444
+NGA,1821,1821. Soba,4445
+NGA,1822,1822. Zangon Kataf,4446
+NGA,1823,1823. Zaria,4447
+NGA,1901,1901. Ajingi,4448
+NGA,1902,1902. Albasu,4449
+NGA,1904,1904. Bebeji,4450
+NGA,1905,1905. Bichi,4451
+NGA,1906,1906. Bunkure,4452
+NGA,1907,1907. Dala,4453
+NGA,1908,1908. Danbatta,4454
+NGA,1909,1909. Dawakin Kudu,4455
+NGA,1910,1910. Dawakin Tofa,4456
+NGA,1911,1911. Doguwa,4457
+NGA,1912,1912. Fagge,4458
+NGA,1913,1913. Gabasawa,4459
+NGA,1914,1914. Garko,4460
+NGA,1915,1915. Garum Mallam,4461
+NGA,1916,1916. Gaya,4462
+NGA,1917,1917. Gezawa,4463
+NGA,1918,1918. Gwale,4464
+NGA,1920,1920. Kabiya,4465
+NGA,1921,1921. Kabo,4466
+NGA,1922,1922. Kano Municipal,4467
+NGA,1923,1923. Karaye,4468
+NGA,1924,1924. Kiru,4469
+NGA,1925,1925. Kumbotso,4470
+NGA,1926,1926. Kunchi,4471
+NGA,1927,1927. Kura,4472
+NGA,1928,1928. Madobi,4473
+NGA,1930,1930. Minjibir,4474
+NGA,1931,1931. Nasarawa (Kano),4475
+NGA,1932,1932. Rano,4476
+NGA,1933,1933. Rimin Gado,4477
+NGA,1934,1934. Rogo,4478
+NGA,1935,1935. Shanono,4479
+NGA,1936,1936. Sumaila,4480
+NGA,1937,1937. Takai,4481
+NGA,1938,1938. Tarauni,4482
+NGA,1939,1939. Tofa,4483
+NGA,1941,1941. Tudun Wada,4484
+NGA,1942,1942. Ungogo,4485
+NGA,1943,1943. Warawa,4486
+NGA,1944,1944. Wudil,4487
+NGA,2001,2001. Bakori,4488
+NGA,2002,2002. Batagarawa,4489
+NGA,2003,2003. Batsari,4490
+NGA,2004,2004. Baure,4491
+NGA,2005,2005. Bindawa,4492
+NGA,2006,2006. Charanchi,4493
+NGA,2007,2007. Dan Musa,4494
+NGA,2008,2008. Dandume,4495
+NGA,2009,2009. Danja,4496
+NGA,201,201. Demsa,4497
+NGA,2010,2010. Daura,4498
+NGA,2011,2011. Dutsi,4499
+NGA,2012,2012. Dutsin-Ma,4500
+NGA,2013,2013. Faskari,4501
+NGA,2014,2014. Funtua,4502
+NGA,2015,2015. Ingawa,4503
+NGA,2016,2016. Jibia,4504
+NGA,2017,2017. Kafur,4505
+NGA,2018,2018. Kaita,4506
+NGA,2019,2019. Kankara,4507
+NGA,202,202. Fufore/Gurin,4508
+NGA,2020,2020. Kankia,4509
+NGA,2021,2021. Katsina,4510
+NGA,2022,2022. Kurfi,4511
+NGA,2023,2023. Kusada,4512
+NGA,2024,2024. Mai'adua,4513
+NGA,2025,2025. Malunfashi,4514
+NGA,2026,2026. Mani,4515
+NGA,2027,2027. Mashi,4516
+NGA,2028,2028. Matazu,4517
+NGA,2029,2029. Musawa,4518
+NGA,203,203. Ganye,4519
+NGA,2030,2030. Rimi,4520
+NGA,2031,2031. Sabuwa,4521
+NGA,2032,2032. Safana,4522
+NGA,2033,2033. Sandamu,4523
+NGA,2034,2034. Zango,4524
+NGA,204,204. Girei,4525
+NGA,205,205. Gombi,4526
+NGA,206,206. Guyuk,4527
+NGA,207,207. Hong,4528
+NGA,208,208. Jada,4529
+NGA,209,209. Lamurde,4530
+NGA,210,210. Madagali,4531
+NGA,2101,2101. Aleiro,4532
+NGA,2102,2102. Arewa,4533
+NGA,2103,2103. Argungu,4534
+NGA,2104,2104. Augie,4535
+NGA,2105,2105. Bagudo,4536
+NGA,2106,2106. Birnin Kebbi,4537
+NGA,2107,2107. Bunza,4538
+NGA,2108,2108. Dandi,4539
+NGA,2109,2109. Danko-Wasagu,4540
+NGA,211,211. Maiha,4541
+NGA,2110,2110. Fakai,4542
+NGA,2111,2111. Gwandu,4543
+NGA,2112,2112. Jega,4544
+NGA,2113,2113. Kalgo,4545
+NGA,2114,2114. Koko Besse,4546
+NGA,2115,2115. Maiyama,4547
+NGA,2116,2116. Ngaski,4548
+NGA,2117,2117. Sakaba,4549
+NGA,2118,2118. Shanga,4550
+NGA,2119,2119. Suru,4551
+NGA,212,212. Mayo-Belwa,4552
+NGA,2120,2120. Yauri,4553
+NGA,2121,2121. Zuru,4554
+NGA,213,213. Michika,4555
+NGA,214,214. Mubi North,4556
+NGA,215,215. Mubi South,4557
+NGA,216,216. Numan,4558
+NGA,217,217. Shelleng,4559
+NGA,218,218. Song,4560
+NGA,219,219. Toungo,4561
+NGA,220,220. Yola North,4562
+NGA,2201,2201. Adavi,4563
+NGA,2202,2202. Ajaokuta,4564
+NGA,2203,2203. Ankpa,4565
+NGA,2204,2204. Bassa (Kogi),4566
+NGA,2205,2205. Dekina,4567
+NGA,2206,2206. Ibaji,4568
+NGA,2207,2207. Idah,4569
+NGA,2208,2208. Igalamela-Odolu,4570
+NGA,2209,2209. Ijumu,4571
+NGA,221,221. Yola South,4572
+NGA,2210,2210. Kabba/Bunu,4573
+NGA,2211,2211. Kogi(K.k),4574
+NGA,2212,2212. Lokoja,4575
+NGA,2213,2213. Mopamuro,4576
+NGA,2214,2214. Ofu,4577
+NGA,2216,2216. Okehi,4578
+NGA,2217,2217. Okene,4579
+NGA,2218,2218. Olamaboro,4580
+NGA,2219,2219. Omala,4581
+NGA,2220,2220. Yagba East,4582
+NGA,2221,2221. Yagba West,4583
+NGA,2301,2301. Asa,4584
+NGA,2302,2302. Baruten,4585
+NGA,2303,2303. Edu,4586
+NGA,2304,2304. Ekiti,4587
+NGA,2305,2305. Ifelodun (Kwara),4588
+NGA,2306,2306. Ilorin East,4589
+NGA,2307,2307. Ilorin South,4590
+NGA,2308,2308. Ilorin West,4591
+NGA,2309,2309. Irepodun (Kwara),4592
+NGA,2310,2310. Isin,4593
+NGA,2311,2311. Kaiama,4594
+NGA,2312,2312. Moro,4595
+NGA,2313,2313. Offa,4596
+NGA,2314,2314. Oke-Ero,4597
+NGA,2315,2315. Oyun,4598
+NGA,2316,2316. Patigi,4599
+NGA,2401,2401. Agege,4600
+NGA,2402,2402. Ajeromi/Ifelodun,4601
+NGA,2403,2403. Alimosho,4602
+NGA,2404,2404. Amuwo-Odofin,4603
+NGA,2405,2405. Apapa,4604
+NGA,2406,2406. Badagry,4605
+NGA,2407,2407. Epe,4606
+NGA,2408,2408. Eti-Osa,4607
+NGA,2409,2409. Ibeju-Lekki,4608
+NGA,2410,2410. Ifako-Ijaye,4609
+NGA,2412,2412. Ikorordu,4610
+NGA,2413,2413. Kosofe,4611
+NGA,2414,2414. Lagos Island,4612
+NGA,2415,2415. Lagos Mainland,4613
+NGA,2416,2416. Mushin,4614
+NGA,2417,2417. Ojo,4615
+NGA,2418,2418. Oshodi/Isolo,4616
+NGA,2419,2419. Shomolu,4617
+NGA,2420,2420. Surulere (Lagos),4618
+NGA,2501,2501. Akwanga,4619
+NGA,2502,2502. Awe,4620
+NGA,2503,2503. Doma,4621
+NGA,2504,2504. Karu,4622
+NGA,2505,2505. Keana,4623
+NGA,2506,2506. Keffi,4624
+NGA,2507,2507. Kokona,4625
+NGA,2508,2508. Lafia,4626
+NGA,2509,2509. Nasarawa (Nasarawa),4627
+NGA,2510,2510. Nasarawa Eggon,4628
+NGA,2511,2511. Obi (Nasarawa),4629
+NGA,2512,2512. Toto,4630
+NGA,2513,2513. Wamba,4631
+NGA,2601,2601. Agaie,4632
+NGA,2602,2602. Agwara,4633
+NGA,2603,2603. Bida,4634
+NGA,2604,2604. Borgu,4635
+NGA,2605,2605. Bosso,4636
+NGA,2606,2606. Chanchaga,4637
+NGA,2607,2607. Edati-Idati,4638
+NGA,2608,2608. Gbako,4639
+NGA,2609,2609. Gurara,4640
+NGA,2610,2610. Katcha,4641
+NGA,2611,2611. Kontagora,4642
+NGA,2612,2612. Lapai,4643
+NGA,2613,2613. Lavun,4644
+NGA,2614,2614. Magama,4645
+NGA,2615,2615. Mariga,4646
+NGA,2616,2616. Mashegu,4647
+NGA,2617,2617. Mokwa,4648
+NGA,2618,2618. Muya,4649
+NGA,2619,2619. Paikoro,4650
+NGA,2620,2620. Rafi,4651
+NGA,2621,2621. Rijau,4652
+NGA,2622,2622. Shiroro,4653
+NGA,2623,2623. Suleja,4654
+NGA,2624,2624. Tafa,4655
+NGA,2625,2625. Wushishi,4656
+NGA,2701,2701. Abeokuta North,4657
+NGA,2702,2702. Abeokuta South,4658
+NGA,2703,2703. Ado-Odo/Ota,4659
+NGA,2704,2704. Egbado-North/Yewa,4660
+NGA,2705,2705. Egbado-South/,4661
+NGA,2707,2707. Ifo,4662
+NGA,2708,2708. Ijebu-East,4663
+NGA,2709,2709. Ijebu-North,4664
+NGA,2710,2710. Ijebu-North-East,4665
+NGA,2711,2711. Ijebu-Ode,4666
+NGA,2712,2712. Ikenne,4667
+NGA,2713,2713. Imeko/Afon,4668
+NGA,2714,2714. Ipokia,4669
+NGA,2715,2715. Obafemi-Owode,4670
+NGA,2716,2716. Odeda,4671
+NGA,2717,2717. Odogbolu,4672
+NGA,2718,2718. Ogun-Waterside,4673
+NGA,2719,2719. Remo North,4674
+NGA,2720,2720. Sagamu,4675
+NGA,2801,2801. Akoko North East,4676
+NGA,2802,2802. Akoko North West,4677
+NGA,2803,2803. Akoko South East,4678
+NGA,2804,2804. Akoko South West,4679
+NGA,2805,2805. Akure North,4680
+NGA,2806,2806. Akure South,4681
+NGA,2807,2807. Ese-Odo,4682
+NGA,2808,2808. Idanre,4683
+NGA,2809,2809. Ifedore,4684
+NGA,2810,2810. Ilaje,4685
+NGA,2811,2811. Ileoluji/Okeigbo,4686
+NGA,2812,2812. Irele,4687
+NGA,2813,2813. Odigbo,4688
+NGA,2814,2814. Okitipupa,4689
+NGA,2815,2815. Ondo East,4690
+NGA,2816,2816. Ondo West,4691
+NGA,2817,2817. Ose,4692
+NGA,2818,2818. Owo,4693
+NGA,2901,2901. Atakumosa East,4694
+NGA,2902,2902. Atakumosa West,4695
+NGA,2903,2903. Ayedade,4696
+NGA,2904,2904. Ayedire,4697
+NGA,2905,2905. Bolowaduro,4698
+NGA,2906,2906. Boripe,4699
+NGA,2907,2907. Ede North,4700
+NGA,2908,2908. Ede South,4701
+NGA,2909,2909. Egbedore,4702
+NGA,2910,2910. Ejigbo,4703
+NGA,2911,2911. Ife Central,4704
+NGA,2912,2912. Ife East,4705
+NGA,2913,2913. Ife North,4706
+NGA,2915,2915. Ifedayo,4707
+NGA,2917,2917. Ila,4708
+NGA,2918,2918. Ilesa East,4709
+NGA,2919,2919. Ilesa West,4710
+NGA,2920,2920. Irepodun (Osun),4711
+NGA,2921,2921. Irewole,4712
+NGA,2922,2922. Isokan,4713
+NGA,2923,2923. Iwo,4714
+NGA,2924,2924. Obokun,4715
+NGA,2925,2925. Odo-Otin,4716
+NGA,2926,2926. Ola-Oluwa,4717
+NGA,2927,2927. Olorunda,4718
+NGA,2928,2928. Oriade,4719
+NGA,2929,2929. Orolu,4720
+NGA,2930,2930. Osogbo,4721
+NGA,3002,3002. Akinyele,4722
+NGA,3003,3003. Atiba,4723
+NGA,3004,3004. Atigbo,4724
+NGA,3005,3005. Egbeda,4725
+NGA,3006,3006. Ibadan North,4726
+NGA,3007,3007. Ibadan North East,4727
+NGA,3008,3008. Ibadan North West,4728
+NGA,3009,3009. Ibadan South East,4729
+NGA,301,301. Abak,4730
+NGA,3010,3010. Ibadan South West,4731
+NGA,3011,3011. Ibarapa Central,4732
+NGA,3012,3012. Ibarapa East,4733
+NGA,3013,3013. Ibarapa North,4734
+NGA,3014,3014. Ido,4735
+NGA,3015,3015. Irepo,4736
+NGA,3016,3016. Iseyin,4737
+NGA,3017,3017. Itesiwaju,4738
+NGA,3018,3018. Iwajowa,4739
+NGA,3019,3019. Kajola,4740
+NGA,3020,3020. Lagelu,4741
+NGA,3021,3021. Ogbomoso North,4742
+NGA,3022,3022. Ogbomoso South,4743
+NGA,3024,3024. Olorunsogo,4744
+NGA,3025,3025. Oluyole,4745
+NGA,3026,3026. Ona-Ara,4746
+NGA,3027,3027. Orelope,4747
+NGA,3029,3029. Oyo East,4748
+NGA,303,303. Eket,4749
+NGA,3030,3030. Oyo West,4750
+NGA,3031,3031. Saki East,4751
+NGA,3032,3032. Saki West,4752
+NGA,3033,3033. Surulere (Oyo),4753
+NGA,304,304. Essien Udim,4754
+NGA,305,305. Etim Ekpo,4755
+NGA,306,306. Etinan,4756
+NGA,307,307. Ibeno,4757
+NGA,308,308. Ibesikpo Asutan,4758
+NGA,309,309. Ibiono Ibom,4759
+NGA,310,310. Ika,4760
+NGA,3101,3101. Barkin Ladi,4761
+NGA,3102,3102. Bassa (Plateau),4762
+NGA,3103,3103. Bokkos,4763
+NGA,3104,3104. Jos East,4764
+NGA,3105,3105. Jos North,4765
+NGA,3106,3106. Jos South,4766
+NGA,3107,3107. Kanam,4767
+NGA,3108,3108. Kanke,4768
+NGA,3109,3109. Lantang North,4769
+NGA,311,311. Ikono,4770
+NGA,3110,3110. Lantang South,4771
+NGA,3111,3111. Mangu,4772
+NGA,3112,3112. Mikang,4773
+NGA,3113,3113. Pankshin,4774
+NGA,3114,3114. Qua'an Pan,4775
+NGA,3115,3115. Riyom,4776
+NGA,3116,3116. Shendam,4777
+NGA,3117,3117. Wase,4778
+NGA,312,312. Ikot Abasi,4779
+NGA,313,313. Ikot Ekpene,4780
+NGA,314,314. Ini,4781
+NGA,315,315. Itu,4782
+NGA,316,316. Mbo,4783
+NGA,317,317. Mkpat Enin,4784
+NGA,318,318. Nsit Atai,4785
+NGA,319,319. Nsit Eket,4786
+NGA,320,320. Nsit Ibom,4787
+NGA,3201,3201. Abua-Odua,4788
+NGA,3202,3202. Ahoada East,4789
+NGA,3203,3203. Ahoada West,4790
+NGA,3204,3204. Akuku-Toru,4791
+NGA,3205,3205. Andoni,4792
+NGA,3206,3206. Asari-Toru,4793
+NGA,3208,3208. Degema,4794
+NGA,3209,3209. Eleme,4795
+NGA,321,321. Nsit Ubium,4796
+NGA,3210,3210. Emohu,4797
+NGA,3211,3211. Etche,4798
+NGA,3212,3212. Gokana,4799
+NGA,3213,3213. Ikwerre,4800
+NGA,3214,3214. Khana,4801
+NGA,3215,3215. Obio Akpor,4802
+NGA,3216,3216. Ogba/Egbema/Ndoni,4803
+NGA,3218,3218. Okirika,4804
+NGA,3219,3219. Omumma,4805
+NGA,322,322. Obot Akara,4806
+NGA,3221,3221. Oyigbo,4807
+NGA,3222,3222. Port Harcourt,4808
+NGA,3223,3223. Tai,4809
+NGA,323,323. Okobo,4810
+NGA,324,324. Onna,4811
+NGA,325,325. Oron,4812
+NGA,326,326. Oruk Anam,4813
+NGA,327,327. Udung Uko,4814
+NGA,328,328. Ukanafun,4815
+NGA,329,329. Uruan,4816
+NGA,330,330. Urue Offong/Oruko,4817
+NGA,3301,3301. Binji,4818
+NGA,3302,3302. Bodinga,4819
+NGA,3303,3303. Dange Shuni,4820
+NGA,3304,3304. Gada,4821
+NGA,3305,3305. Goronyo,4822
+NGA,3306,3306. Gudu,4823
+NGA,3307,3307. Gwadabawa,4824
+NGA,3308,3308. Illela,4825
+NGA,3309,3309. Isa,4826
+NGA,331,331. Uyo,4827
+NGA,3310,3310. Kebbe,4828
+NGA,3311,3311. Kware,4829
+NGA,3312,3312. Rabah,4830
+NGA,3313,3313. Sabon Birnin,4831
+NGA,3314,3314. Shagari,4832
+NGA,3315,3315. Silame,4833
+NGA,3316,3316. Sokoto North,4834
+NGA,3317,3317. Sokoto South,4835
+NGA,3318,3318. Tambuwai,4836
+NGA,3319,3319. Tangaza,4837
+NGA,3320,3320. Tureta,4838
+NGA,3321,3321. Wamakko,4839
+NGA,3322,3322. Wurno,4840
+NGA,3323,3323. Yabo Bodingo,4841
+NGA,3401,3401. Ardo-Kola,4842
+NGA,3402,3402. Bali,4843
+NGA,3403,3403. Donga,4844
+NGA,3404,3404. Gashaka,4845
+NGA,3405,3405. Gassol,4846
+NGA,3406,3406. Ibi,4847
+NGA,3407,3407. Jalingo,4848
+NGA,3408,3408. Karim-Lamido,4849
+NGA,3409,3409. Kurmi,4850
+NGA,3410,3410. Lau,4851
+NGA,3411,3411. Sardauna,4852
+NGA,3412,3412. Takum,4853
+NGA,3413,3413. Ussa,4854
+NGA,3414,3414. Wukari,4855
+NGA,3415,3415. Yorro,4856
+NGA,3416,3416. Zing,4857
+NGA,3501,3501. Bade,4858
+NGA,3502,3502. Bursari,4859
+NGA,3503,3503. Damaturu,4860
+NGA,3504,3504. Fika,4861
+NGA,3505,3505. Fune,4862
+NGA,3506,3506. Geidam,4863
+NGA,3507,3507. Gujba,4864
+NGA,3508,3508. Gulani,4865
+NGA,3509,3509. Jakusko,4866
+NGA,3510,3510. Karasuwa,4867
+NGA,3511,3511. Machina,4868
+NGA,3512,3512. Nangere,4869
+NGA,3513,3513. Nguru,4870
+NGA,3514,3514. Potiskum,4871
+NGA,3515,3515. Tarmuwa,4872
+NGA,3516,3516. Yunusari,4873
+NGA,3517,3517. Yusufari,4874
+NGA,3601,3601. Anka,4875
+NGA,3602,3602. Bakura,4876
+NGA,3603,3603. Birnin Magaji,4877
+NGA,3604,3604. Bukkuyum,4878
+NGA,3605,3605. Bungudu,4879
+NGA,3606,3606. Gummi,4880
+NGA,3607,3607. Gusau,4881
+NGA,3608,3608. Kaura Namoda,4882
+NGA,3610,3610. Maru,4883
+NGA,3611,3611. Shinkafi,4884
+NGA,3612,3612. Talata Mafara,4885
+NGA,3613,3613. Tsafe,4886
+NGA,3614,3614. Zurmi,4887
+NGA,3701,3701. Abaji Area Council,4888
+NGA,3702,3702. Bwari Area Council,4889
+NGA,3703,3703. Gwagwalada Area Council,4890
+NGA,3704,3704. Kuje Area Council,4891
+NGA,3705,3705. Kwali Area Council,4892
+NGA,3706,3706. Municipal Area Council,4893
+NGA,401,401. Aguata,4894
+NGA,402,402. Anambra East,4895
+NGA,403,403. Anambra West,4896
+NGA,404,404. Anaocha,4897
+NGA,405,405. Awka North,4898
+NGA,406,406. Awka South,4899
+NGA,407,407. Ayamelum,4900
+NGA,408,408. Dunukofia,4901
+NGA,409,409. Ekwusigo,4902
+NGA,410,410. Idemili North,4903
+NGA,411,411. Idemili South,4904
+NGA,412,412. Ihiala,4905
+NGA,413,413. Njikoka,4906
+NGA,414,414. Nnewi North,4907
+NGA,415,415. Nnewi South,4908
+NGA,416,416. Ogbaru,4909
+NGA,417,417. Onitsha North,4910
+NGA,418,418. Onitsha South,4911
+NGA,419,419. Orumba North,4912
+NGA,420,420. Orumba South,4913
+NGA,421,421. Oyi,4914
+NGA,501,501. Alkaleri,4915
+NGA,502,502. Bauchi,4916
+NGA,503,503. Bogoro,4917
+NGA,504,504. Damban,4918
+NGA,505,505. Darazo,4919
+NGA,506,506. Dass,4920
+NGA,507,507. Gamawa,4921
+NGA,508,508. Ganjuwa,4922
+NGA,509,509. Giade,4923
+NGA,510,510. Itas-Gadau,4924
+NGA,511,511. Jama'are,4925
+NGA,512,512. Katagum,4926
+NGA,513,513. Kirfi,4927
+NGA,514,514. Misau,4928
+NGA,515,515. Ningi,4929
+NGA,516,516. Shira,4930
+NGA,517,517. Tafawa Balewa,4931
+NGA,518,518. Toro,4932
+NGA,519,519. Warji,4933
+NGA,520,520. Zaki,4934
+NGA,601,601. Brass,4935
+NGA,602,602. Ekeremor,4936
+NGA,603,603. Kolokuma/Opokuma,4937
+NGA,604,604. Nembe,4938
+NGA,605,605. Ogbia,4939
+NGA,606,606. Sagbama,4940
+NGA,607,607. Southern Ijaw,4941
+NGA,608,608. Yenagoa,4942
+NGA,701,701. Ador,4943
+NGA,702,702. Agatu,4944
+NGA,703,703. Apa,4945
+NGA,704,704. Buruku,4946
+NGA,705,705. Gboko,4947
+NGA,706,706. Guma,4948
+NGA,707,707. Gwer-East,4949
+NGA,708,708. Gwer-West,4950
+NGA,709,709. Katsina-Ala,4951
+NGA,710,710. Konshisha,4952
+NGA,711,711. Kwande,4953
+NGA,712,712. Logo,4954
+NGA,713,713. Makurdi,4955
+NGA,714,714. Obi (Benue),4956
+NGA,715,715. Ogbadibo,4957
+NGA,716,716. Ohimini,4958
+NGA,717,717. Oju,4959
+NGA,718,718. Okpokwu,4960
+NGA,719,719. Otukpo,4961
+NGA,720,720. Tarka,4962
+NGA,721,721. Ukum,4963
+NGA,722,722. Ushongo,4964
+NGA,723,723. Vandeikya,4965
+NGA,802,802. Asikira/Uba,4966
+NGA,803,803. Bama,4967
+NGA,804,804. Bayo,4968
+NGA,805,805. Biu,4969
+NGA,806,806. Chibok,4970
+NGA,807,807. Damaboa,4971
+NGA,809,809. Gubio,4972
+NGA,812,812. Hawul,4973
+NGA,813,813. Jere,4974
+NGA,814,814. Kaga,4975
+NGA,818,818. Kwaya Kusar,4976
+NGA,819,819. Mafa,4977
+NGA,821,821. Maiduguri Metropolitan,4978
+NGA,824,824. Monguno,4979
+NGA,827,827. Shani,4980
+NGA,901,901. Ugep South-Abi,4981
+NGA,902,902. Akamkpa  Buyo,4982
+NGA,903,903. Akpabuyo,4983
+NGA,904,904. Bakassi,4984
+NGA,905,905. Bekwarra,4985
+NGA,906,906. Biase,4986
+NGA,907,907. Boki,4987
+NGA,908,908. Calabar Municipal,4988
+NGA,909,909. Calabar South,4989
+NGA,910,910. Etung,4990
+NGA,911,911. Ikom,4991
+NGA,912,912. Obanliku,4992
+NGA,913,913. Obubra,4993
+NGA,914,914. Obudu,4994
+NGA,915,915. Odukpani,4995
+NGA,916,916. Ogoja,4996
+NGA,917,917. Yakurr-Ugep North,4997
+NGA,918,918. Yalla,4998
 NIC,NA,NA,4999
-NLD,NL1,NL1,5000
-NLD,NL2,NL2,5001
-NLD,NL3,NL3,5002
-NLD,NL4,NL4,5003
+NLD,NL1,Nl1,5000
+NLD,NL2,Nl2,5001
+NLD,NL3,Nl3,5002
+NLD,NL4,Nl4,5003
 NOR,NA,NA,5004
 PAK,NA,NA,5005
 PER,010101,010101,5006
@@ -6264,20 +6264,20 @@ PER,250302,250302,6262
 PER,250303,250303,6263
 PER,250401,250401,6264
 PHL,NA,NA,6265
-POL,PL1,PL1,6266
-POL,PL2,PL2,6267
-POL,PL3,PL3,6268
-POL,PL4,PL4,6269
-POL,PL5,PL5,6270
-POL,PL6,PL6,6271
-PRT,PT1,PT1,6272
-PRT,PT2,PT2,6273
-PRT,PT3,PT3,6274
+POL,PL1,Pl1,6266
+POL,PL2,Pl2,6267
+POL,PL3,Pl3,6268
+POL,PL4,Pl4,6269
+POL,PL5,Pl5,6270
+POL,PL6,Pl6,6271
+PRT,PT1,Pt1,6272
+PRT,PT2,Pt2,6273
+PRT,PT3,Pt3,6274
 PRY,NA,NA,6275
-ROU,RO1,RO1,6276
-ROU,RO2,RO2,6277
-ROU,RO3,RO3,6278
-ROU,RO4,RO4,6279
+ROU,RO1,Ro1,6276
+ROU,RO2,Ro2,6277
+ROU,RO3,Ro3,6278
+ROU,RO4,Ro4,6279
 RUS,NA,NA,6280
 RWA,57,Bugesera,6281
 RWA,44,Burera,6282
@@ -6309,58 +6309,58 @@ RWA,41,Rulindo,6307
 RWA,36,Rusizi,6308
 RWA,32,Rutsiro,6309
 RWA,51,Rwamagana,6310
-SEN,51,bakel,6311
-SEN,31,bambey,6312
-SEN,21,bignona,6313
-SEN,122,birkelane,6314
-SEN,142,bounkiling,6315
-SEN,41,dagana,6316
-SEN,11,dakar,6317
-SEN,32,diourbel,6318
-SEN,91,fatick,6319
-SEN,92,foundiougne,6320
-SEN,93,gossas,6321
-SEN,53,goudiry,6322
-SEN,143,goudomp,6323
-SEN,14,guediawaye,6324
-SEN,63,guinguineo,6325
-SEN,121,kaffrine,6326
-SEN,112,kanel,6327
-SEN,61,kaolack,6328
-SEN,81,kebemer,6329
-SEN,131,kedougou,6330
-SEN,101,kolda,6331
-SEN,123,koungheul,6332
-SEN,54,koupentoum,6333
-SEN,82,linguere,6334
-SEN,83,louga,6335
-SEN,33,M’BACKE,6336
-SEN,71,M’BOUR,6337
-SEN,124,MALEM HODDAR,6338
-SEN,111,matam,6339
-SEN,103,MEDINA YORO FOULAH,6340
-SEN,62,nioro,6341
-SEN,22,oussouye,6342
-SEN,12,pikine,6343
-SEN,42,podor,6344
-SEN,113,ranerou,6345
-SEN,13,rufisque,6346
-SEN,43,SAINT LOUIS,6347
-SEN,132,salemata,6348
-SEN,133,saraya,6349
-SEN,141,sedhiou,6350
-SEN,52,tambacounda,6351
-SEN,72,thies,6352
-SEN,73,tivaouane,6353
-SEN,102,velingara,6354
-SEN,23,ziguinchor,6355
+SEN,51,Bakel,6311
+SEN,31,Bambey,6312
+SEN,21,Bignona,6313
+SEN,122,Birkelane,6314
+SEN,142,Bounkiling,6315
+SEN,41,Dagana,6316
+SEN,11,Dakar,6317
+SEN,32,Diourbel,6318
+SEN,91,Fatick,6319
+SEN,92,Foundiougne,6320
+SEN,93,Gossas,6321
+SEN,53,Goudiry,6322
+SEN,143,Goudomp,6323
+SEN,14,Guediawaye,6324
+SEN,63,Guinguineo,6325
+SEN,121,Kaffrine,6326
+SEN,112,Kanel,6327
+SEN,61,Kaolack,6328
+SEN,81,Kebemer,6329
+SEN,131,Kedougou,6330
+SEN,101,Kolda,6331
+SEN,123,Koungheul,6332
+SEN,54,Koupentoum,6333
+SEN,82,Linguere,6334
+SEN,83,Louga,6335
+SEN,33,M’backe,6336
+SEN,71,M’bour,6337
+SEN,124,Malem Hoddar,6338
+SEN,111,Matam,6339
+SEN,103,Medina Yoro Foulah,6340
+SEN,62,Nioro,6341
+SEN,22,Oussouye,6342
+SEN,12,Pikine,6343
+SEN,42,Podor,6344
+SEN,113,Ranerou,6345
+SEN,13,Rufisque,6346
+SEN,43,Saint Louis,6347
+SEN,132,Salemata,6348
+SEN,133,Saraya,6349
+SEN,141,Sedhiou,6350
+SEN,52,Tambacounda,6351
+SEN,72,Thies,6352
+SEN,73,Tivaouane,6353
+SEN,102,Velingara,6354
+SEN,23,Ziguinchor,6355
 SLV,301,Acajutla,6356
 SLV,401,Agua Caliente,6357
 SLV,601,Aguilares,6358
-SLV,101,AhuachapÃ¡n,6359
-SLV,1101,AlegrÃ­a,6360
+SLV,101,Ahuachapã¡N,6359
+SLV,1101,Alegrã­a,6360
 SLV,1401,Anamoros,6361
-SLV,501,Antiguo CuscatlÃ¡n,6362
+SLV,501,Antiguo Cuscatlã¡N,6362
 SLV,102,Apaneca,6363
 SLV,1001,Apastepeque,6364
 SLV,602,Apopa,6365
@@ -6368,55 +6368,55 @@ SLV,1301,Arambala,6366
 SLV,302,Armenia,6367
 SLV,103,Atiquizaya,6368
 SLV,603,Ayutuxtepeque,6369
-SLV,1102,BerlÃ­n,6370
-SLV,1402,BolÃ­var,6371
+SLV,1102,Berlã­n,6370
+SLV,1402,Bolã­var,6371
 SLV,1302,Cacaopera,6372
 SLV,701,Candelaria,6373
-SLV,201,Candelaria de la Frontera,6374
+SLV,201,Candelaria De La Frontera,6374
 SLV,1201,Carolina,6375
 SLV,407,Chalatenango,6376
 SLV,203,Chalchuapa,6377
 SLV,1204,Chapeltique,6378
 SLV,1304,Chilanga,6379
-SLV,505,ChiltiupÃ¡n,6380
+SLV,505,Chiltiupã¡N,6380
 SLV,1205,Chinameca,6381
 SLV,1206,Chirilagua,6382
 SLV,901,Cinquera,6383
-SLV,404,CitalÃ¡,6384
+SLV,404,Citalã¡,6384
 SLV,502,Ciudad Arce,6385
 SLV,1202,Ciudad Barrios,6386
 SLV,619,Ciudad Delgado,6387
 SLV,202,Coatepeque,6388
 SLV,702,Cojutepeque,6389
-SLV,503,ColÃ³n,6390
-SLV,1203,ComacarÃ¡n,6391
+SLV,503,Colã³N,6390
+SLV,1203,Comacarã¡N,6391
 SLV,405,Comalapa,6392
 SLV,504,Comasagua,6393
-SLV,1104,ConcepciÃ³n Batres,6394
-SLV,104,ConcepciÃ³n de Ataco,6395
-SLV,1403,ConcepciÃ³n de Oriente,6396
-SLV,406,ConcepciÃ³n Quezaltepeque,6397
+SLV,1104,Concepciã³N Batres,6394
+SLV,104,Concepciã³N De Ataco,6395
+SLV,1403,Concepciã³N De Oriente,6396
+SLV,406,Concepciã³N Quezaltepeque,6397
 SLV,1404,Conchagua,6398
 SLV,1303,Corinto,6399
 SLV,304,Cuisnahuat,6400
 SLV,604,Cuscatancingo,6401
-SLV,1305,Delicias de ConcepciÃ³n,6402
+SLV,1305,Delicias De Concepciã³N,6402
 SLV,909,Dolores,6403
-SLV,408,Dulce Nombre de MarÃ­a,6404
+SLV,408,Dulce Nombre De Marã­a,6404
 SLV,703,El Carmen,6405
 SLV,1405,El Carmen,6406
 SLV,409,El Carrizal,6407
 SLV,204,El Congo,6408
 SLV,1306,El Divisadero,6409
 SLV,605,El Paisnal,6410
-SLV,410,El ParaÃ­so,6411
+SLV,410,El Paraã­so,6411
 SLV,205,El Porvenir,6412
 SLV,105,El Refugio,6413
 SLV,704,El Rosario,6414
 SLV,802,El Rosario,6415
 SLV,1307,El Rosario,6416
 SLV,1406,El Sauce,6417
-SLV,1207,El TrÃ¡nsito,6418
+SLV,1207,El Trã¡Nsito,6418
 SLV,1105,El Triunfo,6419
 SLV,1107,Estanzuelas,6420
 SLV,902,Guacotecti,6421
@@ -6427,129 +6427,129 @@ SLV,106,Guaymango,6425
 SLV,606,Guazapa,6426
 SLV,903,Ilobasco,6427
 SLV,607,Ilopango,6428
-SLV,1407,IntipucÃ¡,6429
+SLV,1407,Intipucã¡,6429
 SLV,306,Izalco,6430
 SLV,507,Jayaque,6431
-SLV,803,JerusalÃ©n,6432
+SLV,803,Jerusalã©N,6432
 SLV,508,Jicalapa,6433
 SLV,1108,Jiquilisco,6434
 SLV,1310,Joateca,6435
 SLV,1311,Jocoaitique,6436
 SLV,1312,Jocoro,6437
-SLV,307,JuayÃºa,6438
+SLV,307,Juayãºa,6438
 SLV,1109,Jucuapa,6439
-SLV,1110,JucuarÃ¡n,6440
+SLV,1110,Jucuarã¡N,6440
 SLV,107,Jujutla,6441
 SLV,904,Jutiapa,6442
 SLV,411,La Laguna,6443
 SLV,509,La Libertad,6444
 SLV,412,La Palma,6445
 SLV,413,La Reina,6446
-SLV,1408,La UniÃ³n,6447
+SLV,1408,La Uniã³N,6447
 SLV,414,Las Vueltas,6448
 SLV,1409,Lislique,6449
 SLV,1208,Lolotique,6450
 SLV,1313,Lolotiquillo,6451
 SLV,206,Masahuat,6452
 SLV,1314,Meanguera,6453
-SLV,1410,Meanguera del Golfo,6454
+SLV,1410,Meanguera Del Golfo,6454
 SLV,608,Mejicanos,6455
-SLV,804,Mercedes la Ceiba,6456
-SLV,1111,Mercedes UmaÃ±a,6457
-SLV,207,MetapÃ¡n,6458
+SLV,804,Mercedes La Ceiba,6456
+SLV,1111,Mercedes Umaã±A,6457
+SLV,207,Metapã¡N,6458
 SLV,1209,Moncagua,6459
 SLV,705,Monte San Juan,6460
 SLV,308,Nahuizalco,6461
 SLV,309,Nahulingo,6462
 SLV,609,Nejapa,6463
-SLV,415,Nombre de JesÃºs,6464
-SLV,416,Nueva ConcepciÃ³n,6465
+SLV,415,Nombre De Jesãºs,6464
+SLV,416,Nueva Concepciã³N,6465
 SLV,1411,Nueva Esparta,6466
 SLV,1210,Nueva Guadalupe,6467
-SLV,1211,Nuevo EdÃ©n de San Juan,6468
-SLV,418,Ojos de Agua,6469
+SLV,1211,Nuevo Edã©N De San Juan,6468
+SLV,418,Ojos De Agua,6469
 SLV,805,Olocuilta,6470
-SLV,706,Oratorio de ConcepciÃ³n,6471
+SLV,706,Oratorio De Concepciã³N,6471
 SLV,1315,Osicala,6472
 SLV,610,Panchimalco,6473
 SLV,1412,Pasaquina,6474
-SLV,1316,PerquÃ­n,6475
-SLV,1413,PolorÃ³s,6476
-SLV,1114,Puerto el Triunfo,6477
+SLV,1316,Perquã­n,6475
+SLV,1413,Polorã³S,6476
+SLV,1114,Puerto El Triunfo,6477
 SLV,1212,Quelepa,6478
 SLV,512,Quezaltepeque,6479
-SLV,611,Rosario de Mora,6480
+SLV,611,Rosario De Mora,6480
 SLV,513,Sacacoyo,6481
-SLV,310,SalcoatitÃ¡n,6482
+SLV,310,Salcoatitã¡N,6482
 SLV,1414,San Alejo,6483
 SLV,1213,San Antonio,6484
-SLV,420,San Antonio de la Cruz,6485
-SLV,311,San Antonio del Monte,6486
+SLV,420,San Antonio De La Cruz,6485
+SLV,311,San Antonio Del Monte,6486
 SLV,208,San Antonio Pajonal,6487
-SLV,707,San BartolomÃ© Perulapia,6488
+SLV,707,San Bartolomã© Perulapia,6488
 SLV,1317,San Carlos,6489
 SLV,1003,San Cayetano Istepeque,6490
-SLV,708,San CristÃ³bal,6491
+SLV,708,San Cristã³Bal,6491
 SLV,1117,San Dionisio,6492
 SLV,808,San Emigdio,6493
 SLV,1006,San Esteban Catarina,6494
 SLV,422,San Fernando,6495
 SLV,1319,San Francisco Gotera,6496
 SLV,1119,San Francisco Javier,6497
-SLV,108,San Francisco MenÃ©ndez,6498
+SLV,108,San Francisco Menã©Ndez,6498
 SLV,1214,San Gerardo,6499
 SLV,1007,San Idelfonso,6500
 SLV,425,San Ignacio,6501
 SLV,905,San Isidro,6502
 SLV,1215,San Jorge,6503
-SLV,1415,San JosÃ©,6504
-SLV,709,San JosÃ© Guayabal,6505
-SLV,514,San JosÃ© Villanueva,6506
+SLV,1415,San Josã©,6504
+SLV,709,San Josã© Guayabal,6505
+SLV,514,San Josã© Villanueva,6506
 SLV,810,San Juan Nonualco,6507
 SLV,515,San Juan Opico,6508
 SLV,811,San Juan Talpa,6509
-SLV,312,San JuliÃ¡n,6510
+SLV,312,San Juliã¡N,6510
 SLV,109,San Lorenzo,6511
 SLV,1008,San Lorenzo,6512
-SLV,1216,San Luis de la Reina,6513
-SLV,822,San Luis la Herradura,6514
+SLV,1216,San Luis De La Reina,6513
+SLV,822,San Luis La Herradura,6514
 SLV,813,San Luis Talpa,6515
 SLV,612,San Marcos,6516
-SLV,613,San MartÃ­n,6517
+SLV,613,San Martã­n,6517
 SLV,1217,San Miguel,6518
 SLV,814,San Miguel Tepezontes,6519
 SLV,517,San Pablo Tacachico,6520
 SLV,815,San Pedro Masahuat,6521
-SLV,710,San Pedro PerulapÃ¡n,6522
+SLV,710,San Pedro Perulapã¡N,6522
 SLV,110,San Pedro Puxtla,6523
 SLV,431,San Rafael,6524
 SLV,711,San Rafael Cedros,6525
 SLV,817,San Rafael Obrajuelo,6526
 SLV,1218,San Rafael Oriente,6527
 SLV,614,San Salvador,6528
-SLV,1009,San SebastiÃ¡n,6529
-SLV,209,San SebastiÃ¡n Salitrillo,6530
-SLV,1321,San SimÃ³n,6531
+SLV,1009,San Sebastiã¡N,6529
+SLV,209,San Sebastiã¡N Salitrillo,6530
+SLV,1321,San Simã³N,6531
 SLV,1010,San Vicente,6532
 SLV,210,Santa Ana,6533
 SLV,313,Santa Catarina Masahuat,6534
 SLV,713,Santa Cruz Analquito,6535
 SLV,714,Santa Cruz Michapa,6536
 SLV,1118,Santa Elena,6537
-SLV,305,Santa Isabel IshuatÃ¡n,6538
-SLV,1120,Santa MarÃ­a,6539
-SLV,818,Santa MarÃ­a Ostuma,6540
+SLV,305,Santa Isabel Ishuatã¡N,6538
+SLV,1120,Santa Marã­a,6539
+SLV,818,Santa Marã­a Ostuma,6540
 SLV,432,Santa Rita,6541
-SLV,1416,Santa Rosa de Lima,6542
-SLV,211,Santa Rosa GuachipilÃ­n,6543
+SLV,1416,Santa Rosa De Lima,6542
+SLV,211,Santa Rosa Guachipilã­n,6543
 SLV,511,Santa Tecla,6544
-SLV,212,Santiago de la Frontera,6545
-SLV,1121,Santiago de MarÃ­a,6546
+SLV,212,Santiago De La Frontera,6545
+SLV,1121,Santiago De Marã­a,6546
 SLV,819,Santiago Nonualco,6547
 SLV,615,Santiago Texacuangos,6548
 SLV,1005,Santo Domingo,6549
-SLV,314,Santo Domingo de GuzmÃ¡n,6550
-SLV,616,Santo TomÃ¡s,6551
+SLV,314,Santo Domingo De Guzmã¡N,6550
+SLV,616,Santo Tomã¡S,6551
 SLV,1322,Sensembra,6552
 SLV,906,Sensuntepeque,6553
 SLV,1219,Sesori,6554
@@ -6561,26 +6561,26 @@ SLV,715,Suchitoto,6559
 SLV,111,Tacuba,6560
 SLV,519,Talnique,6561
 SLV,820,Tapalhuaca,6562
-SLV,1122,TecapÃ¡n,6563
+SLV,1122,Tecapã¡N,6563
 SLV,1011,Tecoluca,6564
 SLV,907,Tejutepeque,6565
 SLV,433,Tejutla,6566
 SLV,716,Tenancingo,6567
 SLV,520,Teotepeque,6568
 SLV,521,Tepecoyo,6569
-SLV,1012,TepetitÃ¡n,6570
+SLV,1012,Tepetitã¡N,6570
 SLV,213,Texistepeque,6571
 SLV,618,Tonacatepeque,6572
 SLV,1324,Torola,6573
-SLV,112,TurÃ­n,6574
+SLV,112,Turã­n,6574
 SLV,1220,Uluazapa,6575
-SLV,1123,UsulutÃ¡n,6576
+SLV,1123,Usulutã¡N,6576
 SLV,1013,Verapaz,6577
 SLV,908,Victoria,6578
 SLV,1325,Yamabal,6579
 SLV,1417,Yayantique,6580
-SLV,1326,YoloaiquÃ­n,6581
-SLV,1418,YucuaiquÃ­n,6582
+SLV,1326,Yoloaiquã­n,6581
+SLV,1418,Yucuaiquã­n,6582
 SLV,821,Zacatecoluca,6583
 SLV,522,Zaragoza,6584
 SRB,NA,NA,6585
@@ -6594,52 +6594,52 @@ SUR,7,07 Paramaribo,6592
 SUR,8,08 Saramacca,6593
 SUR,9,09 Sipaliwini,6594
 SUR,10,10 Wanica,6595
-SVK,SK0,SK0,6596
-SWE,SE1,SE1,6597
-SWE,SE2,SE2,6598
-SWE,SE3,SE3,6599
-TGO,210,agou,6600
-TGO,204,akebou,6601
-TGO,206,amou,6602
-TGO,202,anie,6603
-TGO,602,Arrondissement II,6604
-TGO,603,Arrondissement III,6605
-TGO,604,Arrondissement IV,6606
+SVK,SK0,Sk0,6596
+SWE,SE1,Se1,6597
+SWE,SE2,Se2,6598
+SWE,SE3,Se3,6599
+TGO,210,Agou,6600
+TGO,204,Akebou,6601
+TGO,206,Amou,6602
+TGO,202,Anie,6603
+TGO,602,Arrondissement Ii,6604
+TGO,603,Arrondissement Iii,6605
+TGO,604,Arrondissement Iv,6606
 TGO,605,Arrondissement V,6607
-TGO,407,assoli,6608
-TGO,107,ave,6609
-TGO,103,BAS-MONO,6610
-TGO,406,bassar,6611
-TGO,402,binah,6612
-TGO,304,blitta,6613
-TGO,502,cinkasse,6614
-TGO,405,dankpen,6615
-TGO,207,danyi,6616
-TGO,403,doufelgou,6617
-TGO,203,EST-MONO,6618
-TGO,101,golfe,6619
-TGO,601,GOLFE2,6620
-TGO,211,haho,6621
-TGO,404,keran,6622
-TGO,209,kloto,6623
-TGO,401,kozah,6624
-TGO,208,kpele,6625
-TGO,503,kpendjal,6626
-TGO,102,lacs,6627
-TGO,212,MOYEN-MONO,6628
-TGO,201,ogou,6629
-TGO,504,oti,6630
-TGO,303,sotouboua,6631
-TGO,305,Sous Prefecture de MO,6632
-TGO,505,tandjoare,6633
-TGO,302,tchamba,6634
-TGO,301,tchaoudjo,6635
-TGO,501,tone,6636
+TGO,407,Assoli,6608
+TGO,107,Ave,6609
+TGO,103,Bas-Mono,6610
+TGO,406,Bassar,6611
+TGO,402,Binah,6612
+TGO,304,Blitta,6613
+TGO,502,Cinkasse,6614
+TGO,405,Dankpen,6615
+TGO,207,Danyi,6616
+TGO,403,Doufelgou,6617
+TGO,203,Est-Mono,6618
+TGO,101,Golfe,6619
+TGO,601,Golfe2,6620
+TGO,211,Haho,6621
+TGO,404,Keran,6622
+TGO,209,Kloto,6623
+TGO,401,Kozah,6624
+TGO,208,Kpele,6625
+TGO,503,Kpendjal,6626
+TGO,102,Lacs,6627
+TGO,212,Moyen-Mono,6628
+TGO,201,Ogou,6629
+TGO,504,Oti,6630
+TGO,303,Sotouboua,6631
+TGO,305,Sous Prefecture De Mo,6632
+TGO,505,Tandjoare,6633
+TGO,302,Tchamba,6634
+TGO,301,Tchaoudjo,6635
+TGO,501,Tone,6636
 TGO,606,Unknown,6637
-TGO,104,vo,6638
-TGO,205,wawa,6639
-TGO,105,yoto,6640
-TGO,106,zio,6641
+TGO,104,Vo,6638
+TGO,205,Wawa,6639
+TGO,105,Yoto,6640
+TGO,106,Zio,6641
 THA,10,10-Bangkok,6642
 THA,11,11-Samut Prakan,6643
 THA,12,12-Nonthaburi,6644
@@ -6733,9 +6733,9 @@ UGA,217,Budaka,6731
 UGA,218,Bududa,6732
 UGA,201,Bugiri,6733
 UGA,420,Buhweju,6734
-UGA,117,BUIKWE,6735
+UGA,117,Buikwe,6735
 UGA,219,Bukedea,6736
-UGA,118,BUKOMANSIMBI,6737
+UGA,118,Bukomansimbi,6737
 UGA,220,Bukwo,6738
 UGA,225,Bulambuli,6739
 UGA,416,Buliisa,6740
@@ -6743,11 +6743,11 @@ UGA,401,Bundibugyo,6741
 UGA,402,Bushenyi,6742
 UGA,202,Busia,6743
 UGA,221,Butaleja,6744
-UGA,119,BUTAMBALA,6745
-UGA,120,BUVUMA,6746
-UGA,226,BUYENDE,6747
+UGA,119,Butambala,6745
+UGA,120,Buvuma,6746
+UGA,226,Buyende,6747
 UGA,317,Dokolo,6748
-UGA,121,GOMBA,6749
+UGA,121,Gomba,6749
 UGA,304,Gulu,6750
 UGA,403,Hoima,6751
 UGA,417,Ibanda,6752
@@ -6758,19 +6758,19 @@ UGA,318,Kaabong,6756
 UGA,404,Kabale,6757
 UGA,405,Kabarole,6758
 UGA,213,Kaberamaido,6759
-UGA,101,KALANGALA,6760
+UGA,101,Kalangala,6760
 UGA,222,Kaliro,6761
-UGA,122,KALUNGU,6762
-UGA,102,KAMPALA,6763
+UGA,122,Kalungu,6762
+UGA,102,Kampala,6763
 UGA,205,Kamuli,6764
 UGA,413,Kamwenge,6765
 UGA,414,Kanungu,6766
 UGA,206,Kapchorwa,6767
 UGA,406,Kasese,6768
 UGA,207,Katakwi,6769
-UGA,112,KAYUNGA,6770
+UGA,112,Kayunga,6770
 UGA,407,Kibaale,6771
-UGA,103,KIBOGA,6772
+UGA,103,Kiboga,6772
 UGA,227,Kibuku,6773
 UGA,419,Kiruhura,6774
 UGA,421,Kiryandongo,6775
@@ -6781,54 +6781,54 @@ UGA,325,Kole,6779
 UGA,306,Kotido,6780
 UGA,208,Kumi,6781
 UGA,228,Kween,6782
-UGA,123,KYANKWANZI,6783
-UGA,422,KYEGEGWA,6784
+UGA,123,Kyankwanzi,6783
+UGA,422,Kyegegwa,6784
 UGA,415,Kyenjojo,6785
 UGA,326,Lamwo,6786
 UGA,307,Lira,6787
-UGA,229,LUUKA,6788
-UGA,104,LUWERO,6789
-UGA,124,LWENGO,6790
-UGA,114,LYANTONDE,6791
+UGA,229,Luuka,6788
+UGA,104,Luwero,6789
+UGA,124,Lwengo,6790
+UGA,114,Lyantonde,6791
 UGA,223,Manafwa,6792
 UGA,320,Maracha,6793
-UGA,105,MASAKA,6794
+UGA,105,Masaka,6794
 UGA,409,Masindi,6795
 UGA,214,Mayuge,6796
 UGA,209,Mbale,6797
 UGA,410,Mbarara,6798
 UGA,423,Mitooma,6799
-UGA,115,MITYANA,6800
+UGA,115,Mityana,6800
 UGA,308,Moroto,6801
 UGA,309,Moyo,6802
-UGA,106,MPIGI,6803
-UGA,107,MUBENDE,6804
-UGA,108,MUKONO,6805
+UGA,106,Mpigi,6803
+UGA,107,Mubende,6804
+UGA,108,Mukono,6805
 UGA,311,Nakapiripirit,6806
-UGA,116,NAKASEKE,6807
-UGA,109,NAKASONGOLA,6808
-UGA,230,NAMAYINGO,6809
+UGA,116,Nakaseke,6807
+UGA,109,Nakasongola,6808
+UGA,230,Namayingo,6809
 UGA,224,Namutumba,6810
 UGA,327,Napak,6811
 UGA,310,Nebbi,6812
 UGA,231,Ngora,6813
-UGA,424,NTOROKO,6814
+UGA,424,Ntoroko,6814
 UGA,411,Ntugamo,6815
 UGA,328,Nwoya,6816
-UGA,329,Otuke (from Lira),6817
+UGA,329,Otuke (From Lira),6817
 UGA,321,Oyam,6818
 UGA,312,Pader,6819
 UGA,210,Pallisa,6820
-UGA,110,RAKAI,6821
+UGA,110,Rakai,6821
 UGA,425,Rubirizi,6822
 UGA,412,Rukungiri,6823
-UGA,232,Serere (from soroti),6824
+UGA,232,Serere (From Soroti),6824
 UGA,426,Sheema,6825
 UGA,215,Sironko,6826
 UGA,211,Soroti,6827
-UGA,111,SSEMBABULE,6828
+UGA,111,Ssembabule,6828
 UGA,212,Tororo,6829
-UGA,113,WAKISO,6830
+UGA,113,Wakiso,6830
 UGA,313,Yumbe,6831
 UGA,330,Zombo,6832
 URY,NA,NA,6833
@@ -6839,7 +6839,7 @@ USA,06,California,6837
 USA,08,Colorado,6838
 USA,09,Connecticut,6839
 USA,10,Delaware,6840
-USA,11,District of Columbia,6841
+USA,11,District Of Columbia,6841
 USA,12,Florida,6842
 USA,13,Georgia,6843
 USA,15,Hawaii,6844
