@@ -95,7 +95,8 @@ for(i in Country.Set){
     Province.Code <- read_csv(sprintf("../0_Data/1_Household Data/%s/2_Codes/Province.Code.csv", path_0), show_col_types = FALSE)%>%
       mutate(province = as.character(province),
              Province = as.character(Province))%>%
-      distinct()
+      distinct()%>%
+      mutate(Province = str_to_title(Province))
     
     carbon_pricing_incidence_1 <- carbon_pricing_incidence_1 %>%
       mutate(province = as.character(province))%>%
@@ -106,7 +107,8 @@ for(i in Country.Set){
     District.Code <- read_csv(sprintf("../0_Data/1_Household Data/%s/2_Codes/District.Code.csv", path_0), show_col_types = FALSE)%>%
       mutate(district = as.character(district),
              District = as.character(District))%>%
-      distinct()
+      distinct()%>%
+      mutate(District = str_to_title(District))
     
     carbon_pricing_incidence_1 <- carbon_pricing_incidence_1 %>%
       mutate(district = as.character(district))%>%
@@ -434,6 +436,13 @@ data_joint_1 <- data_joint_0 %>%
   filter(!is.na(hh_weights))%>%
   # Adjust incorrect weights for Czech Republic 
   mutate(hh_weights = ifelse(Country == "CZE", hh_weights*129.1408, hh_weights))%>%
+  # Adjust religiosity for Israel
+  mutate(religiosity = ifelse(religiosity == 1, "Secular",
+                              ifelse(religiosity == 2, "Traditional", 
+                                     ifelse(religiosity == 3, "Religious", 
+                                            ifelse(religiosity == 4, "Orthodox",
+                                                   ifelse(religiosity == 5, "Mixed Lifestyle", 
+                                                          ifelse(religiosity == 6, "Other", religiosity)))))))%>%
   filter(!is.na(hh_expenditures_USD_2014))%>%
   select(- truck1.01, -pump.01, -solar.heater.01, -video.01, -cooker.01, -cooler.01, -sewing.machine.01, -sewing_machine.01,
          - region, -ocu_hhh, -vacuum.01, -internet.access, -municipality, -clust, -printer.01, -density, -alphabetism, -freezer.01, -heater.01,
