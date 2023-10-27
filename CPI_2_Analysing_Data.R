@@ -8957,80 +8957,101 @@ test <- data_8.4.1 %>%
   mutate(agg_2 = ifelse(aggregate > 0.03,1,0))
 
 # 8.6.0   Figures for Appendix ####
-# 8.6.1   Figure non-parametric Engel-curves ####
+# 8.6.1   Figure parametric Engel-curves ####
+
+Country.Set.8.6.1 <- Country.Set %>%
+  mutate(Group_1 = c(rep("A",30), rep("B",30), rep("C",27)))
 
 data_8.6.1.1 <- data_2 %>%
-  left_join(Country.Set)%>%
+  left_join(Country.Set.8.6.1)%>%
   mutate(Country_long = fct_reorder(Country_long,hh_expenditures_USD_2014_mean, min))%>%
-  select(hh_id, hh_weights, Country, starts_with("share_"), hh_expenditures_USD_2014_pc, Group_Income, Country_long)%>%
+  select(hh_id, hh_weights, Country, starts_with("share_"), hh_expenditures_USD_2014_pc, Group_1, Country_long)%>%
   select(-share_other_binning)%>%
   rename(share_Energy = share_energy, share_Food = share_food, share_Services = share_services, share_Goods = share_goods)%>%
   pivot_longer(starts_with("share"), names_to = "Type", values_to = "Share", names_prefix = "share_")
 
 data_8.6.1.2 <- data_2 %>%
-  left_join(Country.Set)%>%
+  left_join(Country.Set.8.6.1)%>%
   mutate(Country_long = fct_reorder(Country_long,hh_expenditures_USD_2014_mean, min))%>%
-  group_by(Country_long, Income_Group_5, Group_Income)%>%
+  group_by(Country_long, Income_Group_5, Group_1)%>%
   summarise(mean_hh_expenditures_USD_2014_pc = wtd.mean(hh_expenditures_USD_2014_pc, hh_weights))%>%
   ungroup()
 
-for(Group_0 in c("A", "B", "C", "D")){
+for(Group_0 in c("A", "B", "C")){
   
-  if(Group_0 == "A") upper_bound <- 7000 else if(Group_0 == "B") upper_bound <- 12000 else if(Group_0 == "C") upper_bound <- 27000 else upper_bound <- 74000
+    data_8.6.1.4 <- data_8.6.1.2 %>%
+      filter(Group_1 == Group_0)
   
-  breaks <- plyr::round_any(seq(0,upper_bound, length.out = 3), 5000, f = floor)
+  if(Group_0 == "A"){
+    upper_bound <- 5500
+    breaks      <- c(0,2500,5000)
+    binwidth_0    <- 250
+    scale_0       <- 400
+    accuracy_2nd  <- 0.01
+  }
   
+  if(Group_0 == "B"){
+    upper_bound   <- 11500
+    breaks        <- c(0,5000,10000)
+    binwidth_0    <- 500
+    scale_0       <- 1200
+    accuracy_2nd  <- 0.01
+  }
+  
+  if(Group_0 == "C"){
+    upper_bound <- 75000
+    breaks      <- c(0,25000,50000)
+    binwidth_0    <- 2000
+    scale_0       <- 5000
+    accuracy_2nd  <- 0.01
+  }
+    
   data_8.6.1.3 <- data_8.6.1.1 %>%
-    filter(Group_Income == Group_0)%>%
-    filter(Country != "IND" & Country != "IDN")
-  
-  data_8.6.1.4 <- data_8.6.1.2 %>%
-    filter(Group_Income == Group_0)
+    filter(Group_1 == Group_0)%>%
+    mutate(Share = Share/scale_0)
   
   P_8.6.1.1 <- ggplot()+
-    #geom_point(data = filter(data_4.3.1.2.4, Type == "Energy"), aes(x = hh_expenditures_USD_2014_pc,
-    #                                    y = Share), 
-    #           alpha = 0.01, shape = 21, colour = "black", fill = "#E64B35FF", size = 0.3)+
-    geom_vline(data = data_8.6.1.4, aes(xintercept = mean_hh_expenditures_USD_2014_pc), size = 0.5)+
-    # geom_histogram(data = data_8.6.1.3, aes(x = hh_expenditures_USD_2014_pc, weight = hh_weights), fill = "blue", alpha = 0.5)+
-    geom_smooth(data = data_8.6.1.3, 
+    geom_vline(data = data_8.6.1.4, aes(xintercept = mean_hh_expenditures_USD_2014_pc), size = 0.2)+
+    geom_histogram(data = data_8.6.1.3, aes(x = hh_expenditures_USD_2014_pc, weight = hh_weights, group = Country_long, y = ..density..),
+                   binwidth = binwidth_0, fill = "lightgrey", colour = "black", alpha = 0.6, size = 0.05)+
+    stat_smooth(data = data_8.6.1.3, 
                 aes(x = hh_expenditures_USD_2014_pc, weight = hh_weights, 
                     y = Share, fill = Type, colour = Type),
-                level = 0.99, method = "loess", formula = y ~ x, fullrange = TRUE, se = FALSE)+
+                level = 0.95, method = "lm", formula = y ~ x + I(x^2), size = 0.3, fullrange = FALSE)+
     theme_bw()+
-    facet_wrap(. ~ Country_long, ncol = 4)+
-    xlab("Household expenditures per capita in US-$ (2014)") + ylab("Share of total expenditures")+
+    facet_wrap(. ~ Country_long, ncol = 5)+
+    xlab("Household expenditures per capita in US-$ (2017)") + ylab("Share of total expenditures")+
     scale_fill_nejm()+
     scale_colour_nejm()+
     labs(colour = "", fill = "")+
-    coord_cartesian(xlim = c(0, upper_bound), ylim = c(0,0.8))+
-    scale_y_continuous(labels = scales::percent_format(accuracy = 1), expand = c(0,0))+
+    coord_cartesian(xlim = c(0, upper_bound), ylim = c(0,0.00022*4000/scale_0))+
+    scale_y_continuous(expand = c(0,0),
+                       labels = scales::percent_format(accuracy = 1, scale = scale_0*100),
+                       sec.axis = sec_axis(~ ., labels = scales::percent_format(accuracy = accuracy_2nd), name = "Density of households"))+
     scale_x_continuous(labels = scales::dollar_format(accuracy = 1),  expand = c(0,0),
                        breaks = breaks)+
-    ggtitle("")+
-    theme(axis.text.y = element_text(size = 7), 
-          axis.text.x = element_text(size = 7),
-          axis.title  = element_text(size = 7),
-          plot.title = element_text(size = 11),
+    theme(axis.text.y = element_text(size = 4), 
+          axis.text.x = element_text(size = 4),
+          axis.title  = element_text(size = 5),
+          plot.title = element_blank(),
           legend.position = "bottom",
-          strip.text = element_text(size = 7),
+          strip.text = element_text(size = 5),
           strip.text.y = element_text(angle = 180),
+          panel.grid.major = element_line(size = 0.2),
           #panel.grid.major = element_blank(),
           panel.grid.minor = element_blank(),
           axis.ticks = element_line(size = 0.2),
           legend.text = element_text(size = 7),
           legend.title = element_text(size = 7),
-          plot.margin = unit(c(0.3,0.5,0.3,0.3), "cm"),
+          plot.margin = unit(c(0.3,0.3,0.3,0.3), "cm"),
           panel.border = element_rect(size = 0.3))
-  
-  jpeg(sprintf("1_Figures/Analysis_Parametric_Engel_Curves/Parametric_EC_0_%s.jpg", Group_0), width = 15.5, height = 19.375, unit = "cm", res = 600)
-  print(P_4.3.1.3)
+
+  jpeg(sprintf("1_Figures/Analysis_Parametric_Engel_Curves/Parametric_EC_0_%s.jpg", Group_0), width = 15.5, height = 15.5, unit = "cm", res = 600)
+  print(P_8.6.1.1)
   dev.off()
   
-  # peg(sprintf("1_Figures/Analysis_Parametric_Engel_Curves/Parametric_EC_0_NP_%s.jpg", Group_0), width = 15.5, height = 19.375, unit = "cm", res = 200)
-  # rint(P_4.3.1.4)
-  # ev.off()
-  
-  rm(data_4.3.1.2.4, data_4.3.1.2.5, P_4.3.1.3)
+  rm(data_8.6.1.3, data_8.6.1.4, P_8.6.1.1)
   
 }
+
+rm(data_8.6.1.1, data_8.6.1.2, Country.Set.8.6.1)
