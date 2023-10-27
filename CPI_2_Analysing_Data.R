@@ -9030,12 +9030,12 @@ for(Group_0 in c("A", "B", "C")){
                        sec.axis = sec_axis(~ ., labels = scales::percent_format(accuracy = accuracy_2nd), name = "Density of households"))+
     scale_x_continuous(labels = scales::dollar_format(accuracy = 1),  expand = c(0,0),
                        breaks = breaks)+
-    theme(axis.text.y = element_text(size = 4), 
-          axis.text.x = element_text(size = 4),
-          axis.title  = element_text(size = 5),
+    theme(axis.text.y = element_text(size = 5), 
+          axis.text.x = element_text(size = 5),
+          axis.title  = element_text(size = 6),
           plot.title = element_blank(),
           legend.position = "bottom",
-          strip.text = element_text(size = 5),
+          strip.text = element_text(size = 6),
           strip.text.y = element_text(angle = 180),
           panel.grid.major = element_line(size = 0.2),
           #panel.grid.major = element_blank(),
@@ -9046,7 +9046,7 @@ for(Group_0 in c("A", "B", "C")){
           plot.margin = unit(c(0.3,0.3,0.3,0.3), "cm"),
           panel.border = element_rect(size = 0.3))
 
-  jpeg(sprintf("1_Figures/Analysis_Parametric_Engel_Curves/Parametric_EC_0_%s.jpg", Group_0), width = 15.5, height = 15.5, unit = "cm", res = 600)
+  jpeg(sprintf("1_Figures/Analysis_Parametric_Engel_Curves/Parametric_EC_0_%s.jpg", Group_0), width = 15.5, height = 18, unit = "cm", res = 600)
   print(P_8.6.1.1)
   dev.off()
   
