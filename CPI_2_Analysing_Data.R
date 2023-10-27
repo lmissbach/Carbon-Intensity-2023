@@ -1803,18 +1803,36 @@ for(i in Country.Set$Country){
   
   formula_0 <- " ~ log_hh_expenditures_USD_2014 + hh_size"
   
-  if(sum(is.na(data_5.3.2.1$urban_01)) == 0)           formula_0 <- paste0(formula_0, " + urban_01")
-  if(sum(is.na(data_5.3.2.1$electricity.access))==0)   formula_0 <- paste0(formula_0, " + electricity.access")
+  if(sum(is.na(data_5.3.2.1$urban_01)) == 0 & i != "ISR" & i != "BRA" & i != "SUR")           formula_0 <- paste0(formula_0, " + urban_01")
+  if(sum(is.na(data_5.3.2.1$electricity.access))==0 & i != "GHA" & i != "SLV" & i != "IND")   formula_0 <- paste0(formula_0, " + electricity.access")
   if(sum(is.na(data_5.3.2.1$car.01))==0)               formula_0 <- paste0(formula_0, " + car.01")
+  if(sum(is.na(data_5.3.2.1$motorcycle.01))==0)               formula_0 <- paste0(formula_0, " + motorcycle.01")
   if(sum(is.na(data_5.3.2.1$CF))==0){
-    if(!i %in% c("BEN","BFA","GTM","DOM","TGO","NER","NGA","GNB","MLI")) formula_0 <- paste0(formula_0, ' + i(CF, ref = "A_Electricity")')
-    if(i  %in% c("GTM","DOM"))                                           formula_0 <- paste0(formula_0, ' + i(CF, ref = "B_LPG")')
+    if(!i %in% c("BEN","BFA","GTM","DOM","TGO","NER","NGA","GNB","MLI", "GEO", "JOR")) formula_0 <- paste0(formula_0, ' + i(CF, ref = "A_Electricity")')
+    if(i  %in% c("GTM","DOM", "GEO"))                                           formula_0 <- paste0(formula_0, ' + i(CF, ref = "B_LPG")')
     if(i  %in% c("BEN","BFA","TGO","NER","NGA","GNB","MLI"))             formula_0 <- paste0(formula_0, ' + i(CF, ref = "Charcoal")')
   }
-  if(sum(is.na(data_5.3.2.1$ISCED_0))==0 & i != "NLD" & i != "SWE" & i != "MNG"){
-    if(i != "FIN") formula_0 <- paste0(formula_0, " + i(ISCED_0, ref = '0-1')")
-    if(i == "FIN") formula_0 <- paste0(formula_0, " + i(ISCED_0, ref = '2-5')")
+  if(sum(is.na(data_5.3.2.1$ISCED_0))==0 & i != "NLD" & i != "SWE" & i != "MNG" & i != "CHE" & i != "GBR"){
+    if(i != "FIN") formula_0 <- paste0(formula_0, " | ISCED_0")
+    if(i == "FIN") formula_0 <- paste0(formula_0, " | ISCED_0")
   }                
+  if(i %in% c("NLD", "SWE", "MNG", "CHE", "GBR")){
+    formula_0 <- paste0(formula_0, " | ")
+  }
+  
+  if(sum(is.na(data_5.3.2.1$Religion))==0)           formula_0 <- paste0(formula_0, " + Religion")
+  if(sum(is.na(data_5.3.2.1$Language))==0)           formula_0 <- paste0(formula_0, " + Language")
+  if(sum(is.na(data_5.3.2.1$religiosity))==0)        formula_0 <- paste0(formula_0, " + religiosity")
+  if(sum(is.na(data_5.3.2.1$Ethnicity))==0)          formula_0 <- paste0(formula_0, " + Ethnicity")
+  if(sum(is.na(data_5.3.2.1$Nationality))==0)        formula_0 <- paste0(formula_0, " + Nationality")
+  if(sum(is.na(data_5.3.2.1$HF))==0)                 formula_0 <- paste0(formula_0, " + HF")
+  if(sum(is.na(data_5.3.2.1$LF))==0)                 formula_0 <- paste0(formula_0, " + LF")
+  if(sum(is.na(data_5.3.2.1$refrigerator.01))==0)    formula_0 <- paste0(formula_0, " + refrigerator.01")
+  if(sum(is.na(data_5.3.2.1$washing_machine.01))==0) formula_0 <- paste0(formula_0, " + washing_machine.01")
+  if(sum(is.na(data_5.3.2.1$ac.01))==0)              formula_0 <- paste0(formula_0, " + ac.01")
+  if(sum(is.na(data_5.3.2.1$District))==0)           formula_0 <- paste0(formula_0, " + District")
+  if(sum(is.na(data_5.3.2.1$Province))==0)           formula_0 <- paste0(formula_0, " + Province")
+  
   # Leave out for now
   #if(sum(is.na(data_5.3.2.1$Ethnicity))==0 & i != "BOL"){
   #  ref_0 <- count(data_5.3.2.1, Ethnicity)$Ethnicity[which.max(count(data_5.3.2.1, Ethnicity)$n)]
@@ -1836,41 +1854,40 @@ for(i in Country.Set$Country){
                          family = quasibinomial("logit"), 
                          se = "hetero")
   
-  model_5.3.2.2 <- feglm(formula_2, 
-                         data    = data_5.3.2.1, 
-                         weights = data_5.3.2.1$hh_weights, 
-                         family = quasibinomial("logit"), 
-                         se = "hetero")
+  # model_5.3.2.2 <- feglm(formula_2, 
+  #                        data    = data_5.3.2.1, 
+  #                        weights = data_5.3.2.1$hh_weights, 
+  #                        family = quasibinomial("logit"), 
+  #                        se = "hetero")
   
   tidy_5.3.2.1 <- tidy(marginaleffects(model_5.3.2.1, wts = data_5.3.2.1$hh_weights))%>%
     mutate(Country = i)%>%
     mutate(Type = "affected_upper_80")
   
-  tidy_5.3.2.2 <- tidy(marginaleffects(model_5.3.2.2, wts = data_5.3.2.1$hh_weights))%>%
-    mutate(Country = i)%>%
-    mutate(Type = "affected_lower_80")
+  # tidy_5.3.2.2 <- tidy(marginaleffects(model_5.3.2.2, wts = data_5.3.2.1$hh_weights))%>%
+  #   mutate(Country = i)%>%
+  #   mutate(Type = "affected_lower_80")
   
   data_frame_5.3.2.1 <- data_frame_5.3.2.1 %>%
-    bind_rows(tidy_5.3.2.1)%>%
-    bind_rows(tidy_5.3.2.2)
+    bind_rows(tidy_5.3.2.1)#%>%
+    # bind_rows(tidy_5.3.2.2)
   
   end_5.3.2.1 <- Sys.time()
   
   print(paste0(i, " ", round(end_5.3.2.1 - start_5.3.2.1,1), "secs"))
   
-  rm(data_5.3.2.1, tidy_5.3.2.1, tidy_5.3.2.2, model_5.3.2.1, model_5.3.2.2, start_5.3.2.1, end_5.3.2.1, formula_0, formula_1, formula_2)
+  rm(data_5.3.2.1, tidy_5.3.2.1, model_5.3.2.1, start_5.3.2.1, end_5.3.2.1, formula_0, formula_1, formula_2)
 }
 
-# write.xlsx(data_frame_5.3.2.1, "1_Figures/Analysis_Logit_Models_Marginal_Effects/Average_Marginal_Effects_Logit.xlsx")
+# write.xlsx(data_frame_5.3.2.1, "1_Figures/Analysis_Logit_Models_Marginal_Effects/Average_Marginal_Effects_Logit_2017.xlsx")
 
-data_frame_5.3.2.3 <- read.xlsx("1_Figures/Analysis_Logit_Models_Marginal_Effects/Average_Marginal_Effects_Logit.xlsx")%>%
-  mutate(term = ifelse((contrast == "6-8 - 2-5" | contrast == "6-8 - 0-1") & !is.na(contrast), "higher_education",
-                       ifelse(contrast == "2-5 - 0-1" & !is.na(contrast), "secondary_education", term)))
+data_frame_5.3.2.3 <- read.xlsx("1_Figures/Analysis_Logit_Models_Marginal_Effects/Average_Marginal_Effects_Logit_2017.xlsx")#%>%
+  # mutate(term = ifelse((contrast == "6-8 - 2-5" | contrast == "6-8 - 0-1") & !is.na(contrast), "higher_education",
+  #                      ifelse(contrast == "2-5 - 0-1" & !is.na(contrast), "secondary_education", term)))
 
-for (Type_0 in c("affected_lower_80", "affected_upper_80")){
+for (Type_0 in c("affected_upper_80")){
   # Add education - questionable - maybe cluster higher education / lower education
-  for (Term_0 in c("urban_01", "car.01", "electricity.access", "hh_size", "log_hh_expenditures_USD_2014",
-                   "secondary_education", "higher_education")){
+  for (Term_0 in c("urban_01", "car.01", "electricity.access", "hh_size", "log_hh_expenditures_USD_2014", "motorcycle.01")){
     data_frame_5.3.2.4 <- data_frame_5.3.2.3 %>%
       filter(Type == Type_0)%>%
       filter(term == Term_0)%>%
@@ -1886,33 +1903,36 @@ for (Type_0 in c("affected_lower_80", "affected_upper_80")){
                                             ifelse(Term_0 == "log_hh_expenditures_USD_2014", "Household expenditures",
                                                    ifelse(Term_0 == "hh_size", "Household size", 
                                                           ifelse(Term_0 == "secondary_education", "Secondary education",
-                                                                 ifelse(Term_0 == "higher_education", "Higher education", NA))))))))%>%
+                                                                 ifelse(Term_0 == "higher_education", "Higher education", 
+                                                                        ifelse(Term_0 == "motorcycle.01", "Motorcycle ownership", NA)))))))))%>%
       mutate(legend_0 = tolower(title_0))%>%
-      mutate(bound_0 = ifelse(Term_0 == "urban_01", -0.25,
+      mutate(bound_0 = ifelse(Term_0 == "urban_01", -0.4,
                               ifelse(Term_0 == "car.01" & Type_0 == "affected_lower_80",-0.5,
-                                     ifelse(Term_0 == "car.01" & Type_0 == "affected_upper_80",-0.2,
+                                     ifelse(Term_0 == "car.01" & Type_0 == "affected_upper_80",-0.3,
                                             ifelse(Term_0 == "electricity.access" & Type_0 == "affected_upper_80", -0.4,
                                                    ifelse(Term_0 == "electricity.access" & Type_0 == "affected_lower_80", -0.85,
-                                                          ifelse(Term_0 == "log_hh_expenditures_USD_2014", -0.35,
-                                                                 ifelse(Term_0 == "hh_size" & Type_0 == "affected_upper_80", -0.05,
+                                                          ifelse(Term_0 == "log_hh_expenditures_USD_2014", -0.6,
+                                                                 ifelse(Term_0 == "hh_size" & Type_0 == "affected_upper_80", -0.04,
                                                                         ifelse(Term_0 == "hh_size" & Type_0 == "affected_lower_80", -0.12,
-                                                                               ifelse(Term_0 == "secondary_education",-0.5,-0.75))))))))))%>%
+                                                                               ifelse(Term_0 == "secondary_education",-0.5,
+                                                                                      ifelse(Term_0 == "motorcycle.01", -0.25 ,-0.75)))))))))))%>%
       mutate(bound_1 = ifelse(Term_0 == "urban_01", 0.22,
                               ifelse(Term_0 == "car.01" & Type_0 == "affected_lower_80",0.25,
-                                     ifelse(Term_0 == "car.01" & Type_0 == "affected_upper_80",0.55,
-                                            ifelse(Term_0 == "electricity.access" & Type_0 == "affected_upper_80", 0.6,
+                                     ifelse(Term_0 == "car.01" & Type_0 == "affected_upper_80",1,
+                                            ifelse(Term_0 == "electricity.access" & Type_0 == "affected_upper_80", 0.5,
                                                    ifelse(Term_0 == "electricity.access" & Type_0 == "affected_lower_80", 0.5,
-                                                          ifelse(Term_0 == "log_hh_expenditures_USD_2014" & Type_0 == "affected_upper_80", 0.15,
+                                                          ifelse(Term_0 == "log_hh_expenditures_USD_2014" & Type_0 == "affected_upper_80", 0.4,
                                                                  ifelse(Term_0 == "log_hh_expenditures_USD_2014" & Type_0 == "affected_lower_80", 0.3,
-                                                                        ifelse(Term_0 == "hh_size" & Type_0 == "affected_upper_80", 0.1,
-                                                                               ifelse(Term_0 == "hh_size" & Type_0 == "affected_lower_80", 0.05,0.5))))))))))
+                                                                        ifelse(Term_0 == "hh_size" & Type_0 == "affected_upper_80", 0.12,
+                                                                               ifelse(Term_0 == "hh_size" & Type_0 == "affected_lower_80", 0.05,
+                                                                                      ifelse(Term_0 == "motorcycle.01", 1, NA)))))))))))
     
     bound_0  <- labels_data_frame$bound_0[labels_data_frame$Term_0 == Term_0 & labels_data_frame$Type_0 == Type_0]
     bound_1  <- labels_data_frame$bound_1[labels_data_frame$Term_0 == Term_0 & labels_data_frame$Type_0 == Type_0]
     title_0  <- labels_data_frame$title_0[labels_data_frame$Term_0 == Term_0 & labels_data_frame$Type_0 == Type_0]
     legend_0 <- labels_data_frame$legend_0[labels_data_frame$Term_0 == Term_0 & labels_data_frame$Type_0 == Type_0]
     if(Type_0 == "affected_upper_80") state_0 <- "higher" else state_0 <- "lower" 
-    
+    if(Term_0 == "log_hh_expenditures_USD_2014" | Term_0 == "hh_size") size_0 <- 5 else size_0 <- 6
     
     P_5.3.2.4 <- ggplot(data = data_frame_5.3.2.4, aes(x = estimate, y = reorder(Country, desc(estimate))))+
       geom_vline(aes(xintercept = 0))+
@@ -1926,7 +1946,7 @@ for (Type_0 in c("affected_lower_80", "affected_upper_80")){
       scale_x_continuous(labels = scales::percent_format(accuracy = 1),  expand = c(0,0))+
       scale_fill_manual(guide = "none", values = c("#4DBBD5FF", "#E64B35FF"))+
       ggtitle(title_0)+
-      theme(axis.text.y = element_text(size = 6), 
+      theme(axis.text.y = element_text(size = size_0), 
             axis.text.x = element_text(size = 6),
             axis.title  = element_text(size = 7),
             plot.title = element_text(size = 11),
@@ -1942,7 +1962,7 @@ for (Type_0 in c("affected_lower_80", "affected_upper_80")){
             plot.margin = unit(c(0.3,0.3,0.3,0.3), "cm"),
             panel.border = element_rect(size = 0.3))
     
-    jpeg(sprintf("1_Figures/Analysis_Logit_Models_Marginal_Effects/Average_Marginal_Effects_%s_%s.jpg", Type_0, Term_0), width = 15.5, height = 16, unit = "cm", res = 600)
+    jpeg(sprintf("1_Figures/Analysis_Logit_Models_Marginal_Effects/Average_Marginal_Effects_%s_%s_2017.jpg", Type_0, Term_0), width = 15.5, height = 16, unit = "cm", res = 600)
     print(P_5.3.2.4)
     dev.off()
 
@@ -1951,7 +1971,7 @@ for (Type_0 in c("affected_lower_80", "affected_upper_80")){
   rm(P_5.3.2.4, data_frame_5.3.2.4, labels_data_frame, bound_0, bound_1, legend_0, state_0, Term_0, title_0, Type_0)
 }
 
-for (Type_0 in c("affected_lower_80", "affected_upper_80")){
+for (Type_0 in c("affected_upper_80")){
   # Add education - questionable - maybe cluster higher education / lower education
     data_frame_5.3.2.4 <- data_frame_5.3.2.3 %>%
       filter(Type == Type_0)%>%
@@ -1982,14 +2002,14 @@ for (Type_0 in c("affected_lower_80", "affected_upper_80")){
                                               ifelse(B == "Electricity B", "Cooking fuel choice compared to electricity - liquid fuels", NA)))))%>%
         mutate(legend_0 = ifelse(B == "Electricity A" | B == "Electricity B", "cooking fuel choice compared to electricity",
                                  ifelse(B == "LPG", "cooking fuel choice compared to LPG", title_0)))%>%
-        mutate(bound_0  = ifelse(B == "Electricity A", -0.6,
+        mutate(bound_0  = ifelse(B == "Electricity A", -0.5,
                                  ifelse(B == "LPG", -0.4,
-                                        ifelse(B == "Charcoal",-0.3,
-                                               ifelse(B == "Electricity B", -0.8, NA)))))%>%
-        mutate(bound_1  = ifelse(B == "Electricity A", 1,
-                                 ifelse(B == "LPG", 0.85,
+                                        ifelse(B == "Charcoal",-0.35,
+                                               ifelse(B == "Electricity B", -0.5, NA)))))%>%
+        mutate(bound_1  = ifelse(B == "Electricity A", 0.8,
+                                 ifelse(B == "LPG", 0.5,
                                         ifelse(B == "Charcoal",0.65,
-                                               ifelse(B == "Electricity B", 1.2, NA)))))
+                                               ifelse(B == "Electricity B", 1.1, NA)))))
       
       bound_0   <- labels_data_frame$bound_0[labels_data_frame$B == B_0 & labels_data_frame$B == B_0]
       bound_1   <- labels_data_frame$bound_1[labels_data_frame$B == B_0 & labels_data_frame$B == B_0]
@@ -2032,7 +2052,7 @@ for (Type_0 in c("affected_lower_80", "affected_upper_80")){
               panel.border = element_rect(size = 0.3))+
         ggforce::facet_col(vars(A), scales = "free", space = "free")
       
-      jpeg(sprintf("1_Figures/Analysis_Logit_Models_Marginal_Effects/Average_Marginal_Effects_%s_CF_%s.jpg", Type_0, B_0), width = 15.5, height = 16, unit = "cm", res = 600)
+      jpeg(sprintf("1_Figures/Analysis_Logit_Models_Marginal_Effects/Average_Marginal_Effects_%s_CF_%s_2017.jpg", Type_0, B_0), width = 15.5, height = 16, unit = "cm", res = 600)
       print(P_5.3.2.5)
       dev.off()
       
@@ -2040,6 +2060,72 @@ for (Type_0 in c("affected_lower_80", "affected_upper_80")){
     
     rm(P_5.3.2.5, data_frame_5.3.2.5, ATY, B_0, bound_0, bound_1, legend_0, state_0, title_0, Type_0, labels_data_frame, data_frame_5.3.2.4)
     
+}
+
+for(i in Country.Set$Country){
+  data_frame_5.3.2.6 <- data_frame_5.3.2.3 %>%
+    filter(Country == i)%>%
+    mutate(Colour_Type = ifelse(estimate > 0, "A", "B"))%>%
+    separate(contrast, c("A", "B"), sep = " - ")%>%
+    group_by(term)%>%
+    mutate(min_0 = min(estimate))%>%
+    ungroup()%>%
+    arrange(min_0, estimate)%>%
+    mutate(B = ifelse(B == "A_Electricity", "Electricity",
+                      ifelse(B == "B_LPG", "LPG", B)))%>%
+    mutate(A = ifelse(A == "A_Electricity", "Electricity",
+                      ifelse(A == "B_LPG", "LPG", A)))%>%
+    filter(A != "Unknown" | is.na(A))%>%
+    mutate(number = 1/1:n())%>%
+    mutate(Label = ifelse(term == "urban_01", "Urban citizenship", 
+                          ifelse(term == "car.01", "Car ownership",
+                                 ifelse(term == "hh_size", "Household size",
+                                        ifelse(term == "electricity.access", "Electricity access",
+                                               ifelse(term == "motorcycle.01", "Motorcycle own.",
+                                                      ifelse(term == "log_hh_expenditures_USD_2014", "Household expenditures",
+                                                             ifelse(term == "CF", paste0("CF: ", A), term))))))))%>%
+    mutate(order_0 = fct_reorder(Label, number))
+  
+  bound_0 <- -0.7
+  bound_1 <- 1
+  
+  P_5.3.2.6 <- ggplot(data = data_frame_5.3.2.6, aes(x = estimate, y = order_0))+
+    geom_vline(aes(xintercept = 0))+
+    geom_errorbar(aes(xmin = conf.low, xmax = conf.high), width = 0.5, size = 0.3)+
+    geom_point(shape = 21, aes (fill = Colour_Type), size = 1.5)+
+    theme_bw()+
+    xlab(paste0("Average marginal effect on probability of upper 20% of carbon intensity"))+ 
+    ylab("Variable")+
+    labs(colour = "", fill = "")+
+    coord_cartesian(xlim = c(bound_0, bound_1))+
+    # scale_y_discrete(labels = function(x) str_sub(x,1,3))+
+    scale_x_continuous(labels = scales::percent_format(accuracy = 1),  expand = c(0,0))+
+    scale_fill_manual(guide = "none", values = c("#4DBBD5FF", "#E64B35FF"))+
+    ggtitle(Country.Set$Country_long[Country.Set$Country == i])+
+    theme(axis.text.y = element_text(size = 6), 
+          axis.text.x = element_text(size = 6),
+          axis.title  = element_text(size = 6),
+          plot.title = element_text(size = 9),
+          legend.position = "bottom",
+          # strip.text = element_text(size = 7),
+          #strip.text.y = element_text(angle = 180),
+          #panel.grid.major = element_blank(),
+          panel.grid.major.y = element_blank(),
+          panel.grid.minor.y = element_blank(),
+          axis.ticks = element_line(size = 0.2),
+          legend.text = element_text(size = 7),
+          legend.title = element_text(size = 7),
+          plot.margin = unit(c(0.3,0.3,0.3,0.3), "cm"),
+          panel.border = element_rect(size = 0.3))
+  
+  if(nrow(data_frame_5.3.2.6) < 6) height_0 <- 4 else height_0 <- 8
+  
+  jpeg(sprintf("1_Figures/Analysis_Logit_Models_Marginal_Effects/Country/Average_Marginal_Effects_2017_%s.jpg", i), width = 10, height = height_0, unit = "cm", res = 600)
+  print(P_5.3.2.6)
+  dev.off()
+  
+  print(i)
+  
 }
 
 rm(data_frame_5.3.2.1, data_frame_5.3.2.3, data_5.3, Type_0, i)

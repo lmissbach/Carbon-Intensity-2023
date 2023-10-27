@@ -4,7 +4,9 @@
 .Ruserdata
 **/*.pdf
 3_Manuscript/main.pdf
+3_Manuscript/main.run.xml
 1_Figures/Test/*.jpg
 4_Presentations/*
 1_Figures/Figure 5a/*
+1_Figures/Analysis_Logit_Models_Marginal_Effects/2014/*
 
