@@ -354,6 +354,9 @@ Climate policy can lead to short-term costs distributing unevenly across the pop
 
 Low model accuracy in some countries implies that it is difficult to infer about the carbon intensity of households through observable characteristics, such as household expenditures. In Bulgaria, for example, vertical differences are low and horizontal differences within expenditure quintiles are large (Figure \ref{fig:Quint}). Moreover, as our analysis confirms, within-quintile variation in total expenditures is largely uncorrelated with variation in carbon intensity. In such contexts, compensation measures based on expenditures of households (such as reducing consumption taxes) would likely benefit all households equally, but prove ineffective to compensate households with highest costs.
 
+% Add here on model accuracy between models only including expenditures and models including controls.
+In general, variation in total household expenditures is by no means sufficient to predict household-level carbon intensity. Our comparison of model performances for models including only household expenditures and for models including many features indicates that features such as XYZ can be important to yield more accurate model predictions. It provides additional evidence for warranted analyses of heterogeneity in policy impacts beyond traditional vertical differences. (SHORTEN AND INCREASE PRECISION).
+
 \paragraph{Country-level feature importance}
 
 The importance of features differs across countries. Figure \ref{fig:fig_4_1}, Figure \ref{fig:fig_4_2} and Table \ref{tab:A10} show our indicators for vertical and horizontal inequality, the mean CO$_{2}$-intensity and adjusted feature importance for all features in each country, grouped by country clusters. %Describe single clusters, at least A, B, C and D. Touch briefly upon the rest.
@@ -361,15 +364,15 @@ The importance of features differs across countries. Figure \ref{fig:fig_4_1}, F
 
 Figure \ref{fig:5b} shows partial dependence plots for all countries and each cluster, visualizing differences in SHAP-values, i.e. the contribution to predicted carbon intensity of consumption for different feature values. While feature importance helps to identify features explaining heterogeneity in carbon intensity, the distribution of SHAP-values indicates the (non-linear) relationships between features and outcome variable.
 
-On average, the most important feature across countries is household expenditures, accounting for a relative contribution of 22\% on average. Household expenditures are the single most important feature for prediction in 30 countries, and in some countries, such as \hyperref[fig:5b_LUX]{Luxembourg} or \hyperref[fig:5b_HRV]{Croatia}, differences in household expenditures contribute to more than 50\% of model predictions. Household expenditures account for largest shares of adjusted feature importance in \hyperref[fig:5b_PER]{Peru} (18\%), \hyperref[fig:5b_ECU]{Ecuador} (14\%) and \hyperref[fig:5b_IRQ]{Iraq} (14\%) - countries in which we also identify strictly larger carbon intensities for poorer households compared to richer households. The relationship between expenditures and carbon intensity is non-linear, but overall declining for 53 countries (e.g. \hyperref[fig:5b_EST]{Estonia}), increasing for 14 countries (e.g. \hyperref[fig:5b_GHA]{Ghana}), following an U-shape for 5 countries (e.g. \hyperref[fig:5b_IND]{India}) and an inverse-U-shape for 11 countries (e.g. \hyperref[fig:5b_TUR]{Turkey}). We find declining relationships between household expenditures and carbon intensity for 19 of 20 countries with highest GDP per capita, which lends credibility to our prior analysis in section \ref{sec:methods}. Under such circumstances, more carbon-intensively consuming households spend less on consumption, but relatively more on carbon-intensive goods and services. Compensation measures based on expenditures of households can be effective to compensate households with highest costs.
+On average, the most important feature across countries is household expenditures, accounting for a relative contribution of 22\% on average. Household expenditures are the single most important feature for prediction in 30 countries, and in some countries, such as \hyperref[fig:5b_LUX]{Luxembourg} or \hyperref[fig:5b_HRV]{Croatia}, differences in household expenditures contribute to more than 50\% of model prediction. Household expenditures account for largest shares of adjusted feature importance in \hyperref[fig:5b_PER]{Peru} (18\%), \hyperref[fig:5b_ECU]{Ecuador} (14\%) and \hyperref[fig:5b_IRQ]{Iraq} (14\%) - countries in which we also identify strictly larger carbon intensities for poorer households compared to richer households. The relationship between expenditures and carbon intensity is non-linear, but overall declining for 53 countries (e.g. \hyperref[fig:5b_EST]{Indonesia}), increasing for 14 countries (e.g. \hyperref[fig:5b_GHA]{Ghana}), following an U-shape for 5 countries (e.g. \hyperref[fig:5b_IND]{India}) and an inverse-U-shape for 11 countries (e.g. \hyperref[fig:5b_TUR]{Turkey}). We find declining relationships between household expenditures and carbon intensity for 19 of 20 countries with highest GDP per capita, which lends credibility to our prior analysis in section \ref{sec:methods}. Under such circumstances, more carbon-intensively consuming households spend less on consumption, but relatively more on carbon-intensive goods and services. %Compensation measures based on expenditures of households can be effective to compensate households with highest costs.
 
-Motorcycle and car ownership is the most important feature in 15 and 14 countries, respectively. In \hyperref[fig:5b_BFA]{Burkina Faso}, \hyperref[fig:5b_MLI]{Mali}, \hyperref[fig:5b_NER]{Niger} or \hyperref[fig:5b_TGO]{Togo} variation in motorcycle ownership can be attributed to more than 20\% of variation in carbon intensity. Car ownership accounts for largest adjusted feature importance in \hyperref[fig:5b_JOR]{Jordan} (33\%) and \hyperref[fig:5b_TWN]{Taiwan} (25\%). Vehicle ownership is the most important adjusted feature across all countries and features and can be a meaningful predictor for predicting climate policy impacts in some countries: Households owning motorcycles or cars are more likely to consume more carbon-intensively than households without such vehicles in every country of our sample. This links to the propensity of vehicle-owning (and -using) households to consume relatively more transport fuels than others.
+Motorcycle and car ownership is the most important feature in 15 and 14 countries, respectively. In \hyperref[fig:5b_BFA]{Burkina Faso}, \hyperref[fig:5b_MLI]{Mali}, \hyperref[fig:5b_NER]{Niger} or \hyperref[fig:5b_TGO]{Togo} variation in motorcycle ownership can be attributed to more than 20\% of variation in carbon intensity. Car ownership accounts for largest adjusted feature importance in \hyperref[fig:5b_JOR]{Jordan} (33\%) and \hyperref[fig:5b_TWN]{Taiwan} (25\%). Vehicle ownership is the most important \textit{adjusted} feature across all countries and features and can be a meaningful predictor for predicting climate policy impacts in some countries: Households owning motorcycles or cars are more likely to consume more carbon-intensively than households without such vehicles in every country of our sample. This links to the propensity of vehicle-owning (and -using) households to consume relatively more transport fuels than others.
 
 Spatial features, such as urban or rural location, state, province or district of household, are the most important features in 17 countries. For example, urban citizenship contributes more than 40\% of model prediction in countries such as \hyperref[fig:5b_CZE]{Czech Republic}, \hyperref[fig:5b_SVK]{Slovakia} or \hyperref[fig:5b_LVA]{Latvia}. We find urban households to consume less carbon-intensively compared to rural households in a majority of countries such as \hyperref[fig:5b_FRA]{France}, \hyperref[fig:5b_NOR]{Norway}, \hyperref[fig:5b_ESP]{Spain}, and more carbon-intensively in countries such as \hyperref[fig:5b_MNG]{Mongolia}, \hyperref[fig:5b_PAK]{Pakistan} or \hyperref[fig:5b_ROU]{Romania}. For \hyperref[fig:5b_IND]{India}, where state residence accounts for adjusted feature importance of 8\%, we document that households in Jharkand, West Bengal or Manipur consume more carbon-intensively than households in Pondicherry, Haryana or Sikkim. In \hyperref[fig:5b_BOL]{Bolivia}, where department residence accounts for adjusted feature importance of 6\%, households in Pando or Cochabamba consume more carbon-intensively than households from Potosí or Chuquisaca. Carbon intensity differences across space hint towards the important role of access to energy and transport infrastructure. For example, in cities, households may choose from different transport modes including public transportation. 
 
 Features describing energy use, such as main fuels used for cooking, lighting and heating, or electricity access and appliance ownership are the most important feature in eight countries. Main cooking fuel is an important feature in \hyperref[fig:5b_PER]{Peru} and \hyperref[fig:5b_NIC]{Nicaragua} with adjusted feature importance of 18\% and 16\%, respectively. In both countries, households cooking with LPG consume substantially more carbon-intensive than households cooking predominantly with firewood, a pattern that is consistent in all countries with a non-negligible share of households using firewood or charcoal. This result is consistent with our assumption of zero direct emissions for biomass, firewood or charcoal, because of informal markets and structural difficulties to regulate (and tax) such emissions. Using kerosene for lighting is associated to higher carbon intensity compared to electricity and other lighting source in \hyperref[fig:5b_UGA]{Uganda}, \hyperref[fig:5b_RWA]{Rwanda} or \hyperref[fig:5b_ETH]{Ethiopia}. Information on heating fuels exists only in few countries, but is the single most important feature in \hyperref[fig:5b_TUR]{Turkey} and \hyperref[fig:5b_ARM]{Armenia}. Carbon intensity is higher in households heating with coal (\hyperref[fig:5b_TUR]{Turkey}) or natural gas (\hyperref[fig:5b_ARM]{Armenia}) compared to households heating with electricity.
 
-Electricity access is a relatively less important feature, contributing a maximum of 4\% of adjusted feature importance in \hyperref[fig:5b_SEN]{Senegal}. In a majority of countries, feature importance for electricity access is low, possibly because of overall high (e.g. \hyperref[fig:5b_VNM]{Vietnam}, \hyperref[fig:5b_PHL]{Philippines}) or low electricity access rates (e.g. \hyperref[fig:5b_MWI]{Malawi}, \hyperref[fig:5b_LBR]{Liberia}) or because of low CO$_{2}$-intensity in the electricity sector (e.g. \hyperref[fig:5b_ETH]{Ethiopia}, \hyperref[fig:5b_KEN]{Kenya}).
+Electricity access is a relatively less important feature, contributing a maximum of 4\% of adjusted feature importance in \hyperref[fig:5b_SEN]{Senegal}. In a majority of countries, feature importance for electricity access is low, possibly because of overall high (e.g. \hyperref[fig:5b_VNM]{Vietnam}, \hyperref[fig:5b_PHL]{Philippines}) or low electricity access rates (e.g. \hyperref[fig:5b_MWI]{Malawi}, \hyperref[fig:5b_LBR]{Liberia}) or because of low CO$_{2}$-intensity in the electricity sector (e.g. \hyperref[fig:5b_ETH]{Ethiopia}, \hyperref[fig:5b_KEN]{Kenya}). % Statistics on electricity sector required?
 
 Instead, ownership of major household appliances (such as refrigerators, washing machines or air conditioning) is the most important feature in \hyperref[fig:5b_CHE]{Switzerland} and the \hyperref[fig:5b_PHL]{Philippines}, contributing 17\% of adjusted feature performance in the Philippines. This is less surprising, because appliance ownership is a more compelling, yet incomplete proxy for electricity \textit{use} compared to electricity \textit{access}.
 
@@ -383,7 +386,7 @@ Sociodemographic features, such as education, are the most important feature in 
     \begin{subcaption2}
     This figure shows the importance of features (in normalized average absolute SHAP-values) for each country, grouped by country clusters. Blue (red) colors indicate that a feature is relatively less (more) important in a country compared to all other countries. 'Sociodemographic' comprises normalized absolute SHAP-values for features such as ethnicity, nationality, religion or language.
     For horizontal inequality, blue (red) colors indicate a lower (higher) heterogeneity within the first income quintile compared to the fifth income quintile. For vertical inequality, blue (red) colors indicate lower (higher) median carbon intensity among the first income quintile compared to the fifth income quintile. For average CO$_{2}$-intensity, blue (red) colors indicate a lower (higher) average carbon intensity across all countries.
-    We assign countries to 9 clusters performing k-means clustering based on scaled values across all features. We also show all values in Table \ref{tab:A10}.
+    We assign countries to 6 clusters performing k-means clustering based on scaled values across all features. We also show all values in Table \ref{tab:A10}.
     \end{subcaption2}
 \end{figure}
 
@@ -395,9 +398,11 @@ Sociodemographic features, such as education, are the most important feature in 
     \begin{subcaption2}
     This figure shows the importance of features (in normalized average absolute SHAP-values) for each country, grouped by country clusters. Blue (red) colors indicate that a feature is relatively less (more) important in a country compared to all other countries. 'Sociodemographic' comprises normalized absolute SHAP-values for features such as ethnicity, nationality, religion or language.
     For horizontal inequality, blue (red) colors indicate a lower (higher) heterogeneity within the first income quintile compared to the fifth income quintile. For vertical inequality, blue (red) colors indicate lower (higher) median carbon intensity among the first income quintile compared to the fifth income quintile. For average CO$_{2}$-intensity, blue (red) colors indicate a lower (higher) average carbon intensity across all countries.
-    We assign countries to 9 clusters performing k-means clustering based on scaled values across all features. We also show all values in Table \ref{tab:A10}.
+    We assign countries to 6 clusters performing k-means clustering based on scaled values across all features. We also show all values in Table \ref{tab:A10}.
     \end{subcaption2}
 \end{figure}
+
+\paragraph{Identifying country clusters}
 
 %What are important criteria to assign countries to different clusters?
 
@@ -406,12 +411,11 @@ Sociodemographic features, such as education, are the most important feature in 
     \item Discuss country clusters in general and data issues, idiosyncracy. For each country cluster, one could recommend specific policy actions --> going to discussion section
 \end{itemize}
 
-\paragraph{Identifying country clusters}
-
 We identify six country-clusters based on feature importance for prediction of household-level carbon intensity, the average carbon intensity of households and the vertical and horizontal distribution of countries. Countries within clusters are more similar to each compared to countries in other clusters. In general, it is difficult to assign countries to clusters, as demonstrated through the optimal number of clusters ($k=6$) and an average silhouette width of 0.17 (see Figures \subref{fig:G3_silhouette_2} and \subref{fig:G4_silhouette_2}). This points to idiosyncratic patterns in some countries, which make it more difficult to draw conclusions for climate and compensation policies from the experience of other countries. 
 
-Figure \ref{fig:fig_3} shows the relative importance of different features across country-clusters, while clusters are ordered by cluster size. Figure \ref{fig:5b} shows variable importance plots and partial dependence plots with SHAP-values for those countries with highest silhouette width per cluster.
+Figure \ref{fig:fig_3} shows the relative importance of different features across country-clusters, while clusters are ordered by cluster size. 
 
+% Overhaul required
 The largest cluster A comprises 36 countries (including \hyperref[fig:5b_USA]{USA}, \hyperref[fig:5b_CAN]{Canada}, \hyperref[fig:5b_BRA]{Brazil} or \hyperref[fig:5b_DEU]{Germany}). In countries of this cluster, our analysis yields more carbon-intensive consumption among relatively poorer households and a larger heterogeneity in carbon intensity among poorer households compared to richer households. In comparison to other clusters, most features contribute relatively little to explaining variation in carbon intensity. For example, average adjusted feature importance is 3\% for household expenditures, which is the most important feature across all countries. In general, countries in cluster A have in common that it is difficult to predict carbon intensity of households with available data. One reason is that we adjust country-level feature importance for models' predictive performance, which influences the identification of country clusters. For example, 17 out of 18 countries with relatively low model performance ($R^{2}<$10\%) appear in cluster A. In particular, data resolution may be insufficient and does not cover important variables (25 countries lack information on major cooking fuels, 21 countries lack information on car ownership). These results also allude to highly idiosyncratic characteristics of heterogeneous carbon intensity with important implications for policy design, because attempts to compensate based on characteristics observable in our dataset (such as household expenditures) will not be effective to compensate the households most affected by climate policy, but impacts can be large, as indicated by - on average - more carbon-intensive consumption (0.72 kgCO$_{2}$/US-\$ on average) compared to countries in other clusters. 
 
 In contrast, cluster B includes 16 countries (such as \hyperref[fig:5b_IND]{India}, \hyperref[fig:5b_BGD]{Bangladesh} or \hyperref[fig:5b_KEN]{Kenya}) with less carbon-intensive consumption (0.33 kgCO$_{2}$/US-\$ on average). Within such countries, consumption is more carbon-intensive among richer households and we also find a larger heterogeneity among richer households compared to poorer households. In this cluster, vehicle ownership, cooking fuel use and appliance ownership are relatively more important compared to other clusters, while adjusted feature importance for household expenditures is 3.4\%, on average.
@@ -428,7 +432,7 @@ While being stylized by nature our clustering approach helps to emphasize countr
     \caption{Average feature importance across country clusters}
     \label{fig:fig_3}
     \begin{subcaption2}
-    This figure shows the average importance of features (in normalized absolute average SHAP-values) across all countries from each cluster A to I. Colors express the average importance of features in a cluster in comparison to other clusters. Blue (red) colors indicate that a feature is relatively less (more) important on average in a cluster compared to all other clusters. 'Sociodemographic' comprises normalized absolute average SHAP values for features such as ethnicity, nationality, religion or language.
+    This figure shows the average importance of features (in normalized absolute average SHAP-values) across all countries from each cluster A to F. Colors express the average importance of features in a cluster in comparison to other clusters. Blue (red) colors indicate that a feature is relatively less (more) important on average in a cluster compared to all other clusters. 'Sociodemographic' comprises normalized absolute average SHAP values for features such as ethnicity, nationality, religion or language.
     For horizontal inequality, blue (red) colors indicate a lower (higher) heterogeneity within the first income quintile compared to the fifth income quintile. For vertical inequality, blue (red) colors indicate lower (higher) median carbon intensity among the first income quintile compared to the fifth income quintile. For average CO$_{2}$-intensity, blue (red) colors indicate a lower (higher) average carbon intensity across clusters. We assign countries to 14 clusters performing k-means clustering. We also show all values in Table \ref{tab:A9}.
     \end{subcaption2}
 \end{figure}
@@ -507,15 +511,31 @@ On aggregate, these results underpin that distributional implications of climate
 \section{Discussion: XYZ} \label{sec:discussion}
 
 \begin{itemize}
+% State findings
 \item Our findings provide evidence for country-specific characteristics associated to higher levels of carbon intensity of consumption. These results can help in ex-ante assessments to identify especially affected household profiles and promising means to compensate them. Building on identified clusters, we discuss implications for potential compensation.
-  \item Discuss role of findings for design of transfers. What is being discussed? LST, tax breaks, infrastructure access. Which transfer tool is applicable in which context?
-  \item Very important: Low predictive power means that any transfer will be ineffective to some extent! Important concern.
-  \item Discuss normative or theoretical grounds for either transfer option or the other.
-\item Discuss ``value chain of climate policy implementation''. Discuss literature on public acceptance. Highlight research gaps: Which distributional implications matter to households and why? How could compensation increase public support? Public support of which groups matter for people with political power? Could be first starting point for discussion.
- \item Discuss role of findings for design of different policies (standards, subsidies, brief ?)
- \item Discuss dynamic effects and inaccuracies in modeling approach (tax pass-through, short- vs. medium-term, technological path dependencies/barriers on household-level)
- \item Distinguish results from analyses about climate policy on labour, wealth, impacts, adaptation, co-benefits, co-costs.
- \item Investments: Not covered, only consumption.
+% Assign different compensation measures to normative implications or theoretical grounds.
+\item Some compensation measures are preferable to others, conditional on normative considerations.
+\item In some setting, some compensation measures can be effective.
+% LST
+\item Often-proposed lump-sum transfers: Taste for reducing vertical inequality. "Rebound effect". High visibility. Low public acceptance. Popular among economists. Effective in cluster D or where expenditures are an important feature, more generally.
+% Targeted transfers
+\item Targeted transfers: Can help reduce horizontal inequality. Helpful where expenditures are not an important feature. Discuss literature on targeting in general.
+% Tax breaks
+\item Tax breaks (income from labour, consumption): Preferable on efficiency grounds. Leverage to adjust vertical inequality. Reaping double-dividend. Low visibility. Popular among economists. Effective where results are regressive or where expenditures are an important feature.
+% Exemption of transition fuels, infrastructure access,
+\item Where other factors matter: Enabling access to efficient technologies absolutely crucial. "Allowing" people to employ clean technologies and to react to prices.
+% Green spending, general budget
+% Discuss low predictive power and conclusions.  
+\item Very important: Low predictive power means that any transfer will be ineffective to some extent! Important concern.
+% Discuss value chain of climate policy implementation. Literature on public acceptance. Which distribution matters to households and why? How could compensation increase public support? Public support of which groups matter for people with political power? Nevertheless, informative character.
+\item Such analysis can only form the foundation for more comprehensive analysis. To what extent does the distribution of cost burden influence the public perception? Comparably little systematic research, but important assumption. Welfare function of policymakers or winning coalition not clear, either. 
+\item: This analysis: informative character. Information may be used by policymakers to draw conclusions about the distribution of climate policy and identify \textit{need}, if anything, for compensation. 
+% Discuss role of findings for design of different policies
+\item Notably, all instruments entail distributional impacts, one form or the other. Discuss role of findings for design of different policies (standards, subsidies, brief ?)
+% Inaccuracies
+\item Discuss dynamic effects and inaccuracies in modeling approach (tax pass-through, short- vs. medium-term, technological path dependencies/barriers on household-level)
+% Distinction 
+\item Distinguish results from analyses about climate policy on labour, wealth, impacts, adaptation, co-benefits, co-costs. Investments: Not covered, only consumption.
 \end{itemize}
 
 \section{Conclusion} \label{sec:conclusion}
@@ -703,6 +723,9 @@ It is also possible to investigate the distribution of regional policies, for ex
 \input{../2_Tables/Table_Countries_SHAP_Summary_Uncorrected}
 \clearpage
 
+\input{../2_Tables/Table_Countries_SHAP_Summary_Uncorrected}
+\clearpage
+
 \section{Supplementary information}
 \subsection{Code availability} \label{code}
 We distribute all code written for cleaning and homogenizing household data, modelling carbon intensity of consumption and analysis through \href{https://github.com/lmissbach/Carbon-Intensity-2023}{GitHub}. This repository also contains matching tables for all countries.
@@ -710,7 +733,7 @@ We distribute all code written for cleaning and homogenizing household data, mod
 \subsection{Acknowledgements} \label{acknowledgements}
 
 %We thank Florian Nachtigall for helpful comments and suggestions. 
-We thank Marlene Merchert, Charlotte Buder and Paula Blechschmidt for research assistance. LM acknowledges funding from the German Environmental Foundation (DBU).
+We thank Marlene Merchert, Charlotte Buder and Paula Blechschmidt for research assistance. LM acknowledges funding from the German Federal Environmental Foundation (DBU).
 
 \end{document}
 
