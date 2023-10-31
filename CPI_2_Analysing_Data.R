@@ -1932,7 +1932,8 @@ for (Type_0 in c("affected_upper_80")){
     title_0  <- labels_data_frame$title_0[labels_data_frame$Term_0 == Term_0 & labels_data_frame$Type_0 == Type_0]
     legend_0 <- labels_data_frame$legend_0[labels_data_frame$Term_0 == Term_0 & labels_data_frame$Type_0 == Type_0]
     if(Type_0 == "affected_upper_80") state_0 <- "higher" else state_0 <- "lower" 
-    if(Term_0 == "log_hh_expenditures_USD_2014" | Term_0 == "hh_size") size_0 <- 5 else size_0 <- 6
+    if(Term_0 == "log_hh_expenditures_USD_2014" | Term_0 == "hh_size") size_0 <- 6 else size_0 <- 6
+    if(Term_0 == "log_hh_expenditures_USD_2014" | Term_0 == "hh_size" | Term_0 == "urban_01" | Term_0 == "car.01") dodge_0 <- 2 else dodge_0 <- 1
     
     P_5.3.2.4 <- ggplot(data = data_frame_5.3.2.4, aes(x = estimate, y = reorder(Country, desc(estimate))))+
       geom_vline(aes(xintercept = 0))+
@@ -1944,6 +1945,7 @@ for (Type_0 in c("affected_upper_80")){
       labs(colour = "", fill = "")+
       coord_cartesian(xlim = c(bound_0, bound_1))+
       scale_x_continuous(labels = scales::percent_format(accuracy = 1),  expand = c(0,0))+
+      scale_y_discrete(guide = guide_axis(n.dodge=dodge_0))+
       scale_fill_manual(guide = "none", values = c("#4DBBD5FF", "#E64B35FF"))+
       ggtitle(title_0)+
       theme(axis.text.y = element_text(size = size_0), 
@@ -1954,7 +1956,7 @@ for (Type_0 in c("affected_upper_80")){
             # strip.text = element_text(size = 7),
             #strip.text.y = element_text(angle = 180),
             #panel.grid.major = element_blank(),
-            panel.grid.major.y = element_blank(),
+            panel.grid.major.y = element_line(size = 0.1),
             panel.grid.minor.y = element_blank(),
             axis.ticks = element_line(size = 0.2),
             legend.text = element_text(size = 7),
@@ -2017,6 +2019,7 @@ for (Type_0 in c("affected_upper_80")){
       legend_0 <- labels_data_frame$legend_0[labels_data_frame$B == B_0 & labels_data_frame$B == B_0]
       if(Type_0 == "affected_upper_80") state_0 <- "higher" else state_0 <- "lower" 
       if(B_0 == "Electricity A" | B_0 == "Electricity B") ATY <- element_text(size = 4) else ATY <- element_text(size = 6)
+      if(B_0 == "Electricity A" | B_0 == "Electricity B") dodge_0 <- 2 else dodge_0 <- 1
       
       data_frame_5.3.2.5 <- data_frame_5.3.2.4 %>%
         filter(Category == B_0)
@@ -2031,7 +2034,7 @@ for (Type_0 in c("affected_upper_80")){
         ylab("Country")+
         labs(colour = "", fill = "")+
         coord_cartesian(xlim = c(bound_0, bound_1))+
-        scale_y_discrete(labels = function(x) str_sub(x,1,3))+
+        scale_y_discrete(labels = function(x) str_sub(x,1,3), guide = guide_axis(n.dodge = dodge_0))+
         scale_x_continuous(labels = scales::percent_format(accuracy = 1),  expand = c(0,0))+
         scale_fill_manual(guide = "none", values = c("#4DBBD5FF", "#E64B35FF"))+
         ggtitle(title_0)+
@@ -2043,7 +2046,7 @@ for (Type_0 in c("affected_upper_80")){
               # strip.text = element_text(size = 7),
               #strip.text.y = element_text(angle = 180),
               #panel.grid.major = element_blank(),
-              panel.grid.major.y = element_blank(),
+              panel.grid.major.y = element_line(size = 0.1),
               panel.grid.minor.y = element_blank(),
               axis.ticks = element_line(size = 0.2),
               legend.text = element_text(size = 7),
