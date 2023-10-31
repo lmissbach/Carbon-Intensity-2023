@@ -3629,6 +3629,375 @@ rm(data_6.2.0, data_6.2.1, data_6.2.2, data_6.2.3, data_6.2.4,
    data_6.2.8, model_6.2.0, model_6.2.1, P_6.2.5.1, P_6.2.5.2, P_6.2.5.3, P_6.2.5.4, k, silhouette_1, silhouette_6.2.1, tot_within_ss,
    eval_6.2, eval_6.2.1)
 
+
+# 6.3     Boosted Regression trees on carbon intensity of consumption (with expenditures only) ####
+
+Country.Set.Test.1 <- c("BEL", "NOR", "LBR")
+
+track <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_BRT_2017_EXP.xlsx")
+# track <- data.frame(Country = c())
+
+set.seed(2023)
+
+options(warn = 1)
+
+# Takes seven hours
+
+for (i in Country.Set$Country){
+  tryCatch({
+    
+    track_0 <- data.frame(Country = i, date = date())
+    
+    run_ID <- if(i %in% track$Country) paste0(i, "_", max(track$number[track$Country == i])+1) else paste0(i, "_",1)
+    
+    print(paste0("Start ", i, ": ", run_ID))
+    
+    # Filter only observations for country of interest  
+    data_6.3 <- filter(data_2, Country == i)
+    
+    track_0$observations_sample = nrow(data_6.3)
+    
+    # Feature engineering - Step 1 (with dplyr)
+    
+    data_6.3.1 <- data_6.3 %>%
+      # select relevant variables
+      select(hh_expenditures_USD_2014, carbon_intensity_kg_per_USD_national)
+
+    rm(data_6.3)
+    
+    # Splitting the sample, but no strata
+    
+    prop_0 = 0.80
+
+    data_6.3.2 <- data_6.3.1 %>%
+      initial_split(prop = prop_0)
+    
+    # Data for training
+    data_6.3.2.train <- data_6.3.2 %>%
+      training()
+    
+    # Data for testing
+    data_6.3.2.test <- data_6.3.2 %>%
+      testing()
+    
+    rm(data_6.3.1, data_6.3.2)
+    
+    # Feature engineering - Step 2 (with recipe)
+    
+    recipe_6.3.0 <- recipe(carbon_intensity_kg_per_USD_national ~ .,
+                           data = data_6.3.2.train)
+    
+    data_6.3.2.training <- recipe_6.3.0 %>%
+      prep(training = data_6.3.2.train)%>%
+      bake(new_data = NULL)
+    
+    data_6.3.2.testing <- recipe_6.3.0 %>%
+      prep(training = data_6.3.2.test)%>%
+      bake(new_data = NULL) 
+    
+    # Five-fold cross-validation
+    
+    folds_6.3 <- vfold_cv(data_6.3.2.training, v = 5)
+    
+    # Setup model to be tuned
+    
+    model_brt <- boost_tree(
+      trees         = 1000,
+      tree_depth    = tune(), # maximum depth of tree
+      learn_rate    = tune(), # the higher the learning rate the faster - default 0.3
+      # min_n       = tune(),
+      #mtry          = tune(), # fraction of features to be selected for each tree (0.5/0.7/1)
+      # stop_iter   = tune(),
+      # sample_size = tune()
+    )%>%
+      set_mode("regression")%>%
+      set_engine("xgboost")
+    
+    # Create a tuning grid - 16 different models for the tuning space
+    
+    grid_0 <- grid_latin_hypercube(
+      tree_depth(),
+      learn_rate(c(-3,-0.5)),# tuning parameters
+      #mtry(c(round((ncol(data_6.3.2.training)-1)/2,0), ncol(data_6.3.2.training)-1)),
+      size = 29)%>%
+      # default parameters
+      bind_rows(data.frame(tree_depth = 6, learn_rate = 0.3))
+    
+    # Tune the model - cover the entire parameter space without running every combination
+    
+    doParallel::registerDoParallel()
+    
+    time_1 <- Sys.time()
+    
+    model_brt_1 <- tune_grid(model_brt,
+                             carbon_intensity_kg_per_USD_national ~ .,
+                             resamples = folds_6.3,
+                             grid      = grid_0,
+                             metrics   = metric_set(mae, rmse, rsq))
+    
+    time_2 <- Sys.time()
+    
+    doParallel::stopImplicitCluster()
+    
+    track_0$tuning_time <- as.integer(difftime(time_1, time_2, units = "min"))
+    
+    # Collect metrics of tuned models
+    
+    metrics_1 <- collect_metrics(model_brt_1)
+    
+    model_brt_1.1 <- select_best(model_brt_1, metric = "mae")
+    
+    metrics_1.1 <- metrics_1 %>%
+      filter(.config == model_brt_1.1$.config[1])
+    
+    # Output: best model after tuning
+    track_0 <- bind_cols(track_0, model_brt_1.1)%>%
+      rename(tree_depth_best = tree_depth, learn_rate_best = learn_rate)%>%
+      select(-.config)%>%
+      mutate(mae_mean_cv_5_train  = metrics_1.1$mean[metrics_1.1$.metric == "mae"],
+             rmse_mean_cv_5_train = metrics_1.1$mean[metrics_1.1$.metric == "rmse"],
+             rsq_mean_cv_5_train  = metrics_1.1$mean[metrics_1.1$.metric == "rsq"])
+    
+    track <- track %>%
+      bind_rows(track_0)
+    
+    rm(track_0, run_ID, time_1, time_2, grid_0,
+       model_brt, model_brt_1, model_brt_1.1, metrics_1.1, metrics_1,
+       data_6.3.2.test, data_6.3.2.testing, data_6.3.2.train, data_6.3.2.training,
+       folds_6.3, recipe_6.3.0, prop_0)
+    
+    gc()
+    
+    print(paste0("End: ", i, " ", Sys.time()))
+    
+  }, error=function(e){cat("ERROR :",conditionMessage(e), "\n")})
+}
+
+track_1 <- track %>%
+  group_by(Country)%>%
+  mutate(number = 1:n())%>%
+  ungroup()%>%
+  mutate(number_ob = paste0(Country, "_", number))%>%
+  select(number_ob, everything())%>%
+  write.xlsx(., "../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_BRT_2017_EXP.xlsx")
+
+rm(track)
+
+# 6.3.1   Calculate model evaluation and SHAP-values ####
+
+Country.Set.Test.2 <- c("UGA")
+
+Country.Set.Test.3 <- c("BOL", "PRT", "BEL", "CHE", "AUT", "NLD", "SWE", "FRA", "ITA", "ESP", "GRC", "SUR")
+
+# eval_0 <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_SHAP_Evaluation_VFOLD_2017_EXP.xlsx")
+eval_0 <- data.frame(Country = c("A"), fold = c(1))
+
+track_0 <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_BRT_2017_EXP.xlsx")
+
+for (i in Country.Set$Country){
+  tryCatch({
+    
+    print(paste0("Start: ", i, " ", Sys.time()))
+    
+    track <- track_0 %>%
+      filter(Country == i)%>%
+      #dplyr::slice(which.min(mae_mean_cv_5_train))
+      dplyr::slice(which.max(number))
+    
+    data_6.3 <- filter(data_2, Country == i)
+    
+    # Feature engineering - Part I
+    
+    data_6.3.1 <- data_6.3 %>%
+      # select relevant variables
+      select(hh_expenditures_USD_2014, carbon_intensity_kg_per_USD_national)
+    
+    rm(data_6.3)
+    
+    # Feature engineering - Step 2 (with recipe) - with dummification
+    
+    recipe_6.3.0 <- recipe(carbon_intensity_kg_per_USD_national ~ .,
+                           data = data_6.3.1)
+
+    data_6.3.2 <- recipe_6.3.0 %>%
+      prep(training = data_6.3.1)%>%
+      bake(new_data = NULL)%>%
+      # for cross-validation
+      mutate(id = 1:n())
+    
+    folds_6.3.2 <- vfold_cv(data_6.3.2, v = 5)
+    
+    data_6.3.3 <- data_6.3.2 %>%
+      left_join(mutate(data.frame(id = folds_6.3.2$splits[[1]]$in_id), in1 = 1), by = c("id"))%>%
+      left_join(mutate(data.frame(id = folds_6.3.2$splits[[2]]$in_id), in2 = 1), by = c("id"))%>%
+      left_join(mutate(data.frame(id = folds_6.3.2$splits[[3]]$in_id), in3 = 1), by = c("id"))%>%
+      left_join(mutate(data.frame(id = folds_6.3.2$splits[[4]]$in_id), in4 = 1), by = c("id"))%>%
+      left_join(mutate(data.frame(id = folds_6.3.2$splits[[5]]$in_id), in5 = 1), by = c("id"))%>%
+      mutate_at(vars(in1:in5), ~ ifelse(is.na(.),0,.))%>%
+      mutate(fold_test = ifelse(in1 == 0, 1,
+                                ifelse(in2 == 0, 2,
+                                       ifelse(in3 == 0, 3,
+                                              ifelse(in4 == 0, 4,
+                                                     ifelse(in5 == 0, 5, NA))))))%>%
+      select(-in1, -in2, -in3, -in4, -in5, -id)
+    
+    data_6.3.2.raw <- data_6.3.1 %>%
+      mutate(id = 1:n())%>%
+      left_join(mutate(data.frame(id = folds_6.3.2$splits[[1]]$in_id), in1 = 1), by = c("id"))%>%
+      left_join(mutate(data.frame(id = folds_6.3.2$splits[[2]]$in_id), in2 = 1), by = c("id"))%>%
+      left_join(mutate(data.frame(id = folds_6.3.2$splits[[3]]$in_id), in3 = 1), by = c("id"))%>%
+      left_join(mutate(data.frame(id = folds_6.3.2$splits[[4]]$in_id), in4 = 1), by = c("id"))%>%
+      left_join(mutate(data.frame(id = folds_6.3.2$splits[[5]]$in_id), in5 = 1), by = c("id"))%>%
+      mutate_at(vars(in1:in5), ~ ifelse(is.na(.),0,.))%>%
+      mutate(fold_test = ifelse(in1 == 0, 1,
+                                ifelse(in2 == 0, 2,
+                                       ifelse(in3 == 0, 3,
+                                              ifelse(in4 == 0, 4,
+                                                     ifelse(in5 == 0, 5, NA))))))%>%
+      select(-in1, -in2, -in3, -in4, -in5, -id)
+    
+    # Model to be tuned
+    model_brt <- boost_tree(
+      trees         = 1000,
+      tree_depth    = track$tree_depth_best[1],
+      learn_rate    = track$learn_rate_best[1] # the higher the learning rate the faster - default 0.3
+    )%>%
+      set_mode("regression")%>%
+      set_engine("xgboost")
+    
+    for(v in c(1:5)){
+      print(v)
+      
+      # Training dataset
+      data_6.3.2.training <- data_6.3.3 %>%
+        filter(fold_test != v)%>%
+        select(-fold_test)
+      
+      # Testing dataset
+      data_6.3.2.testing <- data_6.3.3 %>%
+        filter(fold_test == v)%>%
+        select(-fold_test)
+      
+      data_6.3.2.test <- data_6.3.2.raw %>%
+        filter(fold_test == v)%>%
+        select(-fold_test)
+
+      # Fit model on training dataset
+      model_brt_1 <- model_brt %>%
+        fit(carbon_intensity_kg_per_USD_national ~ .,
+            data = data_6.3.2.training)
+      
+      # # Evaluation on training dataset 
+      # predictions_6.1.1 <- augment(model_brt_1, new_data = data_6.1.2.training)
+      # mae_6.1.1  <- mae(predictions_6.1.1,  truth = carbon_intensity_kg_per_USD_national, estimate = .pred)
+      # rmse_6.1.1 <- rmse(predictions_6.1.1, truth = carbon_intensity_kg_per_USD_national, estimate = .pred)
+      # rsq_6.1.1  <- rsq(predictions_6.1.1,  truth = carbon_intensity_kg_per_USD_national, estimate = .pred)
+      # eval_6.1.1 <- bind_rows(mae_6.1.1, rmse_6.1.1, rsq_6.1.1)%>%
+      #   mutate(Type = "Training")
+      
+      # Evalutation on testing dataset
+      predictions_6.3.2 <- augment(model_brt_1, new_data = data_6.3.2.testing)
+      mae_6.3.2  <- mae(predictions_6.3.2,  truth = carbon_intensity_kg_per_USD_national, estimate = .pred)
+      rmse_6.3.2 <- rmse(predictions_6.3.2, truth = carbon_intensity_kg_per_USD_national, estimate = .pred)
+      rsq_6.3.2  <- rsq(predictions_6.3.2,  truth = carbon_intensity_kg_per_USD_national, estimate = .pred)
+      eval_6.3.2 <- bind_rows(mae_6.3.2, rmse_6.3.2, rsq_6.3.2)%>%
+        mutate(Type = "Testing")%>%
+        mutate(fold = v)%>%
+        mutate(number_ob = track$number_ob[1])%>%
+        select(-.estimator)%>%
+        pivot_wider(names_from = "Type", values_from = ".estimate", names_prefix = "Sample_")%>%
+        mutate(Country = i)%>%
+        select(Country, number_ob, .metric, fold, Sample_Testing)
+      
+      eval_0 <- eval_0 %>%
+        filter(Country != i | fold != v)%>%
+        bind_rows(eval_6.3.2)
+      
+      rm(predictions_6.3.2, mae_6.3.2, rmse_6.3.2, rsq_6.3.2, eval_6.3.2)
+      
+    }
+    
+    gc()
+    
+    print(paste0("End: ", i, " ", Sys.time()))
+    
+  }, error=function(e){cat("ERROR :",conditionMessage(e), "\n")})
+}
+
+# Output Evaluation metrics to LaTeX
+
+eval_0.1 <- eval_0 %>%
+  distinct()%>%
+  write.xlsx(., "../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_SHAP_Evaluation_VFOLD_2017_EXP.xlsx")
+
+# Part b: Output of tables
+
+eval_2 <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_SHAP_Evaluation_VFOLD_2017_EXP.xlsx")
+eval_1 <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_SHAP_Evaluation_VFOLD_2017.xlsx")
+
+eval_1.0 <- eval_1 %>%
+  filter(.metric == "mae")%>%
+  mutate(number = 1:n())%>%
+  group_by(Country, number_ob, fold)%>%
+  filter(number == max(number))%>%
+  ungroup()%>%
+  group_by(Country, number_ob)%>%
+  summarise(Sample_Testing = mean(Sample_Testing))%>%
+  ungroup()%>%
+  arrange(Country)%>%
+  select(Country, number_ob)
+
+eval_1.1 <- eval_1 %>%
+  filter(number_ob %in% eval_1.0$number_ob)%>%
+  mutate(number = 1:n())%>%
+  group_by(Country, number_ob, .metric, fold)%>%
+  filter(number == max(number))%>%
+  ungroup()%>%
+  group_by(Country, number_ob, .metric)%>%
+  summarise(Sample_Testing = mean(Sample_Testing))%>%
+  ungroup()%>%
+  left_join(Country.Set)%>%
+  select(Country_long, .metric, starts_with("Sample"), Country)%>%
+  mutate_at(vars(starts_with("Sample")), ~ round(., 2))%>%
+  arrange(Country_long)%>%
+  pivot_wider(names_from = ".metric", values_from = c("Sample_Testing"))
+
+eval_2.1 <- eval_2 %>%
+  filter(Country != "A")%>%
+  group_by(Country, .metric)%>%
+  summarise(Sample_Testing = mean(Sample_Testing))%>%
+  ungroup()%>%
+  left_join(Country.Set)%>%
+  select(Country_long, .metric, starts_with("Sample"), Country)%>%
+  mutate_at(vars(starts_with("Sample")), ~ round(., 2))%>%
+  arrange(Country_long)%>%
+  pivot_wider(names_from = ".metric", values_from = c("Sample_Testing"))%>%
+  select(Country_long, mae, rmse, rsq)%>%
+  rename(mae_wo = mae, rmse_wo = rmse, rsq_wo = rsq)
+
+eval_1.2 <- data_2 %>%
+  group_by(Country)%>%
+  summarise(mean_carbon_intensity = wtd.mean(carbon_intensity_kg_per_USD_national, hh_weights))%>%
+  ungroup()%>%
+  mutate(mean_carbon_intensity = round(mean_carbon_intensity, 2))
+
+eval_1.3 <- left_join(eval_1.1, eval_1.2)%>%
+  left_join(eval_2.1)%>%
+  select(Country_long, mean_carbon_intensity, everything(), -Country, -sample)
+
+colnames(eval_1.3) <- c("Country", "Mean", rep(c("MAE", "RMSE", "$R^{2}$"),1))
+
+kbl(eval_1.3, format = "latex", caption = "Evaluation of boosted regression tree models", booktabs = T, align = "l|r|rrr", vline = "", format.args = list(big.mark = ",", scientific = FALSE), linesep = "",
+    longtable = T, escape = FALSE, label = "A8")%>%
+  kable_styling(position = "center", latex_options = c("HOLD_position", "repeat_header"), font_size = 8)%>%
+  #column_spec(1, width = "3.15 cm")%>%
+  # add_header_above(c("Country" = 1, rep(c("MAE", "RMSE", "R^{2}"),3) ))%>%
+  #add_header_above(c(" " = 2, "Test sample" = 3, "Training sample" = 3, "Entire sample" = 3))%>%
+  footnote(general = "This table shows performance metrics for boosted regression tree models including only total household expenditures as feature. MAE is the mean absolute error of predictions; RMSE is the root mean squared error of predictions; $R^{2}$ is the squared correlation of prediction errors. Unit of MAE and RMSE is $kgCO_{2}$ per US-\\\\$. We show MAE, RMSE and $R^{2}$ for predictions on the testing set, on the training set and on the entire dataset. ", threeparttable = T, escape = FALSE)%>%
+  save_kable(., "2_Tables/Table_SHAP_Summary_EXP.tex")
+
+rm(eval_1, eval_1.0, eval_1.1, eval_1.2, eval_1.3)
+
 # 6.1.X   BRT on carbon intensity of consumption (regression model) ####
 
 # We wish to detect the importance of variables in modelling and non-linear relationships
@@ -7471,7 +7840,7 @@ kbl(data_8.4.1, format = "latex", caption = "Feature importance across countries
   row_spec(0, angle = 90)%>%
   row_spec(1:87, font_size = 6)%>%
   column_spec(1:21, width = "0.35 cm")%>%
-  row_spec(c(14,24,33,41,48,55,60,65,70,74,77,80,83,85,87), hline_after = TRUE)%>%
+  row_spec(c(17,29,38,47,55,61,67,71,75,78,81,84,87), hline_after = TRUE)%>%
   #collapse_rows(columns = 3:4, valign = "middle")%>%
   footnote(general = "This table shows feature importance in percent (based on absolute average SHAP-values per feature) across all countries and per cluster. Feature importance is unadjusted for model accuracy. Columns 'Mean carbon intensity', 'Horizontal inequality' and 'Vertical inequality' show average values. Column 'number' refers to the number of countries assigned to this cluster.", threeparttable = T)%>%
   save_kable(., "2_Tables/Table_Countries_SHAP_Summary_Uncorrected.tex")
@@ -7502,7 +7871,7 @@ kbl(data_8.4.1, format = "latex", caption = "Feature importance across countries
   row_spec(0, angle = 90)%>%
   row_spec(1:87, font_size = 6)%>%
   column_spec(1:21, width = "0.35 cm")%>%
-  row_spec(c(36,52,62,71,76,80,83,85,87), hline_after = TRUE)%>%
+  row_spec(c(46,65,78,83,85,87), hline_after = TRUE)%>%
   #collapse_rows(columns = 3:4, valign = "middle")%>%
   footnote(general = "This table shows feature importance in percent (based on absolute average SHAP-values per feature) across all countries and per cluster. Feature importance is adjusted for model accuracy. Columns 'Mean carbon intensity', 'Horizontal inequality' and 'Vertical inequality' show average values. Column 'number' refers to the number of countries assigned to this cluster.", threeparttable = T)%>%
   save_kable(., "2_Tables/Table_Countries_SHAP_Summary_Corrected.tex")

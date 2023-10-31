@@ -1,0 +1,115 @@
+\begingroup\fontsize{8}{10}\selectfont
+
+\begin{ThreePartTable}
+\begin{TableNotes}
+\item \textit{Note: } 
+\item This table shows performance metrics for boosted regression tree models including only total household expenditures as feature. MAE is the mean absolute error of predictions; RMSE is the root mean squared error of predictions; $R^{2}$ is the squared correlation of prediction errors. Unit of MAE and RMSE is $kgCO_{2}$ per US-\$. We show MAE, RMSE and $R^{2}$ for predictions on the testing set, on the training set and on the entire dataset. 
+\end{TableNotes}
+\begin{longtable}[t]{l|r|rrrl|r|rrrl|r|rrrl|r|rrrl|r|rrrl|r|rrrl|r|rrrl|r|rrr}
+\caption{\label{tab:A8}Evaluation of boosted regression tree models}\\
+\toprule
+\multicolumn{2}{c}{ } & \multicolumn{3}{c}{Rich set of features} & \multicolumn{3}{c}{Household expenditures} \\
+\cmidrule(l{3pt}r{3pt}){3-5} \cmidrule(l{3pt}r{3pt}){6-8}
+Country & Mean & MAE & RMSE & $R^{2}$ & MAE & RMSE & $R^{2}$\\
+\midrule
+\endfirsthead
+\caption[]{Evaluation of boosted regression tree models \textit{(continued)}}\\
+\toprule
+Country & Mean & MAE & RMSE & $R^{2}$ & MAE & RMSE & $R^{2}$\\
+\midrule
+\endhead
+
+\endfoot
+\bottomrule
+\insertTableNotes
+\endlastfoot
+Argentina & 1.28 & 0.50 & 0.74 & 0.27 & 0.57 & 0.82 & 0.13\\
+Armenia & 1.20 & 0.61 & 0.96 & 0.25 & 0.71 & 1.09 & 0.05\\
+Austria & 0.60 & 0.26 & 0.37 & 0.19 & 0.29 & 0.40 & 0.07\\
+Bangladesh & 0.33 & 0.08 & 0.13 & 0.17 & 0.09 & 0.14 & 0.03\\
+Barbados & 0.86 & 0.40 & 0.60 & 0.23 & 0.49 & 0.69 & 0.01\\
+Belgium & 0.75 & 0.27 & 0.36 & 0.13 & 0.28 & 0.37 & 0.09\\
+Benin & 0.40 & 0.22 & 0.34 & 0.34 & 0.30 & 0.41 & 0.05\\
+Bolivia & 0.45 & 0.12 & 0.17 & 0.40 & 0.16 & 0.22 & 0.05\\
+Brazil & 0.82 & 0.37 & 0.58 & 0.19 & 0.41 & 0.64 & 0.05\\
+Bulgaria & 0.80 & 0.36 & 0.83 & 0.01 & 0.37 & 0.82 & 0.01\\
+Burkina Faso & 0.39 & 0.19 & 0.32 & 0.47 & 0.30 & 0.42 & 0.05\\
+Cambodia & 0.49 & 0.22 & 0.34 & 0.19 & 0.26 & 0.37 & 0.01\\
+Canada & 0.67 & 0.24 & 0.34 & 0.17 & 0.27 & 0.38 & 0.01\\
+Chile & 0.68 & 0.23 & 0.34 & 0.12 & 0.24 & 0.35 & 0.08\\
+Colombia & 0.57 & 0.27 & 0.43 & 0.20 & 0.31 & 0.48 & 0.02\\
+Costa Rica & 0.42 & 0.27 & 0.41 & 0.26 & 0.35 & 0.47 & 0.02\\
+Côte d’Ivoire & 0.26 & 0.16 & 0.29 & 0.43 & 0.26 & 0.38 & 0.01\\
+Croatia & 0.77 & 0.42 & 0.60 & 0.08 & 0.42 & 0.59 & 0.09\\
+Cyprus & 0.73 & 0.31 & 0.42 & 0.09 & 0.32 & 0.42 & 0.05\\
+Czechia & 1.71 & 0.54 & 0.87 & 0.11 & 0.56 & 0.92 & 0.01\\
+Denmark & 0.50 & 0.31 & 0.44 & 0.05 & 0.32 & 0.45 & 0.00\\
+Dominican Republic & 0.54 & 0.22 & 0.35 & 0.42 & 0.32 & 0.45 & 0.03\\
+Ecuador & 0.35 & 0.12 & 0.26 & 0.46 & 0.19 & 0.35 & 0.04\\
+Egypt & 0.61 & 0.11 & 0.15 & 0.28 & 0.12 & 0.17 & 0.03\\
+El Salvador & 0.51 & 0.26 & 0.45 & 0.32 & 0.37 & 0.54 & 0.02\\
+Estonia & 0.79 & 0.36 & 0.48 & 0.02 & 0.37 & 0.48 & 0.02\\
+Ethiopia & 0.10 & 0.03 & 0.07 & 0.20 & 0.04 & 0.07 & 0.02\\
+Finland & 0.50 & 0.28 & 0.37 & 0.07 & 0.29 & 0.38 & 0.01\\
+France & 0.65 & 0.39 & 0.54 & 0.08 & 0.41 & 0.56 & 0.02\\
+Georgia & 1.04 & 0.51 & 0.77 & 0.32 & 0.66 & 0.94 & 0.02\\
+Germany & 1.22 & 0.41 & 0.57 & 0.10 & 0.43 & 0.61 & 0.01\\
+Ghana & 0.20 & 0.12 & 0.25 & 0.35 & 0.16 & 0.30 & 0.05\\
+Greece & 0.76 & 0.27 & 0.37 & 0.08 & 0.29 & 0.39 & 0.03\\
+Guatemala & 0.40 & 0.19 & 0.32 & 0.47 & 0.28 & 0.41 & 0.14\\
+Guinea-Bissau & 0.19 & 0.14 & 0.24 & 0.21 & 0.16 & 0.26 & 0.07\\
+Hungary & 1.14 & 0.51 & 0.67 & 0.04 & 0.52 & 0.67 & 0.01\\
+India & 1.07 & 0.19 & 0.29 & 0.41 & 0.25 & 0.38 & 0.01\\
+Indonesia & 1.06 & 0.28 & 0.38 & 0.37 & 0.36 & 0.48 & 0.02\\
+Iraq & 0.81 & 0.28 & 0.42 & 0.28 & 0.30 & 0.45 & 0.18\\
+Ireland & 0.95 & 0.40 & 0.61 & 0.15 & 0.42 & 0.63 & 0.09\\
+Israel & 0.62 & 0.27 & 0.37 & 0.24 & 0.31 & 0.42 & 0.01\\
+Italy & 0.85 & 0.30 & 0.40 & 0.11 & 0.32 & 0.42 & 0.04\\
+Jordan & 1.12 & 0.30 & 0.41 & 0.59 & 0.50 & 0.64 & 0.03\\
+Kenya & 0.41 & 0.21 & 0.36 & 0.15 & 0.24 & 0.38 & 0.03\\
+Latvia & 0.67 & 0.46 & 0.60 & 0.12 & 0.49 & 0.63 & 0.04\\
+Liberia & 0.18 & 0.14 & 0.25 & 0.13 & 0.14 & 0.25 & 0.08\\
+Lithuania & 0.47 & 0.36 & 0.52 & 0.07 & 0.37 & 0.53 & 0.05\\
+Luxembourg & 0.54 & 0.22 & 0.29 & 0.17 & 0.22 & 0.29 & 0.16\\
+Malawi & 0.03 & 0.03 & 0.11 & 0.21 & 0.04 & 0.12 & 0.08\\
+Maldives & 0.25 & 0.10 & 0.13 & 0.15 & 0.11 & 0.14 & 0.03\\
+Mali & 0.36 & 0.19 & 0.30 & 0.41 & 0.30 & 0.39 & 0.01\\
+Mexico & 1.12 & 0.43 & 0.62 & 0.31 & 0.54 & 0.76 & 0.01\\
+Mongolia & 1.14 & 0.71 & 0.99 & 0.18 & 0.78 & 1.10 & 0.03\\
+Morocco & 0.62 & 0.16 & 0.24 & 0.08 & 0.17 & 0.25 & 0.02\\
+Mozambique & 0.20 & 0.23 & 0.46 & 0.21 & 0.24 & 0.47 & 0.16\\
+Myanmar (Burma) & 0.40 & 0.21 & 0.35 & 0.17 & 0.23 & 0.37 & 0.08\\
+Netherlands & 0.83 & 0.23 & 0.31 & 0.17 & 0.24 & 0.32 & 0.09\\
+Nicaragua & 0.25 & 0.13 & 0.25 & 0.50 & 0.23 & 0.35 & 0.04\\
+Niger & 0.10 & 0.07 & 0.18 & 0.50 & 0.11 & 0.21 & 0.22\\
+Nigeria & 0.43 & 0.18 & 0.26 & 0.35 & 0.23 & 0.31 & 0.06\\
+Norway & 0.65 & 0.33 & 0.47 & 0.24 & 0.37 & 0.53 & 0.03\\
+Pakistan & 0.57 & 0.22 & 0.29 & 0.25 & 0.24 & 0.32 & 0.09\\
+Paraguay & 0.43 & 0.20 & 0.30 & 0.30 & 0.26 & 0.35 & 0.02\\
+Peru & 0.72 & 0.24 & 0.43 & 0.53 & 0.37 & 0.61 & 0.06\\
+Philippines & 0.44 & 0.12 & 0.17 & 0.45 & 0.15 & 0.20 & 0.16\\
+Poland & 1.58 & 0.85 & 2.01 & 0.04 & 0.82 & 2.03 & 0.01\\
+Portugal & 0.99 & 0.34 & 0.45 & 0.18 & 0.37 & 0.49 & 0.05\\
+Romania & 0.79 & 0.40 & 0.65 & 0.06 & 0.41 & 0.66 & 0.01\\
+Russia & 1.34 & 0.44 & 0.88 & 0.24 & 0.53 & 1.00 & 0.02\\
+Rwanda & 0.04 & 0.03 & 0.11 & 0.49 & 0.05 & 0.13 & 0.22\\
+Senegal & 0.24 & 0.11 & 0.21 & 0.33 & 0.15 & 0.24 & 0.06\\
+Serbia & 0.95 & 0.47 & 1.20 & 0.03 & 0.46 & 1.20 & 0.01\\
+Slovakia & 1.06 & 0.61 & 0.98 & 0.14 & 0.66 & 1.05 & 0.01\\
+South Africa & 2.15 & 0.48 & 0.70 & 0.35 & 0.58 & 0.85 & 0.03\\
+Spain & 0.74 & 0.32 & 0.46 & 0.09 & 0.34 & 0.48 & 0.00\\
+Suriname & 0.24 & 0.18 & 0.30 & 0.03 & 0.18 & 0.30 & 0.03\\
+Sweden & 0.49 & 0.31 & 0.41 & 0.06 & 0.32 & 0.42 & 0.01\\
+Switzerland & 0.26 & 0.17 & 0.29 & 0.11 & 0.19 & 0.31 & 0.00\\
+Taiwan & 1.07 & 0.17 & 0.22 & 0.46 & 0.23 & 0.30 & 0.02\\
+Thailand & 1.58 & 0.43 & 0.58 & 0.33 & 0.53 & 0.68 & 0.08\\
+Togo & 0.26 & 0.18 & 0.37 & 0.42 & 0.31 & 0.47 & 0.06\\
+Turkey & 1.75 & 0.77 & 1.14 & 0.22 & 0.89 & 1.28 & 0.03\\
+Uganda & 0.20 & 0.15 & 0.33 & 0.28 & 0.20 & 0.38 & 0.06\\
+United Kingdom & 0.83 & 0.37 & 0.54 & 0.16 & 0.40 & 0.58 & 0.05\\
+United States & 0.99 & 0.33 & 0.46 & 0.11 & 0.34 & 0.47 & 0.07\\
+Uruguay & 0.28 & 0.13 & 0.22 & 0.34 & 0.18 & 0.26 & 0.00\\
+Vietnam & 0.51 & 0.09 & 0.12 & 0.26 & 0.10 & 0.14 & 0.09\\*
+\end{longtable}
+\end{ThreePartTable}
+\endgroup{}
