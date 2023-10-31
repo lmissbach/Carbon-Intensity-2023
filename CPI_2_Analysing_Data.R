@@ -7608,16 +7608,16 @@ for(i in c(1,2)){
     # it is in fact not normalized
     select(cluster, Country, order, best_fit, largest_country, everything())%>%
     select(-silhouette_13_means, -mean_carbon_intensity, -median_1_5, -dif_95_05_1_5)%>%
-    mutate_at(vars("Appliance own.":"Sociodemographic"), ~ ifelse(. == 0, NA, .))%>%
+    mutate_at(vars("Appliance own.":"Spatial"), ~ ifelse(. == 0, NA, .))%>%
     # Now it is normalized
     # mutate_at(vars("Appliance own.":"Sociodemographic"), ~ (. - mean(., na.rm = TRUE))/sd(., na.rm = TRUE))%>%
-    pivot_longer("Appliance own.":"Sociodemographic", names_to = "names", values_to = "values")%>%
+    pivot_longer("Appliance own.":"Spatial", names_to = "names", values_to = "values")%>%
     mutate(continent = countrycode(Country, origin = "iso3c", destination = "continent"))%>%
     mutate(help = ifelse(is.na(values), NA, "1"))%>%
     mutate(values_rescaled = rescale(values, c(0,1)))%>%
     filter(cluster %in% cluster_0)%>%
     mutate(names = factor(names, levels = c("HH expenditures", "HH size", "Education", "Gender HHH", "Sociodemographic",
-                                            "Urban", "Province", "District", "Electricity access", "Cooking fuel",
+                                            "Spatial", "Electricity access", "Cooking fuel",
                                             "Heating fuel", "Lighting fuel", "Car own.", "Motorcycle own.", "Appliance own.")))
   
   P_8.4.3 <- ggplot(data_8.4.3)+
@@ -7791,16 +7791,16 @@ for(i in c(1,2)){
     # it is in fact not normalized
     select(cluster, Country, order, best_fit, largest_country, everything())%>%
     select(-silhouette_6_means, -mean_carbon_intensity, -median_1_5, -dif_95_05_1_5)%>%
-    mutate_at(vars("Appliance own.":"Sociodemographic"), ~ ifelse(. == 0, NA, .))%>%
+    mutate_at(vars("Appliance own.":"Spatial"), ~ ifelse(. == 0, NA, .))%>%
     # Now it is normalized
     # mutate_at(vars("Appliance own.":"Sociodemographic"), ~ (. - mean(., na.rm = TRUE))/sd(., na.rm = TRUE))%>%
-    pivot_longer("Appliance own.":"Sociodemographic", names_to = "names", values_to = "values")%>%
+    pivot_longer("Appliance own.":"Spatial", names_to = "names", values_to = "values")%>%
     mutate(continent = countrycode(Country, origin = "iso3c", destination = "continent"))%>%
     mutate(help = ifelse(is.na(values), NA, "1"))%>%
     mutate(values_rescaled = rescale(values, c(0,1)))%>%
     filter(cluster %in% cluster_0)%>%
     mutate(names = factor(names, levels = c("HH expenditures", "HH size", "Education", "Gender HHH", "Sociodemographic",
-                                            "Urban", "Province", "District", "Electricity access", "Cooking fuel",
+                                            "Spatial", "Electricity access", "Cooking fuel",
                                             "Heating fuel", "Lighting fuel", "Car own.", "Motorcycle own.", "Appliance own.")))
   
   P_8.4.3 <- ggplot(data_8.4.3)+
@@ -7880,7 +7880,7 @@ data_8.4.1 <- read_csv("../0_Data/9_Supplementary Data/BRT-Tracking/Clusters_Nor
          "Mean carbon intensity" = "mean_carbon_intensity",
          "Vertical inequality"   = "median_1_5",
          "Silhouette width" = "silhouette_13_means")%>%
-  select(cluster, Country, "Silhouette width", "Mean carbon intensity", "Horizontal inequality", "Vertical inequality",
+  select(cluster, Country, "Silhouette width", "Horizontal inequality", "Vertical inequality", "Mean carbon intensity", 
          "HH expenditures", "Sociodemographic",
          "Spatial", "Electricity access", "Cooking fuel",
          "Heating fuel", "Lighting fuel", "Car own.", "Motorcycle own.", "Appliance own.")%>%
@@ -7894,10 +7894,12 @@ options(knitr.kable.NA = "")
 kbl(data_8.4.1, format = "latex", caption = "Feature importance across countries by cluster", booktabs = T, 
     vline = "", format.args = list(big.mark = ",", scientific = FALSE), linesep = "",
     longtable = T, label = "A10_Uncorrected")%>%
-  kable_styling(position = "center", latex_options = c("HOLD_position", "repeat_header"), font_size = 8)%>%
+  kable_styling(position = "center", latex_options = c("HOLD_position", "repeat_header"), font_size = 9)%>%
   row_spec(0, angle = 90)%>%
-  row_spec(1:87, font_size = 6)%>%
-  column_spec(1:21, width = "0.35 cm")%>%
+  row_spec(1:87, font_size = 8)%>%
+  column_spec(1:2, width = "0.35 cm")%>%
+  column_spec(3, width = "0.9 cm")%>%
+  column_spec(4:21, width = "0.35 cm")%>%
   row_spec(c(17,29,38,47,55,61,67,71,75,78,81,84,87), hline_after = TRUE)%>%
   #collapse_rows(columns = 3:4, valign = "middle")%>%
   footnote(general = "This table shows feature importance in percent (based on absolute average SHAP-values per feature) across all countries and per cluster. Feature importance is unadjusted for model accuracy. Columns 'Mean carbon intensity', 'Horizontal inequality' and 'Vertical inequality' show average values. Column 'number' refers to the number of countries assigned to this cluster.", threeparttable = T)%>%
@@ -7911,7 +7913,7 @@ data_8.4.1 <- read_csv("../0_Data/9_Supplementary Data/BRT-Tracking/Clusters_Nor
          "Mean carbon intensity" = "mean_carbon_intensity",
          "Vertical inequality"   = "median_1_5",
          "Silhouette width" = "silhouette_6_means")%>%
-  select(cluster, Country, "Silhouette width", "Mean carbon intensity", "Horizontal inequality", "Vertical inequality",
+  select(cluster, Country, "Silhouette width", "Horizontal inequality", "Vertical inequality", "Mean carbon intensity",
          "HH expenditures", "Sociodemographic",
          "Spatial", "Electricity access", "Cooking fuel",
          "Heating fuel", "Lighting fuel", "Car own.", "Motorcycle own.", "Appliance own.")%>%
@@ -7925,10 +7927,12 @@ options(knitr.kable.NA = "")
 kbl(data_8.4.1, format = "latex", caption = "Feature importance across countries by cluster", booktabs = T, 
     vline = "", format.args = list(big.mark = ",", scientific = FALSE), linesep = "",
     longtable = T, label = "A10")%>%
-  kable_styling(position = "center", latex_options = c("HOLD_position", "repeat_header"), font_size = 8)%>%
+  kable_styling(position = "center", latex_options = c("HOLD_position", "repeat_header"), font_size = 9)%>%
   row_spec(0, angle = 90)%>%
-  row_spec(1:87, font_size = 6)%>%
-  column_spec(1:21, width = "0.35 cm")%>%
+  row_spec(1:87, font_size = 8)%>%
+  column_spec(1:2, width = "0.35 cm")%>%
+  column_spec(3, width = "0.9 cm")%>%
+  column_spec(4:21, width = "0.35 cm")%>%
   row_spec(c(46,65,78,83,85,87), hline_after = TRUE)%>%
   #collapse_rows(columns = 3:4, valign = "middle")%>%
   footnote(general = "This table shows feature importance in percent (based on absolute average SHAP-values per feature) across all countries and per cluster. Feature importance is adjusted for model accuracy. Columns 'Mean carbon intensity', 'Horizontal inequality' and 'Vertical inequality' show average values. Column 'number' refers to the number of countries assigned to this cluster.", threeparttable = T)%>%
