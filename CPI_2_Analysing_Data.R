@@ -3985,18 +3985,76 @@ eval_1.3 <- left_join(eval_1.1, eval_1.2)%>%
   left_join(eval_2.1)%>%
   select(Country_long, mean_carbon_intensity, everything(), -Country, -sample)
 
-colnames(eval_1.3) <- c("Country", "Mean", rep(c("MAE", "RMSE", "$R^{2}$"),1))
+colnames(eval_1.3) <- c("Country", "Mean", rep(c("MAE", "RMSE", "$R^{2}$"),2))
 
-kbl(eval_1.3, format = "latex", caption = "Evaluation of boosted regression tree models", booktabs = T, align = "l|r|rrr", vline = "", format.args = list(big.mark = ",", scientific = FALSE), linesep = "",
+kbl(eval_1.3, format = "latex", caption = "Evaluation of boosted regression tree models", booktabs = T, align = "l|r|rrr|rrr", vline = "", format.args = list(big.mark = ",", scientific = FALSE), linesep = "",
     longtable = T, escape = FALSE, label = "A8")%>%
   kable_styling(position = "center", latex_options = c("HOLD_position", "repeat_header"), font_size = 8)%>%
   #column_spec(1, width = "3.15 cm")%>%
-  # add_header_above(c("Country" = 1, rep(c("MAE", "RMSE", "R^{2}"),3) ))%>%
+  add_header_above(c(" " = 2, "Rich set of features" = 3, "Household expenditures" = 3))%>%
   #add_header_above(c(" " = 2, "Test sample" = 3, "Training sample" = 3, "Entire sample" = 3))%>%
-  footnote(general = "This table shows performance metrics for boosted regression tree models including only total household expenditures as feature. MAE is the mean absolute error of predictions; RMSE is the root mean squared error of predictions; $R^{2}$ is the squared correlation of prediction errors. Unit of MAE and RMSE is $kgCO_{2}$ per US-\\\\$. We show MAE, RMSE and $R^{2}$ for predictions on the testing set, on the training set and on the entire dataset. ", threeparttable = T, escape = FALSE)%>%
+  footnote(general = "This table shows performance metrics for boosted regression tree models including all features available features ('Rich set of features') and exclusively household expenditures ('household expenditures'). MAE is the mean absolute error of predictions; RMSE is the root mean squared error of predictions; $R^{2}$ is the squared correlation of prediction errors. Unit of MAE and RMSE is $kgCO_{2}$ per US-\\\\$. We show MAE, RMSE and $R^{2}$ for five-fold cross validation on the entire dataset. ", threeparttable = T, escape = FALSE)%>%
   save_kable(., "2_Tables/Table_SHAP_Summary_EXP.tex")
 
-rm(eval_1, eval_1.0, eval_1.1, eval_1.2, eval_1.3)
+# Figure comparing R2 for rich and sparse set
+
+eval_3.1 <- eval_1 %>%
+  group_by(Country, number_ob, .metric)%>%
+  summarise(Sample_Testing = mean(Sample_Testing))%>%
+  ungroup()%>%
+  pivot_wider(names_from = ".metric", values_from = c("Sample_Testing"))
+
+eval_4.1 <- eval_2 %>%
+  filter(Country != "A")%>%
+  group_by(Country, .metric)%>%
+  summarise(Sample_Testing = mean(Sample_Testing))%>%
+  ungroup()%>%
+  left_join(Country.Set)%>%
+  select(Country_long, .metric, starts_with("Sample"), Country)%>%
+  arrange(Country_long)%>%
+  pivot_wider(names_from = ".metric", values_from = c("Sample_Testing"))%>%
+  select(Country, mae, rmse, rsq)%>%
+  rename(mae_wo = mae, rmse_wo = rmse, rsq_wo = rsq)
+
+eval_1.4 <- left_join(eval_3.1, eval_4.1)%>%
+  select(Country, rsq, rsq_wo)%>%
+  arrange(desc(rsq_wo))%>%
+  mutate(order = 1:n())%>%
+  mutate(Country = fct_reorder(Country, order))%>%
+  pivot_longer(c(-Country,-order), names_to = "Type", values_to = "values")
+
+P_6.3.1 <- ggplot(eval_1.4, aes(x = values, y = Country))+
+  geom_point(shape = 21, aes(fill = Type))+
+  geom_line()+
+  theme_bw()+
+  scale_fill_nejm(labels = c("All features", "Household expenditures"), name = "Features included in BRT-modelling")+
+  xlab(expression(paste("Goodness of fit (", R^2,")")))+
+  scale_y_discrete(guide = guide_axis(n.dodge=2))+
+  scale_x_continuous(expand = c(0,0.01))+
+  theme(axis.text.y = element_text(size = 6), 
+        axis.text.x = element_text(size = 7),
+        axis.title  = element_text(size = 7),
+        plot.title = element_text(size = 11),
+        legend.position = "bottom",
+        # strip.text = element_text(size = 7),
+        #strip.text.y = element_text(angle = 180),
+        # panel.grid.minor = element_blank(),
+        # panel.grid.major = element_blank(),
+        panel.grid.major = element_line(size = 0.2),
+        axis.ticks = element_line(size = 0.2),
+        legend.text = element_text(size = 7),
+        legend.title = element_text(size = 7),
+        plot.margin = unit(c(0.3,0.3,0.3,0.3), "cm"),
+        panel.border = element_rect(size = 0.3))
+
+jpeg("1_Figures/Figures_Appendix/Figure_Comparison_Models.jpg", width = 15.5, height = 15.5, unit = "cm", res = 400)
+print(P_6.3.1)
+dev.off()
+
+rm(eval_1, eval_1.0, eval_1.1, eval_1.2, eval_1.3,
+   data_6.3.1, data_6.3.2, data_6.3.2.raw, data_6.3.2.test, data_6.3.2.testing, data_6.3.2.training, data_6.3.3,
+   eval_2.1, eval_3.1, eval_4.1, folds_6.3.2, model_brt, model_brt_1, P_6.3.1, recipe_6.3.0, track, track_0, i, v, eval_0.1,
+   eval_2, eval_1.4, eval_0)
 
 # 6.1.X   BRT on carbon intensity of consumption (regression model) ####
 
