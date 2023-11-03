@@ -3393,7 +3393,7 @@ P_6.2.5.1 <- ggplot(data_6.2.5.1)+
   scale_x_continuous(expand = c(0,0), breaks = seq(0,20,5), minor_breaks = seq(0,20,1))+
   scale_y_continuous(expand = c(0,0.01))+
   theme_bw()+
-  ggtitle("Silhouette plot (non-corrected)")+
+  ggtitle("Silhouette plot (non-adjusted)")+
   theme(axis.text.y = element_text(size = 6), 
         axis.text.x = element_text(size = 6),
         axis.title  = element_text(size = 7),
@@ -3421,7 +3421,7 @@ P_6.2.5.2 <- ggplot(data_6.2.5.2)+
   scale_x_continuous(expand = c(0,0), breaks = seq(0,20,5), minor_breaks = seq(0,20,1))+
   scale_y_continuous(expand = c(0,0.01))+
   theme_bw()+
-  ggtitle("Silhouette plot")+
+  ggtitle("Silhouette plot (adjusted)")+
   theme(axis.text.y = element_text(size = 6), 
         axis.text.x = element_text(size = 6),
         axis.title  = element_text(size = 7),
