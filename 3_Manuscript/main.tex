@@ -146,7 +146,7 @@ We proceed as follows: In the next chapter \ref{sec:literature}, we revisit the 
 One important criterion for climate policy design is if policy impacts distribute differently across different households. Unintended distributional impacts can impede policy implementation, for example because governments are opposing larger inequality per se or because of lower public support \autocite{Bergquist.2022,Douenne.2022}. 
 
 % Show why distributional impacts can happen (theoretical arguments).
-Accordingly, research has been engaging with the distributional effects of environmental policy reforms for a long time \autocite{Cremer.2003,Poterba.1991,Sandmo.1975}. In essence, households that consume more of a polluting good can expect higher absolute costs when pollution becomes more costly, but relative additional costs depend on expenditure shares for polluting goods, which differ with income \autocite{Jacobs.2019,Dorband.2019}. Moreover, the distribution of such additional costs depends on the distribution of less-polluting technology. If some households have access to more technologies, then policy may increase inequality, posing a difficult trade-off between efficiency and equity \autocite{Hansel.2022}. 
+Accordingly, research has been engaging with the distributional effects of environmental policy reforms for a long time \autocite{Cremer.2003,Poterba.1991,Sandmo.1975,Stiglitz.2019}. In essence, households that consume more of a polluting good can expect higher absolute costs when pollution becomes more costly, but relative additional costs depend on expenditure shares for polluting goods, which differ with income \autocite{Jacobs.2019,Dorband.2019}. Moreover, the distribution of such additional costs depends on the distribution of less-polluting technology. If some households have access to more technologies, then policy may increase inequality, posing a difficult trade-off between efficiency and equity \autocite{Hansel.2022}. 
 
 % Show that vertical distributional impacts exist
 Many researchers have quantified \textit{vertical} distributional effects of different climate policy instruments, i.e., differences in policy outcomes between relatively poorer and relatively richer households. For price-based climate policy (such as carbon pricing), such work includes analyses in single countries \autocite{Goulder.2019,Grainger.2010,Rausch.2011,Garaffa.2021,Sterner.2012,Wu.2022} or across countries \autocite{Budolfson.2021,Feindt.2021,Dorband.2019,Steckel.2021b,VogtSchilb.2019,Missbach.2024}. Particularly in many high-income countries, price-based policies are often found to be regressive. In contrast, results from a meta-analysis \autocite{Ohlendorf.2021} document more progressive results in lower income countries and for price-based policies in the transport sector.
@@ -315,7 +315,7 @@ Building on selected hyperparameters, we use five-fold cross-validation on all o
 
 Subsequently, be $P_{e_{i}^{80^{th}}}$ the probability of household \textit{i} to consume more carbon-intensively than 80\% of the population in each country. We are interested in the coefficients $\beta^{'}$ of the following logit-model:
 
-\begin{equation}
+\begin{equation} \label{logit}
     log \left( \frac{P_{e_{i}^{80}}}{1 - P_{e_{i}^{80}}} \right) = \alpha_{0} + \beta^{'} X_{i}^{'} + \varepsilon_{i}
 \end{equation}
 
@@ -519,11 +519,13 @@ On aggregate, these results underpin that distributional implications of climate
 % LST
 \item Often-proposed lump-sum transfers: Taste for reducing vertical inequality. "Rebound effect". High visibility. Low public acceptance. Popular among economists. Effective in cluster D or where expenditures are an important feature, more generally.
 % Targeted transfers
-\item Targeted transfers: Can help reduce horizontal inequality. Helpful where expenditures are not an important feature. Discuss literature on targeting in general.
+\item Targeted transfers: Can help reduce horizontal inequality. Helpful where expenditures are not an important feature. Discuss literature on targeting in general. Problem: Sets off the effects by the carbon tax.
 % Tax breaks
 \item Tax breaks (income from labour, consumption): Preferable on efficiency grounds. Leverage to adjust vertical inequality. Reaping double-dividend. Low visibility. Popular among economists. Effective where results are regressive or where expenditures are an important feature.
 % Exemption of transition fuels, infrastructure access,
 \item Where other factors matter: Enabling access to efficient technologies absolutely crucial. "Allowing" people to employ clean technologies and to react to prices.
+\item Can also be sectorally differentiated carbon taxes, for example on sectors, which are consumed disproportionately large by the rich (Stiglitz.2019).
+% \item Non-priced interventions might be warranted in general, in case they change preferences.
 % Green spending, general budget
 % Discuss low predictive power and conclusions.  
 \item Very important: Low predictive power means that any transfer will be ineffective to some extent! Important concern.
@@ -535,7 +537,7 @@ On aggregate, these results underpin that distributional implications of climate
 % Inaccuracies
 \item Discuss dynamic effects and inaccuracies in modeling approach (tax pass-through, short- vs. medium-term, technological path dependencies/barriers on household-level)
 % Distinction 
-\item Distinguish results from analyses about climate policy on labour, wealth, impacts, adaptation, co-benefits, co-costs. Investments: Not covered, only consumption.
+\item Distinguish results from analyses about climate policy on labour, wealth, impacts, adaptation, co-benefits, co-costs. Investments: Not covered, only consumption. May required additional compensation measures, such as subsidizing low-skilled labour in carbon-intensive sectors.
 \end{itemize}
 
 \section{Conclusion} \label{sec:conclusion}
@@ -676,6 +678,10 @@ It is also possible to investigate the distribution of regional policies, for ex
     \end{subcaption2}
 \end{figure}
 
+\clearpage
+
+% Marginal effects-plots from Logit models
+\input{../1_Figures/Figure_Marginal_Effects.tex}
 \clearpage
 
 % Comparison of policies
