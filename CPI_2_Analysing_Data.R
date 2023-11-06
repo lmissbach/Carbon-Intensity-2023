@@ -3579,7 +3579,9 @@ print(P_6.2.5.3)
 print(P_6.2.5.4)
 dev.off()
 
-data_6.2.7 <- read_csv("../0_Data/9_Supplementary Data/BRT-Tracking/Clusters_Normalized_Corrected.csv")%>%
+data_6.2.7 <- read_csv("../0_Data/9_Supplementary Data/BRT-Tracking/Clusters_Normalized_Corrected.csv")
+
+data_6.2.7.1 <- data_6.2.7 %>%
   group_by(cluster)%>%
   mutate(number = n())%>%
   summarise_at(vars(-Country), ~ mean(.))%>%
@@ -3587,21 +3589,22 @@ data_6.2.7 <- read_csv("../0_Data/9_Supplementary Data/BRT-Tracking/Clusters_Nor
   # potentially relevant criteria
   rename(car_01 = "Car own.", ely = "Electricity access", exp = "HH expenditures",
          app = "Appliance own.", moto = "Motorcycle own.", cook = "Cooking fuel",
-         light = "Lighting fuel", heat = "Heating fuel", size = "HH size", gender = "Gender HHH")%>%
+         light = "Lighting fuel", heat = "Heating fuel")%>%
   mutate(CAR         = ifelse(car_01 > 0.07, "Yes", "No"),
          APPLIANCE   = ifelse(app > 0.05, "Yes", "No"),
          COOKING     = ifelse(cook > 0.05, "Yes", "No"),
          ELECTRICITY = ifelse(ely > 0.1, "Yes", "No"),
-         EDUCATION   = ifelse(Education > 0.1, "Yes", "No"),
+         #EDUCATION   = ifelse(Education > 0.1, "Yes", "No"),
          MOTORCYCLE  = ifelse(moto > 0.07, "Yes", "No"),
-         PROVINCE    = ifelse(Province > 0.04, "Yes", "No"),
-         DISTRICT    = ifelse(District > 0.04, "Yes", "No"),
-         URBAN       = ifelse(Urban > 0.04, "Yes", "No"),
+         #PROVINCE    = ifelse(Province > 0.04, "Yes", "No"),
+         #DISTRICT    = ifelse(District > 0.04, "Yes", "No"),
+         #URBAN       = ifelse(Urban > 0.04, "Yes", "No"),
+         SPATIAL     = ifelse(Spatial > 0.05, "Yes", "No"),
          LIGHTING    = ifelse(light > 0.05, "Yes", "No"),
          HEATING     = ifelse(heat > 0.05, "Yes", "No"),
-         'HH SIZE'   = ifelse(size > 0.1, "Yes", "No"),
-         GENDER      = ifelse(gender > 0.1, "Yes", "No"),
-         SOCIODEMOGRAPHIC = ifelse((Sociodemographic + gender + Education) > 0.05, "Yes", "No"),
+         #'HH SIZE'   = ifelse(size > 0.1, "Yes", "No"),
+         #GENDER      = ifelse(gender > 0.1, "Yes", "No"),
+         SOCIODEMOGRAPHIC = ifelse(Sociodemographic > 0.05, "Yes", "No"),
          VERTICAL    = ifelse(median_1_5 < 1, "Progressive",
                               ifelse(median_1_5 > 1, "Regressive", NA)),
          HORIZONTAL  = ifelse(dif_95_05_1_5 > 1, "Heterogeneous in poor",
@@ -3617,13 +3620,63 @@ data_6.2.7 <- read_csv("../0_Data/9_Supplementary Data/BRT-Tracking/Clusters_Nor
 
 data_6.2.8 <- read_csv("../0_Data/9_Supplementary Data/BRT-Tracking/Clusters_Normalized_Corrected.csv") %>%
   select("Car own.", "Electricity access", "HH expenditures", "Appliance own.",
-         "Cooking fuel", Education, Province, District, Urban, "Heating fuel", "Lighting fuel",
+         "Cooking fuel", Spatial, "Heating fuel", "Lighting fuel",
          Sociodemographic, median_1_5, dif_95_05_1_5, mean_carbon_intensity, cluster, Country)%>%
   group_by(cluster)%>%
   mutate(number = n())%>%
   summarise_at(vars(-Country), ~ mean(.))%>%
   ungroup()%>%
   mutate_at(vars(-cluster, - number), ~ (. - mean(.))/sd(.))
+
+# 
+
+data_6.2.9 <- read_csv("../0_Data/9_Supplementary Data/WDI/2021_08_17_WDI.csv") %>%
+  rename(Country.Name = "Country Name",
+         Country.Code = "Country Code",
+         Type         = "Series Name")%>%
+  select(-'Series Code')%>%
+  rename_at(vars(ends_with("]")), list(~ str_replace(., "..YR.....", "")))%>%
+  pivot_longer(-("Country.Name":"Type"), names_to = "year", values_to = "value")%>%
+  filter(value != "..")%>%
+  mutate(value = as.numeric(value))%>%
+  filter(year == 2018 & Type == "GDP per capita (constant 2010 US$)")%>%
+  filter(Country.Code %in% Country.Set$Country)%>%
+  rename(Country = Country.Code)%>%
+  left_join(select(read_csv("../0_Data/9_Supplementary Data/BRT-Tracking/Clusters_Normalized_Corrected.csv"), Country, cluster))
+
+eval_1 <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_SHAP_Evaluation_VFOLD_2017.xlsx")
+
+eval_1.0 <- eval_1 %>%
+  filter(.metric == "mae")%>%
+  mutate(number = 1:n())%>%
+  group_by(Country, number_ob, fold)%>%
+  filter(number == max(number))%>%
+  ungroup()%>%
+  group_by(Country, number_ob)%>%
+  summarise(Sample_Testing = mean(Sample_Testing))%>%
+  ungroup()%>%
+  arrange(Country)%>%
+  select(Country, number_ob)
+
+eval_1.1 <- eval_1 %>%
+  filter(number_ob %in% eval_1.0$number_ob)%>%
+  mutate(number = 1:n())%>%
+  group_by(Country, number_ob, .metric, fold)%>%
+  filter(number == max(number))%>%
+  ungroup()%>%
+  group_by(Country, number_ob, .metric)%>%
+  summarise(Sample_Testing = mean(Sample_Testing))%>%
+  ungroup()%>%
+  left_join(Country.Set)%>%
+  select(Country_long, .metric, starts_with("Sample"), Country)%>%
+  mutate_at(vars(starts_with("Sample")), ~ round(., 2))%>%
+  arrange(Country_long)%>%
+  pivot_wider(names_from = ".metric", values_from = c("Sample_Testing"))
+
+data_6.2.10 <- data_6.2.7 %>%
+  left_join(eval_1.1)%>%
+  filter(cluster == "A")
+
 
 rm(data_6.2.0, data_6.2.1, data_6.2.2, data_6.2.3, data_6.2.4, 
    data_6.2.4.0, data_6.2.5, data_6.2.5.1, data_6.2.4_r2, data_6.2.4.0_r2, data_6.2.5_r2, data_6.2.5.2,
