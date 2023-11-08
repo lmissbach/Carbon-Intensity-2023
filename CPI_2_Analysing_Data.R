@@ -7182,17 +7182,19 @@ rm(data_8.2.0, data_8.2.1, poly, poly_2, poly_3, poly_4, poly_5, P_8.2, data_8.2
 # 8.3     Figure 3: Clustering and features ####
 
 data_8.3.0 <- read_csv("../0_Data/9_Supplementary Data/BRT-Tracking/Clusters_Normalized_Corrected.csv", show_col_types = FALSE) %>%
+  mutate(cluster = ifelse(Country %in% c("UGA", "RWA"), "F",
+                          ifelse(Country %in% c("TUR", "ARM"), "E", cluster)))%>%
   group_by(cluster)%>%
   mutate(number = n())%>%
   summarise_at(vars("Appliance own.":"silhouette_6_means", number), ~ mean(.))%>%
   ungroup()%>%
   mutate_at(vars(-cluster, - number, - dif_95_05_1_5, -median_1_5), ~ (. - mean(.))/sd(.))%>%
-  rename("Horizontal inequality" = "dif_95_05_1_5", 
+  rename("Horizontal distribution" = "dif_95_05_1_5", 
          "Mean carbon intensity" = "mean_carbon_intensity",
-         "Vertical inequality"   = "median_1_5")%>%
+         "Vertical distribution"   = "median_1_5")%>%
   pivot_longer("Appliance own.":"silhouette_6_means", names_to = "names", values_to = "values")%>%
   filter(names != "silhouette_6_means")%>%
-  mutate(names = factor(names, levels = c("Mean carbon intensity", "Horizontal inequality", "Vertical inequality",
+  mutate(names = factor(names, levels = c("Mean carbon intensity", "Horizontal distribution", "Vertical distribution",
                                           "HH expenditures", "Sociodemographic",
                                           "Spatial", 
                                           "Electricity access", "Cooking fuel", "Heating fuel", "Lighting fuel", "Car own.", "Motorcycle own.", "Appliance own.")))
@@ -7200,12 +7202,12 @@ data_8.3.0 <- read_csv("../0_Data/9_Supplementary Data/BRT-Tracking/Clusters_Nor
 # Need to split up because of different scaling required
 
 data_8.3.1 <- data_8.3.0 %>%
-  filter(names != "Vertical inequality" & names != "Horizontal inequality" & names != "Mean carbon intensity")%>%
+  filter(names != "Vertical distribution" & names != "Horizontal distribution" & names != "Mean carbon intensity")%>%
   # group_by(names)%>%
   mutate(values_rescaled = rescale(values))
 
 data_8.3.2 <- data_8.3.0 %>%
-  filter(names == "Vertical inequality" | names == "Horizontal inequality")%>%
+  filter(names == "Vertical distribution" | names == "Horizontal distribution")%>%
   group_by(names)%>%
   mutate(values_new = (values - 1))%>%
   mutate(values_new = values_new/sd(values_new))%>%
@@ -7216,7 +7218,7 @@ data_8.3.2 <- data_8.3.0 %>%
   filter(!is.na(cluster))
 
 data_8.3.3 <- data_8.3.1 %>%
-  filter(!names %in% c("Mean carbon intensity", "Vertical inequality", "Horizontal inequality"))
+  filter(!names %in% c("Mean carbon intensity", "Vertical distribution", "Horizontal distribution"))
 
 data_8.3.4 <- data_8.3.0 %>%
   filter(names == "Mean carbon intensity")%>%
@@ -7263,8 +7265,8 @@ P_8.3.2 <- ggplot(data_8.3.2)+
                        colors = c("#0072B5FF", "white","#BC3C29FF", "#631879FF"),
                        values = scales::rescale(c(0,0.43,0.85,1)))+theme_bw()+
   scale_y_discrete(limits = rev)+
-  scale_x_discrete(labels = c(expression(paste("Horizontal inequality (", widehat(H)[r]^{1} ,")", sep = "")), 
-                              expression(paste("Vertical inequality (", widehat(V)[r]^{1} ,")", sep = ""))))+
+  scale_x_discrete(labels = c(expression(paste("Horizontal distribution (", widehat(H)[r]^{1} ,")", sep = "")), 
+                              expression(paste("Vertical distribution (", widehat(V)[r]^{1} ,")", sep = ""))))+
   xlab("")+ 
   guides(fill = "none")+
   ylab("Country cluster")+
@@ -7752,7 +7754,9 @@ for(i in c(1,2)){
     mutate_at(vars(median_1_5, dif_95_05_1_5), ~ (. - 1))%>%
     mutate_at(vars(median_1_5, dif_95_05_1_5), ~ ./sd(.))%>%
     pivot_longer("median_1_5":"dif_95_05_1_5", names_to = "names", values_to = "values")%>%
-    mutate(values_rescaled = rescale(values, c(0,1)))
+    mutate(values_rescaled = rescale(values, c(0,1)))%>%
+    mutate(cluster = ifelse(Country %in% c("UGA", "RWA"), "F",
+                            ifelse(Country %in% c("TUR", "ARM"), "E", cluster)))
   
   data_8.4.1.1 <- data_8.4.1 %>%
     filter(cluster %in% cluster_0)
@@ -7770,8 +7774,8 @@ for(i in c(1,2)){
     theme_bw()+
     facet_grid(cluster ~ ., scales = "free", space = "free")+
     scale_y_discrete(limits = rev)+
-    scale_x_discrete(labels = c(expression(paste("Horizontal inequality (", widehat(H)[r]^{1} ,")", sep = "")), 
-                                expression(paste("Vertical inequality (", widehat(V)[r]^{1} ,")", sep = ""))))+
+    scale_x_discrete(labels = c(expression(paste("Horizontal distribution (", widehat(H)[r]^{1} ,")", sep = "")), 
+                                expression(paste("Vertical distribution (", widehat(V)[r]^{1} ,")", sep = ""))))+
     xlab("")+ 
     guides(fill = "none")+
     ylab("Country")+
@@ -7804,7 +7808,9 @@ for(i in c(1,2)){
     filter(names %in% c("mean_carbon_intensity"))%>%
     mutate(value = (values - mean(values))/sd(values))%>%
     mutate(values_rescaled = rescale(values, c(0,1)))%>%
-    filter(cluster %in% cluster_0)
+    filter(cluster %in% cluster_0)%>%
+    mutate(cluster = ifelse(Country %in% c("UGA", "RWA"), "F",
+                            ifelse(Country %in% c("TUR", "ARM"), "E", cluster)))
   
   P_8.4.2 <- ggplot(data_8.4.2)+
     geom_point(aes(y = Country, x = names, fill = value), shape = 22, size = 3, stroke = 0.2)+
@@ -7857,7 +7863,9 @@ for(i in c(1,2)){
     filter(cluster %in% cluster_0)%>%
     mutate(names = factor(names, levels = c("HH expenditures", "HH size", "Education", "Gender HHH", "Sociodemographic",
                                             "Spatial", "Electricity access", "Cooking fuel",
-                                            "Heating fuel", "Lighting fuel", "Car own.", "Motorcycle own.", "Appliance own.")))
+                                            "Heating fuel", "Lighting fuel", "Car own.", "Motorcycle own.", "Appliance own.")))%>%
+    mutate(cluster = ifelse(Country %in% c("UGA", "RWA"), "F",
+                            ifelse(Country %in% c("TUR", "ARM"), "E", cluster)))
   
   P_8.4.3 <- ggplot(data_8.4.3)+
     geom_point(aes(y = Country, x = names, fill = values, colour = help), shape = 22, size = 3, stroke = 0.2)+
