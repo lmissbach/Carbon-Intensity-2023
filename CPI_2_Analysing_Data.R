@@ -6825,34 +6825,33 @@ P_8.2 <- ggplot()+
   geom_label(data = poly_4, aes(label = text, x = x, y = y), alpha = 0.5, size = 2.5)+
   geom_label(data = poly_5, aes(label = text, x = x, y = y), alpha = 0.2, size = 2.5)+
   theme_bw()+
-  geom_point(data = data_8.2.1, aes(y = median_1_5, x = dif_95_05_1_5, fill = log(value)), shape = 21, colour = "black", size = 2.5)+
+  geom_point(data = data_8.2.1, aes(y = median_1_5, x = dif_95_05_1_5, fill = log(value)), shape = 21, colour = "black", size = 3)+
   #geom_text_repel(data = data_7.3, aes(label = Country, y = median_1_5, x = dif_95_05_1_5),
   #                direction = "both", size = 2, max.overlaps = 100)+
   coord_cartesian(xlim = c(0,3.2), ylim = c(0,2.5))+
-  scale_fill_viridis_c(breaks = c(7,11), labels = c("Poorer", "Richer"))+
+  scale_fill_viridis_c(breaks = c(6.9,11.1), labels = c("Poorer", "Richer"), name = "Average GDP per capita (log)")+
+  guides(fill = guide_colorbar(ticks.colour = NA))+
   scale_x_continuous(expand = c(0,0))+
   scale_y_continuous(expand = c(0,0), breaks = c(0,1,2))+
   ylab("Vertical distribution coefficient")+
   xlab("Horizontal distribution coefficient")+
   labs(fill = "")+
-  # guides(fill = "none")+
-  #guides(fill = guide_legend(nrow = 2))+
   theme(axis.text.y = element_text(size = 7), 
         axis.text.x = element_text(size = 7),
         axis.title  = element_text(size = 7),
         plot.title  = element_text(size = 7),
-        legend.position = "right",
+        legend.position = "bottom",
         strip.text = element_text(size = 7),
         #strip.text.y = element_text(angle = 180),
         panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
         axis.ticks = element_line(size = 0.2),
         legend.text = element_text(size = 7),
-        legend.title = element_text(size = 7),
+        legend.title = element_text(size = 7, vjust = 0.75),
         plot.margin = unit(c(0.3,0.3,0.3,0.3), "cm"),
         panel.border = element_rect(size = 0.3))
 
-jpeg("1_Figures/Figure 2/Figure_2_2017.jpg", width = 15.5, height = 10, unit = "cm", res = 600)
+jpeg("1_Figures/Figure 2/Figure_2_2017.jpg", width = 15.5, height = 13.5, unit = "cm", res = 600)
 print(P_8.2)
 dev.off()
 
@@ -6997,12 +6996,13 @@ P_8.0 <- ggplot()+
   geom_label(data = poly_5, aes(label = text, x = x, y = y), alpha = 0.2, size = 2.5)+
   theme_bw()+
   # geom_segment(data = data_8.2.2, aes(y = median_1_5_national, yend = median_1_5_global, x = dif_95_05_1_5_national, xend = dif_95_05_1_5_global), size = 0.1, colour = "lightgrey")+
-  geom_point(data = data_8.2.2, aes(y = median_1_5_national, x = dif_95_05_1_5_national, fill = log(value)), shape = 21, colour = "black", size = 2.5)+
+  geom_point(data = data_8.2.2, aes(y = median_1_5_national, x = dif_95_05_1_5_national, fill = log(value)), shape = 21, colour = "black", size = 3)+
   # geom_point(data = data_8.2.2, aes(y = median_1_5_global, x = dif_95_05_1_5_global, fill = log(value)), shape = 21, colour = "black", size = 2.5)+
   #geom_text_repel(data = data_7.3, aes(label = Country, y = median_1_5, x = dif_95_05_1_5),
   #                direction = "both", size = 2, max.overlaps = 100)+
   coord_cartesian(xlim = c(0,4.5), ylim = c(0,3.2))+
-  scale_fill_viridis_c(breaks = c(7,11), labels = c("Poorer", "Richer"))+
+  scale_fill_viridis_c(breaks = c(6.9,11.1), labels = c("Poorer", "Richer"), name = "Average GDP per capita (log)")+
+  guides(fill = guide_colorbar(ticks.colour = NA, title.hjust = 0, title.position = "top"))+
   scale_x_continuous(expand = c(0,0))+
   scale_y_continuous(expand = c(0,0), breaks = c(0,1,2,3))+
   ylab("Vertical distribution coefficient")+
@@ -7015,14 +7015,14 @@ P_8.0 <- ggplot()+
         axis.text.x = element_text(size = 7),
         axis.title  = element_text(size = 7),
         plot.title  = element_text(size = 7),
-        legend.position = "right",
+        legend.position = "bottom",
         strip.text = element_text(size = 7),
         #strip.text.y = element_text(angle = 180),
         panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
         axis.ticks = element_line(size = 0.2),
         legend.text = element_text(size = 7),
-        legend.title = element_text(size = 7),
+        legend.title = element_text(size = 7, vjust = 0.75),
         plot.margin = unit(c(0.3,0.3,0.3,0.3), "cm"),
         panel.border = element_rect(size = 0.3))
 
@@ -7036,12 +7036,13 @@ P_8.3 <- ggplot()+
   geom_label(data = poly_5, aes(label = text, x = x, y = y), alpha = 0.2, size = 2.5)+
   theme_bw()+
   # geom_segment(data = data_8.2.2, aes(y = median_1_5_national, yend = median_1_5_global, x = dif_95_05_1_5_national, xend = dif_95_05_1_5_global), size = 0.1, colour = "lightgrey")+
-  geom_point(data = data_8.2.2, aes(y = median_1_5_national, x = dif_95_05_1_5_national, fill = log(value)), shape = 21, colour = "black", size = 2.5, alpha = 0.1)+
-  geom_point(data = data_8.2.2, aes(y = median_1_5_global, x = dif_95_05_1_5_global, fill = log(value)), shape = 21, colour = "black", size = 2.5)+
+  geom_point(data = data_8.2.2, aes(y = median_1_5_national, x = dif_95_05_1_5_national, fill = log(value)), shape = 21, colour = "black", size = 3, alpha = 0.1)+
+  geom_point(data = data_8.2.2, aes(y = median_1_5_global, x = dif_95_05_1_5_global, fill = log(value)), shape = 21, colour = "black", size = 3)+
   #geom_text_repel(data = data_7.3, aes(label = Country, y = median_1_5, x = dif_95_05_1_5),
   #                direction = "both", size = 2, max.overlaps = 100)+
   coord_cartesian(xlim = c(0,4.5), ylim = c(0,3.2))+
-  scale_fill_viridis_c(breaks = c(7,11), labels = c("Poorer", "Richer"))+
+  scale_fill_viridis_c(breaks = c(6.9,11.1), labels = c("Poorer", "Richer"), name = "Average GDP per capita (log)")+
+  guides(fill = guide_colorbar(ticks.colour = NA, title.hjust = 0, title.position = "top"))+
   scale_x_continuous(expand = c(0,0))+
   scale_y_continuous(expand = c(0,0), breaks = c(0,1,2,3))+
   ylab("Vertical distribution coefficient")+
@@ -7054,14 +7055,14 @@ P_8.3 <- ggplot()+
         axis.text.x = element_text(size = 7),
         axis.title  = element_text(size = 7),
         plot.title  = element_text(size = 7),
-        legend.position = "right",
+        legend.position = "bottom",
         strip.text = element_text(size = 7),
         #strip.text.y = element_text(angle = 180),
         panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
         axis.ticks = element_line(size = 0.2),
         legend.text = element_text(size = 7),
-        legend.title = element_text(size = 7),
+        legend.title = element_text(size = 7, vjust = 0.75),
         plot.margin = unit(c(0.3,0.3,0.3,0.3), "cm"),
         panel.border = element_rect(size = 0.3))
 
@@ -7075,12 +7076,13 @@ P_8.4 <- ggplot()+
   geom_label(data = poly_5, aes(label = text, x = x, y = y), alpha = 0.2, size = 2.5)+
   theme_bw()+
   # geom_segment(data = data_8.2.2, aes(y = median_1_5_national, yend = median_1_5_global, x = dif_95_05_1_5_national, xend = dif_95_05_1_5_global), size = 0.1, colour = "lightgrey")+
-  geom_point(data = data_8.2.2, aes(y = median_1_5_national, x = dif_95_05_1_5_national, fill = log(value)), shape = 21, colour = "black", size = 2.5, alpha = 0.1)+
-  geom_point(data = data_8.2.2, aes(y = median_1_5_transport, x = dif_95_05_1_5_transport, fill = log(value)), shape = 21, colour = "black", size = 2.5)+
+  geom_point(data = data_8.2.2, aes(y = median_1_5_national, x = dif_95_05_1_5_national, fill = log(value)), shape = 21, colour = "black", size = 3, alpha = 0.1)+
+  geom_point(data = data_8.2.2, aes(y = median_1_5_transport, x = dif_95_05_1_5_transport, fill = log(value)), shape = 21, colour = "black", size = 3)+
   #geom_text_repel(data = data_7.3, aes(label = Country, y = median_1_5, x = dif_95_05_1_5),
   #                direction = "both", size = 2, max.overlaps = 100)+
   coord_cartesian(xlim = c(0,4.5), ylim = c(0,3.2))+
-  scale_fill_viridis_c(breaks = c(7,11), labels = c("Poorer", "Richer"))+
+  scale_fill_viridis_c(breaks = c(6.9,11.1), labels = c("Poorer", "Richer"), name = "Average GDP per capita (log)")+
+  guides(fill = guide_colorbar(ticks.colour = NA, title.hjust = 0, title.position = "top"))+
   scale_x_continuous(expand = c(0,0))+
   scale_y_continuous(expand = c(0,0), breaks = c(0,1,2,3))+
   ylab("Vertical distribution coefficient")+
@@ -7093,14 +7095,14 @@ P_8.4 <- ggplot()+
         axis.text.x = element_text(size = 7),
         axis.title  = element_text(size = 7),
         plot.title  = element_text(size = 7),
-        legend.position = "right",
+        legend.position = "bottom",
         strip.text = element_text(size = 7),
         #strip.text.y = element_text(angle = 180),
         panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
         axis.ticks = element_line(size = 0.2),
         legend.text = element_text(size = 7),
-        legend.title = element_text(size = 7),
+        legend.title = element_text(size = 7, vjust = 0.75),
         plot.margin = unit(c(0.3,0.3,0.3,0.3), "cm"),
         panel.border = element_rect(size = 0.3))
 
@@ -7114,12 +7116,13 @@ P_8.5 <- ggplot()+
   geom_label(data = poly_5, aes(label = text, x = x, y = y), alpha = 0.2, size = 2.5)+
   theme_bw()+
   # geom_segment(data = data_8.2.2, aes(y = median_1_5_national, yend = median_1_5_global, x = dif_95_05_1_5_national, xend = dif_95_05_1_5_global), size = 0.1, colour = "lightgrey")+
-  geom_point(data = data_8.2.2, aes(y = median_1_5_national, x = dif_95_05_1_5_national, fill = log(value)), shape = 21, colour = "black", size = 2.5, alpha = 0.1)+
-  geom_point(data = data_8.2.2, aes(y = median_1_5_electricity, x = dif_95_05_1_5_electricity, fill = log(value)), shape = 21, colour = "black", size = 2.5)+
+  geom_point(data = data_8.2.2, aes(y = median_1_5_national, x = dif_95_05_1_5_national, fill = log(value)), shape = 21, colour = "black", size = 3, alpha = 0.1)+
+  geom_point(data = data_8.2.2, aes(y = median_1_5_electricity, x = dif_95_05_1_5_electricity, fill = log(value)), shape = 21, colour = "black", size = 3)+
   #geom_text_repel(data = data_7.3, aes(label = Country, y = median_1_5, x = dif_95_05_1_5),
   #                direction = "both", size = 2, max.overlaps = 100)+
   coord_cartesian(xlim = c(0,4.5), ylim = c(0,3.2))+
-  scale_fill_viridis_c(breaks = c(7,11), labels = c("Poorer", "Richer"))+
+  scale_fill_viridis_c(breaks = c(6.9,11.1), labels = c("Poorer", "Richer"), name = "Average GDP per capita (log)")+
+  guides(fill = guide_colorbar(ticks.colour = NA, title.hjust = 0, title.position = "top"))+
   scale_x_continuous(expand = c(0,0))+
   scale_y_continuous(expand = c(0,0), breaks = c(0,1,2,3))+
   ylab("Vertical distribution coefficient")+
@@ -7132,20 +7135,20 @@ P_8.5 <- ggplot()+
         axis.text.x = element_text(size = 7),
         axis.title  = element_text(size = 7),
         plot.title  = element_text(size = 7),
-        legend.position = "right",
+        legend.position = "bottom",
         strip.text = element_text(size = 7),
         #strip.text.y = element_text(angle = 180),
         panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
         axis.ticks = element_line(size = 0.2),
         legend.text = element_text(size = 7),
-        legend.title = element_text(size = 7),
+        legend.title = element_text(size = 7, vjust = 0.75),
         plot.margin = unit(c(0.3,0.3,0.3,0.3), "cm"),
         panel.border = element_rect(size = 0.3))
 
-P_8.6 <- ggarrange(P_8.0, P_8.3, P_8.4, P_8.5, common.legend = TRUE, legend = "right")
+P_8.6 <- ggarrange(P_8.0, P_8.3, P_8.4, P_8.5, common.legend = TRUE, legend = "bottom")
 
-jpeg("1_Figures/Figure 2/Figure_2_2017_Policy.jpg", width = 23, height = 21, unit = "cm", res = 600)
+jpeg("1_Figures/Figure 2/Figure_2_2017_Policy.jpg", width = 25, height = 25, unit = "cm", res = 600)
 print(P_8.6)
 dev.off()
 
@@ -7557,6 +7560,36 @@ rm(data_8.3.0)
 
 # 8.4     Figure 4: Country-level feature importance and clusters ####
 
+eval_4 <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_SHAP_Evaluation_VFOLD_2017.xlsx")
+# eval_1 <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_SHAP_Evaluation_VFOLD.xlsx")
+
+eval_4.0 <- eval_4 %>%
+  filter(.metric == "mae")%>%
+  mutate(number = 1:n())%>%
+  # group_by(Country, number_ob, fold)%>%
+  # filter(number == max(number))%>%
+  # ungroup()%>%
+  group_by(Country, number_ob)%>%
+  summarise(Sample_Testing = mean(Sample_Testing))%>%
+  ungroup()%>%
+  arrange(Country)%>%
+  select(Country, number_ob)
+
+eval_4.1 <- eval_4 %>%
+  filter(number_ob %in% eval_4.0$number_ob)%>%
+  mutate(number = 1:n())%>%
+  filter(.metric == "rsq")%>%
+  # group_by(Country, number_ob, .metric, fold)%>%
+  # filter(number == max(number))%>%
+  # ungroup()%>%
+  group_by(Country, number_ob, .metric)%>%
+  summarise(Sample_Testing = mean(Sample_Testing))%>%
+  ungroup()%>%
+  left_join(Country.Set)%>%
+  select(Country_long, .metric, starts_with("Sample"), Country)%>%
+  rename(R2 = Sample_Testing)
+
+
 for(i in c(1,2)){
   if(i == 1){
     cluster_0 <- c("A", "B", "C", "D")
@@ -7581,7 +7614,8 @@ for(i in c(1,2)){
     theme_bw()+
     scale_fill_gradientn(na.value = NA,
                          colors = c("#0072B5FF", "white","#BC3C29FF", "#631879FF"),
-                         values = scales::rescale(c(0,0.35,0.7,1)))+
+                         values = scales::rescale(c(0,0.35,0.7,1)),
+                         limits = c(0,1))+
     
     # scale_fill_gradient2(na.value = NA, low = "#0072B5FF", high = "#BC3C29FF", midpoint = 1)+
     #scale_fill_gradient2(na.value = NA, limits = c(0,1.5), low = "#0072B5FF", high = "#BC3C29FF", breaks = c(0,0.5,1,1.5), labels = c(0,1,2,3),
@@ -7609,7 +7643,7 @@ for(i in c(1,2)){
           axis.ticks = element_line(size = 0.2),
           legend.text = element_text(size = 7),
           legend.title = element_text(size = 7),
-          plot.margin = unit(c(0.3,0.3,0.3,0.3), "cm"),
+          plot.margin = unit(c(0.3,0.15,0.3,0.3), "cm"),
           panel.border = element_rect(size = 0.3))
   
   # Carbon intensity of consumption - scaling cannot do harm
@@ -7626,12 +7660,13 @@ for(i in c(1,2)){
     filter(cluster %in% cluster_0)
   
   P_8.4.2 <- ggplot(data_8.4.2)+
-    geom_point(aes(y = Country, x = names, fill = value), shape = 22, size = 3, stroke = 0.2)+
+    geom_point(aes(y = Country, x = names, fill = values_rescaled), shape = 22, size = 3, stroke = 0.2)+
     theme_bw()+
     #scale_fill_gradient2(na.value = NA, low = "#0072B5FF", high = "#BC3C29FF", midpoint = 0)+
     scale_fill_gradientn(na.value = NA,
                          colors = c("#0072B5FF", "white","#BC3C29FF", "#631879FF"),
-                         values = scales::rescale(c(0,0.3,0.6,1)))+
+                         values = scales::rescale(c(0,0.3,0.6,1)),
+                         limits = c(0,1))+
     theme_bw()+
     facet_grid(cluster ~ ., scales = "free", space = "free")+
     scale_y_discrete(limits = rev)+
@@ -7655,7 +7690,7 @@ for(i in c(1,2)){
           axis.ticks = element_blank(),
           legend.text = element_text(size = 7),
           legend.title = element_text(size = 7),
-          plot.margin = unit(c(0.3,0.3,0.3,0.1), "cm"),
+          plot.margin = unit(c(0.3,0.15,0.3,0.1), "cm"),
           panel.border = element_rect(size = 0.3))
   
   # Features
@@ -7679,12 +7714,13 @@ for(i in c(1,2)){
                                             "Heating fuel", "Lighting fuel", "Car own.", "Motorcycle own.", "Appliance own.")))
   
   P_8.4.3 <- ggplot(data_8.4.3)+
-    geom_point(aes(y = Country, x = names, fill = values, colour = help), shape = 22, size = 3, stroke = 0.2)+
+    geom_point(aes(y = Country, x = names, fill = values_rescaled, colour = help), shape = 22, size = 3, stroke = 0.2)+
     theme_bw()+
     scale_colour_manual(na.value = NA, values = c("black"))+
     scale_fill_gradientn(na.value = NA,
                          colors = c("#0072B5FF", "white","#BC3C29FF", "#631879FF"),
-                         values = scales::rescale(c(0,0.09,0.35,1)))+
+                         values = scales::rescale(c(0,0.09,0.35,1)),
+                         limits = c(0,1))+
     # scale_fill_gradient2(na.value = NA, 
     #                      limits = c(-1.5,1.5), 
     #                      low = "#0072B5FF", high = "#BC3C29FF", midpoint = 0)+
@@ -7701,6 +7737,50 @@ for(i in c(1,2)){
           axis.title.y = element_blank(),
           plot.title = element_text(size = 11),
           legend.position = "bottom",
+          strip.text.y = element_blank(),
+          strip.background = element_blank(),
+          #strip.background = element_blank(),
+          #strip.text.y = element_text(angle = 180),
+          #panel.grid.major = element_blank(),
+          panel.grid.major.y = element_line(size = 0.2),
+          panel.grid.major.x = element_blank(),
+          panel.grid.minor = element_blank(),
+          axis.ticks = element_blank(),
+          legend.text = element_text(size = 7),
+          legend.title = element_text(size = 7),
+          plot.margin = unit(c(0.3,0.15,0.3,0.1), "cm"),
+          panel.border = element_rect(size = 0.3))
+  
+  data_8.4.4 <- eval_4.1 %>%
+    filter(Country %in% data_8.4.3$Country)%>%
+    left_join(select(data_8.4.3, Country, cluster, order))%>%
+    unique()%>%
+    arrange(cluster, Country)%>%
+    mutate(help = 1)
+  
+  P_8.4.4 <- ggplot(data_8.4.4)+
+    geom_point(aes(y = Country, x = .metric, fill = R2), shape = 22, size = 3, stroke = 0.2, colour = "black")+
+    theme_bw()+
+    #scale_colour_manual(na.value = NA, values = c("black"))+
+    scale_fill_gradientn(na.value = NA,
+                         colors = c("#0072B5FF", "white","#BC3C29FF", "#631879FF"),
+                         values = scales::rescale(c(0,0.3,0.6,1)))+
+    # scale_fill_gradient2(na.value = NA, 
+    #                      limits = c(-1.5,1.5), 
+    #                      low = "#0072B5FF", high = "#BC3C29FF", midpoint = 0)+
+    facet_grid(cluster ~ ., scales = "free", space = "free")+
+    scale_y_discrete(limits = rev)+
+    scale_x_discrete(labels = c(expression(paste("Goodness of fit (",R^{2},")"))))+
+    xlab("")+ 
+    guides(fill = "none", colour = "none")+
+    ylab("")+
+    ggtitle("")+
+    theme(axis.text.y = element_blank(),
+          axis.text.x = element_text(size = 6, hjust = 1, vjust = 0.5, angle = 90),
+          axis.title.x  = element_text(size = 7),
+          axis.title.y = element_blank(),
+          plot.title = element_text(size = 11),
+          legend.position = "bottom",
           strip.text.y = element_text(size = 6, angle = 0),
           strip.background = element_rect(size = 0.3),
           #strip.background = element_blank(),
@@ -7712,7 +7792,7 @@ for(i in c(1,2)){
           axis.ticks = element_blank(),
           legend.text = element_text(size = 7),
           legend.title = element_text(size = 7),
-          plot.margin = unit(c(0.3,0.3,0.3,0.1), "cm"),
+          plot.margin = unit(c(0.3,0.15,0.3,0.1), "cm"),
           panel.border = element_rect(size = 0.3))
   
   # Legend
@@ -7732,11 +7812,11 @@ for(i in c(1,2)){
   
   # P_8.4.4 <- align_plots(P_8.4.1, P_8.4.2, P_8.4.3, align = "h")
   
-  P_8.4.4 <- ggarrange(P_8.4.1, P_8.4.2, P_8.4.3, nrow = 1, align = "h", widths = c(2,1,6),
+  P_8.4.5 <- ggarrange(P_8.4.1, P_8.4.2, P_8.4.3, P_8.4.4, nrow = 1, align = "h", widths = c(2,0.8,6,1),
                        legend.grob = L.1, legend = "bottom")
   
   jpeg(sprintf("1_Figures/Figure 4/Figure_4_Uncorrected_%s.jpg",i), width = 15.5, height = 18, unit = "cm", res = 600)
-  print(P_8.4.4)
+  print(P_8.4.5)
   dev.off()
 }
 
@@ -7766,7 +7846,8 @@ for(i in c(1,2)){
     theme_bw()+
     scale_fill_gradientn(na.value = NA,
                          colors = c("#0072B5FF", "white","#BC3C29FF", "#631879FF"),
-                         values = scales::rescale(c(0,0.34,0.68,1)))+
+                         values = c(0,0.34,0.68,1),
+                         limits = c(0,1))+
     
     # scale_fill_gradient2(na.value = NA, low = "#0072B5FF", high = "#BC3C29FF", midpoint = 1)+
     #scale_fill_gradient2(na.value = NA, limits = c(0,1.5), low = "#0072B5FF", high = "#BC3C29FF", breaks = c(0,0.5,1,1.5), labels = c(0,1,2,3),
@@ -7794,7 +7875,7 @@ for(i in c(1,2)){
           axis.ticks = element_line(size = 0.2),
           legend.text = element_text(size = 7),
           legend.title = element_text(size = 7),
-          plot.margin = unit(c(0.3,0.3,0.3,0.3), "cm"),
+          plot.margin = unit(c(0.3,0.15,0.3,0.3), "cm"),
           panel.border = element_rect(size = 0.3))
   
   # Carbon intensity of consumption - scaling cannot do harm
@@ -7813,12 +7894,13 @@ for(i in c(1,2)){
                             ifelse(Country %in% c("TUR", "ARM"), "E", cluster)))
   
   P_8.4.2 <- ggplot(data_8.4.2)+
-    geom_point(aes(y = Country, x = names, fill = value), shape = 22, size = 3, stroke = 0.2)+
+    geom_point(aes(y = Country, x = names, fill = values_rescaled), shape = 22, size = 3, stroke = 0.2)+
     theme_bw()+
     #scale_fill_gradient2(na.value = NA, low = "#0072B5FF", high = "#BC3C29FF", midpoint = 0)+
     scale_fill_gradientn(na.value = NA,
                          colors = c("#0072B5FF", "white","#BC3C29FF", "#631879FF"),
-                         values = scales::rescale(c(0,0.3,0.6,1)))+
+                         values = c(0,0.3,0.6,1),
+                         limits = c(0,1))+
     theme_bw()+
     facet_grid(cluster ~ ., scales = "free", space = "free")+
     scale_y_discrete(limits = rev)+
@@ -7842,7 +7924,7 @@ for(i in c(1,2)){
           axis.ticks = element_blank(),
           legend.text = element_text(size = 7),
           legend.title = element_text(size = 7),
-          plot.margin = unit(c(0.3,0.3,0.3,0.1), "cm"),
+          plot.margin = unit(c(0.3,0.15,0.3,0.1), "cm"),
           panel.border = element_rect(size = 0.3))
   
   # Features
@@ -7868,12 +7950,13 @@ for(i in c(1,2)){
                             ifelse(Country %in% c("TUR", "ARM"), "E", cluster)))
   
   P_8.4.3 <- ggplot(data_8.4.3)+
-    geom_point(aes(y = Country, x = names, fill = values, colour = help), shape = 22, size = 3, stroke = 0.2)+
+    geom_point(aes(y = Country, x = names, fill = values_rescaled, colour = help), shape = 22, size = 3, stroke = 0.2)+
     theme_bw()+
     scale_colour_manual(na.value = NA, values = c("black"))+
     scale_fill_gradientn(na.value = NA,
                          colors = c("#0072B5FF", "white","#BC3C29FF", "#631879FF"),
-                         values = scales::rescale(c(0,0.09,0.30,1)))+
+                         values = c(0,0.09,0.30,1),
+                         limits = c(0,1))+
     # scale_fill_gradient2(na.value = NA, 
     #                      limits = c(-1.5,1.5), 
     #                      low = "#0072B5FF", high = "#BC3C29FF", midpoint = 0)+
@@ -7890,6 +7973,53 @@ for(i in c(1,2)){
           axis.title.y = element_blank(),
           plot.title = element_text(size = 11),
           legend.position = "bottom",
+          strip.text.y = element_blank(),
+          strip.background = element_blank(),
+          #strip.background = element_blank(),
+          #strip.text.y = element_text(angle = 180),
+          #panel.grid.major = element_blank(),
+          panel.grid.major.y = element_line(size = 0.2),
+          panel.grid.major.x = element_blank(),
+          panel.grid.minor = element_blank(),
+          axis.ticks = element_blank(),
+          legend.text = element_text(size = 7),
+          legend.title = element_text(size = 7),
+          plot.margin = unit(c(0.3,0.15,0.3,0.1), "cm"),
+          panel.border = element_rect(size = 0.3))
+  
+  data_8.4.4 <- eval_4.1 %>%
+    mutate(values_rescaled = rescale(R2, c(0,1)))%>%
+    filter(Country %in% data_8.4.3$Country)%>%
+    left_join(select(data_8.4.3, Country, cluster, order))%>%
+    unique()%>%
+    arrange(cluster, Country)%>%
+    mutate(help = 1)
+  
+  P_8.4.4 <- ggplot(data_8.4.4)+
+    geom_point(aes(y = Country, x = .metric, fill = R2), shape = 22, size = 3, stroke = 0.2, colour = "black")+
+    theme_bw()+
+    #scale_colour_manual(na.value = NA, values = c("black"))+
+    scale_fill_gradientn(na.value = NA,
+                         colors = c("#0072B5FF", "white","#BC3C29FF", "#631879FF"),
+                         values = scales::rescale(c(0,0.3,0.5,1)),
+                         breaks = c(0,0.3,0.5,1),
+                         limits = c(0,1))+
+    # scale_fill_gradient2(na.value = NA, 
+    #                      limits = c(-1.5,1.5), 
+    #                      low = "#0072B5FF", high = "#BC3C29FF", midpoint = 0)+
+    facet_grid(cluster ~ ., scales = "free", space = "free")+
+    scale_y_discrete(limits = rev)+
+    scale_x_discrete(labels = c(expression(paste("Goodness of fit (",R^{2},")"))))+
+    xlab("")+ 
+    guides(fill = "none", colour = "none")+
+    ylab("")+
+    ggtitle("")+
+    theme(axis.text.y = element_blank(),
+          axis.text.x = element_text(size = 6, hjust = 1, vjust = 0.5, angle = 90),
+          axis.title.x  = element_text(size = 7),
+          axis.title.y = element_blank(),
+          plot.title = element_text(size = 11),
+          legend.position = "bottom",
           strip.text.y = element_text(size = 6, angle = 0),
           strip.background = element_rect(size = 0.3),
           #strip.background = element_blank(),
@@ -7901,7 +8031,7 @@ for(i in c(1,2)){
           axis.ticks = element_blank(),
           legend.text = element_text(size = 7),
           legend.title = element_text(size = 7),
-          plot.margin = unit(c(0.3,0.3,0.3,0.1), "cm"),
+          plot.margin = unit(c(0.3,0.15,0.3,0.1), "cm"),
           panel.border = element_rect(size = 0.3))
   
   # Legend
@@ -7921,11 +8051,11 @@ for(i in c(1,2)){
   
   # P_8.4.4 <- align_plots(P_8.4.1, P_8.4.2, P_8.4.3, align = "h")
   
-  P_8.4.4 <- ggarrange(P_8.4.1, P_8.4.2, P_8.4.3, nrow = 1, align = "h", widths = c(2,1,6),
+  P_8.4.5 <- ggarrange(P_8.4.1, P_8.4.2, P_8.4.3, P_8.4.4, nrow = 1, align = "h", widths = c(2,0.8,6,1),
                        legend.grob = L.1, legend = "bottom")
   
   jpeg(sprintf("1_Figures/Figure 4/Figure_4_Corrected_%s.jpg",i), width = 15.5, height = 18, unit = "cm", res = 600)
-  print(P_8.4.4)
+  print(P_8.4.5)
   dev.off()
 }
 
