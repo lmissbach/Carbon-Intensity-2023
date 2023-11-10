@@ -9753,7 +9753,7 @@ for(Group_0 in c("A", "B", "C")){
     stat_smooth(data = data_8.6.1.3, 
                 aes(x = hh_expenditures_USD_2014_pc, weight = hh_weights, 
                     y = Share, fill = Type, colour = Type),
-                level = 0.95, method = "lm", formula = y ~ x + I(x^2), size = 0.3, fullrange = FALSE)+
+                level = 0.95, method = "lm", formula = y ~ x + I(x^2), size = 0.3, fullrange = FALSE, se = FALSE)+
     theme_bw()+
     facet_wrap(. ~ Country_long, ncol = 5)+
     xlab("Household expenditures per capita in US-$ (2017)") + ylab("Share of total expenditures")+
