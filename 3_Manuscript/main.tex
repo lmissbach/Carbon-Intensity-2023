@@ -396,7 +396,7 @@ Instead, ownership of major household appliances (such as refrigerators, washing
 % Sociodemographic features
 Sociodemographic features, such as education, gender, self-identified ethnicity or religion or religion of household head, are the most important feature in three countries. In \hyperref[fig:5b_PRT]{Portugal}, where education of household accounts for 29\% of model prediction, households with tertiary education exhibit a higher carbon intensity than households with primary or secondary education. Adjusted feature importance for gender of household head is highest in \hyperref[fig:5b_BEN]{Benin} or \hyperref[fig:5b_TGO]{Togo}, where households with female household heads are found to consume less carbon-intensively. In \hyperref[fig:5b_ISR]{Israel}, households identifying themselves as Muslim are found to consume more carbon-intensively compared to households identifying as Jewish. Households reporting to live a traditional, religious or orthodox lifestyle consume more carbon-intensively compared to secular households. For 71 out of 87 countries, sociodemographic features do not exceed 3\% of adjusted feature importance, indicating their relatively low relevance across countries for predicting differences in carbon intensity.
 
-%\clearpage
+\clearpage
 \begin{figure}[ht!]
     \centering
     \caption{Feature importance across countries by cluster}\label{fig:fig_4}
@@ -406,7 +406,7 @@ Sociodemographic features, such as education, gender, self-identified ethnicity 
     \includegraphics{1_Figures/Figure 4/Figure_4_Corrected_1.jpg}
      \begin{subcaption2}
     This figure shows the importance of features (in normalized average absolute SHAP-values) for each country, grouped by country clusters. Blue (red) colors indicate that a feature is relatively less (more) important in a country compared to all other countries and features. 'Sociodemographic' comprises normalized absolute SHAP-values for features such as household size, gender, self-identified ethnicity, nationality, religion or language. 'Spatial' comprises normalized absolute SHAP-values for province, district and urban/rural-identifiers. For horizontal distribution, blue (red) colors indicate a lower (higher) heterogeneity within the poorest quintile compared to the richest quintile. For vertical distribution, blue (red) colors indicate lower (higher) median carbon intensity among the poorest quintile compared to the richest quintile. For average CO$_{2}$-intensity, blue (red) colors indicate a lower (higher) average carbon intensity across all countries.
-    We assign countries to 6 clusters performing k-means clustering based on scaled values across all features. We also show all values in Table \ref{tab:A10}.
+    We assign countries to 6 clusters performing k-means clustering based on scaled feature importance adjusted for model accuracy. We also show all values in Table \ref{tab:A10}.
     \end{subcaption2}
     \end{subfigure}
 \end{figure}
@@ -421,7 +421,7 @@ Sociodemographic features, such as education, gender, self-identified ethnicity 
     \includegraphics{Figure 4/Figure_4_Corrected_2}
     \begin{subcaption2}
     This figure shows the importance of features (in normalized average absolute SHAP-values) for each country, grouped by country clusters. Blue (red) colors indicate that a feature is relatively less (more) important in a country compared to all other countries and features. 'Sociodemographic' comprises normalized absolute SHAP-values for features such as household size, gender, self-identified ethnicity, nationality, religion or language. 'Spatial' comprises normalized absolute SHAP-values for province, district and urban/rural-identifiers. For horizontal distribution, blue (red) colors indicate a lower (higher) heterogeneity within the poorest quintile compared to the richest quintile. For vertical distribution, blue (red) colors indicate lower (higher) median carbon intensity among the poorest quintile compared to the richest quintile. For average CO$_{2}$-intensity, blue (red) colors indicate a lower (higher) average carbon intensity across all countries.
-    We assign countries to 6 clusters performing k-means clustering based on scaled values across all features. We also show all values in Table \ref{tab:A10}.
+    We assign countries to 6 clusters performing k-means clustering based on scaled feature importance adjusted for model accuracy. We also show all values in Table \ref{tab:A10}.
     \end{subcaption2}
     \end{subfigure}
     
@@ -523,6 +523,8 @@ Nevertheless, logit-models answer a slightly different question compared to BRT-
 
 Our flexible analytical framework also allows for investigating the heterogeneous impacts of different policies by including or excluding CO$_{2}$-emissions\footnote{In principal, it is conceivable to include non-CO$_{2}$-emissions (such as CH$_{4}$, N$_{2}$O or F-gases) or to analyze policies which aim at curbing only such emissions. We leave this for further research.} from different sectors or regions. For example, Figure \ref{fig:comparison_policies} compares vertical and horizontal distribution coefficients for a national climate policy instrument (as in Figure \ref{fig:fig_2}) to an international climate policy instrument, i.e. which increases consumer prices in equivalence to embedded \textit{global} CO$_{2}$-emissions. We also show such coefficients for policy instruments targeted at the transport and electricity sector, respectively. The comparison of vertical and horizontal impacts across policies emphasizes policy-specific differences within expenditure quintiles: In comparison to national climate policy, international climate policy would lead to more heterogeneous impacts in richer households in 23 countries, because richer households usually spend relatively more on imported goods and services. For transport sector policies, we document more carbon-intensive consumption among richer households compared to poorer households in 59 countries while horizontal differences exceed vertical differences in 77 countries. In contrast, our findings indicate that electricity sector policies would likely affect poorer households more heavily in 62 countries with larger horizontal heterogeneity among poorer households in 64 countries\footnote{Both findings are in contrast to national climate policy across all sectors: We find more carbon-intensive consumption among richer households in richer households compared to poorer households in 43 countries. Within-quintile heterogeneity is larger among poorer households in 58 countries and horizontal inequality exceeds vertical inequality in 66 countries.}. 
 On aggregate, these results underpin that distributional implications of climate policy are country- and policy-specific, but that within-quintile heterogeneity is meaningful, hinting to limited leeway for effective cross-country policy learning\footnote{Of course, it is possible to analyze the importance of single household characteristics for predicting outcomes of different policies, but we refrain from this exercise for now.}.
+
+Nevertheless, whether policy instrument can help to raise revenues should be important part of policy evaluation. More sectorally focussed regulation, less aggregate cost-effectiveness and less revenues.
 
 \section{Conclusion} \label{sec:conclusion}
 % Motivation again: Why do we do what we do
@@ -682,6 +684,10 @@ It is also possible to investigate the distribution of regional policies, for ex
 
 % Marginal effects-plots from Logit models
 \input{../1_Figures/Figure_Marginal_Effects.tex}
+\clearpage
+
+% Non-adjusted clustering
+\input{1_Figures/Figure_4_Uncorrected}
 \clearpage
 
 % Comparison of policies
