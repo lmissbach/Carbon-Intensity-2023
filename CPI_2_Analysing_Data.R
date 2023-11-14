@@ -6594,10 +6594,10 @@ data_8.1.3 <- data_8.1.0 %>%
   group_by(Country)%>%
   mutate(help = ifelse(y50 == max(y50), 1,0))%>%
   ungroup()%>%
-  mutate(Type = ifelse(Income_Group_5 == 1 & help == 1, "Regressive", "Progressive"))%>%
+  mutate(Type = ifelse(Income_Group_5 == 1 & help == 1, "Richer households less carbon-intensive", "Richer households more carbon-intensive"))%>%
   filter(Income_Group_5 == 1)%>%
   select(Country, Type)%>%
-  mutate(Type = factor(Type, levels = c("Regressive", "Progressive")))
+  mutate(Type = factor(Type, levels = c("Richer households less carbon-intensive", "Richer households more carbon-intensive")))
 
 data_8.1.2 <- left_join(data_8.1.2, data_8.1.3)
 
@@ -6613,13 +6613,13 @@ P_8.1 <- ggplot(data = data_8.1.2)+
   geom_point(aes(y = mean, x = new_col), shape = 23, size = 1 ,fill = "white", stroke = 0.2)+
   theme_bw()+
   facet_wrap(. ~ new_row, scales = "free", nrow = 1)+
-  scale_fill_nejm()+
+  scale_fill_nejm(name = "Vertical heterogeneity")+
   scale_y_continuous(expand = c(0,0))+
   scale_x_continuous(expand = c(0,0), breaks = data_8.1.2$new_col, labels = data_8.1.2$Country)+
   ylab(expression(paste("Carbon intensity of consumption [kg", CO[2], "/USD]", sep = "")))+
   xlab("Country")+
   coord_flip()+
-  guides(fill = "none")+
+  guides()+
   # ggtitle("Vertical and horizontal differences")+
   theme(axis.text.y = element_text(size = 7), 
         axis.text.x = element_text(size = 7),
@@ -6633,11 +6633,11 @@ P_8.1 <- ggplot(data = data_8.1.2)+
         panel.grid.minor = element_blank(),
         axis.ticks = element_line(size = 0.2),
         legend.text = element_text(size = 7),
-        legend.title = element_text(size = 7),
+        legend.title = element_text(size = 8),
         plot.margin = unit(c(0.3,0.3,0.3,0.3), "cm"),
         panel.border = element_rect(size = 0.3, fill = NA))
 
-jpeg("1_Figures/Figure 1/Figure_1_2017.jpg", width = 15.5, height = 10, unit = "cm", res = 600)
+jpeg("1_Figures/Figure 1/Figure_1_2017.jpg", width = 15.5, height = 12, unit = "cm", res = 600)
 print(P_8.1)
 dev.off()
 
