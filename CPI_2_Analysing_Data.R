@@ -7179,8 +7179,169 @@ data_8.2.3 <- data_8.2.2 %>%
   mutate(regressive_income  = ifelse(regressive_national == 1 & income_higher < 21,1,0))%>%
   mutate(progressive_income = ifelse(progressive_national == 1 & income_lower < 21,1,0))
 
-rm(data_8.2.0, data_8.2.1, poly, poly_2, poly_3, poly_4, poly_5, P_8.2, data_8.2.2,
+rm(data_8.2.0, data_8.2.1, poly, poly_2, poly_3, poly_4, poly_5, P_8.2, 
    P_8.0, P_8.3, P_8.4, P_8.5, P_8.6, data_8.2.3)
+
+# Table: Comparison of policy designs
+
+data_8.2.4 <- data_8.2.2
+
+data_8.2.4.1 <- data_8.2.4 %>%
+  select(Country, ends_with("national"))%>%
+  mutate(Progressive     = ifelse(median_1_5_national < 1,1,0),
+         Regressive      = ifelse(median_1_5_national > 1,1,0),
+         Horizontal_poor = ifelse(dif_95_05_1_5_national > 1,1,0),
+         Horizontal_rich = ifelse(dif_95_05_1_5_national < 1,1,0))
+
+data_8.2.4.2 <- data_8.2.4 %>%
+  select(Country, ends_with("global"))%>%
+  mutate(Progressive_global     = ifelse(median_1_5_global < 1,1,0),
+         Regressive_global      = ifelse(median_1_5_global > 1,1,0),
+         Horizontal_poor_global = ifelse(dif_95_05_1_5_global > 1,1,0),
+         Horizontal_rich_global = ifelse(dif_95_05_1_5_global < 1,1,0))
+
+data_8.2.4.3 <- data_8.2.4 %>%
+  select(Country, ends_with("transport"))%>%
+  mutate(Progressive_transport     = ifelse(median_1_5_transport < 1,1,0),
+         Regressive_transport      = ifelse(median_1_5_transport > 1,1,0),
+         Horizontal_poor_transport = ifelse(dif_95_05_1_5_transport > 1,1,0),
+         Horizontal_rich_transport = ifelse(dif_95_05_1_5_transport < 1,1,0))
+
+data_8.2.4.4 <- data_8.2.4 %>%
+  select(Country, ends_with("electricity"))%>%
+  mutate(Progressive_electricity     = ifelse(median_1_5_electricity < 1,1,0),
+         Regressive_electricity      = ifelse(median_1_5_electricity > 1,1,0),
+         Horizontal_poor_electricity = ifelse(dif_95_05_1_5_electricity > 1,1,0),
+         Horizontal_rich_electricity = ifelse(dif_95_05_1_5_electricity < 1,1,0))
+
+data_8.2.4.5 <- data_8.2.4.1 %>%
+  summarise(Progressive = sum(Progressive),
+            Regressive  = sum(Regressive),
+            Horizontal_poor = sum(Horizontal_poor),
+            Horizontal_rich = sum(Horizontal_rich))
+
+data_8.2.4.6 <- data_8.2.4.2 %>%
+  summarise(Progressive_global = sum(Progressive_global),
+            Regressive_global  = sum(Regressive_global),
+            Horizontal_poor_global = sum(Horizontal_poor_global),
+            Horizontal_rich_global = sum(Horizontal_rich_global))
+
+data_8.2.4.7 <- data_8.2.4.3 %>%
+  summarise(Progressive_transport = sum(Progressive_transport),
+            Regressive_transport  = sum(Regressive_transport),
+            Horizontal_poor_transport = sum(Horizontal_poor_transport),
+            Horizontal_rich_transport = sum(Horizontal_rich_transport))
+
+data_8.2.4.8 <- data_8.2.4.4 %>%
+  summarise(Progressive_electricity = sum(Progressive_electricity),
+            Regressive_electricity  = sum(Regressive_electricity),
+            Horizontal_poor_electricity = sum(Horizontal_poor_electricity),
+            Horizontal_rich_electricity = sum(Horizontal_rich_electricity))
+
+data_8.2.4.9 <- left_join(data_8.2.4.1, data_8.2.4.2)%>%
+  left_join(data_8.2.4.3, by =)%>%
+  left_join(data_8.2.4.4)%>%
+  select(-starts_with("Progressive"), -starts_with("Regressive"), -starts_with("Horizontal"))%>%
+  pivot_longer(-Country, names_to = "names", values_to = "values")%>%
+  mutate(Category = ifelse(grepl("global", names), "Global",
+                           ifelse(grepl("transport", names), "Transport", 
+                                  ifelse(grepl("electricity", names), "Electricity", "National"))))%>%
+  mutate(Type = ifelse(grepl("median", names), "Vertical",
+                       ifelse(grepl("95_05", names), "Horizontal", NA)))%>%
+  filter(!is.na(Type))%>%
+  select(-names)%>%
+  pivot_wider(values_from = "values", names_from = "Category")%>%
+  mutate(Global_more_progressive      = ifelse(Type == "Vertical" & Global < National,1,0),
+         Global_more_regressive       = ifelse(Type == "Vertical" & Global > National,1,0),
+         Transport_more_progressive   = ifelse(Type == "Vertical" & Transport < National,1,0),
+         Transport_more_regressive    = ifelse(Type == "Vertical" & Transport > National,1,0),
+         Electricity_more_progressive = ifelse(Type == "Vertical" & Electricity < National,1,0),
+         Electricity_more_regressive  = ifelse(Type == "Vertical" & Electricity > National,1,0),
+         # Horizontal dimension
+         Global_more_heterogeneous_poor      = ifelse(Type == "Horizontal" & Global > National,1,0),
+         Global_more_heterogeneous_rich      = ifelse(Type == "Horizontal" & Global < National,1,0),
+         Transport_more_heterogeneous_poor   = ifelse(Type == "Horizontal" & Transport > National,1,0),
+         Transport_more_heterogeneous_rich   = ifelse(Type == "Horizontal" & Transport < National,1,0),
+         Electricity_more_heterogeneous_poor = ifelse(Type == "Horizontal" & Electricity > National,1,0),
+         Electricity_more_heterogeneous_rich = ifelse(Type == "Horizontal" & Electricity < National,1,0),
+         # Absolute dimension
+         Progressive_National    = ifelse(Type == "Vertical" & National < 1,1,0),
+         Progressive_Global      = ifelse(Type == "Vertical" & Global < 1,1,0),
+         Progressive_Transport   = ifelse(Type == "Vertical" & Transport < 1,1,0),
+         Progressive_Electricity = ifelse(Type == "Vertical" & Electricity < 1,1,0),
+         
+         Hetero_rich_National    = ifelse(Type == "Horizontal" & National < 1,1,0),
+         Hetero_rich_Global      = ifelse(Type == "Horizontal" & Global < 1,1,0),
+         Hetero_rich_Transport   = ifelse(Type == "Horizontal" & Transport < 1,1,0),
+         Hetero_rich_Electricity = ifelse(Type == "Horizontal" & Electricity < 1,1,0))%>%
+  select(-Type, -Global, -National, -Transport, -Electricity)%>%
+  summarise_at(vars(-Country), ~ sum(.))%>%
+  pivot_longer(everything(),names_to = "names", values_to = "values")
+
+data_8.2.4.11 <- data_8.2.4.9 %>%
+  filter(grepl("more_progressive", names))%>%
+  mutate(names = str_remove(names, "_more_progressive"))%>%
+  rename("V < V*" = values)
+
+data_8.2.4.12 <- data_8.2.4.9 %>%
+  filter(grepl("more_regressive", names))%>%
+  mutate(names = str_remove(names, "_more_regressive"))%>%
+  rename("V > V*" = values)
+
+data_8.2.4.13 <- data_8.2.4.9 %>%
+  filter(grepl("more_heterogeneous_poor", names))%>%
+  mutate(names = str_remove(names, "_more_heterogeneous_poor"))%>%
+  rename("H > H*" = values)
+
+data_8.2.4.14 <- data_8.2.4.9 %>%
+  filter(grepl("more_heterogeneous_rich", names))%>%
+  mutate(names = str_remove(names, "_more_heterogeneous_rich"))%>%
+  rename("H < H*" = values)
+
+data_8.2.4.15 <- data_8.2.4.9 %>%
+  filter(grepl("Progressive_", names))%>%
+  mutate(names = str_remove(names, "Progressive_"))%>%
+  rename("V_smaller_1" = values)
+
+data_8.2.4.16 <- data_8.2.4.9 %>%
+  filter(grepl("Hetero_rich", names))%>%
+  mutate(names = str_remove(names, "Hetero_rich_"))%>%
+  rename("H_smaller_1" = values)
+
+data_8.2.4.10 <- data_8.2.4.15%>%
+  mutate(V_larger_1 = 87 - V_smaller_1)%>%
+  left_join(data_8.2.4.12)%>%
+  left_join(data_8.2.4.11)%>%
+  left_join(data_8.2.4.16)%>%
+  mutate(H_larger_1 = 87 - H_smaller_1)%>%
+  left_join(data_8.2.4.13)%>%
+  left_join(data_8.2.4.14)%>%
+  mutate(names = ifelse(names == "National", "National climate policy",
+                        ifelse(names == "Global", "International climate policy",
+                               ifelse(names == "Transport", "Transport sector policy",
+                                      ifelse(names == "Electricity", "Electricity sector policy", NA)))))
+
+kbl(mutate_all(data_8.2.4.10, linebreak), format = "latex", 
+    caption = "Comparing vertical and horizontal distribution coefficients for different policies", 
+    booktabs = T, align = "l|cc|cc|cc|cc", vline = "", linesep = "", longtable = T,
+    col.names = NULL, label = "A14")%>%
+  kable_styling(position = "center", latex_options = c("HOLD_position", "repeat_header"), font_size = 9)%>%
+  add_header_above(c("Policy instrument" = 1, 
+                     "$\\\\widehat{V}^{1} < 1$" = 1, 
+                     "$\\\\widehat{V}^{1} > 1$" = 1, 
+                     "$\\\\widehat{V}^{1} \\\\uparrow $" = 1, 
+                     "$\\\\widehat{V}^{1} \\\\downarrow $" = 1,
+                     "$\\\\widehat{H}^{1} < 1$" = 1,
+                     "$\\\\widehat{H}^{1} > 1$" = 1,
+                     "$\\\\widehat{H}^{1} \\\\uparrow $" = 1,
+                     "$\\\\widehat{H}^{1} \\\\downarrow $" = 1), escape = FALSE, align = "c")%>%
+  # column_spec(1, width = "2.88 cm")%>%
+  # column_spec(2:8, width = "1.46 cm")%>%
+  footnote(general = "This table shows the median carbon intensity in the first expenditure quintile ($\\\\overline{AC}_{r}^{1}$) and in the fifth quintile ($\\\\overline{AC}_{r}^{5}$). It displays the difference between the 5$^{th}$ (20$^{th}$) and 95$^{th}$ (80$^{th}$) within quintile percentile incidence for the first ($\\\\overline{H}_{r}^{1}$ and $\\\\overline{H}_{r}^{1*}$) and the fifth quintile ($\\\\overline{H}_{r}^{5}$ and $\\\\overline{H}_{r}^{5*}$). It also compares median carbon intensity in the first income quintile to that in the fifth quintile ($\\\\hat{AC}$$_{r}^{1}$). Lastly it displays our comparison index faciltiating the comparison of within quintile variation between the first and fifth quintile ($\\\\hat{H}_{r}^{1}$ and $\\\\hat{H}_{r}^{1*}$ respectively).",
+           threeparttable = T, escape = FALSE)%>%
+  save_kable(., "2_Tables/Table_Vertical_Horizontal_Policy_Simulation.tex")
+
+rm(data_8.2.2)
 
 # 8.3     Figure 3: Clustering and features ####
 
