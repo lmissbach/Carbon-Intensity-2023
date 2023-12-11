@@ -7319,7 +7319,10 @@ data_8.2.4.10 <- data_8.2.4.15%>%
   mutate(names = ifelse(names == "National", "National climate policy",
                         ifelse(names == "Global", "International climate policy",
                                ifelse(names == "Transport", "Transport sector policy",
-                                      ifelse(names == "Electricity", "Electricity sector policy", NA)))))
+                                      ifelse(names == "Electricity", "Electricity sector policy", NA)))))%>%
+  select(names, V_larger_1, V_smaller_1, "V > V*", "V < V*", H_larger_1, H_smaller_1, "H > H*", "H < H*")
+
+options(knitr.kable.NA = '')
 
 kbl(mutate_all(data_8.2.4.10, linebreak), format = "latex", 
     caption = "Comparing vertical and horizontal distribution coefficients for different policies", 
@@ -7327,17 +7330,25 @@ kbl(mutate_all(data_8.2.4.10, linebreak), format = "latex",
     col.names = NULL, label = "A14")%>%
   kable_styling(position = "center", latex_options = c("HOLD_position", "repeat_header"), font_size = 9)%>%
   add_header_above(c("Policy instrument" = 1, 
-                     "$\\\\widehat{V}^{1} < 1$" = 1, 
                      "$\\\\widehat{V}^{1} > 1$" = 1, 
+                     "$\\\\widehat{V}^{1} < 1$" = 1, 
                      "$\\\\widehat{V}^{1} \\\\uparrow $" = 1, 
                      "$\\\\widehat{V}^{1} \\\\downarrow $" = 1,
-                     "$\\\\widehat{H}^{1} < 1$" = 1,
                      "$\\\\widehat{H}^{1} > 1$" = 1,
+                     "$\\\\widehat{H}^{1} < 1$" = 1,
                      "$\\\\widehat{H}^{1} \\\\uparrow $" = 1,
                      "$\\\\widehat{H}^{1} \\\\downarrow $" = 1), escape = FALSE, align = "c")%>%
   # column_spec(1, width = "2.88 cm")%>%
   # column_spec(2:8, width = "1.46 cm")%>%
-  footnote(general = "This table shows the median carbon intensity in the first expenditure quintile ($\\\\overline{AC}_{r}^{1}$) and in the fifth quintile ($\\\\overline{AC}_{r}^{5}$). It displays the difference between the 5$^{th}$ (20$^{th}$) and 95$^{th}$ (80$^{th}$) within quintile percentile incidence for the first ($\\\\overline{H}_{r}^{1}$ and $\\\\overline{H}_{r}^{1*}$) and the fifth quintile ($\\\\overline{H}_{r}^{5}$ and $\\\\overline{H}_{r}^{5*}$). It also compares median carbon intensity in the first income quintile to that in the fifth quintile ($\\\\hat{AC}$$_{r}^{1}$). Lastly it displays our comparison index faciltiating the comparison of within quintile variation between the first and fifth quintile ($\\\\hat{H}_{r}^{1}$ and $\\\\hat{H}_{r}^{1*}$ respectively).",
+  footnote(general = "This table compares vertical and horizontal distribution coefficients for different policy instruments across all countries. 
+           $\\\\hat{V}^{1} > 1$ displays the number of countries in which poorer households consume more carbon-intensively compared to richer households, under consideration of each policy.
+           $\\\\hat{V}^{1} < 1$ displays the number of countries in which richer households consume more carbon-intensively compared to poorer households, under consideration of each policy.
+           $\\\\hat{V}^{1} \\\\uparrow$ displays the number of countries in which $\\\\hat{V}^{1}$ increases in comparison to national climate policy, i.e. in which poorer households would consume more carbon-intensively compared to richer households and to the 'national climate policy'-scenario.
+           $\\\\hat{V}^{1} \\\\downarrow$ displays the number of countries in which $\\\\hat{V}^{1}$ decreases in comparison to national climate policy, i.e. in which poorer households would consume less carbon-intensively compared to richer households and to the 'national climate policy'-scenario.
+           $\\\\hat{H}^{1} > 1$ displays the number of countries in which carbon intensity is more heterogeneously among poorer households compared to richer households, under consideration of each policy.
+           $\\\\hat{H}^{1} < 1$ displays the number of countries in which carbon intensity is more heterogeneously among richer households compared to poorer households, under consideration of each policy.
+           $\\\\hat{H}^{1} \\\\uparrow$ displays the number of countries in which $\\\\hat{H}^{1}$ increases in comparison to national climate policy, i.e. in which heterogeneity among poorer households compared to richer households would increase in comparison to the 'national climate policy'-scenario.
+           $\\\\hat{H}^{1} \\\\downarrow$ displays the number of countries in which $\\\\hat{H}^{1}$ decreases in comparison to national climate policy, i.e. in which heterogeneity among poorer households compared to richer households would decrease in comparison to the 'national climate policy'-scenario.",
            threeparttable = T, escape = FALSE)%>%
   save_kable(., "2_Tables/Table_Vertical_Horizontal_Policy_Simulation.tex")
 
