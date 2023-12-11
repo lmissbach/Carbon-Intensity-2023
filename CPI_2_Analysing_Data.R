@@ -7341,18 +7341,19 @@ kbl(mutate_all(data_8.2.4.10, linebreak), format = "latex",
   # column_spec(1, width = "2.88 cm")%>%
   # column_spec(2:8, width = "1.46 cm")%>%
   footnote(general = "This table compares vertical and horizontal distribution coefficients for different policy instruments across all countries. 
-           $\\\\hat{V}^{1} > 1$ displays the number of countries in which poorer households consume more carbon-intensively compared to richer households, under consideration of each policy.
-           $\\\\hat{V}^{1} < 1$ displays the number of countries in which richer households consume more carbon-intensively compared to poorer households, under consideration of each policy.
-           $\\\\hat{V}^{1} \\\\uparrow$ displays the number of countries in which $\\\\hat{V}^{1}$ increases in comparison to national climate policy, i.e. in which poorer households would consume more carbon-intensively compared to richer households and to the 'national climate policy'-scenario.
-           $\\\\hat{V}^{1} \\\\downarrow$ displays the number of countries in which $\\\\hat{V}^{1}$ decreases in comparison to national climate policy, i.e. in which poorer households would consume less carbon-intensively compared to richer households and to the 'national climate policy'-scenario.
-           $\\\\hat{H}^{1} > 1$ displays the number of countries in which carbon intensity is more heterogeneously among poorer households compared to richer households, under consideration of each policy.
-           $\\\\hat{H}^{1} < 1$ displays the number of countries in which carbon intensity is more heterogeneously among richer households compared to poorer households, under consideration of each policy.
-           $\\\\hat{H}^{1} \\\\uparrow$ displays the number of countries in which $\\\\hat{H}^{1}$ increases in comparison to national climate policy, i.e. in which heterogeneity among poorer households compared to richer households would increase in comparison to the 'national climate policy'-scenario.
-           $\\\\hat{H}^{1} \\\\downarrow$ displays the number of countries in which $\\\\hat{H}^{1}$ decreases in comparison to national climate policy, i.e. in which heterogeneity among poorer households compared to richer households would decrease in comparison to the 'national climate policy'-scenario.",
+           Column '$\\\\hat{V}^{1} > 1$' displays the number of countries in which poorer households consume more carbon-intensively compared to richer households, under consideration of each policy.
+           Column '$\\\\hat{V}^{1} < 1$' displays the number of countries in which richer households consume more carbon-intensively compared to poorer households, under consideration of each policy.
+           Column '$\\\\hat{V}^{1} \\\\uparrow$' displays the number of countries in which $\\\\hat{V}^{1}$ increases in comparison to national climate policy, i.e. in which poorer households would consume more carbon-intensively compared to richer households and to the 'national climate policy'-scenario.
+           Column '$\\\\hat{V}^{1} \\\\downarrow$' displays the number of countries in which $\\\\hat{V}^{1}$ decreases in comparison to national climate policy, i.e. in which poorer households would consume less carbon-intensively compared to richer households and to the 'national climate policy'-scenario.
+           Column '$\\\\hat{H}^{1} > 1$' displays the number of countries in which carbon intensity is more heterogeneous among poorer households compared to richer households, under consideration of each policy.
+           Column '$\\\\hat{H}^{1} < 1$' displays the number of countries in which carbon intensity is more heterogeneous among richer households compared to poorer households, under consideration of each policy.
+           Column '$\\\\hat{H}^{1} \\\\uparrow$' displays the number of countries in which $\\\\hat{H}^{1}$ increases in comparison to national climate policy, i.e. in which heterogeneity among poorer households compared to richer households would increase in comparison to the 'national climate policy'-scenario.
+           Column '$\\\\hat{H}^{1} \\\\downarrow$' displays the number of countries in which $\\\\hat{H}^{1}$ decreases in comparison to national climate policy, i.e. in which heterogeneity among poorer households compared to richer households would decrease in comparison to the 'national climate policy'-scenario.",
            threeparttable = T, escape = FALSE)%>%
   save_kable(., "2_Tables/Table_Vertical_Horizontal_Policy_Simulation.tex")
 
-rm(data_8.2.2)
+rm(data_8.2.2, data_8.2.4, data_8.2.4.1, data_8.2.4.2, data_8.2.4.3, data_8.2.4.4, data_8.2.4.5, data_8.2.4.6,
+   data_8.2.4.7, data_8.2.4.8, data_8.2.4.9, data_8.2.4.10, data_8.2.4.11, data_8.2.4.12, data_8.2.4.13, data_8.2.4.14, data_8.2.4.15, data_8.2.4.16)
 
 # 8.3     Figure 3: Clustering and features ####
 
