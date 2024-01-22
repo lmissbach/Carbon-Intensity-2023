@@ -16,14 +16,20 @@ set.seed(2023)
 
 GTAP_year <- 2017
 
+GTAP_version <- "11B"
+
 # 1       Loading data ####
 
 if(GTAP_year == 2014){
   data_0 <- read_rds("../1_Carbon_Pricing_Incidence/1_Data_Incidence_Analysis/3_Collated_Database/Collated_Database.rds")
 }
 
-if(GTAP_year == 2017){
+if(GTAP_year == 2017 & GTAP_version == "11A"){
   data_0 <- read_rds("../1_Carbon_Pricing_Incidence/1_Data_Incidence_Analysis/3_Collated_Database/Collated_Database_2017.rds")
+}
+
+if(GTAP_year == 2017 & GTAP_version == "11B"){
+  data_0 <- read_rds("../1_Carbon_Pricing_Incidence/1_Data_Incidence_Analysis/3_Collated_Database/Collated_Database_2017_11B.rds")
 }
 
 # Codes
@@ -105,7 +111,7 @@ Country.Set <- distinct(data_2, Country)%>%
 sum_3.1.1 <- data_2 %>%
   group_by(Country)%>%
   summarise(number                   = n(),
-            weights               = sum(hh_weights),
+            weights                  = sum(hh_weights),
             hh_size                  = wtd.mean(hh_size,                  weights = hh_weights),
             urban_01                 = wtd.mean(urban_01,                 weights = hh_weights),
             electricity.access       = wtd.mean(electricity.access,       weights = hh_weights),
@@ -217,7 +223,7 @@ kbl(sum_3.3.3, format = "latex", caption = "Average carbon footprint and average
   column_spec(8:13, width = "1.15 cm")%>%
   add_header_above(c(" " = 2, "Expenditure quintile" = 5, " " = 1, "Expenditure quintile" = 5))%>%
   add_header_above(c(" " = 1, "Average carbon footprint [tCO$_{2}$]" = 6, "Average carbon intensity [kgCO$_{2}$/USD]" = 6), escape = FALSE)%>%
-  footnote(general = "This table shows average carbon footprints in tCO$_{2}$ and average carbon intensity for households in all countries of our sample. We estimate household-weighted averages for the whole population and per expenditure quintile.", threeparttable = T, escape = FALSE)%>%
+  footnote(general = "This table shows average carbon footprints in tCO$_{2}$ and average carbon intensity in kgCO$_{2}$/USD for households in all countries of our sample. We estimate household-weighted averages for the whole population and per expenditure quintile.", threeparttable = T, escape = FALSE)%>%
   save_kable(., "2_Tables/Table_Summary_A3.tex")
 
 rm(sum_3.3.1, sum_3.3.2, sum_3.3.3)
@@ -439,6 +445,8 @@ NAs_over_obs_2 <- NAs_over_obs_1 %>%
   arrange(Error)
 
 write.xlsx(NAs_over_obs_2, "0_Data/9_Supplementary Information/NAs_codes_matching_final_dataset.xlsx")
+
+rm(NAs_over_obs_1, NAs_over_obs_2, Obs_1, codes_0, codes_1)
 
 # _______ ####
 # 4.      Descriptive analysis ####
@@ -2140,7 +2148,7 @@ rm(data_frame_5.3.2.1, data_frame_5.3.2.3, data_5.3, Type_0, i)
 
 Country.Set.Test.1 <- c("BEL", "NOR", "LBR")
 
-track <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_BRT.xlsx")
+track <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_BRT_2017.xlsx")
 
 set.seed(2023)
 
@@ -2185,7 +2193,7 @@ for (i in Country.Set$Country){
     # Country-specific edits 
     if(i == "SWE"){data_6.1.1 <- select(data_6.1.1, -ISCED, -sex_hhh)}
     if(i == "NLD"){data_6.1.1 <- select(data_6.1.1, -ISCED)}
-    if(i == "ARG" | i == "GEO"){data_6.1.1 <- select(data_6.1.1, -electricity.access)}
+    if(i == "GEO"){data_6.1.1 <- select(data_6.1.1, -electricity.access)}
     if(!i %in% c("ARG", "ARM", "AUT", "BEL", "BOL", "CHE", "DEU", "ESP", "FIN", "FRA",
                  "GRC", "HUN", "ITA", "JOR", "NLD", "POL", "PRT", "ROU", "SUR", "SWE")){data_6.1.1 <- select(data_6.1.1, -District)}
     
@@ -2193,23 +2201,23 @@ for (i in Country.Set$Country){
     
     # Splitting the sample, but no strata
     
-    prop_0 = 0.80
-    # if(i == "IDN"){prop_0 <- 0.2}
-    # if(i == "IND"){prop_0 <- 0.3}
-    # if(i == "MEX"){prop_0 <- 0.5}
+    # prop_0 = 0.80
     
-    data_6.1.2 <- data_6.1.1 %>%
-      initial_split(prop = prop_0)
+    # data_6.1.2 <- data_6.1.1 %>%
+    #   initial_split(prop = prop_0)
+    
+    # Update: Use entire sample for training.
+    data_6.1.2.train <- data_6.1.1
     
     # Data for training
-    data_6.1.2.train <- data_6.1.2 %>%
-      training()
+    # data_6.1.2.train <- data_6.1.2 %>%
+    #   training()
     
     # Data for testing
-    data_6.1.2.test <- data_6.1.2 %>%
-      testing()
+    # data_6.1.2.test <- data_6.1.2 %>%
+    #   testing()
     
-    rm(data_6.1.1, data_6.1.2)
+    rm(data_6.1.1)
     
     # Feature engineering - Step 2 (with recipe)
     
@@ -2226,9 +2234,9 @@ for (i in Country.Set$Country){
       prep(training = data_6.1.2.train)%>%
       bake(new_data = NULL)
     
-    data_6.1.2.testing <- recipe_6.1.0 %>%
-      prep(training = data_6.1.2.test)%>%
-      bake(new_data = NULL) 
+    # data_6.1.2.testing <- recipe_6.1.0 %>%
+    #   prep(training = data_6.1.2.test)%>%
+    #   bake(new_data = NULL) 
     
     # Five-fold cross-validation
     
@@ -2298,8 +2306,8 @@ for (i in Country.Set$Country){
     
     rm(track_0, run_ID, time_1, time_2, grid_0,
        model_brt, model_brt_1, model_brt_1.1, metrics_1.1, metrics_1,
-       data_6.1.2.test, data_6.1.2.testing, data_6.1.2.train, data_6.1.2.training,
-       folds_6.1, recipe_6.1.0, prop_0)
+       data_6.1.2.train, data_6.1.2.training,
+       folds_6.1, recipe_6.1.0)
     
     gc()
     
@@ -6585,9 +6593,9 @@ data_8.1.2 <- left_join(data_8.1.0, data_8.1.1)%>%
   filter(Income_Group_5 == 1)%>%
   arrange(min_median)%>%
   mutate(new_col = 1:n())%>%
-  mutate(new_row = c(rep(1,22), rep(2,22), rep(3,22), rep(4,21)))%>%
-  mutate(ymax    = c(rep(2.2,22), rep(2.5,22), rep(4,22), rep(5,21)))%>%
-  mutate(ymin    = c(rep(0,87)))
+  mutate(new_row = c(rep(1,22), rep(2,22), rep(3,22), rep(4,22)))%>%
+  mutate(ymax    = c(rep(2.2,22), rep(2.5,22), rep(4,22), rep(5,22)))%>%
+  mutate(ymin    = c(rep(0,88)))
 
 data_8.1.3 <- data_8.1.0 %>%
   filter(interest == 1)%>%
@@ -6637,7 +6645,11 @@ P_8.1 <- ggplot(data = data_8.1.2)+
         plot.margin = unit(c(0.3,0.3,0.3,0.3), "cm"),
         panel.border = element_rect(size = 0.3, fill = NA))
 
-jpeg("1_Figures/Figure 1/Figure_1_2017.jpg", width = 15.5, height = 12, unit = "cm", res = 600)
+jpeg("1_Figures/Figure 1/Figure_1_2017_11B.jpg", width = 15.5, height = 12, unit = "cm", res = 600)
+print(P_8.1)
+dev.off()
+
+pdf("1_Figures/Figure 1/Figure_1_2017_11B.pdf", width = 6, height = 4)
 print(P_8.1)
 dev.off()
 
@@ -6648,13 +6660,13 @@ data_8.1.4 <- data_8.1.0 %>%
   left_join(data_8.1.3)%>%
   arrange(min_median)%>%
   mutate(min_median = ifelse(Income_Group_5 != 1, NA, min_median))%>%
-  mutate(new_col = rep(1,435))%>%
-  mutate(new_row = c(rep(1,150), rep(2,150), rep(3,135)))%>%
+  mutate(new_col = rep(1,440))%>%
+  mutate(new_row = c(rep(1,150), rep(2,150), rep(3,140)))%>%
   group_by(Country)%>%
   mutate(ymax = max(y95)*1.1)%>%
   ungroup()%>%
   # mutate(ymax    = c(rep(2.2,110), rep(2.5,110), rep(4,110), rep(5,)))%>%
-  mutate(ymin    = c(rep(0,435)))%>%
+  mutate(ymin    = c(rep(0,440)))%>%
   left_join(Country.Set)
 
 for (i in c(1,2,3)){
@@ -6691,6 +6703,10 @@ for (i in c(1,2,3)){
   
   jpeg(sprintf("1_Figures/Figures_Appendix/Figure_1_2017_Appendix_%s.jpg", i), width = 15.5, height = 15.5, unit = "cm", res = 600)
   print(P_8.1.App)
+  dev.off()
+  
+  pdf(sprintf("1_Figures/Figures_Appendix/Figure_1_2017_Appendix_%s.pdf", i), width = 6, height = 4)
+  print(P_8.1)
   dev.off()
   
 }
@@ -6851,7 +6867,11 @@ P_8.2 <- ggplot()+
         plot.margin = unit(c(0.3,0.3,0.3,0.3), "cm"),
         panel.border = element_rect(size = 0.3))
 
-jpeg("1_Figures/Figure 2/Figure_2_2017.jpg", width = 15.5, height = 13.5, unit = "cm", res = 600)
+jpeg("1_Figures/Figure 2/Figure_2_2017_B.jpg", width = 15.5, height = 13.5, unit = "cm", res = 600)
+print(P_8.2)
+dev.off()
+
+pdf("1_Figures/Figure 2/Figure_2_2017_B.pdf", width = 6, height = 5.5)
 print(P_8.2)
 dev.off()
 
@@ -7148,7 +7168,11 @@ P_8.5 <- ggplot()+
 
 P_8.6 <- ggarrange(P_8.0, P_8.3, P_8.4, P_8.5, common.legend = TRUE, legend = "bottom")
 
-jpeg("1_Figures/Figure 2/Figure_2_2017_Policy.jpg", width = 25, height = 25, unit = "cm", res = 600)
+jpeg("1_Figures/Figure 2/Figure_2_2017_Policy_B.jpg", width = 25, height = 25, unit = "cm", res = 600)
+print(P_8.6)
+dev.off()
+
+pdf("1_Figures/Figure 2/Figure_2_2017_Policy_B.pdf", width = 6, height = 6)
 print(P_8.6)
 dev.off()
 
@@ -7309,11 +7333,11 @@ data_8.2.4.16 <- data_8.2.4.9 %>%
   rename("H_smaller_1" = values)
 
 data_8.2.4.10 <- data_8.2.4.15%>%
-  mutate(V_larger_1 = 87 - V_smaller_1)%>%
+  mutate(V_larger_1 = 88 - V_smaller_1)%>%
   left_join(data_8.2.4.12)%>%
   left_join(data_8.2.4.11)%>%
   left_join(data_8.2.4.16)%>%
-  mutate(H_larger_1 = 87 - H_smaller_1)%>%
+  mutate(H_larger_1 = 88 - H_smaller_1)%>%
   left_join(data_8.2.4.13)%>%
   left_join(data_8.2.4.14)%>%
   mutate(names = ifelse(names == "National", "National climate policy",
@@ -7577,7 +7601,7 @@ L.1 <- get_legend(ggplot(data_8.3.3)+
                                          values = scales::rescale(c(0,0.22,0.54,1)),
                                          breaks = c(0,0.22,0.54,1),
                                          labels = c("Rather low", "Neutral","Rather high","High"),
-                                         name = "Feature value",
+                                         name = "Feature importance",
                                          guide = guide_colorbar(barwidth = 10, barheight = 0.8, ticks.colour = NA))+
                     theme(legend.position = "bottom",
                           legend.title    = element_text(size = 6, vjust = 0.75, hjust = 0, margin = margin(r = 3)),
@@ -8314,7 +8338,7 @@ for(i in c(1,2)){
                                            values = scales::rescale(c(0,0.34,0.68,1)),
                                            breaks = c(0,0.34,0.68,1),
                                            labels = c("Rather low", "Neutral","Rather high","High"),
-                                           name = "Feature value",
+                                           name = "Feature importance",
                                            guide = guide_colorbar(barwidth = 10, barheight = 0.8, ticks.colour = NA))+
                       theme(legend.position = "bottom",
                             legend.title    = element_text(size = 6, vjust = 0.75, hjust = 0, margin = margin(r = 3)),
