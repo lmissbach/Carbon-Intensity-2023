@@ -1,0 +1,35 @@
+\begin{table}[ht!]
+  \centering
+\begin{adjustbox}{width=1\textwidth}
+\begin{tabular}[]{l|l|l|r}
+\toprule
+\multicolumn{1}{l}{Feature group} & \multicolumn{1}{l}{Feature} & \multicolumn{1}{l}{Description} & \multicolumn{1}{l}{Countries} \\ \hline
+     
+        HH expenditures & Household expenditures & Total household expenditures (USD 2017) & \\ \hline
+        Sociodemographic & Education & Educational attainment of household head & \\
+         & Nationality & Nationality of household head & \\
+         & Ethnicity & Ethnicity of household head & \\
+         & Religion & Religion of household head & \\
+         & Language & Main language of household head & \\
+         & Gender & Gender of household head & \\ \hline
+         Spatial & Urban & Urban or rural citizenship & \\
+        & Province & Sub-national area identifier & \\
+        & District & Sub-sub-national area identifier & \\ \hline
+        Electricity access & Electricity access & Access to electricity grid & \\
+        Cooking fuel & Main cooking fuel & Fuel used predominantly for cooking & \\
+        Heating fuel & Main heating fuel & Fuel used predominantly for heating & \\
+        Lighting fuel & Main lighting fuel & Fuel used predominantly for lighting & \\
+        Car own. & Car ownership & Ownership of car or truck & \\
+        Motorcycle own. & Motorcycle ownership & Ownership of motorcycle & \\
+        Appliance own. & Appliance ownership & \makecell[tl]{Ownership of refrigerator, washing machine, \\ television or air conditioning} & \\
+\end{tabular}
+
+\end{adjustbox}
+  \caption{Features and feature groups used to predict carbon intensity of consumption}
+  \label{tab:features}
+
+\begin{subcaption2}
+This table shows features and corresponding feature groups used to predict carbon intensity of consumption. All sociodemographic features refer to self-identified information of individuals. Column 'Countries' refers to the number of countries with non-missing information for each feature. For some countries, we have removed some features for prediction because of unreasonably high (e.g. \textit{District}) or no resolution (e.g. \textit{Education}). See also Appendix \ref{sec:cleaning} for further information about features.
+\end{subcaption2}
+
+\end{table}
