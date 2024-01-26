@@ -1,27 +1,29 @@
 \begin{table}[ht!]
   \centering
 \begin{adjustbox}{width=1\textwidth}
-\begin{tabular}[]{l|l|l|l|l|l}
+\begin{tabular}[]{l|l|l|c|c|c}
 \toprule
-\multicolumn{1}{l}{Feature group} & \multicolumn{1}{l}{Feature} & \multicolumn{1}{l}{Description} & \multicolumn{1}{l}{Countries} & \multicolumn{1}{l}{Sparse} & \multicolumn{1}{l}{Rich} \\ \hline
+\multicolumn{1}{c}{Feature group} & \multicolumn{1}{c}{Feature} & \multicolumn{1}{c}{Description} & \multicolumn{1}{c}{Countries} & \multicolumn{1}{c}{Sparse} & \multicolumn{1}{c}{Rich} \\ \hline
      
-        HH expenditures & Household expenditures & Total household expenditures (USD 2017) & & Yes & Yes \\ \hline
-        Sociodemographic & Education & Educational attainment of household head & & No & Yes\\
-         & Nationality & Nationality of household head & & No & Yes\\
-         & Ethnicity & Ethnicity of household head & & No & Yes\\
-         & Religion & Religion of household head & & No & Yes\\
-         & Language & Main language of household head & & No & Yes \\
-         & Gender & Gender of household head & & No & Yes\\ \hline
-         Spatial & Urban & Urban or rural citizenship & & No & Yes\\
-        & Province & Sub-national area identifier & & No & Yes\\
-        & District & Sub-sub-national area identifier & & No & Yes\\ \hline
-        Electricity access & Electricity access & Access to electricity grid & & No & Yes\\
-        Cooking fuel & Main cooking fuel & Fuel used predominantly for cooking & & No & Yes\\
-        Heating fuel & Main heating fuel & Fuel used predominantly for heating & & No & Yes\\
-        Lighting fuel & Main lighting fuel & Fuel used predominantly for lighting & & No & Yes\\
-        Car own. & Car ownership & Ownership of car or truck & & No & Yes\\
-        Motorcycle own. & Motorcycle ownership & Ownership of motorcycle & & No & Yes\\
-        Appliance own. & Appliance ownership & \makecell[tl]{Ownership of refrigerator, washing machine, \\ television or air conditioning} & & No & Yes\\
+        HH expenditures & Household expenditures & Total household expenditures (USD 2017) & 88 & Yes & Yes \\ \hline
+        Sociodemographic & Household size & Number of household members & 88 & No & Yes \\ 
+         & Gender & Gender of household head & 86 & No & Yes\\ 
+         & Education & Educational attainment of household head & 83 & No & Yes\\
+         & Ethnicity & Ethnicity of household head & 33 & No & Yes\\
+         & Religion & Religion of household head & 21 & No & Yes\\
+         & Nationality & Nationality of household head & 15 & No & Yes\\
+         & Language & Main language of household head & 8 & No & Yes \\ \hline
+
+         Spatial & Urban & Urban or rural citizenship & 79 & No & Yes\\
+        & Province & Sub-national area identifier & 58 & No & Yes\\
+        & District & Sub-sub-national area identifier & 20 & No & Yes\\ \hline
+        Cooking fuel & Main cooking fuel & Fuel used predominantly for cooking & 45 & No & Yes\\
+        Electricity access & Electricity access & Access to electricity grid & 44 & No & Yes\\
+        Lighting fuel & Main lighting fuel & Fuel used predominantly for lighting & 34 & No & Yes\\
+        Heating fuel & Main heating fuel & Fuel used predominantly for heating & 10 & No & Yes\\
+        Car own. & Car ownership & Ownership of car or truck & 57 & No & Yes\\
+        Motorcycle own. & Motorcycle ownership & Ownership of motorcycle & 50 & No & Yes\\
+        Appliance own. & Appliance ownership & \makecell[tl]{Ownership of refrigerator, washing machine, \\ television or air conditioning} & 57 & No & Yes\\
         \bottomrule
 \end{tabular}
 
