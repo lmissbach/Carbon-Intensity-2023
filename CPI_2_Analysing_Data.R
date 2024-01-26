@@ -1183,7 +1183,7 @@ data_4.5.1 <- data_4.5 %>%
 
 colnames(data_4.5.1) <- c("Country", "$\\overline{AC}_{r}^{1}$", "MAC5", "H1", "H5", "H1A", "H5A", "MAC 1/5", "H 1/5", "H 1/5 A")
 
-kbl(mutate_all(data_4.5.1, linebreak), format = "latex", caption = "Comparing Median Additional Costs (AC) and Horizontal Spread between first and fifth Expenditure Quintile", 
+kbl(mutate_all(data_4.5.1, linebreak), format = "latex", caption = "Comparing median carbon intensity and horizontal heterogeneity between first and fifth expenditure quintile", 
     booktabs = T, align = "l|cc|cccc|ccc", vline = "", linesep = "", longtable = T,
     col.names = NULL, label = "A7")%>%
   kable_styling(position = "center", latex_options = c("HOLD_position", "repeat_header"), font_size = 9)%>%
@@ -1194,13 +1194,12 @@ kbl(mutate_all(data_4.5.1, linebreak), format = "latex", caption = "Comparing Me
                      "$\\\\overline{H}_{r}^{5}$" = 1,
                      "$\\\\overline{H}_{r}^{1*}$" = 1,
                      "$\\\\overline{H}_{r}^{5*}$" = 1,
-                     "$\\\\widehat{AC}_{r}^{1}$" = 1,
+                     "$\\\\widehat{V}_{r}^{1}$" = 1,
                      "$\\\\widehat{H}_{r}^{1}$" = 1,
                      "$\\\\widehat{H}_{r}^{1*}$" = 1), escape = FALSE, align = "c")%>%
   column_spec(1, width = "2.88 cm")%>%
   column_spec(2:10, width = "1.46 cm")%>%
-  footnote(general = "This table shows the median carbon intensity in the first expenditure quintile ($\\\\overline{AC}_{r}^{1}$) and in the fifth quintile ($\\\\overline{AC}_{r}^{5}$). It displays the difference between the 5$^{th}$ (20$^{th}$) and 95$^{th}$ (80$^{th}$) within quintile percentile incidence for the first ($\\\\overline{H}_{r}^{1}$ and $\\\\overline{H}_{r}^{1*}$) and the fifth quintile ($\\\\overline{H}_{r}^{5}$ and $\\\\overline{H}_{r}^{5*}$). It also compares median carbon intensity in the first income quintile to that in the fifth quintile ($\\\\hat{AC}$$_{r}^{1}$). Lastly it displays our comparison index faciltiating the comparison of within quintile variation between the first and fifth quintile ($\\\\hat{H}_{r}^{1}$ and $\\\\hat{H}_{r}^{1*}$ respectively).",
-           threeparttable = T, escape = FALSE)%>%
+  footnote(general = "This table shows the median carbon intensity in the first expenditure quintile ($\\\\overline{AC}_{r}^{1}$) and in the fifth quintile ($\\\\overline{AC}_{r}^{5}$). It displays the difference between the 5\\\\textsuperscript{th} (20\\\\textsuperscript{th}) and 95\\\\textsuperscript{th} (80\\\\textsuperscript{th}) within-quintile percentile for the first ($\\\\overline{H}_{r}^{1}$ and $\\\\overline{H}_{r}^{1*}$) and the fifth quintile ($\\\\overline{H}_{r}^{5}$ and $\\\\overline{H}_{r}^{5*}$). It also compares median carbon intensity in the first income quintile to that in the fifth quintile ($\\\\widehat{V}$$_{r}^{1}$). Lastly it displays our comparison index facilitating the comparison of within-quintile variation between the first and fifth quintile ($\\\\widehat{H}_{r}^{1}$ and $\\\\widehat{H}_{r}^{1*}$, respectively).",         threeparttable = T, escape = FALSE)%>%
   save_kable(., "2_Tables/Table_Vertical_Horizontal.tex")
 
 # From Latin America paper
@@ -1975,6 +1974,10 @@ for (Type_0 in c("affected_upper_80")){
     jpeg(sprintf("1_Figures/Analysis_Logit_Models_Marginal_Effects/Average_Marginal_Effects_%s_%s_2017.jpg", Type_0, Term_0), width = 15.5, height = 16, unit = "cm", res = 600)
     print(P_5.3.2.4)
     dev.off()
+    
+    pdf(sprintf("1_Figures/Analysis_Logit_Models_Marginal_Effects/Average_Marginal_Effects_%s_%s_2017.pdf", Type_0, Term_0), width = 6.1, height = 6.3, unit = "cm", res = 600)
+    print(P_5.3.2.4)
+    dev.off()
 
   }
   
@@ -2146,7 +2149,7 @@ rm(data_frame_5.3.2.1, data_frame_5.3.2.3, data_5.3, Type_0, i)
 
 # 6.1     Boosted Regression trees on carbon intensity of consumption ####
 
-Country.Set.Test.1 <- c("BEL", "NOR", "LBR")
+Country.Set.Test.1 <- c("CHE")
 
 track <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_BRT_2017.xlsx")
 
@@ -2154,7 +2157,7 @@ set.seed(2023)
 
 options(warn = 1)
 
-# Takes seven hours
+# Takes 24 hours
 
 for (i in Country.Set$Country){
   tryCatch({
@@ -2259,7 +2262,7 @@ for (i in Country.Set$Country){
     # Create a tuning grid - 16 different models for the tuning space
     
     grid_0 <- grid_latin_hypercube(
-      tree_depth(),
+      tree_depth(c(3,15)),
       learn_rate(c(-3,-0.5)),# tuning parameters
       mtry(c(round((ncol(data_6.1.2.training)-1)/2,0), ncol(data_6.1.2.training)-1)),
       size = 29)%>%
@@ -2330,7 +2333,7 @@ rm(track)
 
 # SHAP expresses feature importance based on the marginal contribution of each predictor for each observation. Has local explanation and consistency.
 
-Country.Set.Test.2 <- c("ARG", "JOR")
+Country.Set.Test.2 <- c("CHE")
 
 Country.Set.Test.3 <- c("BOL", "PRT", "BEL", "CHE", "AUT", "NLD", "SWE", "FRA", "ITA", "ESP", "GRC", "SUR")
 
@@ -2346,7 +2349,7 @@ shap_1 <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_SHAP_C
 
 track_0 <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_BRT_2017.xlsx")
 
-for (i in Country.Set.Test.2){
+for (i in Country.Set$Country){
   tryCatch({
     
     print(paste0("Start: ", i, " ", Sys.time()))
@@ -2397,7 +2400,7 @@ for (i in Country.Set.Test.2){
     # Country-specific edits 
     if(i == "SWE"){data_6.1.1 <- select(data_6.1.1, -ISCED, -sex_hhh)}
     if(i == "NLD"){data_6.1.1 <- select(data_6.1.1, -ISCED)}
-    if(i == "ARG" | i == "GEO"){data_6.1.1 <- select(data_6.1.1, -electricity.access)}
+    if(i == "GEO"){data_6.1.1 <- select(data_6.1.1, -electricity.access)}
     if(!i %in% c("ARG", "ARM", "AUT", "BEL", "BOL", "CHE", "DEU", "ESP", "FIN", "FRA",
                  "GRC", "HUN", "ITA", "JOR", "NLD", "POL", "PRT", "ROU", "SUR", "SWE")){data_6.1.1 <- select(data_6.1.1, -District)}
     
@@ -3093,7 +3096,7 @@ for (i in Country.Set.Test.2){
 
     # to be exported
 
-    write_rds(shap_6.1.2.0, sprintf("../0_Data/9_Supplementary Data/BRT-Tracking/SHAP-Values en detail/2017/SHAP_wide_%s.rds", i))
+    write_rds(shap_6.1.2.0, sprintf("../0_Data/9_Supplementary Data/BRT-Tracking/SHAP-Values en detail/2017_B/SHAP_wide_%s.rds", i))
     
     # removals to be updated
     rm(shap_6.1.2.1, shap_6.1.2.2, shap_6.1.2.3,
@@ -3115,21 +3118,21 @@ for (i in Country.Set.Test.2){
 
 eval_0.1 <- eval_0 %>%
   distinct()%>%
-  write.xlsx(., "../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_SHAP_Evaluation_VFOLD_2017.xlsx")
+  write.xlsx(., "../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_SHAP_Evaluation_VFOLD_2017B.xlsx")
 
 # Save shap_0 for classification exercise
 
 shap_0.1 <- shap_0 %>%
-  write.xlsx(., "../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_SHAP_Detail_VFOLD_2017.xlsx")
+  write.xlsx(., "../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_SHAP_Detail_VFOLD_2017B.xlsx")
 
 # Save shap_1 as output
 
 shap_1.1 <- shap_1 %>%
-  write.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_SHAP_Classification_VFOLD_2017.xlsx")
+  write.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_SHAP_Classification_VFOLD_2017B.xlsx")
 
 # Part b: Output of tables
 
-eval_1 <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_SHAP_Evaluation_VFOLD_2017.xlsx")
+eval_1 <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_SHAP_Evaluation_VFOLD_2017B.xlsx")
 # eval_1 <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_SHAP_Evaluation_VFOLD.xlsx")
 
 eval_1.0 <- eval_1 %>%
@@ -3252,6 +3255,18 @@ data_6.2.1 <- data_6.2.0 %>%
          # -CF, -HF, -LF,
          )
 
+
+# for Table 1
+data_6.2.0_info <- data_6.2.0 %>%
+  select(Var_0, Country)%>%
+  distinct()%>%
+  group_by(Var_0)%>%
+  summarise(number = n())%>%
+  ungroup()%>%
+  filter(Var_0 != "Religiosity")%>%
+  arrange(number)
+
+
 # Part Ia: Correcting for larger or smaller R2
 
 #r2_6.2.0 <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_SHAP_Evaluation_VFOLD.xlsx")
@@ -3315,11 +3330,21 @@ data_6.2.4.0_r2 <- left_join(data_6.2.1_r2, data_6.2.2, by = "Country")%>%
   left_join(data_6.2.3, by = "Country")%>%
   mutate_at(vars(median_1_5, dif_95_05_1_5), ~ as.numeric(.))
 
+# Imputation for missing variables
+
+data_6.2.4.0_r2_imp <- data_6.2.4.0_r2 %>%
+  mutate_at(vars('Appliance own.':'Spatial'), ~ ifelse(. == 0, NA,.))%>%
+  mutate_at(vars('Appliance own.':'Spatial'), ~ ifelse(is.na(.), mean(., na.rm = TRUE), .))
+
 data_6.2.4 <- data_6.2.4.0 %>%
   mutate_at(vars(-Country), ~ (. - mean(.))/sd(.))%>%
   select(-Country)
 
 data_6.2.4_r2 <- data_6.2.4.0_r2 %>%
+  mutate_at(vars(-Country), ~ (. - mean(.))/sd(.))%>%
+  select(-Country)
+
+data_6.2.4_r2_imp <- data_6.2.4.0_r2_imp %>%
   mutate_at(vars(-Country), ~ (. - mean(.))/sd(.))%>%
   select(-Country)
 
@@ -3370,6 +3395,27 @@ for(k in 2:20){
   # PAM more robust
 }
 
+data_6.2.5_r2_imp <- data.frame()
+
+for(k in 2:20){
+  model_6.2.0 <- kmeans(data_6.2.4_r2_imp, centers = k, nstart = 1000)
+  
+  # total within-cluster sum of squares
+  
+  tot_within_ss <- model_6.2.0$tot.withinss
+  
+  # Silhouette
+  
+  silhouette_1 <- mean((cluster::silhouette(model_6.2.0$cluster, dist(data_6.2.4_r2_imp)))[,3])
+  
+  data_6.2.5_r2_imp <- bind_rows(data_6.2.5_r2_imp,
+                                 data.frame(k_0             = k,
+                                            tot_within_ss_0 = tot_within_ss,
+                                            silhouette_0    = silhouette_1))
+  
+  # PAM more robust
+}
+
 # Ellbow-Plot:
 
 # ggplot(data_6.2.5)+
@@ -3385,6 +3431,11 @@ data_6.2.5.1 <- data_6.2.5 %>%
 
 # Corrected
 data_6.2.5.2 <- data_6.2.5_r2 %>%
+  bind_rows(data.frame(k_0 = 1, silhouette_0 = 0))%>%
+  mutate(help_0 = ifelse(silhouette_0 == max(silhouette_0),1,0))
+
+# Corrected with imputation
+data_6.2.5.3 <- data_6.2.5_r2_imp %>%
   bind_rows(data.frame(k_0 = 1, silhouette_0 = 0))%>%
   mutate(help_0 = ifelse(silhouette_0 == max(silhouette_0),1,0))
 
@@ -3444,18 +3495,55 @@ P_6.2.5.2 <- ggplot(data_6.2.5.2)+
         plot.margin = unit(c(0.3,0.3,0.3,0.3), "cm"),
         panel.border = element_rect(size = 0.3))
 
+P_6.2.5.3 <- ggplot(data_6.2.5.3)+
+  geom_vline(aes(xintercept = data_6.2.5.3$k[silhouette_0 == max(silhouette_0)]))+
+  geom_line(aes(x = k_0, y = silhouette_0))+
+  geom_point(aes(x = k_0,y = silhouette_0, fill = factor(help_0)), shape = 21, size = 1.5)+
+  scale_fill_manual(values = c("#0072B5FF", "#BC2C29FF"))+
+  guides(fill = "none")+
+  xlab("Number of clusters (k)")+
+  ylab("Average silhouette width")+
+  coord_cartesian(ylim = c(min(data_6.2.5.3$silhouette_0)*0.8, 0.31),
+                  xlim = c(0,20.5))+
+  scale_x_continuous(expand = c(0,0), breaks = seq(0,20,5), minor_breaks = seq(0,20,1))+
+  scale_y_continuous(expand = c(0,0.01))+
+  theme_bw()+
+  ggtitle("Silhouette plot (adjusted)")+
+  theme(axis.text.y = element_text(size = 6), 
+        axis.text.x = element_text(size = 6),
+        axis.title  = element_text(size = 7),
+        plot.title = element_text(size = 11),
+        legend.position = "bottom",
+        # strip.text = element_text(size = 7),
+        #strip.text.y = element_text(angle = 180),
+        #panel.grid.minor = element_blank(),
+        axis.ticks = element_line(size = 0.2),
+        legend.text = element_text(size = 7),
+        legend.title = element_text(size = 7),
+        plot.margin = unit(c(0.3,0.3,0.3,0.3), "cm"),
+        panel.border = element_rect(size = 0.3))
+
 jpeg("1_Figures/Figures_Appendix/Figure_Silhouette_%d.jpg", width = 12, height = 10, unit = "cm", res = 400)
 print(P_6.2.5.1)
 print(P_6.2.5.2)
+print(P_6.2.5.3)
+dev.off()
+
+pdf("1_Figures/Figures_Appendix/Figure_Silhouette_%d.pdf", width = 4.72, height = 3.94)
+print(P_6.2.5.1)
+print(P_6.2.5.2)
+print(P_6.2.5.3)
 dev.off()
 
 # Silhouette-method 
 
 model_6.2.1 <- kmeans(data_6.2.4,    centers = 13, nstart = 2000)
 model_6.2.2 <- kmeans(data_6.2.4_r2, centers = 6, nstart = 2000)
+model_6.2.3 <- kmeans(data_6.2.4_r2_imp, centers = 6, nstart = 2000)
 
 silhouette_6.2.1 <- cluster::silhouette(model_6.2.1$cluster, dist(data_6.2.4))[,3]
 silhouette_6.2.2 <- cluster::silhouette(model_6.2.2$cluster, dist(data_6.2.4_r2))[,3]
+silhouette_6.2.3 <- cluster::silhouette(model_6.2.3$cluster, dist(data_6.2.4_r2_imp))[,3]
 
 data_6.2.6 <- data_6.2.4.0 %>%
   mutate(cluster_13_means    = model_6.2.1$cluster,
@@ -3481,12 +3569,29 @@ data_6.2.6_r2 <- data_6.2.4.0_r2 %>%
   fill(order_2)%>%
   mutate(order_2 = ifelse(is.na(order_2),1, 1/order_2))
 
+ata_6.2.6_r2_imp <- data_6.2.4.0_r2_imp %>%
+  mutate(cluster_6_means    = model_6.2.2$cluster,
+         silhouette_6_means = silhouette_6.2.2)%>%
+  group_by(cluster_6_means)%>%
+  mutate(number = n())%>%
+  ungroup()%>%
+  arrange(number, cluster_6_means, silhouette_6_means)%>%
+  mutate(order = 1:n())%>%
+  mutate(order_2 = ifelse(cluster_6_means != lag(cluster_6_means), 1:n(), NA))%>%
+  fill(order_2)%>%
+  mutate(order_2 = ifelse(is.na(order_2),1, 1/order_2))
+
 data_6.2.6.1 <- data_6.2.6 %>%
   arrange(desc(number), cluster_13_means)%>%
   distinct(cluster_13_means)%>%
   mutate(cluster = LETTERS[1:n()])
 
 data_6.2.6.1_r2 <- data_6.2.6_r2 %>%
+  arrange(desc(number), cluster_6_means)%>%
+  distinct(cluster_6_means)%>%
+  mutate(cluster = LETTERS[1:n()])
+
+data_6.2.6.1_r2_imp <- data_6.2.6_r2_imp %>%
   arrange(desc(number), cluster_6_means)%>%
   distinct(cluster_6_means)%>%
   mutate(cluster = LETTERS[1:n()])
@@ -3521,8 +3626,24 @@ data_6.2.6.2_r2 <- left_join(data_6.2.6_r2, data_6.2.6.1_r2, by = "cluster_6_mea
   ungroup()%>%
   select(-sample)
 
+data_6.2.6.2_r2_imp <- left_join(data_6.2.6_r2_imp, data_6.2.6.1_r2_imp, by = "cluster_6_means")%>%
+  select(cluster, Country, everything())%>%
+  arrange(cluster, desc(silhouette_6_means))%>%
+  mutate(order = 1:n())%>%
+  select(-order_2, -number, -cluster_6_means)%>%
+  # Information on best-fitting countries
+  group_by(cluster)%>%
+  mutate(best_fit = ifelse(silhouette_6_means == max(silhouette_6_means),1,0))%>%
+  ungroup()%>%
+  left_join(select(Country.Set, Country, sample), by = "Country")%>%
+  group_by(cluster)%>%
+  mutate(largest_country = ifelse(sample == max(sample),1,0))%>%
+  ungroup()%>%
+  select(-sample)
+
 write_csv(data_6.2.6.2, "../0_Data/9_Supplementary Data/BRT-Tracking/Clusters_Normalized_Uncorrected.csv")
 write_csv(data_6.2.6.2_r2, "../0_Data/9_Supplementary Data/BRT-Tracking/Clusters_Normalized_Corrected.csv")
+write_csv(data_6.2.6.2_r2_imp, "../0_Data/9_Supplementary Data/BRT-Tracking/Clusters_Normalized_Corrected_Imputed.csv")
 
 P_6.2.5.3 <- ggplot(data_6.2.6)+
   geom_bar(aes(y = silhouette_13_means, x = factor(order), fill = factor(order_2)), 
@@ -3582,9 +3703,45 @@ P_6.2.5.4 <- ggplot(data_6.2.6_r2)+
         plot.margin = unit(c(0.3,0.3,0.3,0.3), "cm"),
         panel.border = element_rect(size = 0.3))
 
+P_6.2.5.5 <- ggplot(data_6.2.6_r2_imp)+
+  geom_bar(aes(y = silhouette_6_means, x = factor(order), fill = factor(order_2)), 
+           stat = "identity", 
+           colour = "black",
+           width = 0.6, size = 0.1)+
+  scale_x_discrete(labels = data_6.2.6_r2$Country, guide = guide_axis(n.dodge=2))+
+  scale_y_continuous(expand = c(0,0.01))+
+  scale_fill_viridis_d()+
+  ylab("Silhouette width")+
+  xlab("Country")+
+  ggtitle("Silhouette plot for 6 clusters")+
+  coord_flip()+
+  theme_bw()+
+  guides(fill = "none")+
+  theme(axis.text.y = element_text(size = 5), 
+        axis.text.x = element_text(size = 6),
+        axis.title  = element_text(size = 7),
+        plot.title = element_text(size = 11),
+        legend.position = "bottom",
+        # strip.text = element_text(size = 7),
+        #strip.text.y = element_text(angle = 180),
+        panel.grid.minor = element_blank(),
+        panel.grid.major = element_line(size = 0.2),
+        axis.ticks = element_line(size = 0.2),
+        legend.text = element_text(size = 7),
+        legend.title = element_text(size = 7),
+        plot.margin = unit(c(0.3,0.3,0.3,0.3), "cm"),
+        panel.border = element_rect(size = 0.3))
+
 jpeg("1_Figures/Figures_Appendix/Figure_Silhouette_Clusters_%d.jpg", width = 15.5, height = 10, unit = "cm", res = 400)
 print(P_6.2.5.3)
 print(P_6.2.5.4)
+print(P_6.2.5.5)
+dev.off()
+
+pdf("1_Figures/Figures_Appendix/Figure_Silhouette_Clusters_%d.pdf", width = 6.1, height = 3.93)
+print(P_6.2.5.3)
+print(P_6.2.5.4)
+print(P_6.2.5.5)
 dev.off()
 
 data_6.2.7 <- read_csv("../0_Data/9_Supplementary Data/BRT-Tracking/Clusters_Normalized_Corrected.csv")
@@ -4115,10 +4272,37 @@ jpeg("1_Figures/Figures_Appendix/Figure_Comparison_Models.jpg", width = 15.5, he
 print(P_6.3.1)
 dev.off()
 
+pdf("1_Figures/Figures_Appendix/Figure_Comparison_Models.pdf", width = 6.1, height = 6.1)
+print(P_6.3.1)
+dev.off()
+
 rm(eval_1, eval_1.0, eval_1.1, eval_1.2, eval_1.3,
    data_6.3.1, data_6.3.2, data_6.3.2.raw, data_6.3.2.test, data_6.3.2.testing, data_6.3.2.training, data_6.3.3,
    eval_2.1, eval_3.1, eval_4.1, folds_6.3.2, model_brt, model_brt_1, P_6.3.1, recipe_6.3.0, track, track_0, i, v, eval_0.1,
    eval_2, eval_1.4, eval_0)
+
+# Output tables with hyperparameters 
+
+track_0 <- track_0 <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_BRT_2017.xlsx")
+track_1 <- track_0 %>%
+  group_by(Country)%>%
+  dplyr::slice(which.max(number))%>%
+  ungroup()%>%
+  left_join(select(Country.Set, Country, Country_long))%>%
+  select(Country_long, tree_depth_best, learn_rate_best, mtry_best, ends_with("cv_5_train"))%>%
+  mutate_at(vars(ends_with("cv_5_train")), ~ round(., 2))%>%
+  mutate(learn_rate_best = round(learn_rate_best, 4))%>%
+  arrange(Country_long)
+
+colnames(track_1) <- c("Country", "\\texttt{max\\_depth}", "$\\eta$", "\\texttt{mtry}", c("MAE", "RMSE", "$R^{2}$"))
+
+kbl(track_1, format = "latex", caption = "Hyperparameters for boosted regression tree models", booktabs = T, align = "l|rcr|ccc", vline = "", format.args = list(big.mark = ",", scientific = FALSE), linesep = "",
+    longtable = T, escape = FALSE, label = "C9")%>%
+  kable_styling(position = "center", latex_options = c("HOLD_position", "repeat_header"), font_size = 8)%>%
+  #column_spec(1, width = "3.15 cm")%>%
+  add_header_above(c(" " = 1, "Selected hyperparameters" = 3, "Model performance" = 3))%>%
+  footnote(general = "This table shows selected hyperparameters for fitting boosted regression tree models. \\\\texttt{max\\\\_depth} is the maximum depth of trees; $\\\\eta$ is the learning rate; \\\\texttt{mtry} is the number of features included in each tree. MAE is the mean absolute error of predictions; RMSE is the root mean squared error of predictions; $R^{2}$ is the squared correlation of prediction errors. Unit of MAE and RMSE is $kgCO_{2}$ per US-\\\\$. We show MAE, RMSE and $R^{2}$ for five-fold cross validation on the entire dataset. Note that we repeat five-fold cross validation with selected hyperparameters, e.g. in Table \\\\ref{tab:A8}.", threeparttable = T, escape = FALSE)%>%
+  save_kable(., "2_Tables/Table_tuning_parameters_Summary.tex")
 
 # 6.1.X   BRT on carbon intensity of consumption (regression model) ####
 
@@ -6591,7 +6775,7 @@ data_8.1.1 <- data_8.1.0 %>%
 
 data_8.1.2 <- left_join(data_8.1.0, data_8.1.1)%>%
   filter(Income_Group_5 == 1)%>%
-  arrange(min_median)%>%
+  arrange(y50)%>%
   mutate(new_col = 1:n())%>%
   mutate(new_row = c(rep(1,22), rep(2,22), rep(3,22), rep(4,22)))%>%
   mutate(ymax    = c(rep(2.2,22), rep(2.5,22), rep(4,22), rep(5,22)))%>%
@@ -6627,7 +6811,7 @@ P_8.1 <- ggplot(data = data_8.1.2)+
   ylab(expression(paste("Carbon intensity of consumption [kg", CO[2], "/USD]", sep = "")))+
   xlab("Country")+
   coord_flip()+
-  guides()+
+  guides(fill = "none")+
   # ggtitle("Vertical and horizontal differences")+
   theme(axis.text.y = element_text(size = 7), 
         axis.text.x = element_text(size = 7),
@@ -6645,11 +6829,46 @@ P_8.1 <- ggplot(data = data_8.1.2)+
         plot.margin = unit(c(0.3,0.3,0.3,0.3), "cm"),
         panel.border = element_rect(size = 0.3, fill = NA))
 
-jpeg("1_Figures/Figure 1/Figure_1_2017_11B.jpg", width = 15.5, height = 12, unit = "cm", res = 600)
+data_legend <- data.frame(xmin_0   = c(1,1),
+                          xmax_0   = c(1,1),
+                          ymin_0 = c(0,-1), ymax_0 = c(1,0),
+                          Type = c("Richer households more carbon-intensive", "Richer households less carbon-intensive"),
+                          y5 = c(-1.5,NA), y25 = c(-0.75,NA), y50 = c(0,NA), y75 = c(0.89,NA), y95 = c(1.59, NA),
+                          new_col = c(1,NA),
+                          mean = c(0.25, NA))
+
+P_8.Legend <- ggplot(data = data_legend)+
+  geom_rect(aes(xmin = xmin_0 - 0.35,
+                xmax = xmax_0 + 0.15,
+                ymin = ymin_0, ymax = ymax_0, fill = Type), 
+            alpha = 0.5, inherit.aes = FALSE)+
+  geom_boxplot(aes(ymin = y5, lower = y25, middle = y50, upper = y75, ymax = y95, x = new_col, group = new_col), 
+               stat = "identity", position = position_dodge(0.5), outlier.shape = NA, width = 0.4, alpha = 0.85, fill = "grey", size = 0.4)+
+  geom_point(aes(y = mean, x = new_col), shape = 23, size = 3 ,fill = "white", stroke = 0.4)+
+  theme_void()+
+  scale_fill_nejm()+
+  ylab(expression(paste("Carbon intensity of consumption [kg", CO[2], "/USD]", sep = "")))+
+  coord_flip()+
+  guides()+
+  labs(fill = "")+
+  # ggtitle("Vertical and horizontal differences")+
+  theme(legend.position = "bottom",
+        strip.background = element_blank(),
+        strip.text = element_blank(),
+        panel.grid.major.y = element_blank(),
+        panel.grid.minor = element_blank(),
+        legend.box.margin = unit(c(0.8,0,0,0), "cm"),
+        plot.margin = unit(c(0.8,0.3,0.3,0.3), "cm"))
+
+jpeg("1_Figures/Figure 1/Figure_1_2017_11B.jpg", width = 14.5, height = 10, unit = "cm", res = 600)
 print(P_8.1)
 dev.off()
 
-pdf("1_Figures/Figure 1/Figure_1_2017_11B.pdf", width = 6, height = 4)
+jpeg("1_Figures/Figure 1/Figure_1_2017_Legend_1.jpg", width = 14.5, height = 5, unit = "cm", res = 600)
+print(P_8.Legend)
+dev.off()
+
+pdf("1_Figures/Figure 1/Figure_1_2017_11B.pdf", width = 5.7, height = 3.94)
 print(P_8.1)
 dev.off()
 
@@ -6705,7 +6924,7 @@ for (i in c(1,2,3)){
   print(P_8.1.App)
   dev.off()
   
-  pdf(sprintf("1_Figures/Figures_Appendix/Figure_1_2017_Appendix_%s.pdf", i), width = 6, height = 4)
+  pdf(sprintf("1_Figures/Figures_Appendix/Figure_1_2017_Appendix_%s.pdf", i), width = 6.10, height = 6.10)
   print(P_8.1)
   dev.off()
   
@@ -6731,17 +6950,17 @@ data_8.2.1 <- data_2 %>%
   summarise(median_carbon_intensity_kg_per_USD_national = wtd.quantile(carbon_intensity_kg_per_USD_national, probs = 0.5, weights = hh_weights),
             q95_carbon_intensity_kg_per_USD_national    = wtd.quantile(carbon_intensity_kg_per_USD_national, probs = 0.95, weights = hh_weights),
             q05_carbon_intensity_kg_per_USD_national    = wtd.quantile(carbon_intensity_kg_per_USD_national, probs = 0.05, weights = hh_weights),
-            q20_carbon_intensity_kg_per_USD_national    = wtd.quantile(carbon_intensity_kg_per_USD_national, probs = 0.20, weights = hh_weights),
-            q80_carbon_intensity_kg_per_USD_national    = wtd.quantile(carbon_intensity_kg_per_USD_national, probs = 0.80, weights = hh_weights))%>%
+            q10_carbon_intensity_kg_per_USD_national    = wtd.quantile(carbon_intensity_kg_per_USD_national, probs = 0.10, weights = hh_weights),
+            q90_carbon_intensity_kg_per_USD_national    = wtd.quantile(carbon_intensity_kg_per_USD_national, probs = 0.90, weights = hh_weights))%>%
   ungroup()%>%
   filter(Income_Group_5 == 1 | Income_Group_5 == 5)%>%
   mutate(dif_q95_q05_carbon_intensity_kg_per_USD_national = q95_carbon_intensity_kg_per_USD_national - q05_carbon_intensity_kg_per_USD_national,
-         dif_q80_q20_carbon_intensity_kg_per_USD_national = q80_carbon_intensity_kg_per_USD_national - q20_carbon_intensity_kg_per_USD_national,)%>%
-  select(Country, Income_Group_5, dif_q95_q05_carbon_intensity_kg_per_USD_national, dif_q80_q20_carbon_intensity_kg_per_USD_national, median_carbon_intensity_kg_per_USD_national)%>%
-  pivot_wider(names_from = Income_Group_5, values_from = c(median_carbon_intensity_kg_per_USD_national, dif_q95_q05_carbon_intensity_kg_per_USD_national, dif_q80_q20_carbon_intensity_kg_per_USD_national))%>%
+         dif_q90_q10_carbon_intensity_kg_per_USD_national = q90_carbon_intensity_kg_per_USD_national - q10_carbon_intensity_kg_per_USD_national,)%>%
+  select(Country, Income_Group_5, dif_q95_q05_carbon_intensity_kg_per_USD_national, dif_q90_q10_carbon_intensity_kg_per_USD_national, median_carbon_intensity_kg_per_USD_national)%>%
+  pivot_wider(names_from = Income_Group_5, values_from = c(median_carbon_intensity_kg_per_USD_national, dif_q95_q05_carbon_intensity_kg_per_USD_national, dif_q90_q10_carbon_intensity_kg_per_USD_national))%>%
   mutate(median_1_5    = median_carbon_intensity_kg_per_USD_national_1/median_carbon_intensity_kg_per_USD_national_5,
          dif_95_05_1_5 = dif_q95_q05_carbon_intensity_kg_per_USD_national_1/dif_q95_q05_carbon_intensity_kg_per_USD_national_5,
-         dif_80_20_1_5 = dif_q80_q20_carbon_intensity_kg_per_USD_national_1/dif_q80_q20_carbon_intensity_kg_per_USD_national_5)%>%
+         dif_90_10_1_5 = dif_q80_q20_carbon_intensity_kg_per_USD_national_1/dif_q90_q10_carbon_intensity_kg_per_USD_national_5)%>%
   left_join(data_8.2.0, by = c("Country" = "Country.Code"))%>%
   mutate(value = ifelse(Country == "TWN", 20388.2761, value))
   # mutate(interest2 = ifelse(Country %in% c("RWA", "DEU", "ZAF", "USA", "CAN", "MWI", "LBR"),1,0.5))
@@ -6756,8 +6975,10 @@ data_8.2.2 <- data_8.2.1 %>%
   mutate(income_lower = n():1)%>%
   mutate(regressive_income  = ifelse(regressive == 1 & income_higher < 21,1,0))%>%
   mutate(progressive_income = ifelse(progressive == 1 & income_lower < 21,1,0))%>%
-  mutate(horizontal = ifelse(dif_95_05_1_5 > 1,1,0))%>%
-  mutate(hor_ver = ifelse(dif_95_05_1_5 > median_1_5,1,0))
+  mutate(horizontal       = ifelse(dif_95_05_1_5 > 1,1,0))%>%
+  mutate(horizontal_90_10 = ifelse(dif_90_10_1_5 > 1,1,0))%>%
+  mutate(hor_ver          = ifelse(dif_95_05_1_5 > median_1_5,1,0))%>%
+  mutate(hor_ver_90_10    = ifelse(dif_90_10_1_5 > median_1_5,1,0))
 
 poly <- data.frame(g = c(1,1,1,2,2,2,2,3,3,3,4,4,4,5,5,5,5,6,6,6), x = c(0.05,0.05,0.95,
                                                                          0.05,0.05,0.95,0.95,
@@ -6873,6 +7094,51 @@ dev.off()
 
 pdf("1_Figures/Figure 2/Figure_2_2017_B.pdf", width = 6, height = 5.5)
 print(P_8.2)
+dev.off()
+
+# Robustness check
+
+P_8.2_ROB <- ggplot()+
+  geom_polygon(data = poly_3, aes(x = x, y = y, group = g), colour = "black", fill = NA, size = 0.3)+
+  geom_polygon(data = filter(poly_2, g == 1), aes(x = x, y = y, group = g), alpha = 0.5, fill = "#6F99ADFF")+
+  geom_polygon(data = filter(poly_2, g == 2), aes(x = x, y = y, group = g), alpha = 0.5, fill = "#E18727FF")+
+  geom_polygon(data = filter(poly_2, g == 3), aes(x = x, y = y, group = g), alpha = 0.5, fill = "#0072B5FF")+
+  geom_polygon(data = filter(poly_2, g == 4), aes(x = x, y = y, group = g), alpha = 0.5, fill = "#FFDC91FF")+
+  geom_label(data = poly_4, aes(label = text, x = x, y = y), alpha = 0.5, size = 2.5)+
+  geom_label(data = poly_5, aes(label = text, x = x, y = y), alpha = 0.2, size = 2.5)+
+  theme_bw()+
+  geom_point(data = data_8.2.1, aes(y = median_1_5, x = dif_90_10_1_5, fill = log(value)), shape = 21, colour = "black", size = 3)+
+  #geom_text_repel(data = data_7.3, aes(label = Country, y = median_1_5, x = dif_95_05_1_5),
+  #                direction = "both", size = 2, max.overlaps = 100)+
+  coord_cartesian(xlim = c(0,3.2), ylim = c(0,2.5))+
+  scale_fill_viridis_c(breaks = c(6.9,11.1), labels = c("Poorer", "Richer"), name = "Average GDP per capita (log)")+
+  guides(fill = guide_colorbar(ticks.colour = NA))+
+  scale_x_continuous(expand = c(0,0))+
+  scale_y_continuous(expand = c(0,0), breaks = c(0,1,2))+
+  ylab("Vertical distribution coefficient")+
+  xlab("Horizontal distribution coefficient (robust)")+
+  labs(fill = "")+
+  theme(axis.text.y = element_text(size = 7), 
+        axis.text.x = element_text(size = 7),
+        axis.title  = element_text(size = 7),
+        plot.title  = element_text(size = 7),
+        legend.position = "bottom",
+        strip.text = element_text(size = 7),
+        #strip.text.y = element_text(angle = 180),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        axis.ticks = element_line(size = 0.2),
+        legend.text = element_text(size = 7),
+        legend.title = element_text(size = 7, vjust = 0.75),
+        plot.margin = unit(c(0.3,0.3,0.3,0.3), "cm"),
+        panel.border = element_rect(size = 0.3))
+
+jpeg("1_Figures/Figure 2/Figure_2_2017_B_Robustness.jpg", width = 15.5, height = 13.5, unit = "cm", res = 600)
+print(P_8.2_ROB)
+dev.off()
+
+pdf("1_Figures/Figure 2/Figure_2_2017_B_Robustness.pdf", width = 6, height = 5.5)
+print(P_8.2_ROB)
 dev.off()
 
 # Policy-design
@@ -7172,7 +7438,7 @@ jpeg("1_Figures/Figure 2/Figure_2_2017_Policy_B.jpg", width = 25, height = 25, u
 print(P_8.6)
 dev.off()
 
-pdf("1_Figures/Figure 2/Figure_2_2017_Policy_B.pdf", width = 6, height = 6)
+pdf("1_Figures/Figure 2/Figure_2_2017_Policy_B.pdf", width = 9.84, height = 9.84)
 print(P_8.6)
 dev.off()
 
@@ -7615,6 +7881,10 @@ jpeg("1_Figures/Figure 3/Figure_3_Corrected.jpg", width = 15.5, height = 12, uni
 print(P_8.3.5)
 dev.off()
 
+pdf("1_Figures/Figure 3/Figure_3_Corrected.pdf", width = 6.1, height = 4.72, unit = "cm", res = 600)
+print(P_8.3.5)
+dev.off()
+
 data_8.3.0 <- read_csv("../0_Data/9_Supplementary Data/BRT-Tracking/Clusters_Normalized_Uncorrected.csv", show_col_types = FALSE) %>%
   group_by(cluster)%>%
   mutate(number = n())%>%
@@ -7767,6 +8037,10 @@ P_8.3.4 <- ggarrange(P_8.3.2, P_8.3.1, P_8.3.3, nrow = 1, align = "h", widths = 
                      legend = "bottom")
 
 jpeg("1_Figures/Figure 3/Figure_3_Uncorrected.jpg", width = 15.5, height = 18, unit = "cm", res = 600)
+print(P_8.3.4)
+dev.off()
+
+pdf("1_Figures/Figure 3/Figure_3_Uncorrected.pdf", width = 6.1, height = 7.09)
 print(P_8.3.4)
 dev.off()
 
@@ -8113,6 +8387,10 @@ for(i in c(1,2)){
   jpeg(sprintf("1_Figures/Figure 4/Figure_4_Uncorrected_%s.jpg",i), width = 15.5, height = 18, unit = "cm", res = 600)
   print(P_8.4.5)
   dev.off()
+  
+  pdf(sprintf("1_Figures/Figure 4/Figure_4_Uncorrected_%s.pdf",i), width = 6.1, height = 7.09)
+  print(P_8.4.5)
+  dev.off()
 }
 
 for(i in c(1,2)){
@@ -8352,6 +8630,10 @@ for(i in c(1,2)){
   jpeg(sprintf("1_Figures/Figure 4/Figure_4_Corrected_%s.jpg",i), width = 15.5, height = 18, unit = "cm", res = 600)
   print(P_8.4.5)
   dev.off()
+  
+  pdf(sprintf("1_Figures/Figure 4/Figure_4_Corrected_%s.pdf",i), width = 6.1, height = 7.09)
+  print(P_8.4.5)
+  dev.off()
 }
 
 rm(P_8.4.4, P_8.4.3, P_8.4.2, P_8.4.1,
@@ -8386,9 +8668,9 @@ kbl(data_8.4.1, format = "latex", caption = "Feature importance across countries
   kable_styling(position = "center", latex_options = c("HOLD_position", "repeat_header"), font_size = 9)%>%
   row_spec(0, angle = 90)%>%
   row_spec(1:87, font_size = 8)%>%
-  column_spec(1:2, width = "0.35 cm")%>%
-  column_spec(3, width = "0.9 cm")%>%
-  column_spec(4:21, width = "0.35 cm")%>%
+  column_spec(1, width = "0.35 cm")%>%
+  column_spec(2, width = "1.5 cm")%>%
+  column_spec(3:21, width = "0.35 cm")%>%
   row_spec(c(17,29,38,47,55,61,67,71,75,78,81,84,87), hline_after = TRUE)%>%
   #collapse_rows(columns = 3:4, valign = "middle")%>%
   footnote(general = "This table shows feature importance in percent (based on absolute average SHAP-values per feature) across all countries and per cluster. Feature importance is unadjusted for model accuracy. Columns 'Mean carbon intensity', 'Horizontal inequality' and 'Vertical inequality' show average values. Column 'number' refers to the number of countries assigned to this cluster.", threeparttable = T)%>%
@@ -8419,9 +8701,9 @@ kbl(data_8.4.1, format = "latex", caption = "Feature importance across countries
   kable_styling(position = "center", latex_options = c("HOLD_position", "repeat_header"), font_size = 9)%>%
   row_spec(0, angle = 90)%>%
   row_spec(1:87, font_size = 8)%>%
-  column_spec(1:2, width = "0.35 cm")%>%
-  column_spec(3, width = "0.9 cm")%>%
-  column_spec(4:21, width = "0.35 cm")%>%
+  column_spec(1, width = "0.35 cm")%>%
+  column_spec(2, width = "0.9 cm")%>%
+  column_spec(3:21, width = "0.35 cm")%>%
   row_spec(c(46,65,78,83,85,87), hline_after = TRUE)%>%
   #collapse_rows(columns = 3:4, valign = "middle")%>%
   footnote(general = "This table shows feature importance in percent (based on absolute average SHAP-values per feature) across all countries and per cluster. Feature importance is adjusted for model accuracy. Columns 'Mean carbon intensity', 'Horizontal inequality' and 'Vertical inequality' show average values. Column 'number' refers to the number of countries assigned to this cluster.", threeparttable = T)%>%
@@ -9265,6 +9547,10 @@ for (i in c(data_8.5.2.C$Country)){
   jpeg(sprintf("1_Figures/Figure 5b/Figure_5b_%s.jpg", i), width = 30, height = 10, unit = "cm", res = 300)
   print(P_8.5.1)
   dev.off()
+  
+  pdf(sprintf("1_Figures/Figure 5b/Figure_5b_%s.pdf", i), width = 11.8, height = 3.94)
+  print(P_8.5.1)
+  dev.off()
 }
 
 # Supplementary analysis
@@ -9825,6 +10111,10 @@ list_all <- list()
   print(P_8.5.2.5)
   dev.off()
   
+  pdf(sprintf("1_Figures/Figure 5b/Figure_5b_%s.pdf", i), width = 11.81, height = 3.94)
+  print(P_8.5.2.5)
+  dev.off()
+  
   list_all[[i]] <- P_8.5.2.5
     
 }
@@ -9991,7 +10281,7 @@ test <- data_8.4.1 %>%
 # 8.6.1   Figure parametric Engel-curves ####
 
 Country.Set.8.6.1 <- Country.Set %>%
-  mutate(Group_1 = c(rep("A",30), rep("B",30), rep("C",27)))
+  mutate(Group_1 = c(rep("A",30), rep("B",30), rep("C",28)))
 
 data_8.6.1.1 <- data_2 %>%
   left_join(Country.Set.8.6.1)%>%
@@ -10081,8 +10371,122 @@ for(Group_0 in c("A", "B", "C")){
   print(P_8.6.1.1)
   dev.off()
   
+  pdf(sprintf("1_Figures/Analysis_Parametric_Engel_Curves/Parametric_EC_0_%s.pdf", Group_0), width = 6.10, height = 7.09)
+  print(P_8.6.1.1)
+  dev.off()
+  
   rm(data_8.6.1.3, data_8.6.1.4, P_8.6.1.1, accuracy_2nd, binwidth_0, breaks, scale_0, upper_bound, Group_0)
   
 }
 
 rm(data_8.6.1.1, data_8.6.1.2, Country.Set.8.6.1)
+
+# 8.6.2   Maps with country clusters ####
+
+data_8.6.2 <- read_csv("../0_Data/9_Supplementary Data/BRT-Tracking/Clusters_Normalized_Corrected.csv", show_col_types = FALSE)%>%
+  # it is in fact not normalized
+  select(cluster, Country, order, best_fit, largest_country, everything())%>%
+  left_join(select(Country.Set, Country, Country_long))%>%
+  select(cluster, Country_long, everything())
+
+data_8.6.2.1 <- data_8.6.2 %>%
+  select(Country_long, cluster, Country)
+
+data_8.6.2.2 <- data_8.6.2 %>%
+  select(Country_long, "Appliance own.":"Spatial")%>%
+  pivot_longer(c("Appliance own.":"Spatial"), values_to = "imp", names_to = "feature")%>%
+  group_by(Country_long)%>%
+  dplyr::slice(which.max(imp))%>%
+  ungroup()
+
+data_8.6.2.3 <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_SHAP_Evaluation_VFOLD_2017.xlsx")%>%
+  filter(.metric == "rsq")%>%
+  group_by(Country, fold)%>%
+  mutate(number = 1:n())%>%
+  filter(number == max(number))%>%
+  ungroup()%>%
+  select(Country, Sample_Testing)%>%
+  group_by(Country)%>%
+  summarise(rsq = mean(Sample_Testing))%>%
+  ungroup()
+
+world_map <- map_data("world")%>%
+  mutate(region = ifelse(region == "Myanmar", "Myanmar (Burma)",
+                         ifelse(region == "Ivory Coast", "Côte d’Ivoire",
+                                ifelse(region == "Czech Republic", "Czechia",
+                                       ifelse(region == "UK", "United Kingdom",
+                                              ifelse(region == "USA", "United States", region))))))%>%
+  left_join(data_8.6.2.1, by = c("region" = "Country_long"))%>%
+  filter(region != "Antarctica")%>%
+  left_join(data_8.6.2.2, by = c("region" = "Country_long"))%>%
+  left_join(data_8.6.2.3)
+
+# Figure on clusters
+
+P_8.6.2.1 <- ggplot(world_map, aes(x = long, y = lat, group = group)) +
+  geom_polygon(fill = "lightgrey", size = 0.2)+
+  geom_polygon(aes(fill = cluster), colour = "black", size = 0.2)+
+  scale_fill_nejm(na.value="lightgrey", na.translate = FALSE)+
+  theme_bw()+
+  labs(fill = "Cluster")+
+  guides(fill = guide_legend(nrow = 1))+
+  theme(legend.position = "bottom",
+        axis.text  = element_blank(),
+        axis.ticks = element_blank(),
+        axis.title = element_blank(),
+        plot.margin = unit(c(0.15,0.15,0.15,0.15), "cm"))
+
+# Figure on R2
+
+P_8.6.2.2 <- ggplot(world_map, aes(x = long, y = lat, group = group))+
+  geom_polygon(fill = "lightgrey", size = 0.2)+
+  geom_polygon(aes(fill = rsq), colour = "black", size = 0.2)+
+  scale_fill_material(palette = "deep-purple", na.value = "lightgrey", name = expression(paste("Goodness of fit ", (R^2))),
+                      limits = c(0,0.7001), labels = scales::percent_format(), breaks = c(0,0.2,0.4,0.6))+
+  theme_bw()+
+  theme(legend.position = "bottom",
+        axis.text  = element_blank(),
+        axis.ticks = element_blank(),
+        axis.title = element_blank(),
+        plot.margin = unit(c(0.15,0.15,0.15,0.15), "cm"),
+        legend.key.width = unit(1.5, "cm"),
+        legend.title = element_text(vjust = 1))
+
+# Figure on most important feature
+
+P_8.6.2.3 <- ggplot(world_map, aes(x = long, y = lat, group = group)) +
+  geom_polygon(fill = "lightgrey", size = 0.2)+
+  geom_polygon(aes(fill = feature), colour = "black", size = 0.2)+
+  scale_fill_npg(na.value="lightgrey", na.translate = FALSE)+
+  theme_bw()+
+  labs(fill = "Single most important feature")+
+  guides(fill = guide_legend(nrow = 3))+
+  theme(legend.position = "bottom",
+        axis.text  = element_blank(),
+        axis.ticks = element_blank(),
+        axis.title = element_blank(),
+        plot.margin = unit(c(0.15,0.15,0.15,0.15), "cm"))
+
+jpeg("1_Figures/Figures_Appendix/Figure_Maps_1.pdf", width = 15.5, height = 9, unit = "cm", res = 600)
+print(P_8.6.2.1)
+dev.off()
+
+jpeg("1_Figures/Figures_Appendix/Figure_Maps_2.pdf", width = 15.5, height = 10, unit = "cm", res = 600)
+print(P_8.6.2.2)
+dev.off()
+
+jpeg("1_Figures/Figures_Appendix/Figure_Maps_3.pdf", width = 15.5, height = 11, unit = "cm", res = 600)
+print(P_8.6.2.3)
+dev.off()
+
+pdf("1_Figures/Figures_Appendix/Figure_Maps_1.pdf", width = 6.1, height = 3.54)
+print(P_8.6.2.1)
+dev.off()
+
+pdf("1_Figures/Figures_Appendix/Figure_Maps_2.pdf", width = 6.1, height = 3.94)
+print(P_8.6.2.2)
+dev.off()
+
+pdf("1_Figures/Figures_Appendix/Figure_Maps_3.pdf", width = 6.1, height = 4.33)
+print(P_8.6.2.3)
+dev.off()
