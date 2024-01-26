@@ -1058,9 +1058,9 @@ GTAP_Groups <- distinct(carbon_intensities_2.1.1, GTAP)%>%
   mutate(Group_0 = c(rep("A", 16),
                      rep("B", 16),
                      rep("C", 16),
-                     rep("D", 14)))%>%
+                     rep("D", 13)))%>%
   mutate(Group_1A = c(rep(NA, 48),
-                     rep("A",2),
+                     rep("A",1),
                      rep("B",4),
                      rep("C",4),
                      rep("D",4)))
@@ -1149,7 +1149,11 @@ for(Group_1 in c("A", "B", "C", "D")){
   
   
   
-  jpeg(sprintf("1_Figures/Analysis_Carbon_Intensities_GTAP/Figure_2.1.1_%s_2017B.jpg", Group_1), width = 15.75, height = 17, unit = "cm", res = 400)
+  jpeg(sprintf("../Carbon-Intensity-2023/1_Figures/Analysis_Carbon_Intensities_GTAP/Figure_2.1.1_%s_2017B.jpg", Group_1), width = 15.75, height = 17, unit = "cm", res = 400)
+  print(P_2.1.3)
+  dev.off()
+  
+  pdf(sprintf("../Carbon-Intensity-2023/1_Figures/Analysis_Carbon_Intensities_GTAP/Figure_2.1.1_%s_2017B.pdf", Group_1), width = 6.1, height = 6.69)
   print(P_2.1.3)
   dev.off()
 }
