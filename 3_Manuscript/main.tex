@@ -230,12 +230,12 @@ Figure \ref{fig:fig_1} displays the distribution of carbon intensity of consumpt
 
 \begin{figure}[ht!]
     \centering
-    \includegraphics{1_Figures/Figure 1/Figure_1_2017_11B.jpg}
+    \includegraphics{1_Figures/Figure 1/Figure_1_2017_11B.pdf}
     \includegraphics[scale=0.7]{1_Figures/Figure 1/Legend Figure 1.pdf}
     \caption{Vertical differences and horizontal distribution of carbon intensity within poorest quintiles}
     \label{fig:fig_1}
     \begin{subcaption2}
-    Boxplots display the horizontal distribution of household-level carbon intensity within the poorest expenditure quintile in each of 88 countries in our sample: The boxes display the 25\textsuperscript{th} and 75\textsuperscript{th} percentile; whiskers display the 5\textsuperscript{th} and 95\textsuperscript{th} percentile, respectively. Rhombuses display the mean. Blue and red bars represent the vertical difference in household-level carbon intensity, i.e., the difference between the highest and the lowest median carbon intensity across quintiles. Red (blue) bars indicate that richer households consume less (more) carbon-intensively at the median compared to poorer households. Figure \ref{fig:Quint} shows the distribution of carbon intensities for all expenditure quintiles in all countries of our sample. We order countries by the median carbon intensity across all quintiles.
+    Boxplots display the horizontal distribution of household-level carbon intensity within the poorest expenditure quintile in each of 88 countries in our sample: The boxes display the 25\textsuperscript{th} and 75\textsuperscript{th} percentile; whiskers display the 5\textsuperscript{th} and 95\textsuperscript{th} percentile, respectively. Rhombuses display the mean. Blue and red bars represent the vertical difference in household-level carbon intensity, i.e., the difference between the highest and the lowest median carbon intensity across quintiles. Red (blue) bars indicate that richer households consume less (more) carbon-intensively at the median compared to poorer households. Figure \ref{fig:Quint} shows the distribution of carbon intensities for all expenditure quintiles in all countries of our sample. We order countries by the median carbon intensity in the poorest quintile.
     \end{subcaption2}
 \end{figure}
 
@@ -323,7 +323,7 @@ Estimating a logit-model serves as a robustness check for results from BRT-model
 
 Building on (adjusted) feature importance for each country, we use the k-means algorithm for clustering. If features are missing in the data, we assume their share of contribution is zero\footnote{As a robustness check, we substitute missing entries by average values across all non-missing values. We use adjusted feature importance, i.e., we assume that the contribution of unobserved features does not exhibit strong correlation with observed features.}. We normalize all feature values to allow for comparison across features. If one feature is more (less) important in one country compared to all other countries, the processed feature value will be relatively high (low). If one feature is equally important across all countries, processed feature values will be close to zero.
 
-K-means clustering is an unsupervised machine-learning method and helps to analyze clusters of observations that are most similar in many variables within each cluster and least similar in many variables across clusters \autocite{MacQueen.1967}. We inspect the optimal number of clusters ($\{k \in \mathbb{N} \mid 2  \leq k \leq 20 \}$) with the help of average silhouette widths \autocite{Rousseeuw.1987} for each cluster \textit{k}. The silhouette width $s_{i}$ accounts for the average Euclidean distance of each observation \textit{i} to all other observations within its cluster and for the average distance to observations from the nearest neighbouring cluster. Silhouettes closer to $1$ indicate a good fit of an observation to its cluster and silhouettes closer to $-1$ indicate a poor fit. The average silhouette width $\overline{s_{k}}$ for each cluster \textit{k} expresses how well all observations fit on average to each cluster. Our approach yields $k = 6$ to be the number of clusters maximizing average silhouette width\footnote{See figures \subref{fig:G3_silhouette_2} and \subref{fig:G4_silhouette_2} for visualization.}. We also show the optimal number of clusters ($k = 13$) for k-means clustering building on non-adjusted feature importance in the Appendix\footnote{See figures \subref{fig:G1_silhouette} and \subref{fig:G2_silhouette} for visualization. Using non-adjusted feature importance for clustering changes the interpretation of clusters: Features of countries within the same cluster contribute similarly to explaining variation in carbon intensity without respecting the availability of features in the data and the explanatory power of the model.}.
+K-means clustering is an unsupervised machine-learning method and helps to analyze clusters of observations that are most similar in many variables within each cluster and least similar in many variables across clusters \autocite{MacQueen.1967}. We inspect the optimal number of clusters ($\{k \in \mathbb{N} \mid 2  \leq k \leq 20 \}$) with the help of average silhouette widths \autocite{Rousseeuw.1987} for each cluster \textit{k}. The silhouette width $s_{i}$ expresses the average Euclidean distance of each observation \textit{i} to all other observations within its cluster and for the average distance to observations from the nearest neighbouring cluster. Silhouettes closer to $1$ indicate a good fit of an observation to its cluster and silhouettes closer to $-1$ indicate a poor fit. The average silhouette width $\overline{s_{k}}$ for each cluster \textit{k} expresses how well all observations fit on average to each cluster. Our approach yields $k = 6$ to be the number of clusters maximizing average silhouette width\footnote{See figures \subref{fig:G3_silhouette_2} and \subref{fig:G4_silhouette_2} for visualization.}. We also show the optimal number of clusters ($k = 13$) for k-means clustering building on non-adjusted feature importance in the Appendix\footnote{See figures \subref{fig:G1_silhouette} and \subref{fig:G2_silhouette} for visualization. Using non-adjusted feature importance for clustering changes the interpretation of clusters: Features of countries within the same cluster contribute similarly to explaining variation in carbon intensity without respecting the availability of features in the data and the explanatory power of the model.}.
 
 In countries within the same cluster single features are similarly important to predict the carbon intensity of households. For each cluster, we compute average values for each feature to allow for investigation of differences between countries in different clusters.%We also investigate which country is most likely to all other countries in each cluster maximizing silhouette width within each cluster and use it to demonstrate cluster-level characteristics. 
 
@@ -620,23 +620,57 @@ Supplementary figure \ref{fig:comparison_policies} shows vertical and horizontal
 \subsection{A simple model of climate policy and compensation policies}
 
 \begin{itemize}
-    \item Assume that benefits from abated climate change are absent for now, i.e., governments need to satisfy an exogenously given target for emissions reductions.
-    \item Meeting this target is costly. Assuming that intervention tackles supply-side and that firms pass through additional costs, it is reasonable to assume that costs c\textsubscript{i} occur in household \textit{i}.
-    \item Governments' intervention affects two channels: First, selection of policy instruments with differing implications for the distribution of c\textsubscript{i}. Second, selection of compensating policies T\textsubscript{i} based on different criteria.
-    \item Governments goal function contingent on aggregate welfare, vertical distributional impacts and horizontal distributional impacts. Governments assigns different weights to perception of single individuals. Perception is contingent on individual costs W\textsubscript{i}, differences between income groups V\textsubscript{i} and differences within income groups H\textsubscript{i}.
-    \item Intervention affects W\textsubscript{i}, V\textsubscript{i} and H\textsubscript{i}. $\sigma_{1,i}$ and $\sigma_{2,i}$ likely smaller than zero, but also not important for conclusions. W\textsubscript{i} can be larger or smaller than zero for individual households.
-    \item We can setup multiple formulae for W\textsubscript{i}, V\textsubscript{i} and H\textsubscript{i}. Household \textit{i} has characteristics $X_{i}$.
-    \item Governments can setup transfers according to information about a different set of \textit{X}.
-    \item Some X can be observed, some cannot.
+    \item Assume that benefits from abated climate change are absent for now, i.e., governments need to satisfy an exogenously given target for emissions reductions. We therefore neglect the (unequal distribution of) benefits from climate change abatement in this model.
+    \item Meeting this target is costly. Assuming that intervention tackles supply-side and that firms pass through additional costs, it is reasonable to assume that costs c\textsubscript{i}<0 occur in household \textit{i}. Such costs \textit{c} differ for different households - with $\sigma_{2}(c)$ representing the variance of household-level costs - according to household-level access (and usage of) clean technology, household-level preferences and affluence.
+    \item Household \textit{i} has a set of characteristics \textit{X}\textsubscript{i} and is part of income quintile \textit{q}.
+    \item Additional costs \textit{c}\textsubscript{i} represent the relative additional costs (incidence), reflecting diminishing marginal utility of income.
+    \item Governments' intervention affects two channels: First, selection of policy instruments (out of a set P) with differing implications for the distribution of c\textsubscript{i,P} and $\sigma_{2}(c_{i,P})$. Second, selection of compensating policies out of a set T with household-level benefits conditional on households' characteristics X', i.e. T\textsubscript{i,X'} based on different criteria.
+    \item Importantly, the government can only observe the set $X' \in X$ of household characteristics for compensation. Transfers T\textsubscript{i,X'} are only available for observable characteristics.
+    \item One alternative is transfer T\textsubscript{i,$\varepsilon$}, unconditional on households' characteristics X', e.g. a lump-sum transfer.
+    \item Governments can use exogenously given budget (possibly including proceeds from carbon taxation) to finance transfers. Strict budget constraint including administrative costs not necessary for now, but model could easily extended to calculate how many resources should be spent to increase targeting precision, assuming that reducing heterogeneity in costs is warranted. Can be $A = \sum_{X'} (1 + \alpha_{X'}) T_{i,X'} + T_{i,\varepsilon}$ and A can equal zero. $\alpha_{X'}$ represent the fraction of administrative costs for each transfer T\textsubscript{X'}.
+    \item The 'naive incidence effect' $\pi_{i}$ in household \textit{i} is $\pi_{i} = (\sum_{P} c_{i,p} + (\sum_{X'} T_{i,X'} + T_{i,\varepsilon}))$. The first term expresses aggregate costs for household \textit{i} of climate policy instruments. Second term expresses aggregate benefits for household \textit{i} from compensation mechanisms. $\pi_{i}$ can be positive or negative. $\pi_{i}$ and $\sigma^{2}(\pi)$ depend critically on selection of climate policy instruments P, selection of compensation policy instruments T on X', which is straightforward. \textit{X'}, however, is exogenous. Household characteristics cannot be changed in the short-term. Expectations about c\textsubscript{i} do not influence X\textsubscript{i}.
 \end{itemize}
 
 \begin{equation}
-   \max  W = \sum_{i,q} \mu_{i,q} * \rho_{i} * (W_{i,q} + \sigma_{1,i,q} * V_{i,q} + \sigma_{2,i,q} * H_{i,q})
+    \pi_{i} = \underbrace{(\sum_{P} c_{i,P})}_{\text{costs from climate policy instruments}} + \underbrace{(\sum_{X'} T_{i,X'} + T_{i,\varepsilon})}_{\text{benefits from compensation instruments}}
 \end{equation}
 
+\begin{itemize}    
+     
+    \item Decision problem of the government: See formula below.
+\end{itemize}
+
 \begin{equation}
-    W_{i} = \underbrace{(\sum_{n} c_{i,n})}_{\text{costs from policies}} + \underbrace{(\sum_{X} T_{i,X} + T_{i,\varepsilon})}_{\text{benefits from transfers}}
+   \max_{P,T}  W = \sum_{i} \mu_{i} * \rho_{i} * (\pi_{i} + V_{i} + H_{i})
 \end{equation}
+
+\begin{itemize}
+    \item Vertical differences V\textsubscript{i}: $\delta_{i,q}^{V}$ expresses sensitivity of household \textit{i} in quintile \textit{q} to vertical distribution, i.e. the median incidence across all quintiles $\overline{\pi_{q}}$. 
+\end{itemize}
+
+\begin{equation}
+    V_{i} = \sum_{q} \delta_{i,q}^{V} * \overline{\pi_{q}} \text{ with } q_{i} \neq q_{j} \text{ and } q_{i}, q_{j} \in \{1;2;3;4;5\}
+\end{equation}
+
+\begin{itemize}
+    \item Horizontal differences H\textsubscript{i}: $\delta_{i,q}^{H}$ expresses sensitivity of household \textit{i} in quintile \textit{q} to horizontal distribution, i.e. differences between the 5\textsuperscript{th} and 95\textsuperscript{th} percentile of incidence $\pi_{q}$ in quintile \textit{q}. This measure also reflects the relative position of household \textit{i} in quintile \textit{q}, i.e. $\frac{\pi_{i,q}}{\overline{\pi_{q}}}$.
+\end{itemize}
+
+\begin{equation}
+    H_{i} = \sum_{q} \delta_{i,q}^{H} * H_{q} \text{ with } H_{q} = \pi_{q}^{95} - \pi_{q}^{5} \text{ and }q_{i}, q_{j} \in \{1;2;3;4;5\}
+\end{equation}
+
+\begin{itemize}
+    \item $\rho_{i}$ reflects the perception of 'naive welfare effects in household \textit{i}. It reflects households' loss aversion and inequality aversion (horizontal and vertical), in conjunction with $\delta_{i,q}^{V}$ and $\delta_{i,q}^{H}$.
+    \item $\mu_{i}$ reflects weights of the government to the perception of household \textit{i}.
+    \item $\rho_{i}$, $\mu{i}$, $\delta_{i,g}^{V}$ and $\delta_{i,g}^{H}$ are, for now, exogenous, subject to further research and expressing normative assumptions at government-level, perception-terms, inequality aversion and loss aversion.
+    \item No intertemporal dimension. No modelling of households' decisions. No application costs. No dynamic effects.
+    \item Question 1: What is the distribution of costs of different climate policy instruments? We are interested in $\sigma^{2}(c_{P})$.
+    \item Question 2: What are vertical and horizontal effects of climate policy? We investigate V and H for different policies P.
+    \item Question 3: Which transfers are effective to solve the governments' decision problem, i.e. maximizing W subject to P and T. Important consideration: $c_{i} \sim X'_{i}$.
+    \item Question 4: What are implications for climate and compensation policies? Investigating $\sigma^{2}(\pi_{P,T})$, V\textsubscript{q,P,T} and H\textsubscript{q,P,T}.
+    \item R\textsuperscript{2} has a neat interpretation: Assume that there is some amount $A^{*} = \sum_{X} T_{i,X} + T_{i,\varepsilon}$ that leads to zero average incidence, i.e. $\overline{\pi}=0$, then R\textsuperscript{2} indicates the maximum fraction by which horizontal distribution H\textsubscript{i} can be reduced.
+\end{itemize}
 
 \clearpage
 
