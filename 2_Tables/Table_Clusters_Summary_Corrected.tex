@@ -4,21 +4,21 @@
 \centering
 \resizebox{\linewidth}{!}{
 \begin{threeparttable}
-\begin{tabular}[t]{lrrrrrrrrrrrrrrr}
+\begin{tabular}[t]{lrrrrrrrrrrrrr}
 \toprule
-\rotatebox{90}{Cluster} & \rotatebox{90}{Number} & \rotatebox{90}{Average silhouette width} & \rotatebox{90}{Mean carbon intensity} & \rotatebox{90}{Horizontal inequality} & \rotatebox{90}{Vertical inequality} & \rotatebox{90}{HH expenditures} & \rotatebox{90}{Sociodemographic} & \rotatebox{90}{Spatial} & \rotatebox{90}{Electricity access} & \rotatebox{90}{Cooking fuel} & \rotatebox{90}{Heating fuel} & \rotatebox{90}{Lighting fuel} & \rotatebox{90}{Car own.} & \rotatebox{90}{Motorcycle own.} & \rotatebox{90}{Appliance own.}\\
+\rotatebox{90}{Cluster} & \rotatebox{90}{Number} & \rotatebox{90}{Average silhouette width} & \rotatebox{90}{Vertical distribution} & \rotatebox{90}{HH expenditures} & \rotatebox{90}{Sociodemographic} & \rotatebox{90}{Spatial} & \rotatebox{90}{Electricity access} & \rotatebox{90}{Cooking fuel} & \rotatebox{90}{Heating fuel} & \rotatebox{90}{Lighting fuel} & \rotatebox{90}{Car own.} & \rotatebox{90}{Motorcycle own.} & \rotatebox{90}{Appliance own.}\\
 \midrule
-A & 46 & 0.39 & 0.74 & 1.53 & 1.27 & 0.03 & 0.03 & 0.04 & 0.00 & 0.00 & 0.00 & 0.00 & 0.02 & 0.00 & 0.00\\
-B & 19 & 0.13 & 0.30 & 0.63 & 0.32 & 0.04 & 0.05 & 0.05 & 0.01 & 0.03 & 0.00 & 0.01 & 0.04 & 0.09 & 0.02\\
-C & 13 & -0.01 & 1.05 & 0.95 & 0.88 & 0.05 & 0.04 & 0.06 & 0.00 & 0.02 & 0.00 & 0.00 & 0.11 & 0.03 & 0.05\\
-D & 5 & 0.15 & 0.57 & 1.80 & 1.25 & 0.13 & 0.04 & 0.04 & 0.01 & 0.07 & 0.00 & 0.00 & 0.06 & 0.02 & 0.02\\
-E & 2 & 0.50 & 1.48 & 1.75 & 1.50 & 0.04 & 0.02 & 0.03 & 0.00 & 0.01 & 0.09 & 0.00 & 0.04 & 0.00 & 0.01\\
-F & 2 & 0.51 & 0.12 & 0.55 & 0.29 & 0.06 & 0.03 & 0.06 & 0.00 & 0.03 & 0.00 & 0.09 & 0.05 & 0.05 & 0.01\\
+A & 50 & 0.40 & 1.20 & 0.04 & 0.03 & 0.04 & 0.00 & 0.00 & 0.00 & 0.00 & 0.01 & 0.01 & 0.00\\
+B & 16 & 0.02 & 0.84 & 0.04 & 0.05 & 0.05 & 0.00 & 0.02 & 0.00 & 0.00 & 0.11 & 0.03 & 0.04\\
+C & 11 & 0.20 & 0.33 & 0.03 & 0.06 & 0.07 & 0.02 & 0.03 & 0.00 & 0.01 & 0.03 & 0.13 & 0.02\\
+D & 7 & 0.06 & 1.02 & 0.10 & 0.04 & 0.03 & 0.00 & 0.09 & 0.00 & 0.00 & 0.07 & 0.04 & 0.02\\
+E & 2 & 0.59 & 0.29 & 0.05 & 0.03 & 0.06 & 0.01 & 0.03 & 0.00 & 0.09 & 0.05 & 0.05 & 0.01\\
+F & 2 & 0.58 & 1.45 & 0.04 & 0.02 & 0.03 & 0.00 & 0.01 & 0.09 & 0.00 & 0.04 & 0.00 & 0.01\\
 \bottomrule
 \end{tabular}
 \begin{tablenotes}
 \item \textit{Note: } 
-\item This table shows the average importance of features in percent (based on absolute average SHAP-values per feature) across all countries from each cluster A to F. Feature importance is adjusted for model accuracy. Columns 'Mean carbon intensity', 'Horizontal inequality' and 'Vertical inequality' show average values. Column 'number' refers to the number of countries assigned to this cluster.
+\item This table shows the average importance of features in percent (based on absolute average SHAP-values per feature) across all countries from each cluster A to F. We adjust feature importance for model accuracy. Column 'Vertical distribution' shows average values. Column 'number' refers to the number of countries assigned to this cluster.
 \end{tablenotes}
 \end{threeparttable}}
 \end{table}
