@@ -1188,8 +1188,8 @@ kbl(mutate_all(data_4.5.1, linebreak), format = "latex", caption = "Comparing me
     col.names = NULL, label = "A7")%>%
   kable_styling(position = "center", latex_options = c("HOLD_position", "repeat_header"), font_size = 9)%>%
   add_header_above(c("Country" = 1, 
-                     "$\\\\overline{AC}_{r}^{1}$" = 1, 
-                     "$\\\\overline{AC}_{r}^{5}$" = 1, 
+                     "$\\\\overline{e}_{r}^{1}$" = 1, 
+                     "$\\\\overline{e}_{r}^{5}$" = 1, 
                      "$\\\\overline{H}_{r}^{1}$" = 1, 
                      "$\\\\overline{H}_{r}^{5}$" = 1,
                      "$\\\\overline{H}_{r}^{1*}$" = 1,
@@ -1199,7 +1199,7 @@ kbl(mutate_all(data_4.5.1, linebreak), format = "latex", caption = "Comparing me
                      "$\\\\widehat{H}_{r}^{1*}$" = 1), escape = FALSE, align = "c")%>%
   column_spec(1, width = "2.88 cm")%>%
   column_spec(2:10, width = "1.46 cm")%>%
-  footnote(general = "This table shows the median carbon intensity in the first expenditure quintile ($\\\\overline{AC}_{r}^{1}$) and in the fifth quintile ($\\\\overline{AC}_{r}^{5}$). It displays the difference between the 5\\\\textsuperscript{th} (20\\\\textsuperscript{th}) and 95\\\\textsuperscript{th} (80\\\\textsuperscript{th}) within-quintile percentile for the first ($\\\\overline{H}_{r}^{1}$ and $\\\\overline{H}_{r}^{1*}$) and the fifth quintile ($\\\\overline{H}_{r}^{5}$ and $\\\\overline{H}_{r}^{5*}$). It also compares median carbon intensity in the first income quintile to that in the fifth quintile ($\\\\widehat{V}$$_{r}^{1}$). Lastly it displays our comparison index facilitating the comparison of within-quintile variation between the first and fifth quintile ($\\\\widehat{H}_{r}^{1}$ and $\\\\widehat{H}_{r}^{1*}$, respectively).",         threeparttable = T, escape = FALSE)%>%
+  footnote(general = "This table shows the median carbon intensity in the first expenditure quintile ($\\\\overline{e}_{r}^{1}$) and in the fifth quintile ($\\\\overline{e}_{r}^{5}$). It displays the difference between the 5\\\\textsuperscript{th} (20\\\\textsuperscript{th}) and 95\\\\textsuperscript{th} (80\\\\textsuperscript{th}) within-quintile percentile for the first ($\\\\overline{H}_{r}^{1}$ and $\\\\overline{H}_{r}^{1*}$) and the fifth quintile ($\\\\overline{H}_{r}^{5}$ and $\\\\overline{H}_{r}^{5*}$). It also compares median carbon intensity in the first income quintile to that in the fifth quintile ($\\\\widehat{V}$$_{r}^{1}$). Lastly it displays our comparison index facilitating the comparison of within-quintile variation between the first and fifth quintile ($\\\\widehat{H}_{r}^{1}$ and $\\\\widehat{H}_{r}^{1*}$, respectively).",         threeparttable = T, escape = FALSE)%>%
   save_kable(., "2_Tables/Table_Vertical_Horizontal.tex")
 
 # From Latin America paper
@@ -2333,23 +2333,24 @@ rm(track)
 
 # SHAP expresses feature importance based on the marginal contribution of each predictor for each observation. Has local explanation and consistency.
 
-Country.Set.Test.2 <- c("CHE")
+Country.Set.Test.2 <- Country.Set %>%
+  filter(!Country %in% c("RWA", "ETH", "UGA", "MWI", "TGO", "GHA", "KEN", "LBR", "NER", "VNM", "MMR", "BGD", "NGA", "IDN", "MEX"))
 
-Country.Set.Test.3 <- c("BOL", "PRT", "BEL", "CHE", "AUT", "NLD", "SWE", "FRA", "ITA", "ESP", "GRC", "SUR")
+Country.Set.Test.3 <- c("ETH","IDN","MEX")
 
 # eval_0 <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_SHAP_Evaluation.xlsx")
-eval_0 <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_SHAP_Evaluation_VFOLD_2017.xlsx")
+eval_0 <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_SHAP_Evaluation_VFOLD_2017B.xlsx")
 # eval_0 <- data.frame()
 # shap_0 <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_SHAP_Detail.xlsx") 
-shap_0 <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_SHAP_Detail_VFOLD_2017.xlsx") 
+shap_0 <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_SHAP_Detail_VFOLD_2017B.xlsx") 
 # shap_0 <- data.frame()
 # shap_1 <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_SHAP_Classification.xlsx")
 # shap_1 <- data.frame()
-shap_1 <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_SHAP_Classification_VFOLD_2017.xlsx")
+shap_1 <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_SHAP_Classification_VFOLD_2017B.xlsx")
 
 track_0 <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_BRT_2017.xlsx")
 
-for (i in Country.Set$Country){
+for (i in Country.Set.Test.3){
   tryCatch({
     
     print(paste0("Start: ", i, " ", Sys.time()))
@@ -2517,10 +2518,20 @@ for (i in Country.Set$Country){
       #   prep(training = data_6.1.2.train)%>%
       #   bake(new_data = data_6.1.1)
       
+      doParallel::registerDoParallel()
+      
+      time_1 <- Sys.time()
+
       # Fit model on training dataset
       model_brt_1 <- model_brt %>%
         fit(carbon_intensity_kg_per_USD_national ~ .,
             data = data_6.1.2.training)
+      
+      time_2 <- Sys.time()
+      
+      doParallel::stopImplicitCluster()
+      
+      print(difftime(time_1, time_2, units = "min"))
       
       # # Evaluation on training dataset 
       # predictions_6.1.1 <- augment(model_brt_1, new_data = data_6.1.2.training)
@@ -2561,10 +2572,20 @@ for (i in Country.Set$Country){
       #   select(-carbon_intensity_kg_per_USD_national)%>%
       #   as.matrix()
       
+      doParallel::registerDoParallel()
+      
+      time_1 <- Sys.time()
+      
       shap_6.1.2 <- predict(extract_fit_engine(model_brt_1),
                             data_6.1.2.testing_matrix,
                             predcontrib = TRUE,
                             approxcontrib = FALSE)
+      
+      time_2 <- Sys.time()
+      
+      doParallel::stopImplicitCluster()
+      
+      print(difftime(time_1, time_2, units = "min"))
       
       shap_6.1.2.1 <- shap_6.1.2 %>%
         as_tibble()%>%
@@ -3189,7 +3210,7 @@ rm(eval_1, eval_1.0, eval_1.1, eval_1.2, eval_1.3)
 # Pick best-fitting model
 
 # eval_6.2 <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_SHAP_Evaluation_VFOLD.xlsx")
-eval_6.2 <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_SHAP_Evaluation_VFOLD_2017.xlsx")
+eval_6.2 <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_SHAP_Evaluation_VFOLD_2017B.xlsx")
 
 eval_6.2.1 <- eval_6.2 %>%
   filter(.metric == "mae")%>%
@@ -3207,7 +3228,7 @@ eval_6.2.1 <- eval_6.2 %>%
 # Part I: Normalized SHAP values
 
 # data_6.2.0 <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_SHAP_Detail_VFOLD.xlsx")
-data_6.2.0 <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_SHAP_Detail_VFOLD_2017.xlsx")
+data_6.2.0 <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_SHAP_Detail_VFOLD_2017B.xlsx")
 
 # Confirmed
 
@@ -3270,7 +3291,7 @@ data_6.2.0_info <- data_6.2.0 %>%
 # Part Ia: Correcting for larger or smaller R2
 
 #r2_6.2.0 <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_SHAP_Evaluation_VFOLD.xlsx")
-r2_6.2.0 <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_SHAP_Evaluation_VFOLD_2017.xlsx")%>%
+r2_6.2.0 <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_SHAP_Evaluation_VFOLD_2017B.xlsx")%>%
   filter(number_ob %in% eval_6.2.1$number_ob)%>%
   filter(.metric == "rsq")%>%
   group_by(Country, fold)%>%
@@ -3641,9 +3662,9 @@ data_6.2.6.2_r2_imp <- left_join(data_6.2.6_r2_imp, data_6.2.6.1_r2_imp, by = "c
   ungroup()%>%
   select(-sample)
 
-write_csv(data_6.2.6.2, "../0_Data/9_Supplementary Data/BRT-Tracking/Clusters_Normalized_Uncorrected.csv")
-write_csv(data_6.2.6.2_r2, "../0_Data/9_Supplementary Data/BRT-Tracking/Clusters_Normalized_Corrected.csv")
-write_csv(data_6.2.6.2_r2_imp, "../0_Data/9_Supplementary Data/BRT-Tracking/Clusters_Normalized_Corrected_Imputed.csv")
+write_csv(data_6.2.6.2, "../0_Data/9_Supplementary Data/BRT-Tracking/Clusters_Normalized_Uncorrected_B.csv")
+write_csv(data_6.2.6.2_r2, "../0_Data/9_Supplementary Data/BRT-Tracking/Clusters_Normalized_Corrected_B.csv")
+write_csv(data_6.2.6.2_r2_imp, "../0_Data/9_Supplementary Data/BRT-Tracking/Clusters_Normalized_Corrected_Imputed_B.csv")
 
 P_6.2.5.3 <- ggplot(data_6.2.6)+
   geom_bar(aes(y = silhouette_13_means, x = factor(order), fill = factor(order_2)), 
@@ -3744,7 +3765,7 @@ print(P_6.2.5.4)
 print(P_6.2.5.5)
 dev.off()
 
-data_6.2.7 <- read_csv("../0_Data/9_Supplementary Data/BRT-Tracking/Clusters_Normalized_Corrected.csv")
+data_6.2.7 <- read_csv("../0_Data/9_Supplementary Data/BRT-Tracking/Clusters_Normalized_Corrected_B.csv")
 
 data_6.2.7.1 <- data_6.2.7 %>%
   group_by(cluster)%>%
@@ -3783,7 +3804,7 @@ data_6.2.7.1 <- data_6.2.7 %>%
   select(cluster, number, CAR:EXPENDITURES)%>%
   arrange(desc(number))
 
-data_6.2.8 <- read_csv("../0_Data/9_Supplementary Data/BRT-Tracking/Clusters_Normalized_Corrected.csv") %>%
+data_6.2.8 <- read_csv("../0_Data/9_Supplementary Data/BRT-Tracking/Clusters_Normalized_Corrected_B.csv") %>%
   select("Car own.", "Electricity access", "HH expenditures", "Appliance own.",
          "Cooking fuel", Spatial, "Heating fuel", "Lighting fuel",
          Sociodemographic, median_1_5, dif_95_05_1_5, mean_carbon_intensity, cluster, Country)%>%
@@ -3809,7 +3830,7 @@ data_6.2.9 <- read_csv("../0_Data/9_Supplementary Data/WDI/2021_08_17_WDI.csv") 
   rename(Country = Country.Code)%>%
   left_join(select(read_csv("../0_Data/9_Supplementary Data/BRT-Tracking/Clusters_Normalized_Corrected.csv"), Country, cluster))
 
-eval_1 <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_SHAP_Evaluation_VFOLD_2017.xlsx")
+eval_1 <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_SHAP_Evaluation_VFOLD_2017B.xlsx")
 
 eval_1.0 <- eval_1 %>%
   filter(.metric == "mae")%>%
@@ -3853,7 +3874,7 @@ rm(data_6.2.0, data_6.2.1, data_6.2.2, data_6.2.3, data_6.2.4,
 
 # 6.3     Boosted Regression trees on carbon intensity of consumption (with expenditures only) ####
 
-Country.Set.Test.1 <- c("BEL", "NOR", "LBR")
+Country.Set.Test.1 <- c("BEL")
 
 track <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_BRT_2017_EXP.xlsx")
 # track <- data.frame(Country = c())
@@ -3888,20 +3909,22 @@ for (i in Country.Set$Country){
     
     # Splitting the sample, but no strata
     
-    prop_0 = 0.80
+    # prop_0 = 0.80
 
-    data_6.3.2 <- data_6.3.1 %>%
-      initial_split(prop = prop_0)
+    # data_6.3.2 <- data_6.3.1 %>%
+    # initial_split(prop = prop_0)
     
     # Data for training
-    data_6.3.2.train <- data_6.3.2 %>%
-      training()
+    # data_6.3.2.train <- data_6.3.2 %>%
+    #   training()
     
+    data_6.3.2.train <- data_6.3.1  
+      
     # Data for testing
-    data_6.3.2.test <- data_6.3.2 %>%
-      testing()
+    # data_6.3.2.test <- data_6.3.2 %>%
+    #   testing()
     
-    rm(data_6.3.1, data_6.3.2)
+    rm(data_6.3.1)
     
     # Feature engineering - Step 2 (with recipe)
     
@@ -3912,9 +3935,9 @@ for (i in Country.Set$Country){
       prep(training = data_6.3.2.train)%>%
       bake(new_data = NULL)
     
-    data_6.3.2.testing <- recipe_6.3.0 %>%
-      prep(training = data_6.3.2.test)%>%
-      bake(new_data = NULL) 
+    # data_6.3.2.testing <- recipe_6.3.0 %>%
+    #   prep(training = data_6.3.2.test)%>%
+    #   bake(new_data = NULL) 
     
     # Five-fold cross-validation
     
@@ -3937,7 +3960,7 @@ for (i in Country.Set$Country){
     # Create a tuning grid - 16 different models for the tuning space
     
     grid_0 <- grid_latin_hypercube(
-      tree_depth(),
+      tree_depth(c(3,15)),
       learn_rate(c(-3,-0.5)),# tuning parameters
       #mtry(c(round((ncol(data_6.3.2.training)-1)/2,0), ncol(data_6.3.2.training)-1)),
       size = 29)%>%
@@ -3984,8 +4007,8 @@ for (i in Country.Set$Country){
     
     rm(track_0, run_ID, time_1, time_2, grid_0,
        model_brt, model_brt_1, model_brt_1.1, metrics_1.1, metrics_1,
-       data_6.3.2.test, data_6.3.2.testing, data_6.3.2.train, data_6.3.2.training,
-       folds_6.3, recipe_6.3.0, prop_0)
+       data_6.3.2.train, data_6.3.2.training,
+       folds_6.3, recipe_6.3.0)
     
     gc()
     
@@ -4004,7 +4027,7 @@ track_1 <- track %>%
 
 rm(track)
 
-# 6.3.1   Calculate model evaluation and SHAP-values ####
+# 6.3.1   Calculate model evaluation (nur EXP) ####
 
 Country.Set.Test.2 <- c("UGA")
 
@@ -8713,7 +8736,7 @@ rm(data_8.4.1)
 
 # 8.5     Figure 5: Joint-figures for paper and Appendix ####
 
-eval_8.5 <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_SHAP_Evaluation_VFOLD_2017.xlsx")
+eval_8.5 <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_SHAP_Evaluation_VFOLD_2017B.xlsx")
 # eval_8.5 <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_SHAP_Evaluation_VFOLD.xlsx")
 
 eval_8.5.1 <- eval_8.5 %>%
@@ -8742,7 +8765,7 @@ eval_8.5.2 <- eval_8.5 %>%
   mutate(Sample_Testing = round(Sample_Testing,2))
 
  #data_8.5.1 <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_SHAP_Classification_VFOLD.xlsx")
-data_8.5.1 <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_SHAP_Classification_VFOLD_2017.xlsx")%>%
+data_8.5.1 <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_SHAP_Classification_VFOLD_2017B.xlsx")%>%
   filter(number_ob %in% eval_8.5.1$number_ob)%>%
   group_by(number_ob, fold)%>%
   mutate(test = cumsum(share_SHAP)-0.00000001)%>%
@@ -8799,7 +8822,7 @@ data_8.5.2.A <- data_8.5.1 %>%
 #   ungroup()
 
 # data_8.5.2.B <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_SHAP_Detail_VFOLD.xlsx")%>%
-data_8.5.2.B <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_SHAP_Detail_VFOLD_2017.xlsx")%>%
+data_8.5.2.B <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_SHAP_Detail_VFOLD_2017B.xlsx")%>%
   filter(number_ob %in% eval_8.5.1$number_ob)%>%
   mutate(lag_country = ifelse(Country != lag(Country), 1:n(),NA))%>%
   fill(lag_country)%>%
