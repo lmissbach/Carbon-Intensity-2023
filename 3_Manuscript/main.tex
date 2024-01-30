@@ -171,7 +171,7 @@ Building on these findings, our paper provides a comprehensive analysis of verti
 % Introduce carbon intensity of consumption as major indicator
 We infer the heterogeneous costs of climate policy on households by analyzing heterogeneity in the carbon intensity of consumption: Assume household \textit{A}'s consumption is twice as carbon-intensive as the consumption of household \textit{B}, then climate policy will lead to costs twice as high for household \textit{A} compared to household \textit{B} and relative to total expenditures\footnote{This proposition holds under the assumption that climate policy increases supply-side input prices according to \textit{embedded} CO\textsubscript{2}-emissions associated to production and that firms cannot react to changing input prices in the short-term. As a corollary, output prices for consumer goods and services would increase in equivalence to embedded (direct and indirect) CO\textsubscript{2}-emissions. More generally, the carbon intensity reflects additional costs of any policy increasing consumer prices proportional to embedded CO\textsubscript{2}-emissions, irrespective of existing policies. One visible example is an upstream carbon tax. See also Appendix \ref{sec:policysimulation}.}.
 
-In this chapter, we first describe the construction of a novel dataset capturing household-level carbon intensities across countries. For each country, we explore and compare the vertical and horizontal heterogeneity of carbon intensities. We analyze such heterogeneity by fitting boosted regression trees, which helps unravelling the contribution of single household-characteristics for predicting households' carbon intensity.
+In this chapter, we first describe the construction of a novel dataset capturing household-level carbon intensities across countries. For each country, we explore and compare the vertical and horizontal heterogeneity of carbon intensities. We analyze such heterogeneity by fitting boosted regression trees, which helps unravelling the contribution of single household-characteristics for predicting households' carbon intensity\footnote{Supplementary figure \ref{fig:data_visualisation} visualizes key elements of data work and analyses steps.}.
 
 \subsection{Household-level carbon intensities: A novel dataset} \label{sec:data}
 
@@ -684,6 +684,9 @@ Supplementary figure \ref{fig:comparison_policies} shows vertical and horizontal
 
 % \setkeys{Gin}{draft}
 
+% Overview of data work
+\input{1_Figures/Figure_Datawork.tex}
+
 % Engel-curves
 \input{1_Figures/Figure_Engel}
 \clearpage
@@ -693,7 +696,7 @@ Supplementary figure \ref{fig:comparison_policies} shows vertical and horizontal
 \clearpage
 
 % Boxplots over quintiles
-\input{../1_Figures/Figure_Appendix_Boxplots.tex}
+\input{1_Figures/Figure_Appendix_Boxplots.tex}
 \clearpage
 
 % Silhouette plots
@@ -718,15 +721,15 @@ Supplementary figure \ref{fig:comparison_policies} shows vertical and horizontal
 \clearpage
 
 % SHAP-plots
-\input{../1_Figures/Figure_5b.tex}
+\input{1_Figures/Figure_5b.tex}
 \clearpage
 
 % Marginal effects-plots from Logit models
-\input{../1_Figures/Figure_Marginal_Effects.tex}
+\input{1_Figures/Figure_Marginal_Effects.tex}
 \clearpage
 
 % Maps
-\input{../1_Figures/Figure_Maps.tex}
+\input{1_Figures/Figure_Maps.tex}
 \clearpage
 
 % Comparison of policies
@@ -749,27 +752,27 @@ Supplementary figure \ref{fig:comparison_policies} shows vertical and horizontal
 \section{Supplementary tables} \label{sec:tables}
 
 % Table C1: Household budget surveys
-\input{../2_Tables/Table_Datasets}
+\input{2_Tables/Table_Datasets}
 \clearpage
 
 % Table C2: Summary statistics
-\input{../2_Tables/Table_Summary_A1}
+\input{2_Tables/Table_Summary_A1}
 \clearpage
 
 % Table C3: Average expenditures and energy expenditure shares
-\input{../2_Tables/Table_Summary_A2}
+\input{2_Tables/Table_Summary_A2}
 \clearpage
 
 % Table C4: Cooking fuel use
-\input{../2_Tables/Table_Summary_A4_Cooking_Fuels}
+\input{2_Tables/Table_Summary_A4_Cooking_Fuels}
 \clearpage
 
 % Table C5: Lighting fuel use
-\input{../2_Tables/Table_Summary_A4_Lighting_Fuels}
+\input{2_Tables/Table_Summary_A4_Lighting_Fuels}
 \clearpage
 
 % Table C6: Appliance ownership
-\input{../2_Tables/Table_Summary_A5_Appliances}
+\input{2_Tables/Table_Summary_A5_Appliances}
 \clearpage
 
 % \foreach \country in {ARG, ARM, BEL, BEN, BFA,
@@ -782,39 +785,39 @@ Supplementary figure \ref{fig:comparison_policies} shows vertical and horizontal
 % \clearpage
 
 % Table C7: Carbon footprints and carbon intensities
-\input{../2_Tables/Table_Summary_A3}
+\input{2_Tables/Table_Summary_A3}
 \clearpage
 
 % Table C8: Vertical and horizontal indicators
-\input{../2_Tables/Table_Vertical_Horizontal}
+\input{2_Tables/Table_Vertical_Horizontal}
 \clearpage
 
 % Table C9: Hyperparameters
-\input{../2_Tables/Table_tuning_parameters_Summary}
+\input{2_Tables/Table_tuning_parameters_Summary}
 \clearpage
 
 % Table C10: Evaluation of BRT
-\input{../2_Tables/Table_SHAP_Summary_EXP}
+\input{2_Tables/Table_SHAP_Summary_EXP}
 \clearpage
 
 % Table C11: Feature importance across countries by cluster
-\input{../2_Tables/Table_Countries_SHAP_Summary_Corrected}
+\input{2_Tables/Table_Countries_SHAP_Summary_Corrected}
 \clearpage
 
 % Table C12: Feature importance across countries by cluster (uncorrected)
-\input{../2_Tables/Table_Countries_SHAP_Summary_Uncorrected}
+\input{2_Tables/Table_Countries_SHAP_Summary_Uncorrected}
 \clearpage
 
 % Table C13: Electricity generation
-\input{../2_Tables/Table_Electricity_Generation}
+\input{2_Tables/Table_Electricity_Generation}
 \clearpage
 
 % Table C14: Summary of clusters
-\input{../2_Tables/Table_Clusters_Summary_Corrected}
+\input{2_Tables/Table_Clusters_Summary_Corrected}
 \clearpage
 
 % Table C15: Comparing vertical and horizontal distribution coefficients
-\input{../2_Tables/Table_Vertical_Horizontal_Policy_Simulation}
+\input{2_Tables/Table_Vertical_Horizontal_Policy_Simulation}
 \clearpage
 
 \begin{refcontext}[sorting=nyt]
