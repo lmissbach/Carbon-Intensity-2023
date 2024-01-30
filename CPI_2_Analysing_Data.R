@@ -1886,9 +1886,9 @@ for(i in Country.Set$Country){
   rm(data_5.3.2.1, tidy_5.3.2.1, model_5.3.2.1, start_5.3.2.1, end_5.3.2.1, formula_0, formula_1, formula_2)
 }
 
-# write.xlsx(data_frame_5.3.2.1, "1_Figures/Analysis_Logit_Models_Marginal_Effects/Average_Marginal_Effects_Logit_2017.xlsx")
+# write.xlsx(data_frame_5.3.2.1, "1_Figures/Analysis_Logit_Models_Marginal_Effects/Average_Marginal_Effects_Logit_2017B.xlsx")
 
-data_frame_5.3.2.3 <- read.xlsx("1_Figures/Analysis_Logit_Models_Marginal_Effects/Average_Marginal_Effects_Logit_2017.xlsx")#%>%
+data_frame_5.3.2.3 <- read.xlsx("1_Figures/Analysis_Logit_Models_Marginal_Effects/Average_Marginal_Effects_Logit_2017B.xlsx")#%>%
   # mutate(term = ifelse((contrast == "6-8 - 2-5" | contrast == "6-8 - 0-1") & !is.na(contrast), "higher_education",
   #                      ifelse(contrast == "2-5 - 0-1" & !is.na(contrast), "secondary_education", term)))
 
@@ -1971,11 +1971,11 @@ for (Type_0 in c("affected_upper_80")){
             plot.margin = unit(c(0.3,0.3,0.3,0.3), "cm"),
             panel.border = element_rect(size = 0.3))
     
-    jpeg(sprintf("1_Figures/Analysis_Logit_Models_Marginal_Effects/Average_Marginal_Effects_%s_%s_2017.jpg", Type_0, Term_0), width = 15.5, height = 16, unit = "cm", res = 600)
-    print(P_5.3.2.4)
-    dev.off()
+    # jpeg(sprintf("1_Figures/Analysis_Logit_Models_Marginal_Effects/Average_Marginal_Effects_%s_%s_2017B.jpg", Type_0, Term_0), width = 15.5, height = 16, unit = "cm", res = 600)
+    # print(P_5.3.2.4)
+    # dev.off()
     
-    pdf(sprintf("1_Figures/Analysis_Logit_Models_Marginal_Effects/Average_Marginal_Effects_%s_%s_2017.pdf", Type_0, Term_0), width = 6.1, height = 6.3, unit = "cm", res = 600)
+    pdf(sprintf("1_Figures/Analysis_Logit_Models_Marginal_Effects/Average_Marginal_Effects_%s_%s_2017B.pdf", Type_0, Term_0), width = 6.1, height = 6.3)
     print(P_5.3.2.4)
     dev.off()
 
@@ -2067,6 +2067,10 @@ for (Type_0 in c("affected_upper_80")){
         ggforce::facet_col(vars(A), scales = "free", space = "free")
       
       jpeg(sprintf("1_Figures/Analysis_Logit_Models_Marginal_Effects/Average_Marginal_Effects_%s_CF_%s_2017.jpg", Type_0, B_0), width = 15.5, height = 16, unit = "cm", res = 600)
+      print(P_5.3.2.5)
+      dev.off()
+      
+      pdf(sprintf("1_Figures/Analysis_Logit_Models_Marginal_Effects/Average_Marginal_Effects_%s_CF_%s_2017B.pdf", Type_0, B_0), width = 6.1, height = 6.3)
       print(P_5.3.2.5)
       dev.off()
       
