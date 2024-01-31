@@ -8583,7 +8583,7 @@ for(i in c(1,2)){
     theme_bw()+
     facet_grid(cluster ~ ., scales = "free", space = "free")+
     scale_y_discrete(limits = rev)+
-    scale_x_discrete(labels = c(expression(paste("Mean ", CO[2],"-intensity (", CI[r], ")", sep = ""))))+
+    scale_x_discrete(labels = c(expression(paste("Mean carbon intensity (", bar(e)[r], ")", sep = ""))))+
     xlab("")+ 
     guides(fill = "none")+
     ylab("")+
@@ -8822,7 +8822,7 @@ for(i in c(1,2)){
     theme_bw()+
     facet_grid(cluster ~ ., scales = "free", space = "free")+
     scale_y_discrete(limits = rev)+
-    scale_x_discrete(labels = c(expression(paste("Mean ", CO[2],"-intensity (", CI[r], ")", sep = ""))))+
+    scale_x_discrete(labels = c(expression(paste("Mean carbon intensity (", bar(e)[r], ")", sep = ""))))+
     xlab("")+ 
     guides(fill = "none")+
     ylab("")+
@@ -9064,7 +9064,7 @@ for(i in c(1,2)){
     theme_bw()+
     facet_grid(cluster ~ ., scales = "free", space = "free")+
     scale_y_discrete(limits = rev)+
-    scale_x_discrete(labels = c(expression(paste("Mean ", CO[2],"-intensity (", CI[r], ")", sep = ""))))+
+    scale_x_discrete(labels = c(expression(paste("Mean carbon intensity (", bar(e)[r], ")", sep = ""))))+
     xlab("")+ 
     guides(fill = "none")+
     ylab("")+
@@ -9094,7 +9094,7 @@ for(i in c(1,2)){
   data_8.4.3 <- read_csv("../0_Data/9_Supplementary Data/BRT-Tracking/Clusters_Normalized_Corrected_Imputed_B.csv", show_col_types = FALSE)%>%
     # it is in fact not normalized
     select(cluster, Country, order, best_fit, largest_country, everything())%>%
-    select(-silhouette_11_means, -mean_carbon_intensity, -median_1_5, -dif_95_05_1_5)%>%
+    select(-silhouette_9_means, -mean_carbon_intensity, -median_1_5, -dif_95_05_1_5)%>%
     mutate_at(vars("Appliance own.":"Spatial"), ~ ifelse(. == 0, NA, .))%>%
     # Now it is normalized
     # mutate_at(vars("Appliance own.":"Sociodemographic"), ~ (. - mean(., na.rm = TRUE))/sd(., na.rm = TRUE))%>%
@@ -11084,7 +11084,7 @@ data_8.5.7.1 <- data_8.5.7 %>%
 
 data_8.5.7.2 <- data_8.5.7 %>%
   group_by(cluster)%>%
-  summarise_at(vars("Appliance own.":"Spatial","mean_carbon_intensity", "silhouette_6_means"), ~ mean(.))
+  summarise_at(vars("Appliance own.":"Spatial","mean_carbon_intensity", "silhouette_6_means", "R2"), ~ mean(.))
 
 data_8.5.7.3 <- data_8.5.7 %>%
   mutate(low_10 = ifelse(R2 < 0.1,1,0))
