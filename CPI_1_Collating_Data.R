@@ -1097,12 +1097,12 @@ for(Group_1 in c("A", "B", "C", "D")){
       labs(fill = "")+
       ylab(expression(paste("Carbon intensity in kg", CO[2], sep = " per USD")))+
       xlab("")+
-      ggtitle("Sectoral carbon intensity - included items")+
+      ggtitle("")+
       theme(axis.text.y = element_text(size = 6), 
             axis.text.x = element_blank(),
             axis.ticks.x = element_blank(),
             axis.title  = element_text(size = 6),
-            plot.title  = element_text(size = 10),
+            plot.title  = element_blank(),
             legend.position = "bottom",
             strip.text = element_text(size = 7),
             #strip.text.y = element_text(angle = 180),
@@ -1129,12 +1129,12 @@ for(Group_1 in c("A", "B", "C", "D")){
       labs(fill = "")+
       ylab(expression(paste("Carbon intensity in kg", CO[2], sep = " per USD")))+
       xlab("")+
-      ggtitle("Sectoral carbon intensity - included items")+
+      ggtitle("")+
       theme(axis.text.y = element_text(size = 6), 
             axis.text.x = element_blank(),
             axis.ticks.x = element_blank(),
             axis.title  = element_text(size = 6),
-            plot.title  = element_text(size = 10),
+            plot.title  = element_blank(),
             legend.position = "bottom",
             strip.text = element_text(size = 7),
             #strip.text.y = element_text(angle = 180),
@@ -1149,9 +1149,9 @@ for(Group_1 in c("A", "B", "C", "D")){
   
   
   
-  jpeg(sprintf("../Carbon-Intensity-2023/1_Figures/Analysis_Carbon_Intensities_GTAP/Figure_2.1.1_%s_2017B.jpg", Group_1), width = 15.75, height = 17, unit = "cm", res = 400)
-  print(P_2.1.3)
-  dev.off()
+  # jpeg(sprintf("../Carbon-Intensity-2023/1_Figures/Analysis_Carbon_Intensities_GTAP/Figure_2.1.1_%s_2017B.jpg", Group_1), width = 15.75, height = 17, unit = "cm", res = 400)
+  # print(P_2.1.3)
+  # dev.off()
   
   pdf(sprintf("../Carbon-Intensity-2023/1_Figures/Analysis_Carbon_Intensities_GTAP/Figure_2.1.1_%s_2017B.pdf", Group_1), width = 6.1, height = 6.69)
   print(P_2.1.3)
