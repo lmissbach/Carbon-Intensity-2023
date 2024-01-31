@@ -2172,6 +2172,28 @@ for(i in Country.Set$Country){
 
 rm(data_frame_5.3.2.1, data_frame_5.3.2.3, data_5.3, Type_0, i)
 
+# Information for manuscript
+
+data_5.3.2.3 <- read.xlsx("1_Figures/Analysis_Logit_Models_Marginal_Effects/Average_Marginal_Effects_Logit_2017B.xlsx")
+
+data_5.3.2.3.1 <- data_5.3.2.3 %>%
+  filter(term == "log_hh_expenditures_USD_2014")%>%
+  mutate(less_than_0 = ifelse(estimate < 0 & p.value < 0.05,1,0),
+         more_than_0 = ifelse(estimate > 0 & p.value > 0.05,1,0))
+
+data_5.3.2.3.2 <- data_5.3.2.3 %>%
+  filter(term == "car.01")
+
+data_5.3.2.3.3 <- data_5.3.2.3 %>%
+  filter(term == "urban_01")%>%
+  mutate(less_than_0 = ifelse(estimate < 0 & p.value < 0.05,1,0),
+         more_than_0 = ifelse(estimate > 0 & p.value > 0.05,1,0))
+
+data_5.3.2.3.4 <- data_5.3.2.3 %>%
+  filter(term == "CF")%>%
+  mutate(less_than_0 = ifelse(estimate < 0 & p.value < 0.05,1,0),
+         more_than_0 = ifelse(estimate > 0 & p.value > 0.05,1,0))
+
 # _______ ####
 # 6       ML-supported analysis ####
 
@@ -2444,7 +2466,7 @@ for (i in Country.Set.Test.3){
       # Remove minimum number of columns such that correlations are less than 0.9
       step_corr(all_numeric(), -all_outcomes(), threshold = 0.9)%>%
       # should have very few unique observations for factors
-      step_other(all_nominal(), -ends_with(".01"), -ends_with("urban_01"), -ends_with("District"), -ends_with("Province"), -ends_with("electricity.access"), -ends_with("ISCED"), threshold = 0.05)%>%
+      step_other(all_nominal(), -ends_with(".01"), -ends_with("urban_01"), -ends_with("District"), -ends_with("Province"), -ends_with("electricity.access"), -ends_with("ISCED"), -ends_with("sex_hhh"), threshold = 0.05)%>%
       # including dummification
       step_dummy(all_nominal())
     
@@ -2456,7 +2478,7 @@ for (i in Country.Set.Test.3){
         # Remove minimum number of columns such that correlations are less than 0.9
         step_corr(all_numeric(), -all_outcomes(), threshold = 0.9)%>%
         # should have very few unique observations for factors
-        step_other(all_nominal(), -ends_with(".01"), -ends_with("urban_01"), -ends_with("District"), -ends_with("Province"), -ends_with("electricity.access"), -ends_with("ISCED"), threshold = 0.05)%>%
+        step_other(all_nominal(), -ends_with(".01"), -ends_with("urban_01"), -ends_with("District"), -ends_with("Province"), -ends_with("electricity.access"), -ends_with("ISCED"), -ends_with("sex_hhh"), threshold = 0.05)%>%
         # including dummification
         step_dummy(all_nominal())
     }
@@ -2469,7 +2491,7 @@ for (i in Country.Set.Test.3){
         # Remove minimum number of columns such that correlations are less than 0.9
         step_corr(all_numeric(), -all_outcomes(), threshold = 0.9)%>%
         # should have very few unique observations for factors
-        step_other(all_nominal(), -ends_with(".01"), -ends_with("urban_01"), -ends_with("District"), -ends_with("Province"), -ends_with("electricity.access"), -ends_with("ISCED"), -ends_with("LF"), -ends_with("CF"), threshold = 0.1)%>%
+        step_other(all_nominal(), -ends_with(".01"), -ends_with("urban_01"), -ends_with("District"), -ends_with("Province"), -ends_with("electricity.access"), -ends_with("ISCED"), -ends_with("LF"), -ends_with("CF"), -ends_with("sex_hhh"), threshold = 0.1)%>%
         step_other("CF", "LF", threshold = 0.05)%>%
         # including dummification
         step_dummy(all_nominal())
@@ -9816,13 +9838,13 @@ for (i in c(data_8.5.2.C$Country)){
                                                           ifelse(Variable == "20", "Jhark.", Variable))))))
         }
         
-        if(j == "Religiosity"){
-          data_8.5.2.3 <- data_8.5.2.3 %>%
-            mutate(Variable = ifelse(Variable == 1, "Secular",
-                                     ifelse(Variable == 2, "Trad.",
-                                            ifelse(Variable == 3, "Religious",
-                                                   ifelse(Variable == 4, "Orthodox", "other")))))
-        }
+        # if(j == "Religiosity"){
+        #   data_8.5.2.3 <- data_8.5.2.3 %>%
+        #     mutate(Variable = ifelse(Variable == 1, "Secular",
+        #                              ifelse(Variable == 2, "Trad.",
+        #                                     ifelse(Variable == 3, "Religious",
+        #                                            ifelse(Variable == 4, "Orthodox", "other")))))
+        # }
         
         
         P_8.5.2.3 <- ggplot(data_8.5.2.3)+
@@ -10177,6 +10199,13 @@ data_8.5.2.E <- data_8.5.2.D %>%
 data_8.5.2.F <- data_8.5.2.E %>%
   left_join(eval_8.5.2)%>%
   mutate(share_SHAP_adj = share_SHAP*Sample_Testing)
+
+data_8.5.2.G <- data_8.5.2.F %>%
+  mutate(share_SHAP_adj_socio = ifelse(Var_0 %in% c("Ethnicity", "Gender HHH", "HH size", "ISCED", "Language", "Nationality", "Religion", "Religiosity"), share_SHAP_adj,0))%>%
+  mutate(test = ifelse(share_SHAP_adj_socio > 0.03,1,0))%>%
+  group_by(Country)%>%
+  summarise(share_SHAP_adj_socio = sum(test))%>%
+  ungroup()
 
 rm(list_A, list_B, list_C,
    P_8.5.0.I, P_8.5.0.II, P_8.5.0.III, P_8.5, data_8.5.1, data_8.5.2,
@@ -10887,6 +10916,14 @@ data_8.5.3.10 <- data_8.5.3.0 %>%
   ungroup()%>%
   arrange(Country, desc(mean_SHAP_Religion))
 
+data_8.5.3.10 <- data_8.5.3.0 %>%
+  select(Country, SHAP_Religiosity, Religiosity)%>%
+  filter(!is.na(Religiosity))%>%
+  group_by(Country, Religiosity)%>%
+  summarise(mean_SHAP_Religiosity = mean(SHAP_Religiosity))%>%
+  ungroup()%>%
+  arrange(Country, desc(mean_SHAP_Religiosity))
+
 # Car
 
 data_8.5.3.11 <- data_8.5.3.0 %>%
@@ -10913,10 +10950,21 @@ data_8.5.3.12 <- data_8.5.3.0 %>%
   pivot_wider(names_from = "motorcycle.01", values_from = "mean_SHAP_Motorcycle", names_prefix = "motorcycle_")%>%
   mutate(Motorcycle = ifelse(motorcycle_1 > motorcycle_0,1,0))
 
+# Gender
+
+data_8.5.3.13 <- data_8.5.3.0 %>%
+  select(Country, SHAP_Gender, Gender)%>%
+  filter(!is.na(Gender))%>%
+  group_by(Country, Gender)%>%
+  summarise(mean_SHAP_Gender = mean(SHAP_Gender))%>%
+  ungroup()%>%
+  arrange(Country, desc(mean_SHAP_Gender))%>%
+  pivot_wider(names_from = "Gender", values_from = "mean_SHAP_Gender", names_prefix = "gender_")
+
 test <- data_8.4.1 %>%
-  mutate(gender = ifelse(is.na(`Gender HHH`),0,`Gender HHH`),
+  mutate(gender           = ifelse(is.na(`Gender HHH`),0,`Gender HHH`),
          sociodemographic = ifelse(is.na(Sociodemographic),0,Sociodemographic),
-         education   = ifelse(is.na(Education),0,Education))%>%
+         education        = ifelse(is.na(Education),0,Education))%>%
   rowwise()%>%
   mutate(aggregate = sum(gender + sociodemographic + education))%>%
   mutate(agg_2 = ifelse(aggregate > 0.03,1,0))
@@ -11017,6 +11065,67 @@ data_8.5.6.0 <- read_csv("../0_Data/9_Supplementary Data/BRT-Tracking/Clusters_N
 data_8.5.6.3 <- data_8.5.6.0 %>%
   mutate_at(vars("HH expenditures":"Appliance own."), ~ mean(.,na.rm = TRUE))
 
+
+# 8.5.7   Information 5g: Information about clusters ####
+
+data_8.5.7 <- read_csv("../0_Data/9_Supplementary Data/BRT-Tracking/Clusters_Normalized_Corrected_B.csv", show_col_types = FALSE) %>%
+  left_join(eval_3.1)
+
+# Average silhouette width
+
+mean(data_8.5.7$silhouette_6_means)
+
+# Negative silhouette widths
+
+data_8.5.7.1 <- data_8.5.7 %>%
+  select(Country, cluster, silhouette_6_means)
+
+# Cluster-level averages
+
+data_8.5.7.2 <- data_8.5.7 %>%
+  group_by(cluster)%>%
+  summarise_at(vars("Appliance own.":"Spatial","mean_carbon_intensity", "silhouette_6_means"), ~ mean(.))
+
+data_8.5.7.3 <- data_8.5.7 %>%
+  mutate(low_10 = ifelse(R2 < 0.1,1,0))
+
+# Cluster A
+data_8.5.7.4 <- data_8.5.7 %>%
+  filter(cluster == "A")
+
+# Cluster B
+data_8.5.7.4B <- data_8.5.7 %>%
+  filter(cluster == "B")
+
+# Cluster C
+data_8.5.7.4C <- data_8.5.7 %>%
+  filter(cluster == "C")
+
+# Cluster D
+data_8.5.7.4D <- data_8.5.7 %>%
+  filter(cluster == "D")
+
+# Cluster EF
+data_8.5.7.4E <- data_8.5.7 %>%
+  filter(cluster == "E" | cluster == "F")
+
+data_7.3.0 <- read_csv("../0_Data/9_Supplementary Data/WDI/2021_08_17_WDI.csv") %>%
+  rename(Country.Name = "Country Name",
+         Country.Code = "Country Code",
+         Type         = "Series Name")%>%
+  select(-'Series Code')%>%
+  rename_at(vars(ends_with("]")), list(~ str_replace(., "..YR.....", "")))%>%
+  pivot_longer(-("Country.Name":"Type"), names_to = "year", values_to = "value")%>%
+  filter(value != "..")%>%
+  mutate(value = as.numeric(value))%>%
+  filter(year == 2019 & Type == "GDP per capita (constant 2010 US$)")
+
+data_8.5.7.5 <- data_8.5.7 %>%
+  left_join(data_7.3.0, by = c("Country" = "Country.Code"))%>%
+  mutate(value = ifelse(Country == "TWN", 20388.2761, value))
+
+rm(data_8.5.7, data_8.5.7.1, data_8.5.7.2, data_8.5.7.3, data_8.5.7.4, data_8.5.7.5, data_8.5.7.4B, data_8.5.7.4C, data_8.5.7.4D, data_8.5.7.4E,
+   data_8.5.5, data_7.3.0)
 
 # 8.6.1   Figure parametric Engel-curves ####
 
