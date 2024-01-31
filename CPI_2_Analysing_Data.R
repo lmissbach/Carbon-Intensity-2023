@@ -10886,6 +10886,21 @@ test <- data_8.4.1 %>%
   mutate(aggregate = sum(gender + sociodemographic + education))%>%
   mutate(agg_2 = ifelse(aggregate > 0.03,1,0))
 
+# 8.5.4   Information 5d: How many countries have each feature (Table 1)? ####
+
+data_8.5.4 <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_SHAP_Detail_VFOLD_2017B.xlsx")
+
+data_8.5.4.1 <- data_8.5.4 %>%
+  group_by(Country, Var_0)%>%
+  summarise(number = n())%>%
+  ungroup()%>%
+  group_by(Var_0)%>%
+  summarise(number = n())%>%
+  ungroup()%>%
+  arrange(desc(number))
+
+rm(data_8.5.4, data_8.5.4.1)
+
 # 8.6.0   Figures for Appendix ####
 # 8.6.1   Figure parametric Engel-curves ####
 
