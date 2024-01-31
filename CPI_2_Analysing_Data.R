@@ -3791,7 +3791,7 @@ P_6.2.5.5 <- ggplot(data_6.2.6_r2_imp)+
            stat = "identity", 
            colour = "black",
            width = 0.6, size = 0.1)+
-  scale_x_discrete(labels = data_6.2.6_r2$Country, guide = guide_axis(n.dodge=2))+
+  scale_x_discrete(labels = data_6.2.6_r2_imp$Country, guide = guide_axis(n.dodge=2))+
   scale_y_continuous(expand = c(0,0.01))+
   scale_fill_viridis_d()+
   ylab("Silhouette width")+
@@ -11126,6 +11126,20 @@ data_8.5.7.5 <- data_8.5.7 %>%
 
 rm(data_8.5.7, data_8.5.7.1, data_8.5.7.2, data_8.5.7.3, data_8.5.7.4, data_8.5.7.5, data_8.5.7.4B, data_8.5.7.4C, data_8.5.7.4D, data_8.5.7.4E,
    data_8.5.5, data_7.3.0)
+
+data_8.5.7B <- read_csv("../0_Data/9_Supplementary Data/BRT-Tracking/Clusters_Normalized_Corrected_Imputed_B.csv", show_col_types = FALSE) %>%
+  left_join(eval_3.1)
+
+data_8.5.7B.2 <- data_8.5.7B %>%
+  group_by(cluster)%>%
+  summarise_at(vars("Appliance own.":"Spatial","mean_carbon_intensity", "silhouette_9_means", "R2"), ~ mean(.))
+
+data_8.5.7B1 <- data_8.5.7B %>%
+  select(Country, cluster)%>%
+  rename(cluster_imp = cluster)%>%
+  left_join(select(data_8.5.7, Country, cluster))%>%
+  mutate(remain = ifelse(cluster == cluster_imp,1,0))
+
 
 # 8.6.1   Figure parametric Engel-curves ####
 
