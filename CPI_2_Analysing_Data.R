@@ -3511,11 +3511,11 @@ P_6.2.5.1 <- ggplot(data_6.2.5.1)+
   scale_x_continuous(expand = c(0,0), breaks = seq(0,20,5), minor_breaks = seq(0,20,1))+
   scale_y_continuous(expand = c(0,0.01))+
   theme_bw()+
-  ggtitle("Silhouette plot (non-adjusted)")+
+  ggtitle("Silhouette plot - clustering based on non-adjusted feature importance")+
   theme(axis.text.y = element_text(size = 6), 
         axis.text.x = element_text(size = 6),
         axis.title  = element_text(size = 7),
-        plot.title = element_text(size = 11),
+        plot.title = element_text(size = 9),
         legend.position = "bottom",
         # strip.text = element_text(size = 7),
         #strip.text.y = element_text(angle = 180),
@@ -3540,11 +3540,11 @@ P_6.2.5.2 <- ggplot(data_6.2.5.2)+
   scale_x_continuous(expand = c(0,0), breaks = seq(0,20,5), minor_breaks = seq(0,20,1))+
   scale_y_continuous(expand = c(0,0.01))+
   theme_bw()+
-  ggtitle("Silhouette plot (adjusted)")+
+  ggtitle("Silhouette plot - clustering based on adjusted feature importance")+
   theme(axis.text.y = element_text(size = 6), 
         axis.text.x = element_text(size = 6),
         axis.title  = element_text(size = 7),
-        plot.title = element_text(size = 11),
+        plot.title = element_text(size = 9),
         legend.position = "bottom",
         # strip.text = element_text(size = 7),
         #strip.text.y = element_text(angle = 180),
@@ -3569,11 +3569,11 @@ P_6.2.5.3 <- ggplot(data_6.2.5.3)+
   scale_x_continuous(expand = c(0,0), breaks = seq(0,20,5), minor_breaks = seq(0,20,1))+
   scale_y_continuous(expand = c(0,0.01))+
   theme_bw()+
-  ggtitle("Silhouette plot (adjusted and imputed)")+
+  ggtitle("Silhouette plot - - clustering based on adjusted and imputed feature importance")+
   theme(axis.text.y = element_text(size = 6), 
         axis.text.x = element_text(size = 6),
         axis.title  = element_text(size = 7),
-        plot.title = element_text(size = 11),
+        plot.title = element_text(size = 9),
         legend.position = "bottom",
         # strip.text = element_text(size = 7),
         #strip.text.y = element_text(angle = 180),
@@ -3723,7 +3723,7 @@ P_6.2.5.3 <- ggplot(data_6.2.6)+
   theme(axis.text.y = element_text(size = 5), 
         axis.text.x = element_text(size = 6),
         axis.title  = element_text(size = 7),
-        plot.title = element_text(size = 11),
+        plot.title = element_blank(),
         legend.position = "bottom",
         # strip.text = element_text(size = 7),
         #strip.text.y = element_text(angle = 180),
@@ -3752,7 +3752,7 @@ P_6.2.5.4 <- ggplot(data_6.2.6_r2)+
   theme(axis.text.y = element_text(size = 5), 
         axis.text.x = element_text(size = 6),
         axis.title  = element_text(size = 7),
-        plot.title = element_text(size = 11),
+        plot.title = element_blank(),
         legend.position = "bottom",
         # strip.text = element_text(size = 7),
         #strip.text.y = element_text(angle = 180),
@@ -3781,7 +3781,7 @@ P_6.2.5.5 <- ggplot(data_6.2.6_r2_imp)+
   theme(axis.text.y = element_text(size = 5), 
         axis.text.x = element_text(size = 6),
         axis.title  = element_text(size = 7),
-        plot.title = element_text(size = 11),
+        plot.title = element_blank(),
         legend.position = "bottom",
         # strip.text = element_text(size = 7),
         #strip.text.y = element_text(angle = 180),
