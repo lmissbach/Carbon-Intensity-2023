@@ -190,7 +190,7 @@ kbl(sum_3.2.3, format = "latex", caption = "Average household expenditures and a
 
 rm(sum_3.2.1, sum_3.2.2, sum_3.2.3)
 
-# 3.3     Carbon footprint and burden national ####
+# 3.3     Carbon footprint and carbon intensity national ####
 
 sum_3.3.1 <- data_2 %>%
   group_by(Country)%>%
@@ -7028,7 +7028,7 @@ data_8.2.1 <- data_2 %>%
   pivot_wider(names_from = Income_Group_5, values_from = c(median_carbon_intensity_kg_per_USD_national, dif_q95_q05_carbon_intensity_kg_per_USD_national, dif_q90_q10_carbon_intensity_kg_per_USD_national))%>%
   mutate(median_1_5    = median_carbon_intensity_kg_per_USD_national_1/median_carbon_intensity_kg_per_USD_national_5,
          dif_95_05_1_5 = dif_q95_q05_carbon_intensity_kg_per_USD_national_1/dif_q95_q05_carbon_intensity_kg_per_USD_national_5,
-         dif_90_10_1_5 = dif_q80_q20_carbon_intensity_kg_per_USD_national_1/dif_q90_q10_carbon_intensity_kg_per_USD_national_5)%>%
+         dif_90_10_1_5 = dif_q90_q10_carbon_intensity_kg_per_USD_national_1/dif_q90_q10_carbon_intensity_kg_per_USD_national_5)%>%
   left_join(data_8.2.0, by = c("Country" = "Country.Code"))%>%
   mutate(value = ifelse(Country == "TWN", 20388.2761, value))
   # mutate(interest2 = ifelse(Country %in% c("RWA", "DEU", "ZAF", "USA", "CAN", "MWI", "LBR"),1,0.5))
@@ -9225,6 +9225,11 @@ data_8.4.1 <- read_csv("../0_Data/9_Supplementary Data/BRT-Tracking/Clusters_Nor
   select(-"Horizontal inequality", -"Mean carbon intensity")%>%
   rename(Country = Country_long)
 
+# For manuscript
+
+data_8.4.1.1 <- data_8.4.1 %>%
+  mutate_at(vars("HH expenditures":"Appliance own."), ~ mean(.,na.rm = TRUE))
+
 options(knitr.kable.NA = "")
 
 kbl(data_8.4.1, format = "latex", caption = "Feature importance across countries by cluster - non-adjusted", booktabs = T, 
@@ -10169,6 +10174,10 @@ data_8.5.2.E <- data_8.5.2.D %>%
   mutate(max_0 = ifelse(share_SHAP == max(share_SHAP),1,0))%>%
   ungroup()
 
+data_8.5.2.F <- data_8.5.2.E %>%
+  left_join(eval_8.5.2)%>%
+  mutate(share_SHAP_adj = share_SHAP*Sample_Testing)
+
 rm(list_A, list_B, list_C,
    P_8.5.0.I, P_8.5.0.II, P_8.5.0.III, P_8.5, data_8.5.1, data_8.5.2,
    P_8.5.0.L, P_8.5.0.L2, P_8.5.0.L3,
@@ -10778,7 +10787,7 @@ data_8.5.3.0 <- data.frame()
 
 for (i in c(Country.Set$Country)){
   
-  data_8.5.3.1 <- read_rds(sprintf("../0_Data/9_Supplementary Data/BRT-Tracking/SHAP-Values en detail/2017/SHAP_wide_%s.rds",i))%>%
+  data_8.5.3.1 <- read_rds(sprintf("../0_Data/9_Supplementary Data/BRT-Tracking/SHAP-Values en detail/2017_B/SHAP_wide_%s.rds",i))%>%
     mutate(Country = i)
   
   data_8.5.3.0 <- data_8.5.3.0 %>%
@@ -10878,6 +10887,32 @@ data_8.5.3.10 <- data_8.5.3.0 %>%
   ungroup()%>%
   arrange(Country, desc(mean_SHAP_Religion))
 
+# Car
+
+data_8.5.3.11 <- data_8.5.3.0 %>%
+  select(Country, "SHAP_Car own.", car.01)%>%
+  filter(!is.na(car.01))%>%
+  rename(SHAP_Car = "SHAP_Car own.")%>%
+  group_by(Country, car.01)%>%
+  summarise(mean_SHAP_Car = mean(SHAP_Car))%>%
+  ungroup()%>%
+  arrange(Country, desc(mean_SHAP_Car))%>%
+  pivot_wider(names_from = "car.01", values_from = "mean_SHAP_Car", names_prefix = "car_")%>%
+  mutate(Car = ifelse(car_1 > car_0,1,0))
+
+# Motorcycle
+
+data_8.5.3.12 <- data_8.5.3.0 %>%
+  select(Country, "SHAP_Motorcycle own.", motorcycle.01)%>%
+  filter(!is.na(motorcycle.01))%>%
+  rename(SHAP_Motorcycle = "SHAP_Motorcycle own.")%>%
+  group_by(Country, motorcycle.01)%>%
+  summarise(mean_SHAP_Motorcycle = mean(SHAP_Motorcycle))%>%
+  ungroup()%>%
+  arrange(Country, desc(mean_SHAP_Motorcycle))%>%
+  pivot_wider(names_from = "motorcycle.01", values_from = "mean_SHAP_Motorcycle", names_prefix = "motorcycle_")%>%
+  mutate(Motorcycle = ifelse(motorcycle_1 > motorcycle_0,1,0))
+
 test <- data_8.4.1 %>%
   mutate(gender = ifelse(is.na(`Gender HHH`),0,`Gender HHH`),
          sociodemographic = ifelse(is.na(Sociodemographic),0,Sociodemographic),
@@ -10901,7 +10936,88 @@ data_8.5.4.1 <- data_8.5.4 %>%
 
 rm(data_8.5.4, data_8.5.4.1)
 
-# 8.6.0   Figures for Appendix ####
+# 8.5.5   Information 5e: How many countries are represented? ####
+
+data_8.5.5 <- read_csv("../0_Data/9_Supplementary Data/WDI/P_Data_Extract_From_World_Development_Indicators_2023/WDI_Data.csv") %>%
+  rename(Country.Name = "Country Name",
+         Country.Code = "Country Code",
+         Type         = "Series Name")%>%
+  select(-'Series Code')%>%
+  rename_at(vars(ends_with("]")), list(~ str_replace(., "..YR.....", "")))%>%
+  pivot_longer(-("Country.Name":"Type"), names_to = "year", values_to = "value")%>%
+  filter(value != "..")%>%
+  mutate(value = as.numeric(value))%>%
+  mutate(Country.Name = ifelse(Country.Name == "Cote d'Ivoire", "Côte d’Ivoire",
+                               ifelse(Country.Name == "Egypt, Arab Rep.", "Egypt",
+                                      ifelse(Country.Name == "Myanmar", "Myanmar (Burma)",
+                                             ifelse(Country.Name == "Russian Federation", "Russia",
+                                                    ifelse(Country.Name == "Slovak Republic", "Slovakia",
+                                                           ifelse(Country.Name == "Turkiye", "Turkey",Country.Name)))))))%>%
+  left_join(mutate(Country.Set, interest = 1), by = c("Country.Name" = "Country_long"))%>%
+  mutate(interest = ifelse(Country.Name == "World",0,interest))%>%
+  filter(!is.na(interest))%>%
+  filter(year == 2019)%>%
+  group_by(Type, interest)%>%
+  summarise(value = sum(value))%>%
+  ungroup()
+
+# 8.5.6   Infomration 5f: Feature importance ####
+
+data_8.5.6 <- read_csv("../0_Data/9_Supplementary Data/BRT-Tracking/Clusters_Normalized_Uncorrected_B.csv", show_col_types = FALSE)%>%
+  # it is in fact not normalized
+  select(cluster, Country, order, best_fit, largest_country, everything())%>%
+  mutate_at(vars("Appliance own.":"Sociodemographic"), ~ ifelse(. == 0, NA, .))%>%
+  rename("Horizontal inequality" = "dif_95_05_1_5", 
+         "Mean carbon intensity" = "mean_carbon_intensity",
+         "Vertical distribution"   = "median_1_5",
+         "Silhouette width" = "silhouette_5_means")%>%
+  select(cluster, Country, "Silhouette width", "Horizontal inequality", "Vertical distribution", "Mean carbon intensity", 
+         "HH expenditures", "Sociodemographic",
+         "Spatial", "Electricity access", "Cooking fuel",
+         "Heating fuel", "Lighting fuel", "Car own.", "Motorcycle own.", "Appliance own.")%>%
+  rename(Cluster = cluster)%>%
+  mutate_at(vars("Silhouette width":"Appliance own."), ~ round(.,2))%>%
+  left_join(select(Country.Set, Country, Country_long))%>%
+  select(Cluster, Country_long, everything(), - Country)%>%
+  select(-"Horizontal inequality", -"Mean carbon intensity")%>%
+  rename(Country = Country_long)
+
+# For manuscript
+
+data_8.5.6.1 <- data_8.5.6 %>%
+  mutate_at(vars("HH expenditures":"Appliance own."), ~ mean(.,na.rm = TRUE))
+
+data_8.5.6.2 <- data_8.5.6 %>%
+  pivot_longer(c("HH expenditures":"Appliance own."), names_to = "Type", values_to = "Value")%>%
+  group_by(Country)%>%
+  mutate(Largest = ifelse(Value == max(Value, na.rm = TRUE),1,0))%>%
+  ungroup()
+
+t <- count(data_8.5.6.2, Type, Largest)
+
+data_8.5.6.0 <- read_csv("../0_Data/9_Supplementary Data/BRT-Tracking/Clusters_Normalized_Corrected_B.csv", show_col_types = FALSE)%>%
+  # it is in fact not normalized
+  select(cluster, Country, order, best_fit, largest_country, everything())%>%
+  mutate_at(vars("Appliance own.":"Sociodemographic"), ~ ifelse(. == 0, NA, .))%>%
+  rename("Horizontal inequality" = "dif_95_05_1_5", 
+         "Mean carbon intensity" = "mean_carbon_intensity",
+         "Vertical distribution"   = "median_1_5",
+         "Silhouette width" = "silhouette_6_means")%>%
+  select(cluster, Country, "Silhouette width", "Horizontal inequality", "Vertical distribution", "Mean carbon intensity",
+         "HH expenditures", "Sociodemographic",
+         "Spatial", "Electricity access", "Cooking fuel",
+         "Heating fuel", "Lighting fuel", "Car own.", "Motorcycle own.", "Appliance own.")%>%
+  rename(Cluster = cluster)%>%
+  mutate_at(vars("Silhouette width":"Appliance own."), ~ round(.,2))%>%
+  left_join(select(Country.Set, Country, Country_long))%>%
+  select(Cluster, Country_long, everything(), - Country)%>%
+  select(-"Horizontal inequality", -"Mean carbon intensity")%>%
+  rename(Country = Country_long)
+
+data_8.5.6.3 <- data_8.5.6.0 %>%
+  mutate_at(vars("HH expenditures":"Appliance own."), ~ mean(.,na.rm = TRUE))
+
+
 # 8.6.1   Figure parametric Engel-curves ####
 
 Country.Set.8.6.1 <- Country.Set %>%
