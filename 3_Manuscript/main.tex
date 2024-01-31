@@ -473,6 +473,13 @@ While findings from logit-models are generally in line with our results from BRT
 
 \paragraph{Robustness check: Alternative clustering}
 
+Our preferred approach for clustering may put unreasonable large weight on missing information about feature importance. It becomes apparent that countries in cluster A have in common that many variables remain unobserved, in particular on energy use. To address this shortcoming we identify country clusters after imputation of missing information for feature importance by feature-level averages. Supplementary figure \ref{fig:fig_4_imputed} and table \ref{tab:A10_Imputed} show resulting clusters.
+
+We identify nine alternative clusters. The largest cluster A\textsuperscript{1} comprises 42 countries including 37 countries which are part of cluster A. 12 countries, which we identified to be part of cluster A in our preferred analysis, end up in the second-largest cluster B\textsuperscript{1} including 17 countries. Core differences include the adjusted feature importance for household expenditures which is larger for countries in cluster B\textsuperscript{1} (8\%) compared to cluster A\textsuperscript{1} (3\%) and goodness of fit (r\textsuperscript{2}, 13\% and 23\%, respectively).
+
+Cluster C\textsuperscript{1} includes countries, in which car ownership is an important predictor. Spatial information is comparably important in countries of cluster D\textsuperscript{1}, motorcycle ownership and socio-demographic characteristics are similar in countries of cluster E\textsuperscript{1}. Identical to our main analysis, Rwanda and Uganda (cluster F\textsuperscript{1}) as well as Armenia and Turkey (cluster H\textsuperscript{1}) end up it one cluster because of lighting and heating fuels, respectively. Nicaragua and Peru (cluster G\textsuperscript{1}) stand out because of the importance of cooking fuels, while the Philippines are comparably different from all other countries because of appliance ownership being an important indicator.
+
+Overall, this alternative approach to clustering emphasizes the illustrative purpose of our clustering exercise. Clustering appears to be comparably sensitive to unobserved features. This corroborates our conclusion of prevailing idiosyncratic patterns determining households carbon intensity of consumption\footnote{For example, average silhouette width for our alternative clustering approach decreases to 0.22.}. In search of effective compensation measures, governments may need to deal with both hidden information and structurally unobservable determinants, that drive households' use of technology.
 
 \section{Discussion: Unpacking the policy toolbox} \label{sec:discussion}
 
