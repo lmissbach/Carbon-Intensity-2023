@@ -7825,7 +7825,7 @@ P_8.3.1 <- ggplot(data_8.3.4)+
   #                     midpoint = 0.5)+
   theme_bw()+
   scale_y_discrete(limits = rev)+
-  scale_x_discrete(labels = c(expression(paste("Mean ", CO[2],"-intensity (", CI[r], ")", sep = ""))))+
+  scale_x_discrete(labels = c(expression(paste("Mean carbon intensity (", bar(e)[r], ")", sep = ""))))+
   xlab("")+ 
   guides(fill = "none")+
   ylab("")+
@@ -11133,6 +11133,10 @@ data_8.5.7B <- read_csv("../0_Data/9_Supplementary Data/BRT-Tracking/Clusters_No
 data_8.5.7B.2 <- data_8.5.7B %>%
   group_by(cluster)%>%
   summarise_at(vars("Appliance own.":"Spatial","mean_carbon_intensity", "silhouette_9_means", "R2"), ~ mean(.))
+
+data_8.5.7B.3 <- data_8.5.7B %>%
+  summarise_at(vars("Appliance own.":"Spatial","mean_carbon_intensity", "silhouette_9_means", "R2"), ~ mean(.))
+
 
 data_8.5.7B1 <- data_8.5.7B %>%
   select(Country, cluster)%>%
