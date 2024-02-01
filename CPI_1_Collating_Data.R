@@ -1282,3 +1282,84 @@ NAs_over_obs <- data_joint_1 %>%
 
 write.xlsx(NAs_over_obs, "0_Data/9_Supplementary Information/NAs_over_Observations_0.xlsx")
 
+
+# 5.    Figures ####
+# 5.1   Mosaic plot of sample ####
+
+if(GTAP_year == 2014){
+  data_5.1 <- read_rds("../1_Carbon_Pricing_Incidence/1_Data_Incidence_Analysis/3_Collated_Database/Collated_Database.rds")
+}
+
+if(GTAP_year == 2017 & GTAP_version == "11A"){
+  data_5.1 <- read_rds("../1_Carbon_Pricing_Incidence/1_Data_Incidence_Analysis/3_Collated_Database/Collated_Database_2017.rds")
+}
+
+if(GTAP_year == 2017 & GTAP_version == "11B"){
+  data_5.1 <- read_rds("../1_Carbon_Pricing_Incidence/1_Data_Incidence_Analysis/3_Collated_Database/Collated_Database_2017_11B.rds")
+}
+
+data_5.1.1 <- data_5.1 %>%
+  mutate(carbon_intensity_kg_per_USD_national = CO2_t_national*1000/hh_expenditures_USD_2014)%>%
+  group_by(Country)%>%
+  summarise(carbon_intensity_kg_per_USD_national = wtd.mean(carbon_intensity_kg_per_USD_national, hh_weights))%>%
+  ungroup()
+
+data_5.1.2 <- read_csv("../0_Data/9_Supplementary Data/WDI/P_Data_Extract_From_World_Development_Indicators_2023/WDI_Data.csv") %>%
+  rename(Country.Name = "Country Name",
+         Country.Code = "Country Code",
+         Type         = "Series Name")%>%
+  select(-'Series Code')%>%
+  rename_at(vars(ends_with("]")), list(~ str_replace(., "..YR.....", "")))%>%
+  pivot_longer(-("Country.Name":"Type"), names_to = "year", values_to = "value")%>%
+  filter(value != "..")%>%
+  mutate(value = as.numeric(value))%>%
+  mutate(Country.Name = ifelse(Country.Name == "Cote d'Ivoire", "Côte d’Ivoire",
+                               ifelse(Country.Name == "Egypt, Arab Rep.", "Egypt",
+                                      ifelse(Country.Name == "Myanmar", "Myanmar (Burma)",
+                                             ifelse(Country.Name == "Russian Federation", "Russia",
+                                                    ifelse(Country.Name == "Slovak Republic", "Slovakia",
+                                                           ifelse(Country.Name == "Turkiye", "Turkey",Country.Name)))))))%>%
+  filter(year == 2021 & Type == "Population, total")
+
+data_5.1.3 <- data_5.1.1 %>%
+  left_join(data_5.1.2, by = c("Country" = "Country.Code"))%>%
+  mutate(value  = ifelse(Country == "TWN", 23855010,value))%>%
+  mutate(continent = countrycode(Country,origin = "iso3c",destination = "continent"))%>%
+  mutate(continent = ifelse(continent %in% c("Asia","Oceania"),"Asia/Oceania",continent))%>%
+  mutate(sum_value          = sum(value))%>%
+  group_by(continent)%>%
+  mutate(sum_continent = sum(value))%>%
+  ungroup()%>%
+  # Total width
+  mutate(sqrt_sum_value           = sqrt(sum_value))%>%
+  mutate(share_sum_continent      = sum_continent/sum_value)%>%
+  mutate(width                    = sqrt_sum_value*share_sum_continent,
+         height                   = value/width)%>%
+  mutate(carbon_intensity_scale = rescale(carbon_intensity_kg_per_USD_national))%>%
+  arrange(continent, carbon_intensity_scale)
+  
+
+P_5.1 <- ggplot(data = data_5.1.3, )+
+  geom_bar(aes(x = continent, y = height, width = width, fill = carbon_intensity_scale),
+           stat = "identity", position = "stack", colour = "black", size = 0.3)+
+  scale_fill_viridis_c(option = "inferno", direction = -1,
+                       breaks = c(0,1), labels = c("Low", "High"),
+                       guide = guide_colourbar(frame.colour = "black", ticks.colour = "black"))+
+  facet_grid(~ continent, scale = "free", space = "free")+
+  theme_minimal()+
+  ggtitle("Sample of countries in database")+
+  labs(fill = "Carbon intensity of consumption")+
+  theme(axis.text       = element_blank(),
+        axis.title      = element_blank(),
+        legend.title    = element_text(size = 7, vjust = 0.75),
+        legend.text     = element_text(size = 7),
+        strip.text      = element_text(size = 8),
+        legend.position = "bottom",
+        panel.spacing=unit(1,"lines"),
+        plot.margin = unit(c(0.2,0.2,0.2,0.2), "cm"))
+
+jpeg("1_Figures/Figures_Appendix/Figure_Sample.jpg", width = 17.5, height = 12, unit = "cm", res = 600)
+print(P_5.1)
+dev.off()
+
+rm(data_5.1.1, data_5.1.2, data_5.1.3, data_5.1, P_5.1)
