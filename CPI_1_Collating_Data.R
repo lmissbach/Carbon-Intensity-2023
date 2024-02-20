@@ -1355,8 +1355,8 @@ P_5.1 <- ggplot(data = data_5.1.3, )+
         legend.text     = element_text(size = 7),
         strip.text      = element_text(size = 8),
         legend.position = "bottom",
-        panel.spacing=unit(1,"lines"),
-        plot.margin = unit(c(0.2,0.2,0.2,0.2), "cm"))
+        panel.spacing   = unit(1,"lines"),
+        plot.margin     = unit(c(0.2,0.2,0.2,0.2), "cm"))
 
 jpeg("1_Figures/Figures_Appendix/Figure_Sample.jpg", width = 17.5, height = 12, unit = "cm", res = 600)
 print(P_5.1)
