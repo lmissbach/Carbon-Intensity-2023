@@ -3537,7 +3537,7 @@ P_6.2.5.1 <- ggplot(data_6.2.5.1)+
   theme(axis.text.y = element_text(size = 6), 
         axis.text.x = element_text(size = 6),
         axis.title  = element_text(size = 7),
-        plot.title = element_text(size = 9),
+        plot.title  = element_text(size = 8),
         legend.position = "bottom",
         # strip.text = element_text(size = 7),
         #strip.text.y = element_text(angle = 180),
@@ -3566,7 +3566,7 @@ P_6.2.5.2 <- ggplot(data_6.2.5.2)+
   theme(axis.text.y = element_text(size = 6), 
         axis.text.x = element_text(size = 6),
         axis.title  = element_text(size = 7),
-        plot.title = element_text(size = 9),
+        plot.title  = element_text(size = 8),
         legend.position = "bottom",
         # strip.text = element_text(size = 7),
         #strip.text.y = element_text(angle = 180),
@@ -3591,11 +3591,11 @@ P_6.2.5.3 <- ggplot(data_6.2.5.3)+
   scale_x_continuous(expand = c(0,0), breaks = seq(0,20,5), minor_breaks = seq(0,20,1))+
   scale_y_continuous(expand = c(0,0.01))+
   theme_bw()+
-  ggtitle("Silhouette plot - - clustering based on adjusted and imputed feature importance")+
+  ggtitle("Silhouette plot - clustering based on adjusted and imputed feature importance")+
   theme(axis.text.y = element_text(size = 6), 
         axis.text.x = element_text(size = 6),
         axis.title  = element_text(size = 7),
-        plot.title = element_text(size = 9),
+        plot.title  = element_text(size = 8),
         legend.position = "bottom",
         # strip.text = element_text(size = 7),
         #strip.text.y = element_text(angle = 180),
@@ -4333,8 +4333,8 @@ eval_1.4 <- left_join(eval_3.1, eval_4.1)%>%
   mutate(Type = factor(Type, levels = c("rsq_wo","rsq")))
 
 P_6.3.1 <- ggplot(eval_1.4, aes(x = values, y = Country))+
-  geom_point(shape = 21, aes(fill = Type))+
   geom_line()+
+  geom_point(shape = 21, aes(fill = Type))+
   theme_bw()+
   scale_fill_manual(values = c("#0072B5FF","#BC3C29FF"), labels = c("Sparse model (household expenditures)", "Rich model (all features)"), name = "Features included in BRT-modelling")+
   xlab(expression(paste("Goodness of fit (", R^2,")")))+
