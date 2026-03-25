@@ -1,11 +1,12 @@
 HF,HF_code
 Coal,1
-Electricity,2
-Firewood,3
-Gas,4
-Kerosene,5
-Liquid fuels,6
+District heating,2
+Electricity,3
+Firewood,4
+Gas,5
+Kerosene,6
 LPG,7
-Other biomass,8
-Unknown,9
-NA,10
+Liquid fuels,8
+Other biomass,9
+Unknown,10
+NA,11
