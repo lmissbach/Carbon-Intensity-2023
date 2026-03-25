@@ -5,24 +5,23 @@
 
 if(!require("pacman")) install.packages("pacman")
 
-p_load("boot", "broom", "countrycode","fixest", "ggpubr", "ggrepel",
+p_load("arrow", "boot", "broom", "countrycode","fixest", "ggpubr", "ggrepel",
        "ggsci", "Hmisc", "knitr", "kableExtra", "openxlsx", "rattle", "scales", "tidyverse", "VennDiagram","xtable")
-
 
 options(scipen=999)
 
 GTAP_year <- 2017
 
-GTAP_version <- "11B"
+GTAP_version <- "11C"
 
 # 1     Loading Data ####
 
 Country.Set <- c("Argentina", "Armenia", "Australia","Austria","Bangladesh", "Barbados", "Benin","Bolivia", "Brazil", "Burkina Faso", 
                  "Cambodia", "Canada", "Chile", "Colombia", "Costa Rica", "Cote dIvoire", "Dominican Republic", "Ecuador", "Egypt", "El Salvador", "Ethiopia", 
-                 "Europe", 
-                 "Georgia","Ghana","Guatemala", "Guinea-Bissau", "India", "Indonesia", "Iraq", "Israel", "Jordan", "Kenya", "Liberia", "Malawi", "Maldives", "Mali", 
+                 "Europe", "France",
+                 "Georgia","Germany","Ghana","Guatemala", "Guinea-Bissau", "India", "Indonesia", "Iraq", "Israel", "Jordan", "Kenya", "Liberia", "Malawi", "Maldives", "Mali", 
                  "Mexico", "Mongolia", "Morocco", "Mozambique", "Myanmar", "Nicaragua", "Niger", "Nigeria", "Norway", "Pakistan", "Paraguay", 
-                 "Peru", "Philippines", "Russia", "Rwanda", "Senegal", "Serbia","South Africa", "Suriname", "Switzerland",
+                 "Peru", "Philippines", "Romania", "Russia", "Rwanda", "Senegal", "Serbia", "Spain", "South Africa", "Suriname", "Switzerland",
                  "Taiwan", "Thailand", "Togo", "Turkey", "Uganda", "United Kingdom","Uruguay", "USA","Vietnam")
 
 data_joint_0 <- data.frame()
@@ -101,6 +100,29 @@ for(i in Country.Set){
     
   }
   
+  if(GTAP_year == 2017 & GTAP_version == "11C"){
+    
+    # Version B
+    
+    path_0                     <- list.files("../0_Data/1_Household Data/")[grep(i, list.files("../0_Data/1_Household Data/"), ignore.case = T)][1]
+    
+    
+    carbon_pricing_incidence_0 <- read_parquet(sprintf("../1_Carbon_Pricing_Incidence/1_Data_Incidence_Analysis/1_Transformed_and_Modeled/2017_11C/Carbon_Pricing_Incidence_%s.parquet", i), show_col_types = FALSE)
+    
+    household_information_0    <- read_parquet(sprintf("../1_Carbon_Pricing_Incidence/1_Data_Incidence_Analysis/1_Transformed_and_Modeled/2017_11C/household_information_%s_new.parquet", i), show_col_types = FALSE)
+    
+    burden_decomposition_0     <- read_parquet(sprintf("../1_Carbon_Pricing_Incidence/1_Data_Incidence_Analysis/1_Transformed_and_Modeled/2017_11C/Sectoral_Burden_%s.parquet", i), show_col_types = FALSE)
+    
+    # fuel_expenditures          <- read_csv(sprintf("../1_Carbon_Pricing_Incidence/1_Data_Incidence_Analysis/2_Fuel_Expenditure_Data/fuel_expenditures_%s.csv", i))
+    
+    if(!i %in% c("Australia", "Chile", "Morocco", "Kenya", "Europe", "Pakistan", "Spain", "USA")) appliances_0_1 <- read_csv(sprintf("../0_Data/1_Household Data/%s/1_Data_Clean/appliances_0_1_new_%s.csv", path_0, i), show_col_types = FALSE)
+    
+    if(i == "India"){
+      household_information_0 <- mutate_at(select(household_information_0, -district), vars(sex_hhh, age_hhh, wall, floor, roof, renting), ~ as.numeric(.))%>%
+        mutate(renting = ifelse(is.na(renting), 3,renting))
+      }
+    if(i == "Romania" | i == "Spain"){household_information_0 <- mutate_at(household_information_0, vars(occupation_hhh), ~ as.character(.))}
+  }
   
   carbon_pricing_incidence_1 <- left_join(household_information_0, carbon_pricing_incidence_0, by = "hh_id")%>%
     left_join(burden_decomposition_0, by = "hh_id")%>%
@@ -111,7 +133,7 @@ for(i in Country.Set){
                                  Households = nrow(count(carbon_pricing_incidence_1, hh_id)),
                                  Observations = nrow(carbon_pricing_incidence_1)))
   
-  if(!i %in% c("Australia", "Chile", "Morocco", "Kenya", "Europe", "Pakistan", "USA")) {carbon_pricing_incidence_1 <- left_join(carbon_pricing_incidence_1, appliances_0_1, by = "hh_id")}
+  if(!i %in% c("Australia", "Chile", "Morocco", "Kenya", "Europe", "Pakistan", "Spain", "USA")) {carbon_pricing_incidence_1 <- left_join(carbon_pricing_incidence_1, appliances_0_1, by = "hh_id")}
   
   # Add codes
   
@@ -277,7 +299,7 @@ for(i in Country.Set){
   
   rm(list = ls(pattern = ".Code"))
   rm(household_information_0, burden_decomposition_0, carbon_pricing_incidence_0, carbon_pricing_incidence_1)
-  if(!i %in% c("Australia","Chile", "Morocco", "Kenya", "Europe", "Pakistan", "USA")){rm(appliances_0_1)}
+  if(!i %in% c("Australia","Chile", "Morocco", "Kenya", "Europe", "Pakistan", "Spain", "USA")){rm(appliances_0_1)}
 }
 
 data_joint_pre_1 <- data_joint_pre %>%
@@ -350,7 +372,7 @@ for (i in Country.Set){
   
   # Water
   
-  if("Water.Code.csv" %in% codes_0){
+  if("Water.Code.csv" %in% codes_0 & i != "Spain"){
     Water.Code <- read_csv(sprintf("../0_Data/1_Household Data/%s/2_Codes/Water.Code.csv", path_0), show_col_types = FALSE)%>%
       mutate(water = as.character(water))%>%
       mutate(Country_long = i)
@@ -365,12 +387,12 @@ Cooking.Codes.All.1 <- Cooking.Codes.All %>%
   mutate(Cooking_Fuel = iconv(Cooking_Fuel, "UTF-8", "UTF-8", sub = ''))%>%
   mutate(CF = ifelse(is.na(CF) & Cooking_Fuel %in% c("Charcoal", "3. Charcoal", "charcoal", "CHARCOAL", "3. CHARCOAL", "CarbÃ³n", "Wood AND coal", "Wood & coal"), "Charcoal", CF))%>%
   mutate(CF = ifelse(is.na(CF) & Cooking_Fuel %in% c("Electricity", "electricity", "electricity?", "Publicly-provided electricity/City Power", "Household generator", "9. Electricity", "10. Solar energy", "Electricity form public network", "Electricity from shared generator", "Electricity from private generator", "ELECTRICITY", "16. ELECTRIC", "Electricity from EUCL", "Other electricity distributors", "Solar panel", "Batteries+ Bulb", "Torch/Phone", "Rechargeable battery", "Other source of electricity", "Solar energy system", "Electricity-National grid", "Electricity- Solar", "Electricity- Personal Generator", "Electricity Community/ thermal plant", "Energía eléctrica", "Generator", "5. SOLAR", "Solar energy", "Electric", "Electricity  Community/ thermal plant", "Solar", "Electricidad"), "Electricity", CF))%>%
-  mutate(CF = ifelse(is.na(CF) & Cooking_Fuel %in% c("Mains gas?", "Bulk gas (zeppelin)?", "Gas in tube?", "Gas", "Gas propano","11. Bio gas", "Gobar gas", "Gas por cañería", "Bio Gas", "GAS", "City gas", "biogas", "15. PIPED NATURAL GAS", "13. BIOGAS", "Biogas", "Natural Gas", "Natural gas", "Biogas", "LPG and Natural gas"), "Gas", CF))%>%
+  mutate(CF = ifelse(is.na(CF) & Cooking_Fuel %in% c("Mains gas?", "Bulk gas (zeppelin)?", "Gas in tube?", "Gas", "Gas propano","11. Bio gas", "Gobar gas", "Gas por cañería", "Bio Gas", "GAS", "City gas", "biogas", "15. PIPED NATURAL GAS", "13. BIOGAS", "Biogas", "Natural Gas", "Natural gas", "Biogas", "LPG and Natural gas", "Other biogas"), "Gas", CF))%>%
   mutate(CF = ifelse(is.na(CF) & Cooking_Fuel %in% c("Gas in a carafe?", "Liquefied petroleum gas LPG", "LPG", "8. Butane / gas", "Supergás", "Gasl", "LIQUIFIED PETROLUM", "Liquid gas cylinders", "LPG 3 kg", "LPG 12 kg", "Elpiji 5.5 kg / blue gaz", "14. LPG/ COOKING GAS", "Liquified  petroleum  gas (LPG)", "LPG (bottled gas)", "LPG & Coal"), "LPG", CF))%>%
   mutate(CF = ifelse(is.na(CF) & Cooking_Fuel %in% c("kerosene / firewood / charcoal ?", "Kerosene", "Kerosene (gas)","7. Kerosene", "Paraffin-Stove", "Queroseno", "Paraffin", "kerosene", "Kerosine", "PARAFFIN", "1. KEROSENE", "Kerosene / firewood / charcoal?"), "Kerosene", CF))%>%
   mutate(CF = ifelse(is.na(CF) & Cooking_Fuel %in% c("other ?", "Other", "Unknown", "None/donâ€™t cook", "Other (Specify)", "", "Does not cook", "Ninguno", "12. None", "13. Other specify", "Others","No cooking arrangement", "Don't cook at home", "OTHER (SPECIFY)", "Not stated", "OTHER(specify)", "Otro Cuál?","No cocinan","N/S","Ignorado", "18. OTHER (SPECIFY)", "ninguno no cocina", "nr", "No Cooking", "Lantern _Agatadowa_", "Other _specify_", "Ninguna", "Candle", "17. GARBAGE/PLASTIC", "Candles", "Oil Lamp", "other?", "None,No Cooking", "Other (specify)", "Other Fuel", "Other, specify", "None", "Unspecified", "No cooking", "No Fuel", "Otro"), "Unknown", CF))%>%
   mutate(CF = ifelse(is.na(CF) & Cooking_Fuel %in% c("Firewood", "1. Collecting fire wood", "LeÃ±a","2. Purchase fire wood", "Wood", "Firewood and chips", "Leña", "firewood", "COLLECTED FIREWOOD", "PURCHASED FIREWOOD", "4. WOOD", "Wood/Charcoal", "Firewood of Coal", "Firewood, LPG, Coal", "Firewood & LPG", "Firewood & Coal", "Firewood & Kerosene", "Firewood or Coal"), "Firewood", CF))%>%
-  mutate(CF = ifelse(is.na(CF) & Cooking_Fuel %in% c("Animal waste", "4. Crop residue / leaves", "5. Dung / manure", "6. Sawdust", "Crop residue","Sawdust", "Dung cake", "1Grass (reeds)", "Dried cow dung", "6. ANIMAL WASTE/DUNG","7. CROP RESIDUE/PLANT BIOMASS","8. SAW DUST", "STRAW/GRASS", "CROP RESIDUE","SAW DUST","ANIMAL WASTE", "Straw/shrubs/grass","Animal dung","Agricultural crop residue", "Dung of animals", "Wood, coal, plant-sources", "10. BIOMASS BRIQUETTE", "11. PROCESSED BIOMASS(PELLETS)/ WOODCHIPS", "Aninmal Waste", "Cow Dung"), "Other biomass", CF))%>%
+  mutate(CF = ifelse(is.na(CF) & Cooking_Fuel %in% c("Animal waste", "4. Crop residue / leaves", "5. Dung / manure", "6. Sawdust", "Crop residue","Sawdust", "Dung cake", "1Grass (reeds)", "Dried cow dung", "6. ANIMAL WASTE/DUNG","7. CROP RESIDUE/PLANT BIOMASS","8. SAW DUST", "Dung", "STRAW/GRASS", "CROP RESIDUE","SAW DUST","ANIMAL WASTE", "Straw/shrubs/grass","Animal dung","Agricultural crop residue", "Dung of animals", "Wood, coal, plant-sources", "10. BIOMASS BRIQUETTE", "11. PROCESSED BIOMASS(PELLETS)/ WOODCHIPS", "Aninmal Waste", "Cow Dung"), "Other biomass", CF))%>%
   mutate(CF = ifelse(is.na(CF) & Cooking_Fuel %in% c("Petrol", "12. ETHANOL", "Petroleum", "Other (Oil, Kerosene)"), "Liquid fuel", CF))%>%
   mutate(CF = ifelse(is.na(CF) & Cooking_Fuel %in% c("Coke, Coal", "briquette", "coal", "Briquettes", "9. COAL BRIQUETTE", "2. COAL/LIGNITE", "Coal"), "Coal", CF))%>%
   mutate(CF = ifelse(CF == "Biomass" | CF == "Other Biomass", "Other biomass", CF))%>%
@@ -393,7 +415,7 @@ Lighting.Codes.All.1 <- Lighting.Codes.All %>%
                                                       "Autre", "OTHER(SPECIFY)", "Outros", "missing", "No lighting", "Not electricity", "No type of lighting"), "Unknown", LF))%>%
   mutate(LF = ifelse(is.na(LF) & Lighting_Fuel %in% c("Firewood", "1. Collecting fire wood", "2. Purchase fire wood", "Wood", "Firewood and chips", "Leña", "firewood", "COLLECTED FIREWOOD", "PURCHASED FIREWOOD", "4. WOOD", "Wood/Charcoal", "Firewood of Coal", "Firewood, LPG, Coal", "Firewood & LPG", "Firewood & Coal", "Firewood & Kerosene", "Firewood or Coal", "12. Fire wood", "Fuel wood"), "Firewood", LF))%>%
   mutate(LF = ifelse(is.na(LF) & Lighting_Fuel %in% c("Animal waste", "4. Crop residue / leaves", "5. Dung / manure", "6. Sawdust", "Crop residue","Sawdust", "Dung cake", "1Grass (reeds)", "Dried cow dung", "6. ANIMAL WASTE/DUNG","7. CROP RESIDUE/PLANT BIOMASS","8. SAW DUST", "STRAW/GRASS", "CROP RESIDUE","SAW DUST","ANIMAL WASTE", "Straw/shrubs/grass","Animal dung","Agricultural crop residue", "Dung of animals", "Wood, coal, plant-sources", "10. BIOMASS BRIQUETTE", "11. PROCESSED BIOMASS(PELLETS)/ WOODCHIPS", "Aninmal Waste", "Cow Dung", "Cow dung", "Grass (reeds)", "GRASS", "Crop Residue"), "Other biomass", LF))%>%
-  mutate(LF = ifelse(is.na(LF) & Lighting_Fuel %in% c("Petrol", "12. ETHANOL", "Petroleum", "Other (Oil, Kerosene)", "Lampe à pétrole", "Candeeiro a petróleo", "Other oil", "Oil Lamp", "Palm Oil"), "Liquid fuel", LF))%>%
+  mutate(LF = ifelse(is.na(LF) & Lighting_Fuel %in% c("Petrol", "12. ETHANOL", "Petroleum", "Other (Oil, Kerosene)", "Lampe à pétrole", "Candeeiro a petróleo", "Other oil", "Oil","Oil Lamp", "Palm Oil"), "Liquid fuel", LF))%>%
   mutate(LF = ifelse(is.na(LF) & Lighting_Fuel %in% c("Coke, Coal", "briquette", "coal", "Briquettes", "9. COAL BRIQUETTE", "2. COAL/LIGNITE", "Coal"), "Coal", LF))%>%
   mutate(LF = ifelse(is.na(LF) & Lighting_Fuel %in% c("Lampe", "Lampe à pile", "Lampe à pile, grosse torche","Candela", "Candle", "7. Lantern", "6. Electrical battery", "8. Light from dry cell with switch", "11. Candle/wax", "Flash Light", "Candles", "Battery", "Vela", "Battery Lamp/ Torch", "Chinese Lamp", "Torchlight", "CANDLES", "BATTERY/DRY CELL(TORCH)", "CANDLES", "Velas", "Batteries", "Lantern _Agatadowa_", "Cargador de batería", "Candeeiro a pilhas", "Petroleum light/candle/dia", "Private light engine", "Water mill", "Otro"), "Other lighting", LF))%>%
   mutate(LF = ifelse(is.na(LF) & Country_long == "Guatemala", "Unknown", LF))%>%
@@ -403,14 +425,15 @@ Lighting.Codes.All.1 <- Lighting.Codes.All %>%
 
 Heating.Codes.All.1 <- Heating.Codes.All %>%
   select(Country_long, heating_fuel, Heating_Fuel)%>%
-  mutate(HF = ifelse(Heating_Fuel %in% c("Mains gas?", "Gas in tube?", "Bulk gas (zeppelin)?", "Central heating", "Natural gas", "Gas", "Natural Gas", "Gas por cañería", "Gas central heating", "Calor gas central heating", "Other gas central heating"), "Gas", 
-                     ifelse(Heating_Fuel %in% c("electricity?", "Electricity", "Solar", "Electricity form public network", "Electricity from shared generator", "Electricity from private generator", "Other source of electricity", "Solar energy", "Electric", "Energía eléctrica", "Electric central heating"), "Electricity", 
-                            ifelse(Heating_Fuel %in% c("Gas in a carafe?", "Liquefied gas", "Liquid gas cylinders", "Supergás"), "LPG",
-                                   ifelse(Heating_Fuel %in% c("Wood", "Firewood or Coal", "Wood, coal, plant-sources", "Leña", "Solid fuel central heating"), "Firewood",
-                                          ifelse(Heating_Fuel %in% c("Dung of animals", "Animal dung", "Dried cow dung"), "Other biomass", 
+  mutate(HF = ifelse(Heating_Fuel %in% c("Mains gas?", "Gas in tube?", "Bulk gas (zeppelin)?", "Central heating", "Natural gas", "Gas", "Natural Gas", "Gas por cañería", "Gas central heating", "Calor gas central heating", "Other gas central heating", "Gas natural", "Natural gas stove", "Gaz de ville"), "Gas", 
+                     ifelse(Heating_Fuel %in% c("electricity?", "Electricity", "Solar", "Electricity form public network", "Electricity from shared generator", "Electricity from private generator", "Other source of electricity", "Solar energy", "Electric", "Energía eléctrica", "Electric central heating", "Electricidad", "Strom", "Solaire", "Electricité", "Géothermie", "Aérothermie (pompe à chaleur)"), "Electricity", 
+                            ifelse(Heating_Fuel %in% c("Gas in a carafe?", "Liquefied gas", "Liquid gas cylinders", "Supergás", "Gas licuado", "Butane, propane, gaz en citerne"), "LPG",
+                                   ifelse(Heating_Fuel %in% c("Wood", "Firewood or Coal", "Wood, coal, plant-sources", "Leña", "Solid fuel central heating", "Feste Brennstoffe", "Bois"), "Firewood",
+                                          ifelse(Heating_Fuel %in% c("Dung of animals", "Animal dung", "Dried cow dung", "Combustibles sólidos"), "Other biomass", 
                                                  ifelse(Heating_Fuel %in% c("Kerosene / firewood / charcoal?", "Paraffin", "Kerosene", "Queroseno"), "Kerosene",
-                                                        ifelse(Heating_Fuel %in% c("Oil and diesel", "Oil central heating", "Solid fuel or oil central heating"), "Liquid fuels",
-                                                               ifelse(Heating_Fuel %in% c("Coal"), "Coal","Unknown")))))))))%>%
+                                                        ifelse(Heating_Fuel %in% c("Oil and diesel", "Oil central heating", "Solid fuel or oil central heating", "Otros combustibles líquidos", "Heizoel", "Fuel, mazout, pétrole"), "Liquid fuels",
+                                                               ifelse(Heating_Fuel %in% c("Coal", "Wood, coal or oil stove", "Charbon, coke"), "Coal",
+                                                                      ifelse(Heating_Fuel %in% c("District heating"), "District heating", "Unknown"))))))))))%>%
   rename(HF_new = HF)
 
 # Education.Codes.All.1 <- Education.Codes.All %>%
@@ -467,10 +490,43 @@ data_joint_1 <- data_joint_0 %>%
                                             ifelse(religiosity == 4, "Orthodox",
                                                    ifelse(religiosity == 5, "Mixed Lifestyle", 
                                                           ifelse(religiosity == 6, "Other", religiosity)))))))%>%
+  mutate(children = ifelse(Country %in% c("BGD", "CYP", "CZE", "DNK", "GEO", "LTU"), hh_size - adults, children))%>%
+  mutate(adults   = ifelse(Country %in% c("IND", "ETH", "GRC", "EST", "SRB") & adults > hh_size, hh_size, adults))%>%
+  mutate(children = ifelse(Country %in% c("IND", "ETH", "GRC", "EST", "SRB"), hh_size - adults, children))%>%
+  mutate(urban_01 = ifelse(urban_type_2 < 4 & Country == "FRA",0,
+                           ifelse(urban_type_2 > 3 & Country == "FRA",1,urban_01)))%>%
+  mutate(car.01 = ifelse((Country == "ROU" | Country == "FRA") & number_of_cars > 0,1,
+                         ifelse((Country == "ROU" | Country == "FRA") & number_of_cars == 0, 0, car.01)))%>%
+  # Renting variable for France, Germany, India and Spain
+  mutate(Renting = ifelse(Country == "FRA" & tenant %in% c(1,2), "Owner",
+                          ifelse(Country == "FRA" & tenant %in% c(4,5), "Renting",
+                                 ifelse(Country == "FRA" & tenant %in% c(3,6), "Other",
+                                        ifelse(Country == "DEU" & renting == 2, "Owner",
+                                               ifelse(Country == "DEU" & renting == 1, "Renting",
+                                                      ifelse(Country == "DEU" & renting == 3, "Other",
+                                                             ifelse(Country == "IND" & renting == 1, "Owner",
+                                                                    ifelse(Country == "IND" & renting == 2, "Renting",
+                                                                           ifelse(Country == "IND", "Other",
+                                                                                  ifelse(tenant %in% c(1,2), "Owner",
+                                                                                         ifelse(tenant %in% c(3,4), "Renting", 
+                                                                                                ifelse(tenant %in% c(5,6), "Other", NA)))))))))))))%>%
+  # Housing variable for Germany, France, Romania
+  mutate(House = ifelse(building_type == 1 & Country == "DEU", "Apartment building",
+                        ifelse(Country == "DEU" & (building_type == 2 | building_type == 3), "Two-family house",
+                               ifelse(building_type == 4 & Country == "DEU", "Single-family house",
+                                      ifelse(building_type == 5 & Country == "DEU", "Other",
+                                             ifelse(Country == "FRA" & housing_type %in% c(0,1), "Single-family house",
+                                                    ifelse(Country == "FRA" & housing_type %in% c(2,8), "Apartment building",
+                                                           ifelse(Country == "FRA", "Other",
+                                                                  ifelse(Country == "ROU" & house_type == 1, "Apartment building",
+                                                                         ifelse(Country == "ROU" & house_type == 2, "Single-family house",
+                                                                                ifelse(Country == "ROU", "Other", NA)))))))))))%>%
   filter(!is.na(hh_expenditures_USD_2014))%>%
-  select(- truck1.01, -pump.01, -solar.heater.01, -video.01, -cooker.01, -cooler.01, -sewing.machine.01, -sewing_machine.01,
-         - region, -ocu_hhh, -vacuum.01, -internet.access, -municipality, -clust, -printer.01, -density, -alphabetism, -freezer.01, -heater.01,
-         -income_year, -iron.01, -bicycle.01,
+  select(- truck1.01, -pump.01, -solar.heater.01, -video.01, -cooker.01, -cooler.01, -sewing_machine.01,
+         - region, -ocu_hhh, -vacuum.01, -internet.access, -municipality, -clust, -printer.01, -density, -alphabetism, -freezer.01, -heater.01, - house_type,
+         -income_year, -iron.01, -bicycle.01, -urban_type, -urban_type_2, -wall, -floor, -roof, -kerosene_ration, -industry_hhh, - number_of_cars, - housing_type_2,
+         - occupation_hhh, -hhh_occupation, -occupation, -electricity_free, -lpg_subsidy, -water_energy, - province_1, -space, - area, - house_age, - house_type, -housing_type,
+         - urban_identif, -urban_identif_2, -car.01b, - rooms, -nationality_1, - dwelling, - construction_year, - heating_type, - tenant, -renting, - building_type, - building_year,
          - gas_subsidy, -ely_subsidy, -ind_hhh_b, - lat_cen, -long_cen, -country_of_birth, - year, - month, - day)%>%
   left_join(Cooking.Codes.All.1,   by = c("cooking_fuel",  "Country_long"))%>%
   left_join(Lighting.Codes.All.1,  by = c("lighting_fuel", "Country_long"))%>%
@@ -488,9 +544,9 @@ data_joint_1 <- data_joint_0 %>%
   select(hh_id, Country, hh_weights, hh_size, adults, children,
          province, district, village, urban_01, Province, District,
          age_hhh, sex_hhh, ind_hhh, ISCED_new, Nationality, Ethnicity, Language, Religion, religiosity,
-         nationality, ethnicity, language, religion, cooking_fuel, heating_fuel, lighting_fuel, heating_fuel,
+         nationality, ethnicity, language, religion, cooking_fuel, heating_fuel, lighting_fuel, 
          water, toilet, # check
-         CF_new, HF_new, LF_new, WTR_new, TLT_new, electricity.access,
+         CF_new, HF_new, LF_new, WTR_new, TLT_new, electricity.access, Renting, House,
          hh_expenditures_USD_2014, hh_expenditures, hh_expenditures_pc,
          inc_gov_cash, inc_gov_monetary, Income_Group_5, Income_Group_10,
          starts_with("share_"), starts_with("exp_USD_"),
@@ -546,7 +602,7 @@ data_analysis_ISCED <- data_joint_1 %>%
   ungroup()%>%
   arrange(min_number, Country, number)
 
-# Three observations unique for Country-Religion
+# Four observations unique for Country-Religion
 
 data_analysis_Religion <- data_joint_1 %>%
   group_by(Country, Religion)%>%
@@ -646,6 +702,16 @@ Education.Codes.Aggregate <- distinct(data_joint_1, ISCED)%>%
   arrange(ISCED)%>%
   write_csv(., "0_Data/9_Supplementary Information/2_Codes/Education.Code.All.csv")
 
+Renting.Codes.Aggregate <- distinct(data_joint_1, Renting)%>%
+  arrange(Renting)%>%
+  mutate(Renting_code = 1:n())%>%
+  write_csv(., "0_Data/9_Supplementary Information/2_Codes/Renting.Code.All.csv")
+
+House.Codes.Aggregate <- distinct(data_joint_1, House)%>%
+  arrange(House)%>%
+  mutate(House_code = 1:n())%>%
+  write_csv(., "0_Data/9_Supplementary Information/2_Codes/House.Code.All.csv")
+
 # Country-specific codes
 
 Province.Codes.Aggregate <- distinct(data_joint_1, province, Province, Country)%>%
@@ -687,6 +753,8 @@ data_joint_split <- data_joint_1 %>%
   left_join(Water.Codes.Aggregate,       by = "WTR")%>%
   left_join(Toilet.Codes.Aggregate,      by = "TLT")%>%
   left_join(Education.Codes.Aggregate,   by = "ISCED")%>%
+  left_join(Renting.Codes.Aggregate,     by = "Renting")%>%
+  left_join(House.Codes.Aggregate,       by = "House")%>%
   # Country-specific
   left_join(Province.Codes.Aggregate,    by = c("Country", "province", "Province"))%>%
   left_join(District.Codes.Aggregate,    by = c("Country", "district", "District"))%>%
@@ -695,12 +763,12 @@ data_joint_split <- data_joint_1 %>%
   left_join(Language.Codes.Aggregate,    by = c("Country", "language", "Language"))%>%
   left_join(Religion.Codes.Aggregate,    by = c("Country", "religion", "Religion"))%>%
   select(-CF,-LF,-HF,-WTR,-TLT,-province,-Province,-district,-District,-nationality,-Nationality,
-         -ethnicity,-Ethnicity,-language,-Language,-religion,-Religion,
+         -ethnicity,-Ethnicity,-language,-Language,-religion,-Religion, - House, -Renting, 
          -cooking_fuel,-heating_fuel,-lighting_fuel,-water,-toilet)%>%
   select(hh_id, Country, hh_weights, hh_size, adults, children,
          Province_code, District_code, village, urban_01,
          age_hhh, sex_hhh, ind_hhh, ISCED, Nationality_code, Ethnicity_code, Language_code, Religion_code, religiosity,
-         CF_code, LF_code, HF_code, WTR_code, TLT_code, electricity.access,
+         CF_code, LF_code, HF_code, WTR_code, TLT_code, electricity.access, House_code, Renting_code,
          hh_expenditures_USD_2014, hh_expenditures, hh_expenditures_pc,
          inc_gov_cash, inc_gov_monetary, Income_Group_5, Income_Group_10,
          starts_with("share_"), starts_with("exp_USD_"),
@@ -708,15 +776,19 @@ data_joint_split <- data_joint_1 %>%
          ends_with(".01"),
          everything())%>%
   # delete derived values 
-  select(-exp_CO2_global,-exp_CO2_national,-exp_CO2_electricity,-exp_CO2_transport,
-         -burden_CO2_global,-burden_CO2_national,-burden_CO2_electricity,-burden_CO2_transport)%>%
+  select(-exp_CO2_global,-exp_CO2_national,-exp_CO2_electricity,-exp_CO2_transport, - exp_CO2_gas, - exp_CO2_EU, -exp_CO2_transport_EU, -exp_CO2_gas_direct, 
+         -burden_CO2_global,-burden_CO2_national,-burden_CO2_electricity,-burden_CO2_transport, -burden_CO2_gas, - burden_CO2_EU, -burden_CO2_transport_EU, -burden_CO2_gas_direct)%>%
   mutate_at(vars(hh_size,adults,children,hh_id,urban_01,age_hhh,sex_hhh,
                  Income_Group_5, Income_Group_10, electricity.access, ISCED, ends_with(".01")), list(~ as.integer(.)))
 
-rm(Cooking.Codes.Aggregate,Lighting.Codes.Aggregate,Heating.Codes.Aggregate,Water.Codes.Aggregate,Toilet.Codes.Aggregate,
+rm(Cooking.Codes.Aggregate,Lighting.Codes.Aggregate,Heating.Codes.Aggregate,Water.Codes.Aggregate,Toilet.Codes.Aggregate, House.Codes.Aggregate, Renting.Codes.Aggregate,
    Province.Codes.Aggregate,District.Codes.Aggregate,Nationality.Codes.Aggregate,Ethnicity.Codes.Aggregate,Language.Codes.Aggregate,Religion.Codes.Aggregate,Education.Codes.Aggregate)
 
 dir.create("../1_Carbon_Pricing_Incidence/1_Data_Incidence_Analysis/3_Collated_Database", showWarnings = FALSE)
+
+if(GTAP_year == 2017 & GTAP_version == "11C"){
+  write_parquet(data_joint_split, "../1_Carbon_Pricing_Incidence/1_Data_Incidence_Analysis/3_Collated_Database/Collated_Database_2017_11C.parquet")  
+}
 
 if(GTAP_year == 2017 & GTAP_version == "11B"){
   write_rds(data_joint_split, "../1_Carbon_Pricing_Incidence/1_Data_Incidence_Analysis/3_Collated_Database/Collated_Database_2017_11B.rds")  
