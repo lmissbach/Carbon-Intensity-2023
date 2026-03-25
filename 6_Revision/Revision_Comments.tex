@@ -1,0 +1,706 @@
+\documentclass[11pt]{article}
+
+% ------------------------------------------------
+% Packages
+% ------------------------------------------------
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath}
+\usepackage{xcolor}
+\usepackage{setspace}
+\usepackage{tcolorbox}
+\usepackage{enumitem}
+\usepackage{hyperref}
+
+\onehalfspacing
+
+% ------------------------------------------------
+% Formatting environments
+% ------------------------------------------------
+
+% Referee comment box
+\newtcolorbox{commentbox}{
+colback=gray!10,
+colframe=gray!40,
+boxrule=0.5pt,
+arc=2pt,
+left=6pt,
+right=6pt,
+top=6pt,
+bottom=6pt
+}
+
+% Author response
+\newenvironment{response}
+{\begin{quote}\color{black}}
+{\end{quote}}
+
+% Quoted manuscript change
+\newtcolorbox{revisionbox}{
+colback=white,
+colframe=black,
+boxrule=0.5pt,
+arc=2pt,
+left=6pt,
+right=6pt,
+top=6pt,
+bottom=6pt
+}
+
+% ------------------------------------------------
+% Title
+% ------------------------------------------------
+
+\title{Response to Editor and Referees\\
+\textbf{JEEM-D-25-01276} \\ 
+Compensation design for carbon pricing with horizontal heterogeneity: Evidence from 88 countries }
+
+\author{Leonard Missbach, Jan Christoph Steckel}
+
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\section*{Summary of Changes}
+
+\begin{itemize}
+\item TBD
+\item TBD
+\item TBD
+\end{itemize}
+
+\newpage
+
+% =================================================
+% EDITOR
+% =================================================
+
+\section*{Response to the Editor}
+
+\subsection*{General comment}
+
+\begin{commentbox}
+    Thank you for submitting your manuscript to the Journal of Environmental Economics and Management (JEEM).
+
+    I have now received two referee reports and have read the paper carefully myself. The referees differ in their overall recommendations -- Reviewer 2 recommends a revise-and-resubmit, while Reviewer 1 recommends rejection -- but both engage seriously with the paper and identify overlapping concerns. Taking these comments together, I am inviting you to revise and resubmit the manuscript.
+
+    The paper is long and could benefit from some trimming.  I flag a few specific areas below, but encourage broader editing for clarity and focus throughout. While it is important to respond thoroughly to all of the reviewers’ concerns, I will offer some guidance. 
+\end{commentbox}
+
+\begin{response}
+\begin{itemize}
+    \item Thank editor for opportunity to revise this work.
+    \item Confirm that all comments and suggestions have been addressed.
+    \item Agree with editor that the paper is extensive. Acknowledge that it has been shortened substantially.
+\end{itemize}
+\end{response}
+
+\begin{revisionbox}
+"Example for how a change in the text would look like in this document."
+\end{revisionbox}
+
+\subsection*{Comment 1}
+\begin{commentbox}
+    1. Both referees would like more details on the output variable construction (see Reviewer 2’s Comment 1 and Reviewer 1’s specific item A). I agree that more needs to be done to inform readers about how these measures are calculated and their limitations.
+\end{commentbox}
+
+\begin{response}
+    \begin{itemize}
+        \item Doable. I do not think that this will be a critical point. Highlight the needs and wishes of R1 and R2, explain where they are substantiated and not and how we addressed the substantiated points in the text.
+    \end{itemize}
+\end{response}
+
+\subsection*{Comment 2}
+\begin{commentbox}
+    2. Reviewer 1’s overarching Comment 1 raises an important conceptual issue. In particular, the reviewer questions whether the current definition of horizontal heterogeneity may reflect income variation measured at finer resolution. Engaging with this concern—potentially through alternative income definitions or additional discussion—will be important for clarity.
+\end{commentbox}
+
+\begin{response}
+    \begin{itemize}
+        \item Agree with the statement. Show how we addressed it (in brevity).
+        \item I think that the editor has not really understood the referee's comment or puts too much weight on it. Interestingly, the R1 even mentions to not have command of the literature. Let's discuss whether to address this comment with explanations only or changes in the text.
+        \item I tend towards adding a footnote in the text, answering extensively to R1 and in brevity to the Editor. Adding measure of total heterogeneity is an excellent point, though.
+    \end{itemize}
+\end{response}
+
+\subsection*{Comment 3}
+\begin{commentbox}
+    3. I thought Reviewer 2 made several helpful points regarding the machine-learning approach (Comment 2). In particular, the suggestion to pool countries while allowing for country-specific indicators merits careful consideration, unless there is a compelling reason to prefer the current approach.
+\end{commentbox}
+
+\begin{response}
+    \begin{itemize}
+        \item I think that we have some very compelling reasons to prefer the current approach (see below). Suggest to answer extensively to R2 and in brevity to the Editor.
+    \end{itemize}
+\end{response}
+
+\subsection*{Comment 4}
+\begin{commentbox}
+    4. Both referees and I found the clustering exercise less convincing than the supervised ML analysis earlier in the paper. Reviewer 2 suggests including the horizontal distribution coefficient, which would be interesting to explore, while Reviewer 1 is more skeptical of the exercise overall. This may be a place to trim the paper and reconsider how this material is framed.
+\end{commentbox}
+
+\begin{response}
+    \begin{itemize}
+        \item Calls for cutting the clustering exercise OR shifting it to the Appendix and referring to it only briefly. Section in paper should focus more on discussing the results rather than extensively describing the clusters.
+        \item I also think that we can cut a lot when describing countries and features, focusing indeed on the main messages.
+    \end{itemize}
+\end{response}
+
+\subsection*{Comment 5}
+\begin{commentbox}
+    5. Both referees flag a disconnect between the theory section and the empirical analysis. This also seems like a natural place where the presentation could be tightened or some material moved to the appendix.
+\end{commentbox}
+
+\begin{response}
+    \begin{itemize}
+        \item Calls for cutting the model or strengthen relationship later in the paper. I would tighten the model section -- which I like in general --, but connect the discussion section more closely to this model. Then the discussion could be cut as well, potentially supplemented by a table or so.
+    \end{itemize}
+\end{response}
+
+\subsection*{Comment 6}
+\begin{commentbox}
+    6. I agree with Reviewer 2’s Minor Point 4 that the paper does not directly quantify the impact of different compensation designs, and you may therefore wish to reconsider the title.
+\end{commentbox}
+
+\begin{response}
+    \begin{itemize}
+        \item There will not be a quantification of different compensation designs, thus, changing the title may be necessary or, alternatively, it would need to be argued why the title does matter.
+        \item Interesting point, given that we decided to include compensation in fear that editors would not understand why our analysis is useful.
+    \end{itemize}
+\end{response}
+
+\clearpage
+
+\section*{Response to Referee 1}
+
+\subsection*{General comment}
+
+\begin{commentbox}
+    This paper is an investigation of the heterogeneous burdens that climate policy imposes on households and, more specifically, the predictors of those household-level burdens. The aim is to use this investigation to inform the design of compensation schemes to offset unequal costs of climate policy. A key novelty of the paper is its geographic scope: the authors collect and analyze data from 88 countries, whereas most of the related existing literature has (I believe) a single-country scope. The key finding advertised by the authors is large heterogeneity, the majority of which is categorized as heterogeneity across the "horizontal" distribution rather than the "vertical distribution"; the latter refers to the distribution of household income quantile, while the former refers to differences within (or conditional on) income quantile. The implication put forward by the authors is that compensation schemes to correct for undesirable distributional effects of climate policies are far from one-size-fits-all and likely do poorly when they fail to consider differences in households beyond income.
+
+    I find it quite believable that income on its own is a poor proxy for climate policy burden, and I think the environmental economics consensus does fail to internalize this, to the detriment of the discipline's recommendations. I also appreciate the ambitious effort to study the question of equity-focused compensation schemes across a huge swath of the world. That said, I think the paper is difficult to read and not streamlined to prove the key point. Moreover, the challenges of integrating data from 88 countries makes it hard for me trust the results related to feature importance and country clustering. I don't expect the authors to reduce the geographic scope of the paper, but I think the paper could be significantly more compelling with a focused effort to clarify the main point and trim away less relevant components.
+Below are a few overarching comments, followed by some more specific ones.
+\end{commentbox}
+
+\begin{response}
+    \begin{itemize}
+        \item Says its difficult to read and not streamlined to prove the key point. Should clarify the main point and trim away less relevant components.
+        \item Agree with this statement, bluntly, and highlight briefly what we have done to reduce redundancy.
+    \end{itemize}
+\end{response}
+    
+\subsection*{Comment 1}
+
+\begin{commentbox}
+    Treatment of vertical vs. horizontal distributional effects: The key measure of horizontal heterogeneity in the descriptive analysis is differences in household carbon intensity within expenditure quintile. I do not have command of the literature on vertical vs. horizontal distributional impacts, and I'm willing to believe that "across vs. within quantile" is how the distinction is made. But to me, what matters is the income (or better yet wealth) vs. non-income distinction. Thus the fact that there is more heterogeneity in carbon intensity within quintile than across quintile is misleading, because some of that within-quintile heterogeneity is nonetheless a function of income. Put differently, if a government knows household expenditure/income at a finer level than quintile, then it can use that info to improve its compensation scheme. By the same token, quintile seems arbitrary; what would the key figure(s) look like if decile or something even finer were used?
+\end{commentbox}
+
+\begin{response}
+    \begin{itemize}
+        \item This comment is not entirely correct. Some explanations and careful considerations, pointing to single sentences, may help address this concern.
+        \item Highlight that this exercise (horizontal vs. vertical) alludes only to the existing literature with its traditional focus on this measure. Indeed, we transcend these analytical lenses and focus on heterogeneity overall. Should indeed be made clearer.
+        \item Selection of quintile is not arbitrary, as this is the analytical lens that is used in much of the existing literature, e.g., to underscore that climate policy has regressive and thus undesirable properties. If household income is a poor predictor, using deciles or even percentiles would not change the main message of the descriptive analysis, even though I acknowledge that the main message could be difficult to grasp.
+        \item Comment can be addressed with a mix of explanation and cosmetic changes in the text.
+        \item Address instead with exchanging Figure 1. Figure 2 has a different emphasis. Comparison facilitates identifying a) where heterogeneity is largest, b) where between income group differences drive changes compared to within income group differences. Drives home the same point. Figure 1 originally will go to the Appendix, however, as it illustrates nicely that traditional comparisons neglect heterogeneity among poorest households.
+        \item Use Rsquared of sparse model to explain that income differences are a poor predictor.
+    \end{itemize}
+\end{response}
+
+\subsection*{Comment 2}
+
+\begin{commentbox}
+    Theoretical framework: I can appreciate the implicit pressure in economics to include a theory section in one's paper, but I don't find this six-page section to be worth the space, especially given the technical challenges of the cross-country analysis and the 100-plus page appendix. I think there are some good points about government's challenge of designing a compensation scheme for climate policy, as well as the researcher's challenge of designing a policy-relevant analysis here. But the math seems unnecessary for the rest of the paper, and there are some points that seem irrelevant. For example, do the authors need to assume that government decarbonization targets are exogenous? Is that assumption used anywhere in the rest of the paper. I see that the distributional effects of climate policy can depend on policy stringency, but that seems more like something to acknowledge as a limitation than something to assume away.
+\end{commentbox}
+
+\begin{response}
+    \begin{itemize}
+        \item The assumption of an exogeneous mitigation target are relevant to motivate why the govenment would be interested in mitigation in the first place, i.e., to trim the model.
+        \item As per assumptions, the distributional effects -- as we can analyze them here -- do NOT depend on stringency. Agree that this is a limitation, which, however, is precisely reflected in our assumption.
+        \item Footnote could do the job.
+        \item This comment can be addressed with a mix of explanation and larger (cutting text) and smaller (adding explanations) edits to the text.
+    \end{itemize}
+\end{response}
+
+\subsection*{Comment 3}
+
+\begin{commentbox}
+    R-squared improvement from the sparse BRT model to the rich one: If I focus on the average R-squared value reported by the authors in the model accuracy subsection of Section 4, 23\% vs. 4\% is a large relative improvement. But 23\% is not super-inspiring as an absolute measure of predictive power. These numbers really emphasize the point that household expenditure is highly insufficient for the task at hand, but also that including a much broader set of attributes fails to solve the problem. This weakens the contribution of the paper for me.
+\end{commentbox}
+
+\begin{response}
+    \begin{itemize}
+        \item Well acknowledged. We discuss this quite openly -- given measurement error and sometimes comparably few data points, a low R\textsuperscript{2} is a feature of the paper and not a bug, as standard economic models imply that R\textsuperscript{2} of household expenditures themselves are large, i.e., transfers differentiated by income are sufficient to address heterogeneity.
+        \item Make this point more explicit in the text and explain it carefully here.
+        \item The referee may like our approach to correct feature importance values with R\textsuperscript{2} for the clustering exercise, which may be, however, shifted to the Appendix.
+    \end{itemize}
+\end{response}
+
+\subsection*{Comment 4}
+
+\begin{commentbox}
+    Variable data availability across countries: The authors are clearly making a concerted effort to optimize given big differences in the scope of available household features across countries. But I am incredulous about the value of the exercise of clustering countries and identifying cross-country feature importance. The overarching takeaway that every country is different is eminently believable. But it's hard for me to believe that the specific results are robust to different availability of household features. It seems likely that governments have access to a more precis and expansive set of household features than the authors in many cases, and it seems quite plausible that if the feature set were to expand for some of the countries with the sparsest sets in this paper, then the results would change meaningfully. I'm sorry that I don't have a specific recommendation for further testing in this vein, but I think more is needed in order to be convincing here.
+\end{commentbox}
+
+\begin{response}
+    \begin{itemize}
+        \item Our "overarching takeaway" is an implicit finding that results from our analysis.
+        \item I would doubt that many governments had better data than we do for most of the countries.
+        \item One way forward could be to cut the clustering exercise to a minimum and interpret the results rather than describing in great detail.
+    \end{itemize}
+\end{response}
+
+\subsection*{Comment 5}
+
+\begin{commentbox}
+    External validity to the present: I appreciate the authors' acknowledgement that cleaner energy technologies are on the rise, while the data they are using is from 2017 or prior. This limitation is, of course, pervasive in economics research, as retrospective analysis so often uses data from prior to steep rises in renewables penetration and electrification. But this fact (of pervasiveness) doesn't resolve the problem here, and the problem seems particularly large in this context, especially as an interaction with other sources of error that are hard to get around in this global data context.
+\end{commentbox}
+
+\begin{response}
+    \begin{itemize}
+        \item With the respect to external validity to the present, I fear that recently changing consumption patterns have an even greater impact on the analysis compared to changing energy technologies. 
+        \item Discuss role of supplementary analysis with "electricity sector carbon price" as a remedy and illustrate findings more carefully. This analysis can help to discuss how deploying cleaner technologies would change heterogeneity and in which direction.
+    \end{itemize}
+\end{response}
+
+\subsection*{Comment A}
+
+\begin{commentbox}
+    Input-output data for carbon intensity calculations: My preconceived notion coming into the paper, which I think is not uncommon among environmental economists, is that input-output analysis/data is pretty inaccurate. Can the authors do more to allay this concern?
+\end{commentbox}
+
+\begin{response}
+    \begin{itemize}
+        \item This concern is substantiated, but standard for those kind of analyses. Luckily, we use IO-data with decent coverage for LMIC, a point that should be strengthened in response.
+        \item Point to other publications in this journal that were relying on IO-data.
+    \end{itemize}
+\end{response}
+
+\subsection*{Comment B}
+
+\begin{commentbox}
+    I think the authors should define "horizontal heterogeneity" explicitly in the introduction.
+\end{commentbox}
+
+\begin{response}
+    \begin{itemize}
+        \item I think we should step away from vertical/horizontal or extend this duality by introducing "overall heterogeneity". Introducing these terms in the introduction is an excellent point, let's see, how to integrate it.
+    \end{itemize}
+\end{response}
+
+\subsection*{Comment C}
+
+\begin{commentbox}
+    On page 3, line 95, the authors define "additional costs $c_i,p <= 0$". Aren't these costs positive? Am I misunderstanding?
+\end{commentbox}
+
+\begin{response}
+
+Indeed, our definition of additional costs may have caused confusion. As you state correctly, the costs are positive. We had chosen to define costs as negative, as costs influence our expression of incidence negatively. We have fixed this by corrections in line X and line Y as follows:
+
+\begin{revisionbox}
+    The introduction of climate policy \textit{p} leads to additional costs $c_{i,p}\geq 0$ in household \textit{i}.
+\end{revisionbox}
+
+\begin{revisionbox}
+The difference between the costs of climate policy and the benefits of compensation policy leads to a na\text{\"i}ve incidence $\pi_{i}$ in household \textit{i}, where
+
+\begin{equation} \label{eq:pi}
+    \pi_{i} = \underbrace{-\sum_{p\in P^{\prime}} c_{i,p}}_{\text{costs from climate policy ($\leq 0$)}} + \underbrace{\sum_{t\in T} b_{i,t} + b_{i,\varepsilon}}_{\text{benefits from compensation policy ($\geq 0$)}}
+\end{equation}
+\end{revisionbox}
+
+\end{response}
+
+\subsection*{Comment D}
+
+\begin{commentbox}
+    The first full paragraph on page 3 is confusing to me. Pass-through of energy costs is widely documented to vary across space and across industries (see especially Ganapati, Shapiro, and Walker for cross-industry heterogeneity). It sounds like this heterogeneous pass-through is assumed away by the authors. Do I have that right? If so, I'm not sure the authors can avoid such an assumption, but I think there should be a clearer acknowledgement of the issue with that. Pass-through is a component of the first-order approximation of policy impacts on consumer surplus, so it's not nothing to assume it away.
+\end{commentbox}
+
+\begin{response}
+    \begin{itemize}
+        \item Cite this reference.
+        \item Discuss more critically the perfect pass-through assumption and explain in the answer that we are thus explicitly studying short-term, first-order figures. I would say that, in the short-term, producers would pass-through any additional cost -- potentially use recent price hikes in oil market as an example (to show that final consumption prices could increase even further than increase in basic input fuels).
+    \end{itemize}
+\end{response}
+
+\subsection*{Comment E}
+
+\begin{commentbox}
+    The horizontal distribution coefficient (page 14, line 395) is one sensible measure of differences in expenditure within expenditure quintile. But what about the overall variance of expenditure within quintile? I.e., what if there are long tails but the bulk of households within quintile have very similar expenditures? A measure that captures this seems informative on top of the one chosen by the authors.
+\end{commentbox}
+
+\begin{response}
+    \begin{itemize}
+        \item Excellent comment, agree, we should think about it and potentially include it.
+        \item Glad that the referee did not dislike this concept altogether.
+    \end{itemize}
+\end{response}
+
+\subsection*{Comment F}
+
+\begin{commentbox}
+    Page 14, line 417, the authors write that the BRT algorithm gives "higher weights to observations with larger prediction errors". I would have thought the opposite?
+\end{commentbox}
+
+\begin{response}
+    \begin{itemize}
+        \item Consider it resolved with one short comment.
+    \end{itemize}
+\end{response}
+
+\subsection*{Comment G}
+
+\begin{commentbox}
+    On the topic of weights: I didn't notice the authors explaining how survey weights are incorporated into the BRT algorithm. In my experience the treatment of weights is super important in machine learning - that is, the results of ML modeling are pretty sensitive to how observations are weighted.
+\end{commentbox}
+
+\begin{response}
+    \begin{itemize}
+        \item Survey weights - need to check how they are incorporated. I think they are not, for the reason that the author is mentioning. 
+        \item It is a good point, though. Solution: Discuss in footnote how inclusion of survey weights may change results.
+    \end{itemize}
+\end{response}
+
+\subsection*{Comment H}
+
+\begin{commentbox}
+    I don't think the authors note what the acronym SHAP (values) stands for.
+\end{commentbox}
+
+\begin{response}
+    \begin{itemize}
+        \item We can do that quickly.
+    \end{itemize}
+\end{response}
+
+\subsection*{Comment I}
+
+\begin{commentbox}
+    The Section 4 title uses the word "determinants" of heterogeneous carbon intensity, which implies causality. The authors do a great job avoiding causal language elsewhere (and the analysis doesn't need causality to be informative), but here I think the word determinants should be changed.
+\end{commentbox}
+
+\begin{response}
+    \begin{itemize}
+        \item Well, in this sense, they are in fact determinants of the variation that can be explained. I will screen the respective parts and address it where necessary.
+    \end{itemize}
+\end{response}
+
+\subsection*{Comment J}
+
+\begin{commentbox}
+    Footnote 30: The authors write "it can be shown". But it reads to me like it *should* be shown somewhere (in the appendix, though admittedly I don't want the appendix to be longer than it already is), or that a source that does this should be cited.
+\end{commentbox}
+
+\begin{response}
+    \begin{itemize}
+        \item It is an elegant mathematical expression, happy to include it in the Appendix or as an answer to this comment, but certainly not prominently in the paper.
+    \end{itemize}
+\end{response}
+
+\subsection*{Comment K}
+
+\begin{commentbox}
+    Line 734, page 25, "more compelling" is nebulous and subjective without further explanation.
+\end{commentbox}
+
+\begin{response}
+    \begin{itemize}
+        \item Understood. Solvable.
+    \end{itemize}
+\end{response}
+
+\subsection*{Comment L}
+
+\begin{commentbox}
+    The "identification of country clusters" subsection on page 28 seems like it ought to come before, or at least as Figure 3 is introduced.
+\end{commentbox}
+
+\begin{response}
+    \begin{itemize}
+        \item Understood. Solvable.
+    \end{itemize}
+\end{response}
+
+\subsection*{Comment M}
+
+\begin{commentbox}
+    Page 33, lines 908-909, I recommend being clearer about what the "equity-pollution dilemma" is.
+\end{commentbox}
+
+\begin{response}
+    \begin{itemize}
+        \item Understood. Solvable. Even if it could potentially bore the readership.
+    \end{itemize}
+\end{response}
+
+\subsection*{Comment N}
+
+\begin{commentbox}
+    Page 34, lines 926-928, I don't follow what "effective" means in the context of labor tax reduction. It sounds like the point is that if the burden falls relatively more on richer households, than lowering labor taxes may offset that. But that defines "effective" in a specific, subjective way, since not everyone wants to offset progressive cost burdens. I might be understanding.
+\end{commentbox}
+
+\begin{response}
+    \begin{itemize}
+        \item Effective in the sense that it reduces overall heterogeneity of additional impacts. We do not necessarily care about whether effects are regressive or progressive, we just want to minimize overall heterogeneity.
+        \item Can be explained with brief comment, I think.
+    \end{itemize}
+\end{response}
+
+\subsection*{Comment O}
+
+\begin{commentbox}
+    Page 34, lines 944-945, don't the authors mean *increase* the price elasticity, not "reduce"? I suppose it depends on whether one is referring to absolute value elasticity or not. But I think we want to encourage better substitutes for the consumption that is being regulated/taxed, which would translate to more price-elastic consumers.
+\end{commentbox}
+
+\begin{response}
+    \begin{itemize}
+        \item Depends on how you define it, indeed. Increasing price, increasingly lower demand would be decreasing price elasticity, increasing the absolute value elasticity.
+        \item Make clearer in the text and answer correspondingly.
+    \end{itemize}
+\end{response}
+
+\clearpage
+
+\section*{Response to Referee 2}
+
+\subsection*{General comment}
+
+\begin{commentbox}
+    Thank you for submitting your paper for consideration at JEEM. It was a pleasure reading it. Below I list some recommendations/points for clarification that, in my view, can help strengthen some arguments.
+\end{commentbox}
+
+\begin{response}
+    \begin{itemize}
+        \item Great.
+    \end{itemize}
+\end{response}
+    
+\subsection*{Comment 1}
+
+\begin{commentbox}
+    Household-level carbon intensity: My understanding is that you use country-by-sector level data from GTAP to extrapolate household-level emission shares (as a fraction of their total expenditure). Is this correct? In any case, clarifications are needed.
+\end{commentbox}
+
+\begin{response}
+    \begin{itemize}
+        \item No, GTAP includes direct emissions from household consumption. Indirect emissions are distributed to final consumption of households according to final household demand. (Need to check this.)
+    \end{itemize}
+\end{response}
+
+\subsubsection*{Comment 1a}
+
+\begin{commentbox}
+    How are emissions from household transportation calculated? I ask about this sector specifically because it seems to be a key driver of heterogeneity (e.g., Figures B.10.2 and B.10.3). Does the process incorporate annualized production emissions, or only fuel use from driving? The only hint that I could get for this question is by looking up the corresponding sector from GTAP, which I believe is: “Land transport and transport via pipelines (otp)” (Appendix, page 61). I wonder if this is more representative of emissions from the transportation of goods (not people).
+\end{commentbox}
+
+
+\begin{response}
+    \begin{itemize}
+        \item Annualized production emissions occur for households that report buying a car. The largest chunk will be fuels from driving. Can be clarified with footnote and more extensive answer to this comment.
+    \end{itemize}
+\end{response}
+
+\subsubsection*{Comment 1b}
+
+\begin{commentbox}
+    Are motorcycles and cars assumed to have the same emissions factors?
+\end{commentbox}
+
+\begin{response}
+    \begin{itemize}
+        \item Buying a motorcycle or car have different implications as they refer to different GTAP sectors. However, direct transport emissions are calculated based on expenditures on fuels -- and both motorcycle and car owners use similar fuels. So it is an accurate representation. Address with comment.
+    \end{itemize}
+\end{response}
+
+\subsubsection*{Comment 1c}
+
+\begin{commentbox}
+    Are all cars assumed to have the same emissions factors? This could be problematic for your analysis, in case richer households have more fuel-efficient vehicles, for example.
+\end{commentbox}
+
+\begin{response}
+    \begin{itemize}
+        \item Excellent example to demonstrate the shortcoming of using undifferentiated expenditures (instead of quantities) as a basis for emissions calculations. More fuel-efficient vehicles, however, would be reflected in lower expenditures on emissions (per distance driven).
+    \end{itemize}
+\end{response}
+
+\subsubsection*{Comment 1d}
+
+\begin{commentbox}
+    How about the emissions factors assumed for public transport?
+\end{commentbox}
+
+\begin{response}
+    \begin{itemize}
+        \item Is a different GTAP sector. Explain in comment.
+    \end{itemize}
+\end{response}
+
+\subsubsection*{Comment 1e}
+
+\begin{commentbox}
+    Overall, simplifying assumptions related to the points above might mask substantial heterogeneity across households, so I wonder if this process should be refined with complementary data sources.
+\end{commentbox}
+
+\begin{response}
+    \begin{itemize}
+        \item This aspect can be resolved quite quickly. This is not what I would be worried about when using GTAP and household data combined.
+    \end{itemize}
+\end{response}
+
+\subsection*{Comment 2}
+
+\begin{commentbox}
+    Machine learning approach: I like the idea of using machine learning to explore heterogeneity and variable importance. However, I have a few recommendations that may help to better leverage advantages of ML.
+\end{commentbox}
+
+\begin{response}
+    \begin{itemize}
+        \item Great.
+    \end{itemize}
+\end{response}
+
+\subsubsection*{Comment 2a}
+
+\begin{commentbox}
+    Why did you train country-specific models separately? One of the advantages of ML is flexibility in modeling complex relationships. In theory, you could train a single model that includes (at most 88) country indicators. This should be enough for your tree-based algorithm to “learn” that relationships are different depending on the country. I cannot be sure, but I imagine that this could help improve prediction accuracy for smaller countries (that have a small number of observations for training). I would therefore recommend training a single model, using cross-validation stratified by country (i.e., each CV fold should contain one-fifth of the data from each country).
+\end{commentbox}
+
+\begin{response}
+    \begin{itemize}
+        \item We do this because we are interested in understanding heterogeneity for the sake of compensation design. Since compensation design is (most often) national responsibility, we use the national lens here. Also, highlight that training a model with millions of observations takes exponentially more time (check this argument). Problem is also that outcomes can be difficult to compare since they could represent substantially different energy systems. In addition, not all predictors are available in every country, which would limit the model opportunities.
+        \item Will reject this recommendation with extensive explanation.
+    \end{itemize}
+\end{response}
+
+\subsubsection*{Comment 2b}
+
+\begin{commentbox}
+    I do not see value-added for separate ML models for countries with few available variables or few training observations. For those cases, the advantages of ML are lost, and simpler OLS predictions would perhaps have similar performance.
+\end{commentbox}
+
+\begin{response}
+    \begin{itemize}
+        \item Sure, but it will definitely not be worse than OLS (I think, should test) and the costs are low. Additionally, OLS cannot really tell about which factors are most important to explain heterogeneity in outcome. 
+    \end{itemize}
+\end{response}
+
+\subsubsection*{Comment 2c}
+
+\begin{commentbox}
+    My recommendation above from point a requires you to restrict the analysis to a set of countries for which the same covariates are available. In my view, this is not an issue, but rather would improve the interpretability of results, putting all countries “on equal grounds.” I would recommend focusing on covariates that are widely available. Also, I wonder if some missing values the “electricity access” variable could be filled by assuming 100\% coverage in developed economies (if this has not been done already).
+\end{commentbox}
+
+\begin{response}
+    \begin{itemize}
+        \item I disagree, unfortunately, for good reasons, as outlined above. 
+        \item For example, what would be the matter of including electricity access, if everybody has electricity access? Than, this is not a feature that we could exploit.
+        \item Need to think carefully how to include cosmetic changes that allude to R2's ideas without implementing their suggestion.
+    \end{itemize}
+\end{response}
+
+\subsection*{Comment 3}
+
+\begin{commentbox}
+    Clustering: Why isn’t the horizontal distribution coefficient used for clustering? I think that your framework allows a nice separation of countries into four different cells, depending on vertical and horizontal distribution, as illustrated in Figure 2. Then, different compensation strategies should be considered depending on which cell a given country is part of. It therefore seems natural to focus on clustering along those two dimensions, with other covariates serving only for some refinement.
+\end{commentbox}
+
+\begin{response}
+    \begin{itemize}
+        \item I think I have a comment or footnote on this issue somewhere -- possibly, because horizontal heterogeneity is precisely what we wish to explain here. Need to think about it. Potentially, include overall heterogeneity as an additional feature.
+        \item This comment shows, however, that R2 did not fully understand the difference of the descriptive analysis and the clustering exercise. 
+        \item Need to think about it.
+    \end{itemize}
+\end{response}
+
+\subsection*{Comment 4}
+
+\begin{commentbox}
+    Title: Since you do not quantify the impact of different compensation designs, I believe that the current title is misleading. Also, I would recommend mentioning both vertical and horizontal heterogeneity in the title.
+\end{commentbox}
+
+\begin{response}
+    \begin{itemize}
+        \item Interesting suggestion. Should think about it carefully then.
+    \end{itemize}
+\end{response}
+
+\subsection*{Comment 5}
+
+\begin{commentbox}
+    Descriptives: The country-level differences from Figure 1 are interesting, but it would be nice to know a few more details about which sectors are mostly driving these patterns. Some descriptives of expenditure shares by country would go a long way (perhaps in the Appendix).
+\end{commentbox}
+
+\begin{response}
+    \begin{itemize}
+        \item We have a section on these sectors and tons of supplementary material. Will highlight those analyses more carefully and potentially highlight/add further analyses in the Appendix.
+    \end{itemize}
+\end{response}
+
+\subsection*{Comment 6}
+
+\begin{commentbox}
+    Footnote 4: I would move this earlier, around the discussion of assumptions on top of page 5.
+\end{commentbox}
+
+\begin{response}
+    \begin{itemize}
+        \item Fine for me. 
+    \end{itemize}
+\end{response}
+
+\subsection*{Comment 7}
+
+\begin{commentbox}
+    Sometimes you refer to “chapters” of the paper, when you should say “sections.”
+\end{commentbox}
+
+\begin{response}
+    \begin{itemize}
+        \item Solvable.
+    \end{itemize}
+\end{response}
+
+\subsection*{Comment 8}
+
+\begin{commentbox}
+    Assumption on “zero direct emissions from biomass, firewood, and charcoal.” I understand the arguments about informal markets/difficult enforcement for biomass and firewood, but it seems less defensible for charcoal (especially in slightly more developed economies). Can you provide references for this?
+\end{commentbox}
+
+\begin{response}
+    \begin{itemize}
+        \item Will need to look into this, but given that charcoal is not a fossil emissions source, if I am not mistaken, this assumption can be defended following IPCC definitions.
+    \end{itemize}
+\end{response}
+
+\subsection*{Comment 9}
+
+\begin{commentbox}
+    Footnote 36: This footnote is longer than a few paragraphs in the main text. Is it really necessary? Try to shorten it, or perhaps move some of this discussion elsewhere.
+\end{commentbox}
+
+\begin{response}
+    \begin{itemize}
+        \item It is, but it is also sort of interesting. I feel that this example illustrates the direct application of our analysis to real world policy design. We can shorten it for sure, though.
+    \end{itemize}
+\end{response}
+
+\subsection*{Comment 10}
+
+\begin{commentbox}
+    In my view, the current version of Section 5 is disconnected from the nice framework from Section 2. I would recommend making more explicit connections/statements about the impact of different compensation strategies, depending on the current vertical and horizontal distribution coefficients (that are based solely on policy costs).
+\end{commentbox}
+
+\begin{response}
+    \begin{itemize}
+        \item I am not sure whether I understand the recommendation for 100\%, but I agree that we should think about how to integrate the framework and the discussion even more.
+    \end{itemize}
+\end{response}
+
+\clearpage
+
+\clearpage
+
+\end{document}
