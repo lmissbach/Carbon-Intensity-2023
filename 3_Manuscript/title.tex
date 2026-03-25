@@ -1,0 +1,93 @@
+\documentclass[12pt, a4paper]{article}
+\usepackage[utf8]{inputenc}
+
+\usepackage[a4paper,top=3cm,bottom=2cm,left=2.5cm,right=2.5cm,marginparwidth=2.55cm]{geometry}
+%\usepackage[utf8]{inputenc}
+%\usepackage[T1]{fontenc}
+\usepackage{adjustbox}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{authblk}
+\usepackage[ngerman, english]{babel}
+\usepackage{booktabs}
+\usepackage{lineno}
+\usepackage{csquotes}
+\usepackage{float}
+\usepackage{makecell}
+\usepackage[maxfloats=256]{morefloats}
+\usepackage{graphicx}
+\usepackage{longtable}
+\usepackage{lscape}
+\usepackage[skip = 1pt, indent = 20pt]{parskip}
+\usepackage{pgffor}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{setspace}
+\usepackage{tabularx}
+\usepackage{threeparttablex}
+\usepackage{xcolor}
+\usepackage{xtab}
+\usepackage{hyperref}
+
+\hypersetup{
+    %pdftitle={Heterogeneity in carbon intensity of consumption},
+    % pdfpagemode=FullScreen,
+    %linkbordercolor = 0 1 1
+}
+
+\maxdeadcycles = 1000
+
+\onehalfspace
+
+% everything concerning biblatex
+
+\usepackage[backend = biber,
+            style=authoryear-icomp,
+            citestyle=authoryear-comp,
+            url=false,
+            isbn=false,
+            doi=true,
+            % doi=false,
+            maxcitenames=2,
+            uniquelist=false,
+            date=year,
+            uniquename=false,
+            sorting=ynt,
+            sortcites]{biblatex}
+
+\addbibresource{5_Literature/Literature.bib} % TBD
+
+% Setup
+\graphicspath{{../1_Figures/}}
+
+% new environment
+
+\newenvironment{subcaption2}
+{\strut
+\vspace{-5pt}
+\begin{minipage}[b]{0.95\textwidth}
+  \hspace*{-\parindent}
+  \footnotesize}
+ {\end{minipage}}
+
+% For continous counting in subfigures
+\renewcommand*{\thesubfigure}{\thefigure.\arabic{subfigure}}
+
+ % Title
+\title{Compensation design for carbon pricing with horizontal heterogeneity: Evidence from 88 countries\footnote{We thank Florian Nachtigall, Lennart Stern, Franziska Klein, Linus Mattauch, Michael Jakob, Karolina Rütten, Felix Knopp, and Thomas Sterner for helpful comments and suggestions. We thank Marlene Merchert, Charlotte Buder, and Paula Blechschmidt for great research assistance. 
+
+Both authors acknowledge funding through the European Commission’s Horizon Europe Programme (101056873, ELEVATE and 101069880, AdJUST) and Deutsche Gesellschaft für Internationale Zusammenarbeit (GIZ, 812388773, Förderung sozial akzeptierter CO\textsubscript{2}-Bepreisung). Further, both authors acknowledge financial support used for data procurement from the Federal Ministry of Education and Research (BMBF, 03SFK5J0, Ariadne). Leonard Missbach acknowledges funding from the German Federal Environmental Foundation (DBU). Beyond, there are no further interested parties from which both authors have received significant financial support. Both authors, their close relatives or partners do not hold any paid or unpaid positions as officers, directors, or board members of relevant non-profit organizations or profit-making entities. No other party had a right to review and edit the manuscript prior to its circulation.}}
+
+%\author[]{}
+\author[1]{Leonard Missbach\footnote{Corresponding author: \href{mailto:leonard.missbach@pik-potsdam.de}{leonard.missbach@pik-potsdam.de}. Potsdam Institute for Climate Impact Research, P.O. Box 60 12 03, 14412 Potsdam, Germany}}
+\author[1,2]{Jan Christoph Steckel}
+\affil[1]{\small Potsdam Institute for Climate Impact Research (PIK), Potsdam, Germany}
+\affil[2]{\small Technical University of Munich, Munich, Germany}
+
+%\date{October 2024}
+
+\begin{document}
+
+\maketitle
+
+\end{document}
