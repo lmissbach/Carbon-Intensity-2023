@@ -5,7 +5,7 @@
 
 if(!require("pacman")) install.packages("pacman")
 
-p_load("boot", "broom", "countrycode", "cowplot", "DALEXtra", "eulerr","fixest", "ggpubr", "ggrepel",
+p_load("arrow","boot", "broom", "countrycode", "cowplot", "DALEXtra", "eulerr","fixest", "ggpubr", "ggrepel",
        "ggsci", "Hmisc", "knitr", "kableExtra", "marginaleffects", "margins", "Metrics",
        "openxlsx", "pdp","rattle", "scales", "SHAPforxgboost","tidymodels", "tidyverse", "vip", "xgboost", "xtable")
 
@@ -16,7 +16,9 @@ set.seed(2023)
 
 GTAP_year <- 2017
 
-GTAP_version <- "11B"
+GTAP_version <- "11C"
+
+old_root <- "T:/MSA/papers_internal/work_in_progress/Mi_Homogenized_Datainfrastructure"
 
 # 1       Loading data ####
 
@@ -29,7 +31,11 @@ if(GTAP_year == 2017 & GTAP_version == "11A"){
 }
 
 if(GTAP_year == 2017 & GTAP_version == "11B"){
-  data_0 <- read_rds("../1_Carbon_Pricing_Incidence/1_Data_Incidence_Analysis/3_Collated_Database/Collated_Database_2017_11B.rds")
+  data_0 <- read_rds(sprintf("%s/1_Carbon_Pricing_Incidence/1_Data_Incidence_Analysis/3_Collated_Database/Collated_Database_2017_11B.rds",old_root))
+}
+
+if(GTAP_year == 2017 & GTAP_version == "11C"){
+  data_0 <- read_parquet(sprintf("%s/1_Carbon_Pricing_Incidence/1_Data_Incidence_Analysis/3_Collated_Database/Collated_Database_2017_11C.parquet",old_root))
 }
 
 # Codes
@@ -2225,7 +2231,7 @@ data_5.3.2.3.4 <- data_5.3.2.3 %>%
 
 Country.Set.Test.1 <- c("GNB")
 
-track <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_BRT_2017.xlsx")
+track <- read.xlsx(sprintf("%s/0_Data/9_Supplementary Data/BRT-Tracking/Tracking_BRT_2017.xlsx",old_root))
 
 set.seed(2023)
 
@@ -2243,8 +2249,13 @@ for (i in Country.Set$Country){
     print(paste0("Start ", i, ": ", run_ID))
     
     # Filter only observations for country of interest  
-    data_6.1 <- filter(data_2, Country == i)
-    
+    data_6.1 <- filter(data_2, Country == i)%>%
+      # NEW: include hh_weights
+      mutate(hh_weights_scaled = hh_weights/mean(hh_weights),
+             hh_weights_scaled_cap = quantile(hh_weights_scaled, 0.99),
+             hh_weights_scaled_capped = pmin(hh_weights_scaled, hh_weights_scaled_cap))%>%
+      select(-hh_weights_scaled, -hh_weights_scaled_cap)
+
     track_0$observations_sample = nrow(data_6.1)
     
     # Feature engineering - Step 1 (with dplyr)
@@ -2257,7 +2268,8 @@ for (i in Country.Set$Country){
              electricity.access, HF, LF, CF, 
              hh_expenditures_USD_2014, 
              car.01, motorcycle.01, refrigerator.01, ac.01, tv.01, washing_machine.01, 
-             carbon_intensity_kg_per_USD_national)%>%
+             carbon_intensity_kg_per_USD_national,
+             hh_weights_scaled_capped)%>%
       # remove redundant variables
       select(-Country, -hh_id, -hh_weights)%>%
       # can be included for "sanity check"
@@ -2284,7 +2296,8 @@ for (i in Country.Set$Country){
     #   initial_split(prop = prop_0)
     
     # Update: Use entire sample for training.
-    data_6.1.2.train <- data_6.1.1
+    data_6.1.2.train <- data_6.1.1%>%
+      mutate(hh_weights_scaled_capped = hardhat::importance_weights(hh_weights_scaled_capped))
     
     # Data for training
     # data_6.1.2.train <- data_6.1.2 %>%
@@ -2303,13 +2316,19 @@ for (i in Country.Set$Country){
       # Deletes all columns with any NA
       step_filter_missing(all_predictors(), threshold = 0)%>%
       # Remove minimum number of columns such that correlations are less than 0.9
-      step_corr(all_numeric(), -all_outcomes(), threshold = 0.9)%>%
+      step_corr(all_numeric(), -all_outcomes(), -hh_weights_scaled_capped, threshold = 0.9)%>%
       # should have very few unique observations for factors
       step_other(all_nominal(), -ends_with(".01"), -ends_with("urban_01"), -ends_with("District"), -ends_with("Province"), threshold = 0.05)
     
-    data_6.1.2.training <- recipe_6.1.0 %>%
+    mtry_max <- recipe_6.1.0%>%
       prep(training = data_6.1.2.train)%>%
-      bake(new_data = NULL)
+      bake(new_data = NULL)%>%
+      select(-carbon_intensity_kg_per_USD_national, -hh_weights_scaled_capped)%>%
+      ncol()
+    
+    # data_6.1.2.training <- recipe_6.1.0 %>%
+    #   prep(training = data_6.1.2.train)%>%
+    #   bake(new_data = NULL)
     
     # data_6.1.2.testing <- recipe_6.1.0 %>%
     #   prep(training = data_6.1.2.test)%>%
@@ -2317,7 +2336,7 @@ for (i in Country.Set$Country){
     
     # Five-fold cross-validation
     
-    folds_6.1 <- vfold_cv(data_6.1.2.training, v = 5)
+    folds_6.1 <- vfold_cv(data_6.1.2.train, v = 5)
     
     # Setup model to be tuned
     
@@ -2333,15 +2352,21 @@ for (i in Country.Set$Country){
       set_mode("regression")%>%
       set_engine("xgboost")
     
+    # Workflow with case weights
+    workflow_0 <- workflow()%>%
+      add_recipe(recipe_6.1.0)%>%
+      add_model(model_brt)%>%
+      add_case_weights(hh_weights_scaled_capped)
+    
     # Create a tuning grid - 16 different models for the tuning space
     
     grid_0 <- grid_latin_hypercube(
       tree_depth(c(3,15)),
       learn_rate(c(-3,-0.5)),# tuning parameters
-      mtry(c(round((ncol(data_6.1.2.training)-1)/2,0), ncol(data_6.1.2.training)-1)),
+      mtry(c(round((mtry_max)/2,0), mtry_max-1)),
       size = 29)%>%
       # default parameters
-      bind_rows(data.frame(tree_depth = 6, learn_rate = 0.3, mtry = ncol(data_6.1.2.training)-1))
+      bind_rows(data.frame(tree_depth = 6, learn_rate = 0.3, mtry = mtry_max))
     
     # Tune the model - cover the entire parameter space without running every combination
     
@@ -2349,8 +2374,7 @@ for (i in Country.Set$Country){
     
     time_1 <- Sys.time()
     
-    model_brt_1 <- tune_grid(model_brt,
-                             carbon_intensity_kg_per_USD_national ~ .,
+    model_brt_1 <- tune_grid(workflow_0,
                              resamples = folds_6.1,
                              grid      = grid_0,
                              metrics   = metric_set(mae, rmse, rsq))
@@ -7045,6 +7069,110 @@ for (i in c(1,2,3)){
 }
 
 rm(data_8.1.0, data_8.1.1, data_8.1.2, P_8.1, data_8.1.3, data_8.1.4, P_8.1.App, i)
+
+# 8.1.1   Figure 1 NEW: THEIL-Index ####
+
+data_8.1.1 <- data_2 %>%
+  group_by(Country)%>%
+  group_modify(~ {
+    
+    data_8.1.1.1 <- .x %>%
+      mutate(mean_CI = mean(carbon_intensity_kg_per_USD_national),
+             SQ_DEV  = ((carbon_intensity_kg_per_USD_national/mean_CI)-1)^2)%>%
+      summarise(mean_CI = first(mean_CI),
+                GE_1    = mean((carbon_intensity_kg_per_USD_national/mean_CI)*log(carbon_intensity_kg_per_USD_national/mean_CI)),
+                GE_2    = mean(SQ_DEV)/2)
+    
+    data_8.1.1.2 <- .x %>%
+      group_by(Income_Group_5)%>%
+      summarise(number = n(),
+                mean_CI = mean(carbon_intensity_kg_per_USD_national),
+                GE_1 = mean((carbon_intensity_kg_per_USD_national/mean_CI)*log(carbon_intensity_kg_per_USD_national/mean_CI)),
+                GE_2 = mean(((carbon_intensity_kg_per_USD_national/mean_CI)-1)^2)/2)%>%
+      ungroup()%>%
+      mutate(weight = number/sum(number),
+             mean_CI_0 = as.numeric(data_8.1.1.1$mean_CI))
+    
+    data_8.1.1.3 <- data_8.1.1.2 %>%
+      summarise(within_1  = sum(weight*(mean_CI/mean_CI_0)*GE_1),
+                within_2  = sum(weight*(mean_CI/mean_CI_0)^2*GE_2),
+                between_1 = sum(weight*(mean_CI/mean_CI_0)*log(mean_CI/mean_CI_0)),
+                between_2 = sum(weight*((mean_CI/mean_CI_0)-1)^2)/2)%>%
+      mutate(total_1 = data_8.1.1.1$GE_1,
+             total_2 = data_8.1.1.1$GE_2)
+    
+    return(data_8.1.1.3)
+    
+  })%>%
+  ungroup()%>%
+  mutate(test_1 = within_1 + between_1 - total_1,
+         test_2 = within_2 + between_2 - total_2)%>%
+  mutate(share_1_a = within_1/total_1,
+         share_1_b = between_1/total_1,
+         share_2_a = within_2/total_2,
+         share_2_b = between_2/total_2)
+
+ggplot(data_8.1.1)+
+  geom_col(aes(y = Country, x = total_1))
+
+data_8.1.1.1 <- data_8.1.1 %>%
+  select(Country, total_1, between_1, within_1)%>%
+  arrange(total_1)%>%
+  mutate(new_col = 1:n())%>%
+  mutate(new_row = c(rep(1,22), rep(2,22), rep(3,22), rep(4,22)))%>%
+  mutate(ymax    = c(rep(0.15,22), rep(0.28,22), rep(0.45,22), rep(2,22)))%>%
+  mutate(ymin    = c(rep(0,88)))%>%
+  pivot_longer(between_1:within_1, names_to = "type", values_to = "value")%>%
+  mutate(type = factor(type, levels = c("within_1", "between_1")))%>%
+  arrange(type, new_col)
+
+P_8.1.1 <- ggplot(data = data_8.1.1.1)+
+  geom_point(aes(y = ymin, x = new_col), alpha = 0)+
+  geom_point(aes(y = ymax, x = new_col), alpha = 0)+
+  theme_bw()+
+  facet_wrap(. ~ new_row, scales = "free", nrow = 1)+
+  geom_col(aes(x = new_col, group = new_col, y = value, fill = type), color = "black", width = 0.75, alpha = 0.75, position = position_stack(reverse = TRUE), linewidth = 0.2)+
+  scale_fill_manual(values = c("#4393c3", "#d1e5f0"), name = "Source of heterogeneity", labels = c("Within expenditure quintiles","Between expenditure quintiles"))+
+  scale_y_continuous(expand = c(0,0))+
+  scale_x_continuous(expand = c(0,0.2), breaks = data_8.1.1.1$new_col, labels = data_8.1.1.1$Country)+
+  ylab(expression(paste("Theil index for carbon intensity of consumption [kg", CO[2], "/USD]", sep = "")))+
+  xlab("Country")+
+  coord_flip()+
+  # guides(fill = "Source of heterogeneity")+
+  # ggtitle("Vertical and horizontal differences")+
+  theme(axis.text.y = element_text(size = 7), 
+        axis.text.x = element_text(size = 7),
+        axis.title  = element_text(size = 7),
+        plot.title = element_text(size = 11),
+        legend.position = "bottom",
+        strip.background = element_blank(),
+        strip.text = element_blank(),
+        panel.grid.major.x = element_line(size = 0.3),
+        panel.grid.major.y = element_blank(),
+        panel.grid.minor = element_blank(),
+        axis.ticks = element_line(size = 0.2),
+        legend.text = element_text(size = 7),
+        legend.title = element_text(size = 7),
+        plot.margin = unit(c(0.3,0.3,0.3,0.3), "cm"),
+        panel.border = element_rect(size = 0.3, fill = NA))
+
+pdf("1_Figures/Figure 1/Figure_1A_2017_11C.pdf", width = 5.7, height = 4.32)
+print(P_8.1.1)
+dev.off()
+
+boot_stat <- function(d, i) {
+  res <- ge2_decompose(d$carbon_intensity_kg_per_USD_national[i], d$Income_Group_5[i])
+  res$within / res$total
+}
+
+set.seed(42)
+b <- boot(test, boot_stat, R = 1000)
+
+fig2_data <- tibble(
+  estimate = b$t0,
+  lower    = quantile(b$t, 0.025),
+  upper    = quantile(b$t, 0.975)
+)
 
 # 8.2     Figure 2: Horizontal vs. vertical differences ####
 
