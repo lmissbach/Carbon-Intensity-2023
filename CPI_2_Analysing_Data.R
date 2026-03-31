@@ -7072,7 +7072,7 @@ P_8.Legend <- ggplot(data = data_legend)+
         legend.box.margin = unit(c(0.8,0,0,0), "cm"),
         plot.margin = unit(c(0.8,0.3,0.3,0.3), "cm"))
 
-jpeg("1_Figures/Figure 1/Figure_1_2017_11B.jpg", width = 14.5, height = 10, unit = "cm", res = 600)
+jpeg("1_Figures/Figure 1/Figure_1_2017_11C.jpg", width = 14.5, height = 10, unit = "cm", res = 600)
 print(P_8.1)
 dev.off()
 
@@ -7080,7 +7080,7 @@ jpeg("1_Figures/Figure 1/Figure_1_2017_Legend_1.jpg", width = 14.5, height = 5, 
 print(P_8.Legend)
 dev.off()
 
-pdf("1_Figures/Figure 1/Figure_1_2017_11B.pdf", width = 5.7, height = 3.94)
+pdf("1_Figures/Figure 1/Figure_1_2017_11C.pdf", width = 5.7, height = 3.94)
 print(P_8.1)
 dev.off()
 
@@ -7132,12 +7132,12 @@ for (i in c(1,2,3)){
           plot.margin = unit(c(0.3,0.3,0.3,0.3), "cm"),
           panel.border = element_rect(size = 0.3))
   
-  jpeg(sprintf("1_Figures/Figures_Appendix/Figure_1_2017_Appendix_%s.jpg", i), width = 15.5, height = 15.5, unit = "cm", res = 600)
+  jpeg(sprintf("1_Figures/Figures_Appendix/Figure_1_2017_Appendix_%s_C.jpg", i), width = 15.5, height = 15.5, unit = "cm", res = 600)
   print(P_8.1.App)
   dev.off()
   
-  pdf(sprintf("1_Figures/Figures_Appendix/Figure_1_2017_Appendix_%s.pdf", i), width = 6.10, height = 6.10)
-  print(P_8.1)
+  pdf(sprintf("1_Figures/Figures_Appendix/Figure_1_2017_Appendix_%s_C.pdf", i), width = 6.10, height = 6.10)
+  print(P_8.1.App)
   dev.off()
   
 }
