@@ -868,7 +868,7 @@ for(Group_0 in c("A", "B", "C", "D")){
  #        plot.margin = unit(c(0.3,0.5,0.3,0.3), "cm"),
  #         panel.border = element_rect(size = 0.3))
   
-  jpeg(sprintf("1_Figures/Analysis_Parametric_Engel_Curves/Parametric_EC_0_%s.jpg", Group_0), width = 15.5, height = 19.375, unit = "cm", res = 600)
+  jpeg(sprintf("1_Figures/Analysis_Parametric_Engel_Curves/Parametric_EC_0_%s_U.jpg", Group_0), width = 15.5, height = 19.375, unit = "cm", res = 600)
   print(P_4.3.1.3)
   dev.off()
   
@@ -11427,11 +11427,11 @@ for(Group_0 in c("A", "B", "C")){
   P_8.6.1.1 <- ggplot()+
     geom_vline(data = data_8.6.1.4, aes(xintercept = mean_hh_expenditures_USD_2014_pc), size = 0.2)+
     geom_histogram(data = data_8.6.1.3, aes(x = hh_expenditures_USD_2014_pc, weight = hh_weights, group = Country_long, y = ..density..),
-                   binwidth = binwidth_0, fill = "lightgrey", colour = "black", alpha = 0.6, size = 0.05)+
+                   binwidth = binwidth_0, fill = "lightgrey", colour = "black", alpha = 0.6, linewidth = 0.05)+
     stat_smooth(data = data_8.6.1.3, 
                 aes(x = hh_expenditures_USD_2014_pc, weight = hh_weights, 
                     y = Share, fill = Type, colour = Type),
-                level = 0.95, method = "lm", formula = y ~ x + I(x^2), size = 0.3, fullrange = FALSE, se = FALSE)+
+                level = 0.95, method = "lm", formula = y ~ x + I(x^2), linewidth = 0.3, fullrange = FALSE, se = FALSE)+
     theme_bw()+
     facet_wrap(. ~ Country_long, ncol = 5)+
     xlab("Household expenditures per capita in US-$ (2017)") + ylab("Share of total expenditures")+
@@ -11460,11 +11460,11 @@ for(Group_0 in c("A", "B", "C")){
           plot.margin = unit(c(0.3,0.3,0.3,0.3), "cm"),
           panel.border = element_rect(size = 0.3))
 
-  jpeg(sprintf("1_Figures/Analysis_Parametric_Engel_Curves/Parametric_EC_0_%s.jpg", Group_0), width = 15.5, height = 18, unit = "cm", res = 600)
+  jpeg(sprintf("1_Figures/Analysis_Parametric_Engel_Curves/Parametric_EC_0_%s_U.jpg", Group_0), width = 15.5, height = 18, unit = "cm", res = 600)
   print(P_8.6.1.1)
   dev.off()
   
-  pdf(sprintf("1_Figures/Analysis_Parametric_Engel_Curves/Parametric_EC_0_%s.pdf", Group_0), width = 6.10, height = 7.09)
+  pdf(sprintf("1_Figures/Analysis_Parametric_Engel_Curves/Parametric_EC_0_%s_U.pdf", Group_0), width = 6.10, height = 7.09)
   print(P_8.6.1.1)
   dev.off()
   
