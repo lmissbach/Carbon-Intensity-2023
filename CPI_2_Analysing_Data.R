@@ -153,7 +153,7 @@ kbl(mutate_all(sum_3.1.3,linebreak), format = "latex", linesep = "", booktabs = 
     caption = "Summary statistics", format.args = list(big.mark = ",", scientific = FALSE), align = "lrcccccc", label = "A1")%>%
   kable_styling(position = "center", latex_options = c("HOLD_position", "repeat_header"), font_size = 9)%>%
   footnote(general = "This table provides summary statistics for households in our sample. All values (except observations) are household-weighted averages. Column 'Share of firewood or charcoal cons.' refers to the share of households that report positive expenditures on firewood, charcoal and other biomass or that report firewood, charcoal or other biomass to be their main cooking fuel.", threeparttable = T)%>%
-  column_spec(column = 1,    width = "1.5 cm", border_right = T)%>%
+  column_spec(column = 1,    width = "1.7 cm", border_right = T)%>%
   column_spec(column =  2:8, width = "1.5 cm")%>%
   save_kable(., "2_Tables/Table_Summary_A1.tex")
 
@@ -272,14 +272,13 @@ kbl(sum_3.4.1, format = "latex", caption = "Share of households using cooking fu
   footnote(general = "This table shows the share of households using different cooking fuels, such as solid fuels (e.g., firewood, charcoal, coal, biomass), liquid fuels (e.g., LPG, natural gas, kerosene), or electricity over expenditure quintiles.", threeparttable = T, escape = FALSE)%>%
   save_kable(., "2_Tables/Table_Summary_A4_Cooking_Fuels.tex")  
 
-kbl(sum_3.4.1, format = "latex", caption = "Share of households using cooking fuels", booktabs = T, align = "l|rrrrr|rrrrr|rrrrr", vline = "", linesep = "", label = "A4_CF")%>%
-  kable_styling(position = "center", latex_options = c("HOLD_position"))%>%
-  column_spec(1, width = "3.15 cm")%>%
-  column_spec(2:16, width = "1.00 cm")%>%
-  add_header_above(c(" " = 1, "Expenditure quintile" = 5,"Expenditure quintile" = 5, "Expenditure quintile" = 5))%>%
-  add_header_above(c(" " = 1, "Solid fuels" = 5, "Liquid or gaseous fuels" = 5, "Electricity" = 5), escape = FALSE)%>%
-  save_kable(., "H:/9_Dissertation/Dissertation/Chapters/2_Figures/2_Global_Paper/Appendix/2_Tables/Table_Summary_A4_Cooking_Fuels.tex")  
-
+# kbl(sum_3.4.1, format = "latex", caption = "Share of households using cooking fuels", booktabs = T, align = "l|rrrrr|rrrrr|rrrrr", vline = "", linesep = "", label = "A4_CF")%>%
+#   kable_styling(position = "center", latex_options = c("HOLD_position"))%>%
+#   column_spec(1, width = "3.15 cm")%>%
+#   column_spec(2:16, width = "1.00 cm")%>%
+#   add_header_above(c(" " = 1, "Expenditure quintile" = 5,"Expenditure quintile" = 5, "Expenditure quintile" = 5))%>%
+#   add_header_above(c(" " = 1, "Solid fuels" = 5, "Liquid or gaseous fuels" = 5, "Electricity" = 5), escape = FALSE)%>%
+#   save_kable(., "H:/9_Dissertation/Dissertation/Chapters/2_Figures/2_Global_Paper/Appendix/2_Tables/Table_Summary_A4_Cooking_Fuels.tex")  
 
 sum_3.4.2 <- data_2 %>%
   mutate(LF_agg = ifelse(LF == "Electricity", "Electricity", 
@@ -316,13 +315,13 @@ kbl(sum_3.4.2, format = "latex", caption = "Share of households using lighting f
   footnote(general = "This table shows the share of households using different lighting fuels over expenditure quintiles.", threeparttable = T, escape = FALSE)%>%
   save_kable(., "2_Tables/Table_Summary_A4_Lighting_Fuels.tex")  
 
-kbl(sum_3.4.2, format = "latex", caption = "Share of households using lighting fuels", booktabs = T, align = "l|rrrrr|rrrrr|rrrrr", vline = "", linesep = "", label = "A5_LF")%>%
-  kable_styling(position = "center", latex_options = c("HOLD_position"))%>%
-  column_spec(1, width = "3.15 cm")%>%
-  column_spec(2:16, width = "1.00 cm")%>%
-  add_header_above(c(" " = 1, "Expenditure quintile" = 5,"Expenditure quintile" = 5, "Expenditure quintile" = 5))%>%
-  add_header_above(c(" " = 1, "Kerosene" = 5, "Electricity" = 5, "Other lighting fuels" = 5), escape = FALSE)%>%
-  save_kable(., "H:/9_Dissertation/Dissertation/Chapters/2_Figures/2_Global_Paper/Appendix/2_Tables/Table_Summary_A4_Lighting_Fuels.tex")  
+# kbl(sum_3.4.2, format = "latex", caption = "Share of households using lighting fuels", booktabs = T, align = "l|rrrrr|rrrrr|rrrrr", vline = "", linesep = "", label = "A5_LF")%>%
+#   kable_styling(position = "center", latex_options = c("HOLD_position"))%>%
+#   column_spec(1, width = "3.15 cm")%>%
+#   column_spec(2:16, width = "1.00 cm")%>%
+#   add_header_above(c(" " = 1, "Expenditure quintile" = 5,"Expenditure quintile" = 5, "Expenditure quintile" = 5))%>%
+#   add_header_above(c(" " = 1, "Kerosene" = 5, "Electricity" = 5, "Other lighting fuels" = 5), escape = FALSE)%>%
+#   save_kable(., "H:/9_Dissertation/Dissertation/Chapters/2_Figures/2_Global_Paper/Appendix/2_Tables/Table_Summary_A4_Lighting_Fuels.tex")  
 
 rm(sum_3.4.1, sum_3.4.2)
 
@@ -370,12 +369,12 @@ kbl(sum_3.5.2, format = "latex", caption = "Share of households possessing diffe
   footnote(general = "This table shows the share of households possessing differents assets for all households (first and fifth expenditure quintile, respectively) in different countries.", threeparttable = T, escape = FALSE)%>%
   save_kable(., "2_Tables/Table_Summary_A5_Appliances.tex")  
 
-kbl(sum_3.5.2, format = "latex", caption = "Share of households possessing different assets", booktabs = T, align = "l|rrr|rrr|rrr|rrr|rrr", vline = "", linesep = "", label = "A6")%>%
-  kable_styling(position = "center", latex_options = c("HOLD_position"))%>%
-  column_spec(1, width = "3.15 cm")%>%
-  column_spec(2:16, width = "1.00 cm")%>%
-  add_header_above(c(" " = 1,  "Car" = 3, "TV" = 3, "Refrigerator" = 3, "AC" = 3, "Washing machine" = 3), escape = FALSE)%>%
-  save_kable(., "H:/9_Dissertation/Dissertation/Chapters/2_Figures/2_Global_Paper/Appendix/2_Tables/Table_Summary_A5_Appliances.tex")  
+# kbl(sum_3.5.2, format = "latex", caption = "Share of households possessing different assets", booktabs = T, align = "l|rrr|rrr|rrr|rrr|rrr", vline = "", linesep = "", label = "A6")%>%
+#   kable_styling(position = "center", latex_options = c("HOLD_position"))%>%
+#   column_spec(1, width = "3.15 cm")%>%
+#   column_spec(2:16, width = "1.00 cm")%>%
+#   add_header_above(c(" " = 1,  "Car" = 3, "TV" = 3, "Refrigerator" = 3, "AC" = 3, "Washing machine" = 3), escape = FALSE)%>%
+#   save_kable(., "H:/9_Dissertation/Dissertation/Chapters/2_Figures/2_Global_Paper/Appendix/2_Tables/Table_Summary_A5_Appliances.tex")  
 
 rm(sum_3.5.1, sum_3.5.2)
 
