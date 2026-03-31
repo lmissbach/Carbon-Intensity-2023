@@ -366,7 +366,7 @@ kbl(sum_3.5.2, format = "latex", caption = "Share of households possessing diffe
   column_spec(1, width = "3.15 cm")%>%
   column_spec(2:16, width = "1.00 cm")%>%
   add_header_above(c(" " = 1,  "Car" = 3, "TV" = 3, "Refrigerator" = 3, "AC" = 3, "Washing machine" = 3), escape = FALSE)%>%
-  footnote(general = "This table shows the share of households possessing differents assets for all households (first and fifth expenditure quintile, respectively) in different countries.", threeparttable = T, escape = FALSE)%>%
+  footnote(general = "This table shows the share of households possessing different assets for all households (first and fifth expenditure quintile, respectively) in different countries.", threeparttable = T, escape = FALSE)%>%
   save_kable(., "2_Tables/Table_Summary_A5_Appliances.tex")  
 
 # kbl(sum_3.5.2, format = "latex", caption = "Share of households possessing different assets", booktabs = T, align = "l|rrr|rrr|rrr|rrr|rrr", vline = "", linesep = "", label = "A6")%>%
@@ -1253,7 +1253,7 @@ kbl(mutate_all(data_4.5.1, linebreak), format = "latex", caption = "Comparing me
                      "$\\\\widehat{H}_{r}^{1*}$" = 1), escape = FALSE, align = "c")%>%
   column_spec(1, width = "2.88 cm")%>%
   column_spec(2:10, width = "1.46 cm")%>%
-  footnote(general = "This table shows the median carbon intensity in the first expenditure quintile ($\\\\overline{e}_{r}^{1}$) and in the fifth quintile ($\\\\overline{e}_{r}^{5}$). It displays the difference between the 5\\\\textsuperscript{th} (20\\\\textsuperscript{th}) and 95\\\\textsuperscript{th} (80\\\\textsuperscript{th}) within-quintile percentile for the first ($\\\\overline{H}_{r}^{1}$ and $\\\\overline{H}_{r}^{1*}$) and the fifth quintile ($\\\\overline{H}_{r}^{5}$ and $\\\\overline{H}_{r}^{5*}$). It also compares median carbon intensity in the first income quintile to that in the fifth quintile ($\\\\widehat{V}$$_{r}^{1}$). Lastly, it displays our comparison index facilitating the comparison of within-quintile variation between the first and fifth quintile ($\\\\widehat{H}_{r}^{1}$ and $\\\\widehat{H}_{r}^{1*}$, respectively).",         threeparttable = T, escape = FALSE)%>%
+  footnote(general = "This table shows the median carbon intensity in the first expenditure quintile ($\\\\overline{e}_{r}^{1}$) and in the fifth quintile ($\\\\overline{e}_{r}^{5}$). It displays the difference between the 5\\\\textsuperscript{th} (20\\\\textsuperscript{th}) and 95\\\\textsuperscript{th} (80\\\\textsuperscript{th}) within-quintile percentile for the first ($\\\\overline{H}_{r}^{1}$ and $\\\\overline{H}_{r}^{1*}$) and the fifth quintile ($\\\\overline{H}_{r}^{5}$ and $\\\\overline{H}_{r}^{5*}$). It also compares the median carbon intensity in the first income quintile to that in the fifth quintile ($\\\\widehat{V}$$_{r}^{1}$). Lastly, it displays our comparison index that enables the comparison of within-quintile variation between the first and fifth quintile ($\\\\widehat{H}_{r}^{1}$ and $\\\\widehat{H}_{r}^{1*}$, respectively).",         threeparttable = T, escape = FALSE)%>%
   save_kable(., "2_Tables/Table_Vertical_Horizontal.tex")
 
 # From Latin America paper
@@ -3335,7 +3335,7 @@ kbl(eval_1.3, format = "latex", caption = "Evaluation of boosted regression tree
   #column_spec(1, width = "3.15 cm")%>%
   # add_header_above(c("Country" = 1, rep(c("MAE", "RMSE", "R^{2}"),3) ))%>%
   #add_header_above(c(" " = 2, "Test sample" = 3, "Training sample" = 3, "Entire sample" = 3))%>%
-  footnote(general = "This table shows performance metrics for boosted regression tree models. MAE is the mean absolute error of predictions; RMSE is the root mean squared error of predictions; $R^{2}$ is the squared correlation of prediction errors. Unit of MAE and RMSE is $kgCO_{2}$ per US-\\\\$. We show MAE, RMSE and $R^{2}$ for predictions on the testing set, on the training set and on the entire dataset. ", threeparttable = T, escape = FALSE)%>%
+  footnote(general = "This table shows performance metrics for boosted regression tree models. MAE is the mean absolute error of predictions; RMSE is the root mean squared error of predictions; $R^{2}$ is the squared correlation of prediction errors. Unit of MAE and RMSE is $kgCO_{2}$ per USD. We show MAE, RMSE and $R^{2}$ for predictions on the testing set, on the training set and on the entire dataset. ", threeparttable = T, escape = FALSE)%>%
   save_kable(., "2_Tables/Table_SHAP_Summary.tex")
 
 rm(eval_1, eval_1.0, eval_1.1, eval_1.2, eval_1.3)
@@ -4423,7 +4423,7 @@ kbl(eval_1.3, format = "latex", caption = "Evaluation of boosted regression tree
   #column_spec(1, width = "3.15 cm")%>%
   add_header_above(c(" " = 2, "Sparse model" = 3, "Rich model" = 3))%>%
   #add_header_above(c(" " = 2, "Test sample" = 3, "Training sample" = 3, "Entire sample" = 3))%>%
-  footnote(general = "This table shows performance metrics for boosted regression tree models including exclusively household expenditures ('Sparse model') and including all available features ('Rich model') and . MAE is the mean absolute error of predictions; RMSE is the root mean squared error of predictions; R\\\\textsuperscript{2} is the squared correlation of prediction errors. Unit of MAE and RMSE is kgCO\\\\textsubscript{2} per US-\\\\$. We show MAE, RMSE and R\\\\textsuperscript{2} for five-fold cross-validation on the entire dataset. ", threeparttable = T, escape = FALSE)%>%
+  footnote(general = "This table shows performance metrics for boosted regression tree models including exclusively household expenditures ('Sparse model') and including all available features ('Rich model') and . MAE is the mean absolute error of predictions; RMSE is the root mean squared error of predictions; R\\\\textsuperscript{2} is the squared correlation of prediction errors. Unit of MAE and RMSE is kgCO\\\\textsubscript{2} per USD. We show MAE, RMSE and R\\\\textsuperscript{2} for five-fold cross-validation on the entire dataset. ", threeparttable = T, escape = FALSE)%>%
   save_kable(., "2_Tables/Table_SHAP_Summary_EXP.tex")
 
 # Figure comparing R2 for rich and sparse set
@@ -4511,7 +4511,7 @@ kbl(track_1, format = "latex", caption = "Hyperparameters for boosted regression
   kable_styling(position = "center", latex_options = c("HOLD_position", "repeat_header"), font_size = 8)%>%
   #column_spec(1, width = "3.15 cm")%>%
   add_header_above(c(" " = 1, "Selected hyperparameters" = 3, "Model performance" = 3))%>%
-  footnote(general = "This table shows hyperparameters selected for fitting boosted regression tree models after hyperparameter tuning. \\\\texttt{max\\\\_depth} is the maximum depth of trees; $\\\\eta$ is the learning rate; \\\\texttt{mtry} is the number of features included in each tree. MAE is the mean absolute error of predictions; RMSE is the root mean squared error of predictions; R\\\\textsuperscript{2} is the squared correlation of prediction errors and a measure for goodness of fit. Unit of MAE and RMSE is kgCO\\\\textsubscript{2} per US-\\\\$. We show MAE, RMSE and R\\\\textsuperscript{2} for five-fold cross-validation on the entire dataset. Note that we repeat five-fold cross-validation with selected hyperparameters, e.g. in Table \\\\ref{tab:A8}.", threeparttable = T, escape = FALSE)%>%
+  footnote(general = "This table shows hyperparameters selected for fitting boosted regression tree models after hyperparameter tuning. \\\\texttt{max\\\\_depth} is the maximum depth of trees; $\\\\eta$ is the learning rate; \\\\texttt{mtry} is the number of features included in each tree. MAE is the mean absolute error of predictions; RMSE is the root mean squared error of predictions; R\\\\textsuperscript{2} is the squared correlation of prediction errors and a measure for goodness of fit. Unit of MAE and RMSE is kgCO\\\\textsubscript{2} per USD. We show MAE, RMSE and R\\\\textsuperscript{2} for five-fold cross-validation on the entire dataset. Note that we repeat five-fold cross-validation with selected hyperparameters, e.g. in Table \\\\ref{tab:A8}. We include survey weights in all analyses.", threeparttable = T, escape = FALSE)%>%
   save_kable(., "2_Tables/Table_tuning_parameters_Summary.tex")
 
 rm(track_0, track_1)
