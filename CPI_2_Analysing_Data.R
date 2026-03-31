@@ -6990,7 +6990,7 @@ data_8.1.2 <- left_join(data_8.1.0, data_8.1.1)%>%
   arrange(y50)%>%
   mutate(new_col = 1:n())%>%
   mutate(new_row = c(rep(1,22), rep(2,22), rep(3,22), rep(4,22)))%>%
-  mutate(ymax    = c(rep(2.2,22), rep(2.5,22), rep(4,22), rep(5,22)))%>%
+  mutate(ymax    = c(rep(1.7,22), rep(1.8,22), rep(3,22), rep(4.2,22)))%>%
   mutate(ymin    = c(rep(0,88)))
 
 data_8.1.3 <- data_8.1.0 %>%
@@ -7004,6 +7004,7 @@ data_8.1.3 <- data_8.1.0 %>%
   mutate(Type = factor(Type, levels = c("Richer households less carbon-intensive", "Richer households more carbon-intensive")))
 
 data_8.1.2 <- left_join(data_8.1.2, data_8.1.3)
+
 
 P_8.1 <- ggplot(data = data_8.1.2)+
   geom_point(aes(y = ymin, x = new_col), alpha = 0)+
