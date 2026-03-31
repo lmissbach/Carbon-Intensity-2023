@@ -31,11 +31,11 @@ if(GTAP_year == 2017 & GTAP_version == "11A"){
 }
 
 if(GTAP_year == 2017 & GTAP_version == "11B"){
-  data_0 <- read_rds(sprintf("%s/1_Carbon_Pricing_Incidence/1_Data_Incidence_Analysis/3_Collated_Database/Collated_Database_2017_11B.rds",old_root))
+  data_0 <- read_rds("../1_Carbon_Pricing_Incidence/1_Data_Incidence_Analysis/3_Collated_Database/Collated_Database_2017_11B.rds")
 }
 
 if(GTAP_year == 2017 & GTAP_version == "11C"){
-  data_0 <- read_parquet(sprintf("%s/1_Carbon_Pricing_Incidence/1_Data_Incidence_Analysis/3_Collated_Database/Collated_Database_2017_11C.parquet",old_root))
+  data_0 <- read_parquet("../1_Carbon_Pricing_Incidence/1_Data_Incidence_Analysis/3_Collated_Database/Collated_Database_2017_11C.parquet")
 }
 
 # Codes
@@ -45,7 +45,8 @@ Lighting.Codes.Aggregate    <- read_csv("0_Data/9_Supplementary Information/2_Co
 Heating.Codes.Aggregate     <- read_csv("0_Data/9_Supplementary Information/2_Codes/Heating.Code.All.csv", show_col_types = FALSE)
 Water.Codes.Aggregate       <- read_csv("0_Data/9_Supplementary Information/2_Codes/Water.Code.All.csv", show_col_types = FALSE)
 Toilet.Codes.Aggregate      <- read_csv("0_Data/9_Supplementary Information/2_Codes/Toilet.Code.All.csv", show_col_types = FALSE)
-Province.Codes.Aggregate    <- read_csv("0_Data/9_Supplementary Information/2_Codes/Province.Code.All.csv", show_col_types = FALSE)
+Province.Codes.Aggregate    <- read_csv("0_Data/9_Supplementary Information/2_Codes/Province.Code.All.csv", show_col_types = FALSE)%>%
+  mutate(Province = ifelse(validUTF8(Province), Province, iconv(Province, from = "latin1", to = "UTF-8")))
 District.Codes.Aggregate    <- read_csv("0_Data/9_Supplementary Information/2_Codes/District.Code.All.csv", show_col_types = FALSE)
 Nationality.Codes.Aggregate <- read_csv("0_Data/9_Supplementary Information/2_Codes/Nationality.Code.All.csv", show_col_types = FALSE)
 Ethnicity.Codes.Aggregate   <- read_csv("0_Data/9_Supplementary Information/2_Codes/Ethnicity.Code.All.csv", show_col_types = FALSE)
@@ -2231,7 +2232,7 @@ data_5.3.2.3.4 <- data_5.3.2.3 %>%
 
 Country.Set.Test.1 <- c("GNB")
 
-track <- read.xlsx(sprintf("%s/0_Data/9_Supplementary Data/BRT-Tracking/Tracking_BRT_2017.xlsx",old_root))
+track <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_BRT_2017.xlsx")
 
 set.seed(2023)
 
@@ -2283,8 +2284,8 @@ for (i in Country.Set$Country){
     if(i == "SWE"){data_6.1.1 <- select(data_6.1.1, -ISCED, -sex_hhh)}
     if(i == "NLD"){data_6.1.1 <- select(data_6.1.1, -ISCED)}
     if(i == "GEO"){data_6.1.1 <- select(data_6.1.1, -electricity.access)}
-    if(!i %in% c("ARG", "ARM", "AUT", "BEL", "BOL", "CHE", "DEU", "ESP", "FIN", "FRA",
-                 "GRC", "HUN", "ITA", "JOR", "NLD", "POL", "PRT", "ROU", "SUR", "SWE")){data_6.1.1 <- select(data_6.1.1, -District)}
+    if(!i %in% c("ARG", "ARM", "AUT", "BEL", "BOL", "CHE", "ESP", "FIN", 
+                 "GRC", "HUN", "ITA", "JOR", "NLD", "POL", "PRT", "SUR", "SWE")){data_6.1.1 <- select(data_6.1.1, -District)}
     
     rm(data_6.1)
     
@@ -2318,7 +2319,8 @@ for (i in Country.Set$Country){
       # Remove minimum number of columns such that correlations are less than 0.9
       step_corr(all_numeric(), -all_outcomes(), -hh_weights_scaled_capped, threshold = 0.9)%>%
       # should have very few unique observations for factors
-      step_other(all_nominal(), -ends_with(".01"), -ends_with("urban_01"), -ends_with("District"), -ends_with("Province"), threshold = 0.05)
+      step_other(all_nominal(), -ends_with(".01"), -ends_with("urban_01"), -ends_with("District"), -ends_with("Province"), threshold = 0.05)%>%
+      step_dummy(all_nominal(), -all_outcomes(), sparse = "no")
     
     mtry_max <- recipe_6.1.0%>%
       prep(training = data_6.1.2.train)%>%
@@ -2360,7 +2362,7 @@ for (i in Country.Set$Country){
     
     # Create a tuning grid - 16 different models for the tuning space
     
-    grid_0 <- grid_latin_hypercube(
+    grid_0 <- grid_space_filling(
       tree_depth(c(3,15)),
       learn_rate(c(-3,-0.5)),# tuning parameters
       mtry(c(round((mtry_max)/2,0), mtry_max-1)),
@@ -2407,8 +2409,7 @@ for (i in Country.Set$Country){
     
     rm(track_0, run_ID, time_1, time_2, grid_0,
        model_brt, model_brt_1, model_brt_1.1, metrics_1.1, metrics_1,
-       data_6.1.2.train, data_6.1.2.training,
-       folds_6.1, recipe_6.1.0)
+       data_6.1.2.train, folds_6.1, recipe_6.1.0)
     
     gc()
     
@@ -2432,19 +2433,22 @@ rm(track)
 # SHAP expresses feature importance based on the marginal contribution of each predictor for each observation. Has local explanation and consistency.
 
 Country.Set.Test.2 <- Country.Set %>%
-  filter(!Country %in% c("RWA", "ETH", "UGA", "MWI", "TGO", "GHA", "KEN", "LBR", "NER", "VNM", "MMR", "BGD", "NGA", "IDN", "MEX"))
+  filter(!Country %in% c("MEX", "IDN", "IND"))
 
-Country.Set.Test.3 <- c("GNB")
+Country.Set.Test.3 <- c("MEX","IDN", "IND")
 
 # eval_0 <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_SHAP_Evaluation.xlsx")
-eval_0 <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_SHAP_Evaluation_VFOLD_2017B.xlsx")
+# eval_0 <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_SHAP_Evaluation_VFOLD_2017B.xlsx")
 # eval_0 <- data.frame()
+eval_0 <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_SHAP_Evaluation_VFOLD_2017C.xlsx")
 # shap_0 <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_SHAP_Detail.xlsx") 
-shap_0 <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_SHAP_Detail_VFOLD_2017B.xlsx") 
-# shap_0 <- data.frame()
+# shap_0 <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_SHAP_Detail_VFOLD_2017B.xlsx") 
+# shap_0 <- data.frame())
+shap_0 <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_SHAP_Detail_VFOLD_2017C.xlsx") 
 # shap_1 <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_SHAP_Classification.xlsx")
+# shap_1 <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_SHAP_Classification_VFOLD_2017B.xlsx")
 # shap_1 <- data.frame()
-shap_1 <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_SHAP_Classification_VFOLD_2017B.xlsx")
+shap_1 <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_SHAP_Classification_VFOLD_2017C.xlsx")
 
 track_0 <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_BRT_2017.xlsx")
 
@@ -2473,7 +2477,12 @@ for (i in Country.Set.Test.3){
     #     ungroup()
     # }
     
-    data_6.1 <- filter(data_2, Country == i)
+    data_6.1 <- filter(data_2, Country == i)%>%
+      # NEW: include hh_weights
+      mutate(hh_weights_scaled = hh_weights/mean(hh_weights),
+             hh_weights_scaled_cap = quantile(hh_weights_scaled, 0.99),
+             hh_weights_scaled_capped = pmin(hh_weights_scaled, hh_weights_scaled_cap))%>%
+      select(-hh_weights_scaled, -hh_weights_scaled_cap)
     # data_6.1 <- read_csv("C:/Users/misl/Desktop/Israel_Test_Set.csv")
     
     # Feature engineering - Part I
@@ -2486,7 +2495,8 @@ for (i in Country.Set.Test.3){
              electricity.access, HF, LF, CF, 
              hh_expenditures_USD_2014, 
              car.01, motorcycle.01, refrigerator.01, ac.01, tv.01, washing_machine.01, 
-             carbon_intensity_kg_per_USD_national)%>%
+             carbon_intensity_kg_per_USD_national,
+             hh_weights_scaled_capped)%>%
       # remove redundant variables
       select(-Country, -hh_id, -hh_weights)%>%
       # can be included for "sanity check"
@@ -2500,8 +2510,8 @@ for (i in Country.Set.Test.3){
     if(i == "SWE"){data_6.1.1 <- select(data_6.1.1, -ISCED, -sex_hhh)}
     if(i == "NLD"){data_6.1.1 <- select(data_6.1.1, -ISCED)}
     if(i == "GEO"){data_6.1.1 <- select(data_6.1.1, -electricity.access)}
-    if(!i %in% c("ARG", "ARM", "AUT", "BEL", "BOL", "CHE", "DEU", "ESP", "FIN", "FRA",
-                 "GRC", "HUN", "ITA", "JOR", "NLD", "POL", "PRT", "ROU", "SUR", "SWE")){data_6.1.1 <- select(data_6.1.1, -District)}
+    if(!i %in% c("ARG", "ARM", "AUT", "BEL", "BOL", "CHE", "ESP", "FIN", 
+                 "GRC", "HUN", "ITA", "JOR", "NLD", "POL", "PRT", "SUR", "SWE")){data_6.1.1 <- select(data_6.1.1, -District)}
     
     rm(data_6.1)
     
@@ -2512,7 +2522,7 @@ for (i in Country.Set.Test.3){
       # Deletes all columns with any NA
       step_filter_missing(all_predictors(), threshold = 0)%>%
       # Remove minimum number of columns such that correlations are less than 0.9
-      step_corr(all_numeric(), -all_outcomes(), threshold = 0.9)%>%
+      step_corr(all_numeric(), -all_outcomes(), -hh_weights_scaled_capped, threshold = 0.9)%>%
       # should have very few unique observations for factors
       step_other(all_nominal(), -ends_with(".01"), -ends_with("urban_01"), -ends_with("District"), -ends_with("Province"), -ends_with("electricity.access"), -ends_with("ISCED"), -ends_with("sex_hhh"), threshold = 0.05)%>%
       # including dummification
@@ -2524,7 +2534,7 @@ for (i in Country.Set.Test.3){
         # Deletes all columns with any NA
         step_filter_missing(all_predictors(), threshold = 0)%>%
         # Remove minimum number of columns such that correlations are less than 0.9
-        step_corr(all_numeric(), -all_outcomes(), threshold = 0.9)%>%
+        step_corr(all_numeric(), -all_outcomes(), -hh_weights_scaled_capped, threshold = 0.9)%>%
         # should have very few unique observations for factors
         step_other(all_nominal(), -ends_with(".01"), -ends_with("urban_01"), -ends_with("District"), -ends_with("Province"), -ends_with("electricity.access"), -ends_with("ISCED"), -ends_with("sex_hhh"), threshold = 0.05)%>%
         # including dummification
@@ -2537,7 +2547,7 @@ for (i in Country.Set.Test.3){
         # Deletes all columns with any NA
         step_filter_missing(all_predictors(), threshold = 0)%>%
         # Remove minimum number of columns such that correlations are less than 0.9
-        step_corr(all_numeric(), -all_outcomes(), threshold = 0.9)%>%
+        step_corr(all_numeric(), -all_outcomes(), -hh_weights_scaled_capped, threshold = 0.9)%>%
         # should have very few unique observations for factors
         step_other(all_nominal(), -ends_with(".01"), -ends_with("urban_01"), -ends_with("District"), -ends_with("Province"), -ends_with("electricity.access"), -ends_with("ISCED"), -ends_with("LF"), -ends_with("CF"), -ends_with("sex_hhh"), threshold = 0.1)%>%
         step_other("CF", "LF", threshold = 0.05)%>%
@@ -2545,11 +2555,15 @@ for (i in Country.Set.Test.3){
         step_dummy(all_nominal())
     }
     
-    data_6.1.2 <- recipe_6.1.0 %>%
-      prep(training = data_6.1.1)%>%
-      bake(new_data = NULL)%>%
+    data_6.1.2 <- data_6.1.1 %>%
       # for cross-validation
       mutate(id = 1:n())
+    
+    # data_6.1.2 <- recipe_6.1.0 %>%
+    #   prep(training = data_6.1.1)%>%
+    #   bake(new_data = NULL)%>%
+    #   # for cross-validation
+    #   mutate(id = 1:n())
     
     folds_6.1.2 <- vfold_cv(data_6.1.2, v = 5)
     
@@ -2607,6 +2621,21 @@ for (i in Country.Set.Test.3){
         filter(fold_test == v)%>%
         select(-fold_test)
       
+      # Preparation training dataset
+      prep_0 <- prep(recipe_6.1.0, training = data_6.1.2.training)
+      
+      data_6.1.2.training <- bake(prep_0, new_data = NULL)
+      
+      # Preparation weights 
+      training_weights <- importance_weights(data_6.1.2.training$hh_weights_scaled_capped)
+      
+      data_6.1.2.training <- data_6.1.2.training %>%
+        select(-hh_weights_scaled_capped)
+      
+      # Preparation testing dataset
+      data_6.1.2.testing <- bake(prep_0, new_data = data_6.1.2.testing)
+      
+      # Raw data
       data_6.1.2.test <- data_6.1.2.raw %>%
         filter(fold_test == v)%>%
         select(-fold_test)
@@ -2623,7 +2652,8 @@ for (i in Country.Set.Test.3){
       # Fit model on training dataset
       model_brt_1 <- model_brt %>%
         fit(carbon_intensity_kg_per_USD_national ~ .,
-            data = data_6.1.2.training)
+            data = data_6.1.2.training,
+            case_weights = training_weights)
       
       time_2 <- Sys.time()
       
@@ -2641,10 +2671,18 @@ for (i in Country.Set.Test.3){
       
       # Evalutation on testing dataset
       predictions_6.1.2 <- augment(model_brt_1, new_data = data_6.1.2.testing)
+      
+      # Weighted
+      mae_6.1.2_w  <- mae(predictions_6.1.2,  truth = carbon_intensity_kg_per_USD_national, estimate = .pred, case_weights = hh_weights_scaled_capped)
+      rmse_6.1.2_w <- rmse(predictions_6.1.2, truth = carbon_intensity_kg_per_USD_national, estimate = .pred, case_weights = hh_weights_scaled_capped)
+      rsq_6.1.2_w  <- rsq(predictions_6.1.2,  truth = carbon_intensity_kg_per_USD_national, estimate = .pred, case_weights = hh_weights_scaled_capped)
+      
+      # Unweighted
       mae_6.1.2  <- mae(predictions_6.1.2,  truth = carbon_intensity_kg_per_USD_national, estimate = .pred)
       rmse_6.1.2 <- rmse(predictions_6.1.2, truth = carbon_intensity_kg_per_USD_national, estimate = .pred)
       rsq_6.1.2  <- rsq(predictions_6.1.2,  truth = carbon_intensity_kg_per_USD_national, estimate = .pred)
-      eval_6.1.2 <- bind_rows(mae_6.1.2, rmse_6.1.2, rsq_6.1.2)%>%
+      
+      eval_6.1.2 <- bind_rows(mae_6.1.2_w, rmse_6.1.2_w, rsq_6.1.2_w)%>%
         mutate(Type = "Testing")%>%
         mutate(fold = v)%>%
         mutate(number_ob = track$number_ob[1])%>%
@@ -2657,13 +2695,13 @@ for (i in Country.Set.Test.3){
         filter(Country != i | fold != v)%>%
         bind_rows(eval_6.1.2)
       
-      rm(predictions_6.1.2, mae_6.1.2, rmse_6.1.2, rsq_6.1.2, eval_6.1.2)
+      rm(predictions_6.1.2, mae_6.1.2, rmse_6.1.2, rsq_6.1.2, eval_6.1.2, mae_6.1.2_w, rmse_6.1.2_w, rsq_6.1.2_w)
       
       # SHAP - use testing data for evaluation
       
       data_6.1.2.testing_matrix <- data_6.1.2.testing %>%
         #sample_n(fraction)%>%
-        select(-carbon_intensity_kg_per_USD_national)%>%
+        select(-carbon_intensity_kg_per_USD_national, -hh_weights_scaled_capped)%>%
         as.matrix()
       
       # data_6.1.2.all_matrix <- data_6.1.2.all %>%
@@ -2688,7 +2726,7 @@ for (i in Country.Set.Test.3){
       shap_6.1.2.1 <- shap_6.1.2 %>%
         as_tibble()%>%
         summarise_all(~ mean(abs(.)))%>%
-        select(-BIAS)%>%
+        select(-"(Intercept)")%>%
         pivot_longer(everything(), names_to = "variable", values_to = "SHAP_contribution")%>%
         arrange(desc(SHAP_contribution))%>%
         mutate(tot_contribution = sum(SHAP_contribution))%>%
@@ -3215,7 +3253,7 @@ for (i in Country.Set.Test.3){
 
     # to be exported
 
-    write_rds(shap_6.1.2.0, sprintf("../0_Data/9_Supplementary Data/BRT-Tracking/SHAP-Values en detail/2017_B/SHAP_wide_%s.rds", i))
+    write_rds(shap_6.1.2.0, sprintf("../0_Data/9_Supplementary Data/BRT-Tracking/SHAP-Values en detail/2017_C/SHAP_wide_%s.rds", i))
     
     # removals to be updated
     rm(shap_6.1.2.1, shap_6.1.2.2, shap_6.1.2.3,
@@ -3237,21 +3275,21 @@ for (i in Country.Set.Test.3){
 
 eval_0.1 <- eval_0 %>%
   distinct()%>%
-  write.xlsx(., "../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_SHAP_Evaluation_VFOLD_2017B.xlsx")
+  write.xlsx(., "../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_SHAP_Evaluation_VFOLD_2017C.xlsx")
 
 # Save shap_0 for classification exercise
 
 shap_0.1 <- shap_0 %>%
-  write.xlsx(., "../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_SHAP_Detail_VFOLD_2017B.xlsx")
+  write.xlsx(., "../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_SHAP_Detail_VFOLD_2017C.xlsx")
 
 # Save shap_1 as output
 
 shap_1.1 <- shap_1 %>%
-  write.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_SHAP_Classification_VFOLD_2017B.xlsx")
+  write.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_SHAP_Classification_VFOLD_2017C.xlsx")
 
 # Part b: Output of tables
 
-eval_1 <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_SHAP_Evaluation_VFOLD_2017B.xlsx")
+eval_1 <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_SHAP_Evaluation_VFOLD_2017C.xlsx")
 # eval_1 <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_SHAP_Evaluation_VFOLD.xlsx")
 
 eval_1.0 <- eval_1 %>%
@@ -4006,7 +4044,12 @@ for (i in Country.Set$Country){
     print(paste0("Start ", i, ": ", run_ID))
     
     # Filter only observations for country of interest  
-    data_6.3 <- filter(data_2, Country == i)
+    data_6.3 <- filter(data_2, Country == i)%>%
+      # NEW: include hh_weights
+      mutate(hh_weights_scaled = hh_weights/mean(hh_weights),
+             hh_weights_scaled_cap = quantile(hh_weights_scaled, 0.99),
+             hh_weights_scaled_capped = pmin(hh_weights_scaled, hh_weights_scaled_cap))%>%
+      select(-hh_weights_scaled, -hh_weights_scaled_cap)
     
     track_0$observations_sample = nrow(data_6.3)
     
@@ -4014,7 +4057,7 @@ for (i in Country.Set$Country){
     
     data_6.3.1 <- data_6.3 %>%
       # select relevant variables
-      select(hh_expenditures_USD_2014, carbon_intensity_kg_per_USD_national)
+      select(hh_expenditures_USD_2014, carbon_intensity_kg_per_USD_national, hh_weights_scaled_capped)
 
     rm(data_6.3)
     
@@ -4029,7 +4072,8 @@ for (i in Country.Set$Country){
     # data_6.3.2.train <- data_6.3.2 %>%
     #   training()
     
-    data_6.3.2.train <- data_6.3.1  
+    data_6.3.2.train <- data_6.3.1 %>%
+      mutate(hh_weights_scaled_capped = hardhat::importance_weights(hh_weights_scaled_capped))
       
     # Data for testing
     # data_6.3.2.test <- data_6.3.2 %>%
@@ -4042,9 +4086,9 @@ for (i in Country.Set$Country){
     recipe_6.3.0 <- recipe(carbon_intensity_kg_per_USD_national ~ .,
                            data = data_6.3.2.train)
     
-    data_6.3.2.training <- recipe_6.3.0 %>%
-      prep(training = data_6.3.2.train)%>%
-      bake(new_data = NULL)
+    # data_6.3.2.training <- recipe_6.3.0 %>%
+    #   prep(training = data_6.3.2.train)%>%
+    #   bake(new_data = NULL)
     
     # data_6.3.2.testing <- recipe_6.3.0 %>%
     #   prep(training = data_6.3.2.test)%>%
@@ -4052,7 +4096,7 @@ for (i in Country.Set$Country){
     
     # Five-fold cross-validation
     
-    folds_6.3 <- vfold_cv(data_6.3.2.training, v = 5)
+    folds_6.3 <- vfold_cv(data_6.3.2.train, v = 5)
     
     # Setup model to be tuned
     
@@ -4068,9 +4112,15 @@ for (i in Country.Set$Country){
       set_mode("regression")%>%
       set_engine("xgboost")
     
+    # Workflow with case weights
+    workflow_0 <- workflow()%>%
+      add_recipe(recipe_6.3.0)%>%
+      add_model(model_brt)%>%
+      add_case_weights(hh_weights_scaled_capped)
+    
     # Create a tuning grid - 16 different models for the tuning space
     
-    grid_0 <- grid_latin_hypercube(
+    grid_0 <- grid_space_filling(
       tree_depth(c(3,15)),
       learn_rate(c(-3,-0.5)),# tuning parameters
       #mtry(c(round((ncol(data_6.3.2.training)-1)/2,0), ncol(data_6.3.2.training)-1)),
@@ -4084,8 +4134,7 @@ for (i in Country.Set$Country){
     
     time_1 <- Sys.time()
     
-    model_brt_1 <- tune_grid(model_brt,
-                             carbon_intensity_kg_per_USD_national ~ .,
+    model_brt_1 <- tune_grid(workflow_0,
                              resamples = folds_6.3,
                              grid      = grid_0,
                              metrics   = metric_set(mae, rmse, rsq))
@@ -4118,8 +4167,7 @@ for (i in Country.Set$Country){
     
     rm(track_0, run_ID, time_1, time_2, grid_0,
        model_brt, model_brt_1, model_brt_1.1, metrics_1.1, metrics_1,
-       data_6.3.2.train, data_6.3.2.training,
-       folds_6.3, recipe_6.3.0)
+       data_6.3.2.train, folds_6.3, recipe_6.3.0)
     
     gc()
     
@@ -4159,13 +4207,18 @@ for (i in Country.Set$Country){
       #dplyr::slice(which.min(mae_mean_cv_5_train))
       dplyr::slice(which.max(number))
     
-    data_6.3 <- filter(data_2, Country == i)
+    data_6.3 <- filter(data_2, Country == i)%>%
+      # NEW: include hh_weights
+      mutate(hh_weights_scaled = hh_weights/mean(hh_weights),
+             hh_weights_scaled_cap = quantile(hh_weights_scaled, 0.99),
+             hh_weights_scaled_capped = pmin(hh_weights_scaled, hh_weights_scaled_cap))%>%
+      select(-hh_weights_scaled, -hh_weights_scaled_cap)
     
     # Feature engineering - Part I
     
     data_6.3.1 <- data_6.3 %>%
       # select relevant variables
-      select(hh_expenditures_USD_2014, carbon_intensity_kg_per_USD_national)
+      select(hh_expenditures_USD_2014, carbon_intensity_kg_per_USD_national, hh_weights_scaled_capped)
     
     rm(data_6.3)
     
@@ -4174,9 +4227,7 @@ for (i in Country.Set$Country){
     recipe_6.3.0 <- recipe(carbon_intensity_kg_per_USD_national ~ .,
                            data = data_6.3.1)
 
-    data_6.3.2 <- recipe_6.3.0 %>%
-      prep(training = data_6.3.1)%>%
-      bake(new_data = NULL)%>%
+    data_6.3.2 <- data_6.3.1 %>%
       # for cross-validation
       mutate(id = 1:n())
     
@@ -4233,6 +4284,21 @@ for (i in Country.Set$Country){
         filter(fold_test == v)%>%
         select(-fold_test)
       
+      # Preparation training dataset
+      prep_0 <- prep(recipe_6.3.0, training = data_6.3.2.training)
+      
+      data_6.3.2.training <- bake(prep_0, new_data = NULL)
+      
+      # Preparation weights
+      training_weights <- importance_weights(data_6.3.2.training$hh_weights_scaled_capped)
+      
+      data_6.3.2.training <- data_6.3.2.training %>%
+        select(-hh_weights_scaled_capped)
+      
+      # Preparation testing dataset
+      data_6.3.2.testing <- bake(prep_0, new_data = data_6.3.2.testing)
+      
+      # Raw data
       data_6.3.2.test <- data_6.3.2.raw %>%
         filter(fold_test == v)%>%
         select(-fold_test)
@@ -4240,7 +4306,8 @@ for (i in Country.Set$Country){
       # Fit model on training dataset
       model_brt_1 <- model_brt %>%
         fit(carbon_intensity_kg_per_USD_national ~ .,
-            data = data_6.3.2.training)
+            data = data_6.3.2.training,
+            case_weights = training_weights)
       
       # # Evaluation on training dataset 
       # predictions_6.1.1 <- augment(model_brt_1, new_data = data_6.1.2.training)
@@ -4252,10 +4319,18 @@ for (i in Country.Set$Country){
       
       # Evalutation on testing dataset
       predictions_6.3.2 <- augment(model_brt_1, new_data = data_6.3.2.testing)
+      
+      # Weighted
+      mae_6.3.2_w  <- mae(predictions_6.3.2,  truth = carbon_intensity_kg_per_USD_national, estimate = .pred, case_weights = hh_weights_scaled_capped)
+      rmse_6.3.2_w <- rmse(predictions_6.3.2, truth = carbon_intensity_kg_per_USD_national, estimate = .pred, case_weights = hh_weights_scaled_capped)
+      rsq_6.3.2_w  <- rsq(predictions_6.3.2,  truth = carbon_intensity_kg_per_USD_national, estimate = .pred, case_weights = hh_weights_scaled_capped)
+      
+      # Unweighted
       mae_6.3.2  <- mae(predictions_6.3.2,  truth = carbon_intensity_kg_per_USD_national, estimate = .pred)
       rmse_6.3.2 <- rmse(predictions_6.3.2, truth = carbon_intensity_kg_per_USD_national, estimate = .pred)
       rsq_6.3.2  <- rsq(predictions_6.3.2,  truth = carbon_intensity_kg_per_USD_national, estimate = .pred)
-      eval_6.3.2 <- bind_rows(mae_6.3.2, rmse_6.3.2, rsq_6.3.2)%>%
+      
+      eval_6.3.2 <- bind_rows(mae_6.3.2_w, rmse_6.3.2_w, rsq_6.3.2_w)%>%
         mutate(Type = "Testing")%>%
         mutate(fold = v)%>%
         mutate(number_ob = track$number_ob[1])%>%
@@ -4268,7 +4343,7 @@ for (i in Country.Set$Country){
         filter(Country != i | fold != v)%>%
         bind_rows(eval_6.3.2)
       
-      rm(predictions_6.3.2, mae_6.3.2, rmse_6.3.2, rsq_6.3.2, eval_6.3.2)
+      rm(predictions_6.3.2, mae_6.3.2, rmse_6.3.2, rsq_6.3.2, eval_6.3.2, mae_6.3.2_w, rmse_6.3.2_w, rsq_6.3.2_w)
       
     }
     
@@ -4283,12 +4358,12 @@ for (i in Country.Set$Country){
 
 eval_0.1 <- eval_0 %>%
   distinct()%>%
-  write.xlsx(., "../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_SHAP_Evaluation_VFOLD_2017B_EXP.xlsx")
+  write.xlsx(., "../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_SHAP_Evaluation_VFOLD_2017C_EXP.xlsx")
 
 # Part b: Output of tables
 
-eval_2 <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_SHAP_Evaluation_VFOLD_2017B_EXP.xlsx")
-eval_1 <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_SHAP_Evaluation_VFOLD_2017B.xlsx")
+eval_2 <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_SHAP_Evaluation_VFOLD_2017C_EXP.xlsx")
+eval_1 <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_SHAP_Evaluation_VFOLD_2017C.xlsx")
 
 eval_1.0 <- eval_1 %>%
   filter(.metric == "mae")%>%
