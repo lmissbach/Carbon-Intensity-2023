@@ -806,9 +806,9 @@ rm(data_joint_split)
 
 # 3.    Overview GTAP-CO2-Intensities ####
 
-Country.Set.B <- c(Country.Set, "Belgium", "Bulgaria", "Cyprus", "Czech Republic", "Germany", "Denmark", "Estonia", "Greece", "Spain", "Finland",
-                                  "France", "Croatia", "Hungary" ,"Ireland", "Italy", "Lithuania", "Luxembourg", "Latvia", "Netherlands", "Poland",
-                                  "Portugal", "Romania", "Sweden", "Slovak Republic")
+Country.Set.B <- c(Country.Set, "Belgium", "Bulgaria", "Cyprus", "Czech Republic", "Denmark", "Estonia", "Greece", "Finland",
+                                  "Croatia", "Hungary" ,"Ireland", "Italy", "Lithuania", "Luxembourg", "Latvia", "Netherlands", "Poland",
+                                  "Portugal", "Sweden", "Slovak Republic")
 Country.Set.B <- Country.Set.B[Country.Set.B!="Europe"]
 
 carbon_intensities_df <- data.frame()
@@ -931,18 +931,55 @@ for (i in Country.Set.B){
     
   }
   
+  if(GTAP_year == 2017 & GTAP_version == "11C"){
+    
+    if(i != "Europe"){
+      if(!Country.Name %in% c("Barbados", "Liberia", "Suriname", "Myanmar", "Maldives", "Guinea-Bissau")){
+        carbon_intensities_0 <- read.xlsx("../0_Data/2_IO Data/GTAP_11_MRIO/GTAP11C_2017/Carbon_Intensities_Full_All_Gas_EU.xlsx", sheet = Country.Name)
+      }
+      if(Country.Name == "Barbados"){carbon_intensities_0 <- read.xlsx("../0_Data/2_IO Data/GTAP_11_MRIO/GTAP11C_2017/Carbon_Intensities_Full_All_Gas_EU.xlsx",      sheet = "Rest of the Caribbean")}
+      if(Country.Name == "Suriname"){carbon_intensities_0 <- read.xlsx("../0_Data/2_IO Data/GTAP_11_MRIO/GTAP11C_2017/Carbon_Intensities_Full_All_Gas_EU.xlsx",      sheet = "Rest of South America")}
+      if(Country.Name == "Liberia"){carbon_intensities_0  <- read.xlsx("../0_Data/2_IO Data/GTAP_11_MRIO/GTAP11C_2017/Carbon_Intensities_Full_All_Gas_EU.xlsx",      sheet = "Rest of Western Africa")}
+      if(Country.Name == "Myanmar"){carbon_intensities_0  <- read.xlsx("../0_Data/2_IO Data/GTAP_11_MRIO/GTAP11C_2017/Carbon_Intensities_Full_All_Gas_EU.xlsx",      sheet = "Rest of Southeast Asia")}
+      if(Country.Name == "Maldives"){carbon_intensities_0 <- read.xlsx("../0_Data/2_IO Data/GTAP_11_MRIO/GTAP11C_2017/Carbon_Intensities_Full_All_Gas_EU.xlsx",      sheet = "Rest of South Asia")}
+      if(Country.Name == "Guinea-Bissau"){carbon_intensities_0 <- read.xlsx("../0_Data/2_IO Data/GTAP_11_MRIO/GTAP11C_2017/Carbon_Intensities_Full_All_Gas_EU.xlsx", sheet = "Rest of Western Africa")}
+      
+      GTAP_code            <- read_delim("../0_Data/2_IO Data/GTAP_10_MRIO/GTAP10.csv", ";", escape_double = FALSE, trim_ws = TRUE, show_col_types = FALSE)
+      
+      carbon_intensities   <- left_join(GTAP_code, carbon_intensities_0, by = c("Number"="GTAP"))%>%
+        select(-Explanation, - Number)%>%
+        mutate(GTAP = ifelse(GTAP == "gas" | GTAP == "gdt", "gasgdt", GTAP))%>%
+        group_by(GTAP)%>%
+        summarise(across(CO2_Mt:Total_HH_Consumption_MUSD, ~ sum(.)))%>%
+        ungroup()%>%
+        mutate(CO2_t_per_dollar_global      = CO2_Mt/            Total_HH_Consumption_MUSD,
+               CO2_t_per_dollar_national    = CO2_Mt_within/     Total_HH_Consumption_MUSD,
+               CO2_t_per_dollar_electricity = CO2_Mt_Electricity/Total_HH_Consumption_MUSD,
+               CO2_t_per_dollar_transport   = CO2_Mt_Transport/  Total_HH_Consumption_MUSD,
+               CO2_t_per_dollar_direct      = CO2_direct/        Total_HH_Consumption_MUSD
+               # CH4_t_per_dollar_national    = CH4_MtCO2_within/  Total_HH_Consumption_MUSD,
+               # N2O_t_per_dollar_national    = N2O_MtCO2_within/  Total_HH_Consumption_MUSD,
+               # FGAS_t_per_dollar_national   = FGAS_MtCO2_within/ Total_HH_Consumption_MUSD
+        )%>%
+        select(GTAP, starts_with("CO2_t"), ends_with("national"))%>%
+        mutate(Country = i)
+      
+      rm(GTAP_code)
+    }
+    
+  }
   
   path_0   <-list.files("../0_Data/1_Household Data/")[grep(i, list.files("../0_Data/1_Household Data/"), ignore.case = T)][1]
   
-  if(!i %in% c("Belgium", "Bulgaria", "Cyprus", "Czech Republic", "Germany", "Denmark", "Estonia", "Greece", "Spain", "Finland",
-               "France", "Croatia", "Hungary" ,"Ireland", "Italy", "Lithuania", "Luxembourg", "Latvia", "Netherlands", "Poland",
-               "Portugal", "Romania", "Sweden", "Slovak Republic")){
+  if(!i %in% c("Belgium", "Bulgaria", "Cyprus", "Czech Republic", "Denmark", "Estonia", "Greece", "Finland",
+               "Croatia", "Hungary" ,"Ireland", "Italy", "Lithuania", "Luxembourg", "Latvia", "Netherlands", "Poland",
+               "Portugal", "Sweden", "Slovak Republic")){
     matching <- read.xlsx(sprintf("../0_Data/1_Household Data/%s/3_Matching_Tables/Item_GTAP_Concordance_%s.xlsx", path_0, i))
   }
  
-  if(i %in% c("Belgium", "Bulgaria", "Cyprus", "Czech Republic", "Germany", "Denmark", "Estonia", "Greece", "Spain", "Finland",
-              "France", "Croatia", "Hungary" ,"Ireland", "Italy", "Lithuania", "Luxembourg", "Latvia", "Netherlands", "Poland",
-              "Portugal", "Romania", "Sweden", "Slovak Republic")){
+  if(i %in% c("Belgium", "Bulgaria", "Cyprus", "Czech Republic", "Denmark", "Estonia", "Greece", "Finland",
+              "Croatia", "Hungary" ,"Ireland", "Italy", "Lithuania", "Luxembourg", "Latvia", "Netherlands", "Poland",
+              "Portugal", "Sweden", "Slovak Republic")){
     matching <- read.xlsx("../0_Data/1_Household Data/4_Europe_EU27/3_Matching_Tables/Item_GTAP_Concordance_EU_incl_Artificial.xlsx")
   }
   
@@ -1225,7 +1262,7 @@ for(Group_1 in c("A", "B", "C", "D")){
   # print(P_2.1.3)
   # dev.off()
   
-  pdf(sprintf("../Carbon-Intensity-2023/1_Figures/Analysis_Carbon_Intensities_GTAP/Figure_2.1.1_%s_2017B.pdf", Group_1), width = 6.1, height = 6.69)
+  pdf(sprintf("../Carbon-Intensity-2023/1_Figures/Analysis_Carbon_Intensities_GTAP/Figure_2.1.1_%s_2017C.pdf", Group_1), width = 6.1, height = 6.69)
   print(P_2.1.3)
   dev.off()
 }
