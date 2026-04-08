@@ -2239,7 +2239,7 @@ options(warn = 1)
 
 # Takes 24 hours
 
-for (i in Country.Set.Test.1){
+for (i in Country.Set$Country){
   tryCatch({
     
     track_0 <- data.frame(Country = i, date = date())
@@ -2366,7 +2366,7 @@ for (i in Country.Set.Test.1){
       tree_depth(c(3,15)),
       learn_rate(c(-3,-1)),# tuning parameters
       mtry(c(round((mtry_max)/2,0), mtry_max)),
-      size = 49)%>%
+      size = 99)%>%
       # default parameters
       bind_rows(data.frame(tree_depth = 6, learn_rate = 0.3, mtry = mtry_max))
     
@@ -2435,7 +2435,7 @@ rm(track)
 Country.Set.Test.2 <- Country.Set %>%
   filter(!Country %in% c("MEX", "IDN", "IND"))
 
-Country.Set.Test.3 <- c("SWE", "LUX")
+Country.Set.Test.3 <- c("SWE")
 
 # eval_0 <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_SHAP_Evaluation.xlsx")
 # eval_0 <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_SHAP_Evaluation_VFOLD_2017B.xlsx")
@@ -4035,7 +4035,7 @@ options(warn = 1)
 
 # Takes seven hours
 
-for (i in Country.Set.Test.1){
+for (i in Country.Set$Country){
   tryCatch({
     
     track_0 <- data.frame(Country = i, date = date())
@@ -4125,7 +4125,7 @@ for (i in Country.Set.Test.1){
       tree_depth(c(3,15)),
       learn_rate(c(-3,-1)),# tuning parameters
       #mtry(c(round((ncol(data_6.3.2.training)-1)/2,0), ncol(data_6.3.2.training)-1)),
-      size = 49)%>%
+      size = 99)%>%
       # default parameters
       bind_rows(data.frame(tree_depth = 6, learn_rate = 0.3))
     
@@ -4189,7 +4189,7 @@ rm(track)
 
 # 6.3.1   Calculate model evaluation (nur EXP) ####
 
-Country.Set.Test.2 <- c("SWE", "LUX")
+Country.Set.Test.2 <- c("SWE")
 
 Country.Set.Test.3 <- c("BOL", "PRT", "BEL", "CHE", "AUT", "NLD", "SWE", "FRA", "ITA", "ESP", "GRC", "SUR")
 
@@ -4267,7 +4267,7 @@ for (i in Country.Set.Test.2){
     model_brt <- boost_tree(
       trees         = 1000,
       tree_depth    = track$tree_depth_best[1],
-      learn_rate    = track$learn_rate_best[1] # the higher the learning rate the faster - default 0.3,
+      learn_rate    = track$learn_rate_best[1], # the higher the learning rate the faster - default 0.3,
       stop_iter     = 15
     )%>%
       set_mode("regression")%>%
@@ -4426,7 +4426,7 @@ kbl(eval_1.3, format = "latex", caption = "Evaluation of boosted regression tree
   #column_spec(1, width = "3.15 cm")%>%
   add_header_above(c(" " = 2, "Sparse model" = 3, "Rich model" = 3))%>%
   #add_header_above(c(" " = 2, "Test sample" = 3, "Training sample" = 3, "Entire sample" = 3))%>%
-  footnote(general = "This table shows performance metrics for boosted regression tree models including exclusively household expenditures ('Sparse model') and including all available features ('Rich model') and . MAE is the mean absolute error of predictions; RMSE is the root mean squared error of predictions; R\\\\textsuperscript{2} is the squared correlation of prediction errors. Unit of MAE and RMSE is kgCO\\\\textsubscript{2} per USD. We show MAE, RMSE and R\\\\textsuperscript{2} for five-fold cross-validation on the entire dataset. ", threeparttable = T, escape = FALSE)%>%
+  footnote(general = "This table shows performance metrics for boosted regression tree models including exclusively household expenditures ('Sparse model') and including all available features ('Rich model'). MAE is the mean absolute error of predictions; RMSE is the root mean squared error of predictions; R\\\\textsuperscript{2} is the squared correlation of prediction errors. Unit of MAE and RMSE is kgCO\\\\textsubscript{2} per USD. We show MAE, RMSE and R\\\\textsuperscript{2} for five-fold cross-validation on the entire dataset. ", threeparttable = T, escape = FALSE)%>%
   save_kable(., "2_Tables/Table_SHAP_Summary_EXP.tex")
 
 # Figure comparing R2 for rich and sparse set
@@ -6759,6 +6759,52 @@ pdf("1_Figures/Figure 1/Figure_1A_2017_11C.pdf", width = 5.7, height = 4.32)
 print(P_8.1.1)
 dev.off()
 
+# Robustness checks 
+
+# With five income groups - alpha = 1 and alpha = 2
+data_8.1.1 <- data_8.1.1
+
+# With ten income groups
+data_8.1.2 <- data_2 %>%
+  group_by(Country)%>%
+  group_modify(~ {
+    
+    data_8.1.2.1 <- .x %>%
+      mutate(mean_CI = mean(carbon_intensity_kg_per_USD_national),
+             SQ_DEV  = ((carbon_intensity_kg_per_USD_national/mean_CI)-1)^2)%>%
+      summarise(mean_CI = first(mean_CI),
+                GE_1    = mean((carbon_intensity_kg_per_USD_national/mean_CI)*log(carbon_intensity_kg_per_USD_national/mean_CI)),
+                GE_2    = mean(SQ_DEV)/2)
+    
+    data_8.1.2.2 <- .x %>%
+      group_by(Income_Group_10)%>%
+      summarise(number = n(),
+                mean_CI = mean(carbon_intensity_kg_per_USD_national),
+                GE_1 = mean((carbon_intensity_kg_per_USD_national/mean_CI)*log(carbon_intensity_kg_per_USD_national/mean_CI)),
+                GE_2 = mean(((carbon_intensity_kg_per_USD_national/mean_CI)-1)^2)/2)%>%
+      ungroup()%>%
+      mutate(weight = number/sum(number),
+             mean_CI_0 = as.numeric(data_8.1.2.1$mean_CI))
+    
+    data_8.1.2.3 <- data_8.1.2.2 %>%
+      summarise(within_1  = sum(weight*(mean_CI/mean_CI_0)*GE_1),
+                within_2  = sum(weight*(mean_CI/mean_CI_0)^2*GE_2),
+                between_1 = sum(weight*(mean_CI/mean_CI_0)*log(mean_CI/mean_CI_0)),
+                between_2 = sum(weight*((mean_CI/mean_CI_0)-1)^2)/2)%>%
+      mutate(total_1 = data_8.1.2.1$GE_1,
+             total_2 = data_8.1.2.1$GE_2)
+    
+    return(data_8.1.2.3)
+    
+  })%>%
+  ungroup()%>%
+  mutate(test_1 = within_1 + between_1 - total_1,
+         test_2 = within_2 + between_2 - total_2)%>%
+  mutate(share_1_a = within_1/total_1,
+         share_1_b = between_1/total_1,
+         share_2_a = within_2/total_2,
+         share_2_b = between_2/total_2)
+
 boot_stat <- function(d, i) {
   res <- ge2_decompose(d$carbon_intensity_kg_per_USD_national[i], d$Income_Group_5[i])
   res$within / res$total
@@ -7119,8 +7165,8 @@ P_8.0 <- ggplot()+
   geom_polygon(data = filter(poly_2, g == 2), aes(x = x, y = y, group = g), alpha = 0.5, fill = "#E18727FF")+
   geom_polygon(data = filter(poly_2, g == 3), aes(x = x, y = y, group = g), alpha = 0.5, fill = "#0072B5FF")+
   geom_polygon(data = filter(poly_2, g == 4), aes(x = x, y = y, group = g), alpha = 0.5, fill = "#FFDC91FF")+
-  geom_label(data = poly_4, aes(label = text, x = x, y = y), alpha = 0.5, size = 2.5)+
-  geom_label(data = poly_5, aes(label = text, x = x, y = y), alpha = 0.2, size = 2.5)+
+  geom_label(data = poly_4, aes(label = text, x = x, y = y), alpha = 0.5, size = 2.75)+
+  geom_label(data = poly_5, aes(label = text, x = x, y = y), alpha = 0.2, size = 2.75)+
   theme_bw()+
   # geom_segment(data = data_8.2.2, aes(y = median_1_5_national, yend = median_1_5_global, x = dif_95_05_1_5_national, xend = dif_95_05_1_5_global), size = 0.1, colour = "lightgrey")+
   geom_point(data = data_8.2.2, aes(y = median_1_5_national, x = dif_95_05_1_5_national, fill = log(value)), shape = 21, colour = "black", size = 3)+
@@ -7138,18 +7184,18 @@ P_8.0 <- ggplot()+
   ggtitle("National climate policy")+
   # guides(fill = "none")+
   #guides(fill = guide_legend(nrow = 2))+
-  theme(axis.text.y = element_text(size = 7), 
-        axis.text.x = element_text(size = 7),
-        axis.title  = element_text(size = 7),
-        plot.title  = element_text(size = 7),
+  theme(axis.text.y = element_text(size = 9), 
+        axis.text.x = element_text(size = 9),
+        axis.title  = element_text(size = 9),
+        plot.title  = element_text(size = 9),
         legend.position = "bottom",
         strip.text = element_text(size = 7),
         #strip.text.y = element_text(angle = 180),
         panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
         axis.ticks = element_line(size = 0.2),
-        legend.text = element_text(size = 7),
-        legend.title = element_text(size = 7, vjust = 0.75),
+        legend.text = element_text(size = 9),
+        legend.title = element_text(size = 9, vjust = 0.75),
         plot.margin = unit(c(0.3,0.3,0.3,0.3), "cm"),
         panel.border = element_rect(size = 0.3))
 
@@ -7159,8 +7205,8 @@ P_8.3 <- ggplot()+
   geom_polygon(data = filter(poly_2, g == 2), aes(x = x, y = y, group = g), alpha = 0.5, fill = "#E18727FF")+
   geom_polygon(data = filter(poly_2, g == 3), aes(x = x, y = y, group = g), alpha = 0.5, fill = "#0072B5FF")+
   geom_polygon(data = filter(poly_2, g == 4), aes(x = x, y = y, group = g), alpha = 0.5, fill = "#FFDC91FF")+
-  geom_label(data = poly_4, aes(label = text, x = x, y = y), alpha = 0.5, size = 2.5)+
-  geom_label(data = poly_5, aes(label = text, x = x, y = y), alpha = 0.2, size = 2.5)+
+  geom_label(data = poly_4, aes(label = text, x = x, y = y), alpha = 0.5, size = 2.75)+
+  geom_label(data = poly_5, aes(label = text, x = x, y = y), alpha = 0.2, size = 2.75)+
   theme_bw()+
   # geom_segment(data = data_8.2.2, aes(y = median_1_5_national, yend = median_1_5_global, x = dif_95_05_1_5_national, xend = dif_95_05_1_5_global), size = 0.1, colour = "lightgrey")+
   geom_point(data = data_8.2.2, aes(y = median_1_5_national, x = dif_95_05_1_5_national, fill = log(value)), shape = 21, colour = "black", size = 3, alpha = 0.1)+
@@ -7178,18 +7224,18 @@ P_8.3 <- ggplot()+
   ggtitle("International climate policy")+
   # guides(fill = "none")+
   #guides(fill = guide_legend(nrow = 2))+
-  theme(axis.text.y = element_text(size = 7), 
-        axis.text.x = element_text(size = 7),
-        axis.title  = element_text(size = 7),
-        plot.title  = element_text(size = 7),
+  theme(axis.text.y = element_text(size = 9), 
+        axis.text.x = element_text(size = 9),
+        axis.title  = element_text(size = 9),
+        plot.title  = element_text(size = 9),
         legend.position = "bottom",
-        strip.text = element_text(size = 7),
+        strip.text = element_text(size = 9),
         #strip.text.y = element_text(angle = 180),
         panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
         axis.ticks = element_line(size = 0.2),
-        legend.text = element_text(size = 7),
-        legend.title = element_text(size = 7, vjust = 0.75),
+        legend.text = element_text(size = 9),
+        legend.title = element_text(size = 9, vjust = 0.75),
         plot.margin = unit(c(0.3,0.3,0.3,0.3), "cm"),
         panel.border = element_rect(size = 0.3))
 
@@ -7199,8 +7245,8 @@ P_8.4 <- ggplot()+
   geom_polygon(data = filter(poly_2, g == 2), aes(x = x, y = y, group = g), alpha = 0.5, fill = "#E18727FF")+
   geom_polygon(data = filter(poly_2, g == 3), aes(x = x, y = y, group = g), alpha = 0.5, fill = "#0072B5FF")+
   geom_polygon(data = filter(poly_2, g == 4), aes(x = x, y = y, group = g), alpha = 0.5, fill = "#FFDC91FF")+
-  geom_label(data = poly_4, aes(label = text, x = x, y = y), alpha = 0.5, size = 2.5)+
-  geom_label(data = poly_5, aes(label = text, x = x, y = y), alpha = 0.2, size = 2.5)+
+  geom_label(data = poly_4, aes(label = text, x = x, y = y), alpha = 0.5, size = 2.75)+
+  geom_label(data = poly_5, aes(label = text, x = x, y = y), alpha = 0.2, size = 2.75)+
   theme_bw()+
   # geom_segment(data = data_8.2.2, aes(y = median_1_5_national, yend = median_1_5_global, x = dif_95_05_1_5_national, xend = dif_95_05_1_5_global), size = 0.1, colour = "lightgrey")+
   geom_point(data = data_8.2.2, aes(y = median_1_5_national, x = dif_95_05_1_5_national, fill = log(value)), shape = 21, colour = "black", size = 3, alpha = 0.1)+
@@ -7218,18 +7264,18 @@ P_8.4 <- ggplot()+
   ggtitle("Transport sector policy")+
   # guides(fill = "none")+
   #guides(fill = guide_legend(nrow = 2))+
-  theme(axis.text.y = element_text(size = 7), 
-        axis.text.x = element_text(size = 7),
-        axis.title  = element_text(size = 7),
-        plot.title  = element_text(size = 7),
+  theme(axis.text.y = element_text(size = 9), 
+        axis.text.x = element_text(size = 9),
+        axis.title  = element_text(size = 9),
+        plot.title  = element_text(size = 9),
         legend.position = "bottom",
-        strip.text = element_text(size = 7),
+        strip.text = element_text(size = 9),
         #strip.text.y = element_text(angle = 180),
         panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
         axis.ticks = element_line(size = 0.2),
-        legend.text = element_text(size = 7),
-        legend.title = element_text(size = 7, vjust = 0.75),
+        legend.text = element_text(size = 9),
+        legend.title = element_text(size = 9, vjust = 0.75),
         plot.margin = unit(c(0.3,0.3,0.3,0.3), "cm"),
         panel.border = element_rect(size = 0.3))
 
