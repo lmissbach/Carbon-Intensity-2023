@@ -7578,7 +7578,7 @@ rm(data_8.2.2, data_8.2.4, data_8.2.4.1, data_8.2.4.2, data_8.2.4.3, data_8.2.4.
 
 # 8.3     Figure 3: Clustering and features ####
 
-eval_3 <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_SHAP_Evaluation_VFOLD_2017B.xlsx")
+eval_3 <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_SHAP_Evaluation_VFOLD_2017C.xlsx")
 # eval_1 <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_SHAP_Evaluation_VFOLD.xlsx")
 
 eval_3.0 <- eval_3 %>%
@@ -7608,19 +7608,23 @@ eval_3.1 <- eval_3 %>%
   rename(R2 = Sample_Testing)%>%
   select(Country, R2)
 
-data_8.3.0 <- read_csv("../0_Data/9_Supplementary Data/BRT-Tracking/Clusters_Normalized_Corrected_B.csv", show_col_types = FALSE) %>%
+theil <- read_csv("../0_Data/9_Supplementary Data/BRT-Tracking/Theil_indeces.csv")
+
+data_8.3.0 <- read_csv("../0_Data/9_Supplementary Data/BRT-Tracking/Clusters_Normalized_Corrected_C.csv", show_col_types = FALSE) %>%
   left_join(eval_3.1)%>%
+  left_join(select(theil, Country, share_1_0))%>%
+  select(cluster, Country, "Appliance own.":"Spatial", median_1_5, mean_carbon_intensity, share_1_0, R2)%>%
   group_by(cluster)%>%
   mutate(number = n())%>%
-  summarise_at(vars("Appliance own.":"silhouette_6_means", number, R2), ~ mean(.))%>%
+  summarise_at(vars("Appliance own.":"R2"), ~ mean(.))%>%
   ungroup()%>%
-  mutate_at(vars(-cluster, - number, - dif_95_05_1_5, -median_1_5, -R2), ~ (. - mean(.))/sd(.))%>%
-  rename("Horizontal distribution" = "dif_95_05_1_5", 
-         "Mean carbon intensity" = "mean_carbon_intensity",
-         "Vertical distribution"   = "median_1_5")%>%
+  mutate_at(vars(-cluster, -share_1_0, -median_1_5, -R2), ~ (. - mean(.))/sd(.))%>%
+  rename("Mean carbon intensity"   = "mean_carbon_intensity",
+         "Vertical distribution"   = "median_1_5",
+         "Vertical heterogeneity"  = "share_1_0")%>%
   pivot_longer("Appliance own.":"R2", names_to = "names", values_to = "values")%>%
-  filter(!names %in% c("silhouette_6_means", "number"))%>%
-  mutate(names = factor(names, levels = c("Mean carbon intensity", "Horizontal distribution", "Vertical distribution",
+  filter(!names %in% c("silhouette_10_means"))%>%
+  mutate(names = factor(names, levels = c("Mean carbon intensity", "Vertical distribution", "Vertical heterogeneity",
                                           "HH expenditures", "Sociodemographic",
                                           "Spatial", 
                                           "Electricity access", "Cooking fuel", "Heating fuel", "Lighting fuel", "Car own.", "Motorcycle own.", "Appliance own.", "R2")))
@@ -7628,7 +7632,7 @@ data_8.3.0 <- read_csv("../0_Data/9_Supplementary Data/BRT-Tracking/Clusters_Nor
 # Need to split up because of different scaling required
 
 data_8.3.1 <- data_8.3.0 %>%
-  filter(names != "Vertical distribution" & names != "Horizontal distribution" & names != "Mean carbon intensity" & names != "R2")%>%
+  filter(names != "Vertical distribution" & names != "Vertical heterogeneity" & names != "Mean carbon intensity" & names != "R2")%>%
   # group_by(names)%>%
   mutate(values_rescaled = rescale(values))
 
@@ -7644,7 +7648,7 @@ data_8.3.2 <- data_8.3.0 %>%
   filter(!is.na(cluster))
 
 data_8.3.3 <- data_8.3.1 %>%
-  filter(!names %in% c("Mean carbon intensity", "Vertical distribution", "Horizontal distribution", "R2"))
+  filter(!names %in% c("Mean carbon intensity", "Vertical distribution", "Vertical heterogeneity", "R2"))
 
 data_8.3.4 <- data_8.3.0 %>%
   filter(names == "Mean carbon intensity")%>%
@@ -7652,6 +7656,10 @@ data_8.3.4 <- data_8.3.0 %>%
 
 data_8.3.5 <- data_8.3.0 %>%
   filter(names == "R2")
+
+data_8.3.6 <- data_8.3.0 %>%
+  filter(names == "Vertical heterogeneity")%>%
+  mutate(values = 1-values)
 
 P_8.3.1 <- ggplot(data_8.3.4)+
   geom_point(aes(y = cluster, x = names, fill = values_rescaled), shape = 22, size = 4, stroke = 0.2)+
@@ -7688,12 +7696,47 @@ P_8.3.1 <- ggplot(data_8.3.4)+
         plot.margin = unit(c(0.3,0.15,0.3,0.1), "cm"),
         panel.border = element_rect(size = 0.3))
 
+P_8.3.1a <- ggplot(data_8.3.6)+
+  geom_point(aes(y = cluster, x = names, fill = values), shape = 22, size = 4, stroke = 0.2)+
+  theme_bw()+
+  scale_fill_gradientn(na.value = NA,
+                       colors = c("#0072B5FF", "white","#BC3C29FF", "#631879FF"),
+                       values = scales::rescale(c(0,0.3,0.6,1)),
+                       limits = c(0,1))+
+  
+  # scale_fill_gradient2(na.value = NA, low = "#0072B5FF", high = "#BC3C29FF", midpoint = 1)+
+  #scale_fill_gradient2(na.value = NA, limits = c(0,1.5), low = "#0072B5FF", high = "#BC3C29FF", breaks = c(0,0.5,1,1.5), labels = c(0,1,2,3),
+  #                     midpoint = 0.5)+
+  theme_bw()+
+  scale_y_discrete(limits = rev)+
+  scale_x_discrete(labels = c(expression(paste("Vertical heterogeneity (%)", sep = ""))))+
+  xlab("")+ 
+  guides(fill = "none")+
+  ylab("")+
+  ggtitle("")+
+  theme(axis.text.y = element_blank(), 
+        axis.text.x = element_text(size = 6, angle = 90, hjust = 1, vjust = 0.5),
+        axis.title  = element_blank(),
+        plot.title = element_text(size = 11),
+        legend.position = "bottom",
+        strip.text = element_blank(),
+        strip.background = element_blank(),
+        #strip.text.y = element_text(angle = 180),
+        panel.grid.major.x = element_blank(),
+        panel.grid.major.y = element_line(size = 0.2),
+        panel.grid.minor = element_blank(),
+        axis.ticks = element_blank(),
+        legend.text = element_text(size = 7),
+        legend.title = element_text(size = 7),
+        plot.margin = unit(c(0.3,0.15,0.3,0.1), "cm"),
+        panel.border = element_rect(size = 0.3))
+
 P_8.3.2 <- ggplot(data_8.3.2)+
   geom_point(aes(y = cluster, x = names, fill = values_rescaled_new), shape = 22, size = 4, stroke = 0.2)+
   theme_bw()+
   scale_fill_gradientn(na.value = NA,
                        colors = c("#0072B5FF", "white","#BC3C29FF", "#631879FF"),
-                       values = scales::rescale(c(0,0.4,0.8,1)),
+                       values = scales::rescale(c(0,0.5,0.8,1)),
                        limits = c(0,1))+
   theme_bw()+
   scale_y_discrete(limits = rev)+
@@ -7797,13 +7840,13 @@ L.1 <- get_legend(ggplot(data_8.3.3)+
                                          values = scales::rescale(c(0,0.39,0.78,1)),
                                          breaks = c(0,0.39,0.78,1),
                                          labels = c("Rather low", "Neutral","Rather high","High"),
-                                         name = "Feature importance",
+                                         name = "Importance",
                                          guide = guide_colorbar(barwidth = 10, barheight = 0.8, ticks.colour = NA))+
                     theme(legend.position = "bottom",
                           legend.title    = element_text(size = 6, vjust = 0.75, hjust = 0, margin = margin(r = 3)),
                           legend.text     = element_text(size = 5)))
 
-P_8.3.5 <- ggarrange(P_8.3.2, P_8.3.3, P_8.3.1, P_8.3.4, nrow = 1, align = "h", widths = c(1.2,7,0.8,0.8),
+P_8.3.5 <- ggarrange(P_8.3.2, P_8.3.3, P_8.3.1, P_8.3.1a, P_8.3.4, nrow = 1, align = "h", widths = c(1.2,6.5,0.8,0.8,0.8),
                      legend.grob = L.1,
                      legend = "bottom")
 
@@ -7817,19 +7860,21 @@ dev.off()
 
 # Uncorrected
 
-data_8.3.0 <- read_csv("../0_Data/9_Supplementary Data/BRT-Tracking/Clusters_Normalized_Uncorrected_B.csv", show_col_types = FALSE) %>%
+data_8.3.0 <- read_csv("../0_Data/9_Supplementary Data/BRT-Tracking/Clusters_Normalized_Uncorrected_C.csv", show_col_types = FALSE) %>%
   left_join(eval_3.1)%>%
+  left_join(select(theil, Country, share_1_0))%>%
+  select(cluster, Country, "Appliance own.":"Spatial", median_1_5, mean_carbon_intensity, share_1_0, R2)%>%
   group_by(cluster)%>%
   mutate(number = n())%>%
-  summarise_at(vars("Appliance own.":"silhouette_5_means", number, R2), ~ mean(.))%>%
+  summarise_at(vars("Appliance own.":"R2"), ~ mean(.))%>%
   ungroup()%>%
-  mutate_at(vars(-cluster, - number, - dif_95_05_1_5, -median_1_5, -R2), ~ (. - mean(.))/sd(.))%>%
-  rename("Horizontal distribution" = "dif_95_05_1_5", 
-         "Mean carbon intensity" = "mean_carbon_intensity",
-         "Vertical distribution"   = "median_1_5")%>%
+  mutate_at(vars(-cluster, - share_1_0, -median_1_5, -R2), ~ (. - mean(.))/sd(.))%>%
+  rename("Mean carbon intensity" = "mean_carbon_intensity",
+         "Vertical distribution"   = "median_1_5",
+         "Vertical heterogeneity" = "share_1_0")%>%
   pivot_longer("Appliance own.":"R2", names_to = "names", values_to = "values")%>%
-  filter(!names %in% c("silhouette_5_means", "number"))%>%
-  mutate(names = factor(names, levels = c("Mean carbon intensity", "Horizontal distribution", "Vertical distribution",
+  filter(!names %in% c("silhouette_6_means", "number"))%>%
+  mutate(names = factor(names, levels = c("Mean carbon intensity", "Vertical distribution", "Vertical heterogeneity",
                                           "HH expenditures", "Sociodemographic",
                                           "Spatial", "Electricity access", "Cooking fuel",
                                           "Heating fuel", "Lighting fuel", "Car own.", "Motorcycle own.", "Appliance own.", "R2")))
@@ -7837,7 +7882,7 @@ data_8.3.0 <- read_csv("../0_Data/9_Supplementary Data/BRT-Tracking/Clusters_Nor
 # Need to split up because of different scaling required
 
 data_8.3.1 <- data_8.3.0 %>%
-  filter(names != "Vertical distribution" & names != "Horizontal distribution" & names != "R2")%>%
+  filter(names != "Vertical distribution" & names != "Vertical heterogeneity" & names != "R2")%>%
   # group_by(names)%>%
   mutate(values_rescaled = rescale(values))
 
@@ -7853,20 +7898,25 @@ data_8.3.2 <- data_8.3.0 %>%
   filter(!is.na(cluster))
 
 data_8.3.3 <- data_8.3.1 %>%
-  filter(!names %in% c("Mean carbon intensity", "Vertical distribution", "Horizontal distribution"))
+  filter(!names %in% c("Mean carbon intensity", "Vertical distribution", "Vertical heterogeneity"))
 
 data_8.3.5 <- data_8.3.0 %>%
   filter(names == "R2")
 
 data_8.3.1 <- data_8.3.1 %>%
-  filter(names == "Mean carbon intensity")
+  filter(names == "Mean carbon intensity")%>%
+  mutate(values_rescaled = rescale(values))
+
+data_8.3.6 <- data_8.3.0 %>%
+  filter(names == "Vertical heterogeneity")%>%
+  mutate(values = 1-values)
 
 P_8.3.1 <- ggplot(data_8.3.1)+
-  geom_point(aes(y = cluster, x = names, fill = values), shape = 22, size = 4, stroke = 0.2)+
+  geom_point(aes(y = cluster, x = names, fill = values_rescaled), shape = 22, size = 4, stroke = 0.2)+
   theme_bw()+
   scale_fill_gradientn(na.value = NA,
                        colors = c("#0072B5FF", "white","#BC3C29FF", "#631879FF"),
-                       values = scales::rescale(c(0,0.28,0.56,1)))+
+                       values = scales::rescale(c(0,0.4,0.8,1)))+
   
   # scale_fill_gradient2(na.value = NA, low = "#0072B5FF", high = "#BC3C29FF", midpoint = 1)+
   #scale_fill_gradient2(na.value = NA, limits = c(0,1.5), low = "#0072B5FF", high = "#BC3C29FF", breaks = c(0,0.5,1,1.5), labels = c(0,1,2,3),
@@ -7895,12 +7945,47 @@ P_8.3.1 <- ggplot(data_8.3.1)+
         plot.margin = unit(c(0.3,0.15,0.3,0.1), "cm"),
         panel.border = element_rect(size = 0.3))
 
+P_8.3.1a <- ggplot(data_8.3.6)+
+  geom_point(aes(y = cluster, x = names, fill = values), shape = 22, size = 4, stroke = 0.2)+
+  theme_bw()+
+  scale_fill_gradientn(na.value = NA,
+                       colors = c("#0072B5FF", "white","#BC3C29FF", "#631879FF"),
+                       values = scales::rescale(c(0,0.3,0.6,1)),
+                       limits = c(0,1))+
+  
+  # scale_fill_gradient2(na.value = NA, low = "#0072B5FF", high = "#BC3C29FF", midpoint = 1)+
+  #scale_fill_gradient2(na.value = NA, limits = c(0,1.5), low = "#0072B5FF", high = "#BC3C29FF", breaks = c(0,0.5,1,1.5), labels = c(0,1,2,3),
+  #                     midpoint = 0.5)+
+  theme_bw()+
+  scale_y_discrete(limits = rev)+
+  scale_x_discrete(labels = c(expression(paste("Vertical heterogeneity (%)", sep = ""))))+
+  xlab("")+ 
+  guides(fill = "none")+
+  ylab("")+
+  ggtitle("")+
+  theme(axis.text.y = element_blank(), 
+        axis.text.x = element_text(size = 6, angle = 90, hjust = 1, vjust = 0.5),
+        axis.title  = element_blank(),
+        plot.title = element_text(size = 11),
+        legend.position = "bottom",
+        strip.text = element_blank(),
+        strip.background = element_blank(),
+        #strip.text.y = element_text(angle = 180),
+        panel.grid.major.x = element_blank(),
+        panel.grid.major.y = element_line(size = 0.2),
+        panel.grid.minor = element_blank(),
+        axis.ticks = element_blank(),
+        legend.text = element_text(size = 7),
+        legend.title = element_text(size = 7),
+        plot.margin = unit(c(0.3,0.15,0.3,0.1), "cm"),
+        panel.border = element_rect(size = 0.3))
+
 P_8.3.2 <- ggplot(data_8.3.2)+
   geom_point(aes(y = cluster, x = names, fill = values_new), shape = 22, size = 4, stroke = 0.2)+
   theme_bw()+
   scale_fill_gradientn(na.value = NA,
                        colors = c("#0072B5FF", "white","#BC3C29FF", "#631879FF"),
-                       values = scales::rescale(c(0,0.5,0.75,1)))+theme_bw()+
+                       values = scales::rescale(c(0,0.5,0.8,1)))+theme_bw()+
   scale_y_discrete(limits = rev)+
   scale_x_discrete(labels = c(
     #expression(paste("Horizontal inequality (", widehat(H)[r]^{1} ,")", sep = "")), 
@@ -8001,13 +8086,13 @@ L.1 <- get_legend(ggplot(data_8.3.3)+
                                          values = scales::rescale(c(0,0.28,0.56,1)),
                                          breaks = c(0,0.28,0.56,1),
                                          labels = c("Rather low", "Neutral","Rather high","High"),
-                                         name = "Feature value",
+                                         name = "Importance",
                                          guide = guide_colorbar(barwidth = 10, barheight = 0.8, ticks.colour = NA))+
                     theme(legend.position = "bottom",
                           legend.title    = element_text(size = 6, vjust = 0.75, hjust = 0, margin = margin(r = 3)),
                           legend.text     = element_text(size = 5)))
 
-P_8.3.4 <- ggarrange(P_8.3.2, P_8.3.3, P_8.3.1, P_8.3.4, nrow = 1, align = "h", widths = c(1.2,7,0.8,0.8),
+P_8.3.4 <- ggarrange(P_8.3.2, P_8.3.3, P_8.3.1, P_8.3.1a, P_8.3.4, nrow = 1, align = "h", widths = c(1.2,6.5,0.8,0.8,0.8),
                      legend.grob = L.1,
                      legend = "bottom")
 
@@ -8015,25 +8100,27 @@ jpeg("1_Figures/Figure 3/Figure_3_Uncorrected.jpg", width = 15.5, height = 18, u
 print(P_8.3.4)
 dev.off()
 
-pdf("1_Figures/Figure 3/Figure_3_Uncorrected.pdf", width = 6.1, height = 7.09)
+pdf("1_Figures/Figure 3/Figure_3_Uncorrected.pdf", width = 6.1, height = 4.72)
 print(P_8.3.4)
 dev.off()
 
 # Imputed
 
-data_8.3.0 <- read_csv("../0_Data/9_Supplementary Data/BRT-Tracking/Clusters_Normalized_Corrected_Imputed_B.csv", show_col_types = FALSE) %>%
+data_8.3.0 <- read_csv("../0_Data/9_Supplementary Data/BRT-Tracking/Clusters_Normalized_Corrected_Imputed_C.csv", show_col_types = FALSE) %>%
   left_join(eval_3.1)%>%
+  left_join(select(theil, Country, share_1_0))%>%
+  select(cluster, Country, "Appliance own.": "Spatial", median_1_5, mean_carbon_intensity, share_1_0, R2)%>%
   group_by(cluster)%>%
   mutate(number = n())%>%
-  summarise_at(vars("Appliance own.":"silhouette_9_means", number, R2), ~ mean(.))%>%
+  summarise_at(vars("Appliance own.":"R2"), ~ mean(.))%>%
   ungroup()%>%
-  mutate_at(vars(-cluster, - number, - dif_95_05_1_5, -median_1_5, -R2), ~ (. - mean(.))/sd(.))%>%
-  rename("Horizontal distribution" = "dif_95_05_1_5", 
+  mutate_at(vars(-cluster, - share_1_0, -median_1_5, -R2), ~ (. - mean(.))/sd(.))%>%
+  rename("Vertical heterogeneity" = "share_1_0", 
          "Mean carbon intensity" = "mean_carbon_intensity",
          "Vertical distribution"   = "median_1_5")%>%
   pivot_longer("Appliance own.":"R2", names_to = "names", values_to = "values")%>%
-  filter(!names %in% c("silhouette_9_means", "number"))%>%
-  mutate(names = factor(names, levels = c("Mean carbon intensity", "Horizontal distribution", "Vertical distribution",
+  filter(!names %in% c("silhouette_11_means", "number"))%>%
+  mutate(names = factor(names, levels = c("Mean carbon intensity", "Vertical distribution", "Vertical heterogeneity",
                                           "HH expenditures", "Sociodemographic",
                                           "Spatial", "Electricity access", "Cooking fuel",
                                           "Heating fuel", "Lighting fuel", "Car own.", "Motorcycle own.", "Appliance own.", "R2")))
@@ -8041,7 +8128,7 @@ data_8.3.0 <- read_csv("../0_Data/9_Supplementary Data/BRT-Tracking/Clusters_Nor
 # Need to split up because of different scaling required
 
 data_8.3.1 <- data_8.3.0 %>%
-  filter(names != "Vertical distribution" & names != "Horizontal distribution" & names != "R2")%>%
+  filter(names != "Vertical distribution" & names != "Vertical heterogeneity" & names != "R2")%>%
   # group_by(names)%>%
   mutate(values_rescaled = rescale(values))
 
@@ -8057,20 +8144,25 @@ data_8.3.2 <- data_8.3.0 %>%
   filter(!is.na(cluster))
 
 data_8.3.3 <- data_8.3.1 %>%
-  filter(!names %in% c("Mean carbon intensity", "Vertical distribution", "Horizontal distribution"))
+  filter(!names %in% c("Mean carbon intensity", "Vertical distribution", "Vertical heterogeneity"))
 
 data_8.3.5 <- data_8.3.0 %>%
   filter(names == "R2")
 
 data_8.3.1 <- data_8.3.1 %>%
-  filter(names == "Mean carbon intensity")
+  filter(names == "Mean carbon intensity")%>%
+  mutate(values_rescaled = rescale(values))
+
+data_8.3.6 <- data_8.3.0 %>%
+  filter(names == "Vertical heterogeneity")%>%
+  mutate(values = 1-values)
 
 P_8.3.1 <- ggplot(data_8.3.1)+
-  geom_point(aes(y = cluster, x = names, fill = values), shape = 22, size = 4, stroke = 0.2)+
+  geom_point(aes(y = cluster, x = names, fill = values_rescaled), shape = 22, size = 4, stroke = 0.2)+
   theme_bw()+
   scale_fill_gradientn(na.value = NA,
                        colors = c("#0072B5FF", "white","#BC3C29FF", "#631879FF"),
-                       values = scales::rescale(c(0,0.34,0.68,1)))+
+                       values = scales::rescale(c(0,0.4,0.8,1)))+
   
   # scale_fill_gradient2(na.value = NA, low = "#0072B5FF", high = "#BC3C29FF", midpoint = 1)+
   #scale_fill_gradient2(na.value = NA, limits = c(0,1.5), low = "#0072B5FF", high = "#BC3C29FF", breaks = c(0,0.5,1,1.5), labels = c(0,1,2,3),
@@ -8099,12 +8191,47 @@ P_8.3.1 <- ggplot(data_8.3.1)+
         plot.margin = unit(c(0.3,0.15,0.3,0.1), "cm"),
         panel.border = element_rect(size = 0.3))
 
+P_8.3.1a <- ggplot(data_8.3.6)+
+  geom_point(aes(y = cluster, x = names, fill = values), shape = 22, size = 4, stroke = 0.2)+
+  theme_bw()+
+  scale_fill_gradientn(na.value = NA,
+                       colors = c("#0072B5FF", "white","#BC3C29FF", "#631879FF"),
+                       values = scales::rescale(c(0,0.3,0.6,1)),
+                       limits = c(0,1))+
+  
+  # scale_fill_gradient2(na.value = NA, low = "#0072B5FF", high = "#BC3C29FF", midpoint = 1)+
+  #scale_fill_gradient2(na.value = NA, limits = c(0,1.5), low = "#0072B5FF", high = "#BC3C29FF", breaks = c(0,0.5,1,1.5), labels = c(0,1,2,3),
+  #                     midpoint = 0.5)+
+  theme_bw()+
+  scale_y_discrete(limits = rev)+
+  scale_x_discrete(labels = c(expression(paste("Vertical heterogeneity (%)", sep = ""))))+
+  xlab("")+ 
+  guides(fill = "none")+
+  ylab("")+
+  ggtitle("")+
+  theme(axis.text.y = element_blank(), 
+        axis.text.x = element_text(size = 6, angle = 90, hjust = 1, vjust = 0.5),
+        axis.title  = element_blank(),
+        plot.title = element_text(size = 11),
+        legend.position = "bottom",
+        strip.text = element_blank(),
+        strip.background = element_blank(),
+        #strip.text.y = element_text(angle = 180),
+        panel.grid.major.x = element_blank(),
+        panel.grid.major.y = element_line(size = 0.2),
+        panel.grid.minor = element_blank(),
+        axis.ticks = element_blank(),
+        legend.text = element_text(size = 7),
+        legend.title = element_text(size = 7),
+        plot.margin = unit(c(0.3,0.15,0.3,0.1), "cm"),
+        panel.border = element_rect(size = 0.3))
+
 P_8.3.2 <- ggplot(data_8.3.2)+
   geom_point(aes(y = cluster, x = names, fill = values_new), shape = 22, size = 4, stroke = 0.2)+
   theme_bw()+
   scale_fill_gradientn(na.value = NA,
                        colors = c("#0072B5FF", "white","#BC3C29FF", "#631879FF"),
-                       values = scales::rescale(c(0,0.5,0.75,1)))+theme_bw()+
+                       values = scales::rescale(c(0,0.5,0.8,1)))+theme_bw()+
   scale_y_discrete(limits = rev)+
   scale_x_discrete(labels = c(
     #expression(paste("Horizontal inequality (", widehat(H)[r]^{1} ,")", sep = "")), 
@@ -8205,13 +8332,13 @@ L.1 <- get_legend(ggplot(data_8.3.3)+
                                          values = scales::rescale(c(0,0.34,0.68,1)),
                                          breaks = c(0,0.34,0.68,1),
                                          labels = c("Rather low", "Neutral","Rather high","High"),
-                                         name = "Feature value",
+                                         name = "Importance",
                                          guide = guide_colorbar(barwidth = 10, barheight = 0.8, ticks.colour = NA))+
                     theme(legend.position = "bottom",
                           legend.title    = element_text(size = 6, vjust = 0.75, hjust = 0, margin = margin(r = 3)),
                           legend.text     = element_text(size = 5)))
 
-P_8.3.4 <- ggarrange(P_8.3.2, P_8.3.3, P_8.3.1, P_8.3.4, nrow = 1, align = "h", widths = c(1.2,7,0.8,0.8),
+P_8.3.4 <- ggarrange(P_8.3.2, P_8.3.3, P_8.3.1, P_8.3.1a, P_8.3.4, nrow = 1, align = "h", widths = c(1.2,6.5,0.8,0.8,0.8),
                      legend.grob = L.1,
                      legend = "bottom")
 
@@ -8219,7 +8346,7 @@ jpeg("1_Figures/Figure 3/Figure_3_Imputed.jpg", width = 15.5, height = 14.5, uni
 print(P_8.3.4)
 dev.off()
 
-pdf("1_Figures/Figure 3/Figure_3_Imputed.pdf", width = 6.1, height = 6.5)
+pdf("1_Figures/Figure 3/Figure_3_Imputed.pdf", width = 6.1, height = 4.72)
 print(P_8.3.4)
 dev.off()
 
@@ -8613,7 +8740,7 @@ for(i in c(1,2)){
                          values = scales::rescale(c(0,0.34,0.68,1)),
                          breaks = c(0,0.34,0.68,1),
                          labels = c("Rather low", "Neutral","Rather high","High"),
-                         name = "Feature importance",
+                         name = "Importance",
                          guide = guide_colorbar(barwidth = 10, barheight = 0.8, ticks.colour = NA))+
     theme(legend.position = "bottom",
           legend.title    = element_text(size = 6, vjust = 0.75, hjust = 0, margin = margin(r = 3)),
@@ -8912,7 +9039,7 @@ for(i in c(1,2)){
                                            values = scales::rescale(c(0,0.34,0.68,1)),
                                            breaks = c(0,0.34,0.68,1),
                                            labels = c("Rather low", "Neutral","Rather high","High"),
-                                           name = "Feature importance",
+                                           name = "Importance",
                                            guide = guide_colorbar(barwidth = 10, barheight = 0.8, ticks.colour = NA))+
                       theme(legend.position = "bottom",
                             legend.title    = element_text(size = 6, vjust = 0.75, hjust = 0, margin = margin(r = 3)),
@@ -9213,7 +9340,7 @@ for(i in c(1,2)){
                                            values = scales::rescale(c(0,0.34,0.68,1)),
                                            breaks = c(0,0.34,0.68,1),
                                            labels = c("Rather low", "Neutral","Rather high","High"),
-                                           name = "Feature importance",
+                                           name = "Importance",
                                            guide = guide_colorbar(barwidth = 10, barheight = 0.8, ticks.colour = NA))+
                       theme(legend.position = "bottom",
                             legend.title    = element_text(size = 6, vjust = 0.75, hjust = 0, margin = margin(r = 3)),
