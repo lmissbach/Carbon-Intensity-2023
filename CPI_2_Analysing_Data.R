@@ -8355,15 +8355,15 @@ rm(data_8.3.0, data_8.3.1, data_8.3.2, data_8.3.3, data_8.3.5,
 
 # 8.3.1   Figure 3: Supplementing table ####
 
-data_8.3.0 <- read_csv("../0_Data/9_Supplementary Data/BRT-Tracking/Clusters_Normalized_Corrected_B.csv", show_col_types = FALSE) %>%
+data_8.3.0 <- read_csv("../0_Data/9_Supplementary Data/BRT-Tracking/Clusters_Normalized_Corrected_C.csv", show_col_types = FALSE) %>%
   group_by(cluster)%>%
   mutate(number = n())%>%
-  summarise_at(vars("Appliance own.":"silhouette_6_means", number), ~ mean(.))%>%
+  summarise_at(vars("Appliance own.":"silhouette_10_means", number), ~ mean(.))%>%
   ungroup()%>%
-  rename("Horizontal distribution" = "dif_95_05_1_5", 
-         "Mean carbon intensity" = "mean_carbon_intensity",
-         "Vertical distribution"   = "median_1_5",
-         "Average silhouette width" = "silhouette_6_means")%>%
+  rename("Horizontal distribution"  = "dif_95_05_1_5", 
+         "Mean carbon intensity"    = "mean_carbon_intensity",
+         "Vertical distribution"    = "median_1_5",
+         "Average silhouette width" = "silhouette_10_means")%>%
   select(cluster, number, "Average silhouette width", "Mean carbon intensity", "Horizontal distribution", "Vertical distribution",
           "HH expenditures", "Sociodemographic",
           "Spatial", "Electricity access", "Cooking fuel",
@@ -8380,7 +8380,7 @@ kbl(data_8.3.0, format = "latex", caption = "Average feature importance across c
   #column_spec(1:21, width = "0.5 cm")%>%
   #column_spec(1, width = "3.15 cm")%>%
   # add_header_above(c("Country" = 1, rep(c("MAE", "RMSE", "R^{2}"),3) ))%>%
-  footnote(general = "This table shows the average importance of features in percent (based on absolute average SHAP-values per feature) across all countries from each cluster A to F. We adjust feature importance for model accuracy. Column 'Vertical distribution' shows average values. Column 'number' refers to the number of countries assigned to this cluster.", threeparttable = T)%>%
+  footnote(general = "This table shows the average importance of features in percent (based on absolute average SHAP-values per feature) across all countries from each cluster A to J. We adjust feature importance for model accuracy. Column 'Vertical distribution' shows average values. Column 'number' refers to the number of countries assigned to this cluster.", threeparttable = T)%>%
   save_kable(., "2_Tables/Table_Clusters_Summary_Corrected.tex")
 
 # data_8.3.0 <- read_csv("../0_Data/9_Supplementary Data/BRT-Tracking/Clusters_Normalized_Uncorrected.csv", show_col_types = FALSE) %>%
@@ -8432,7 +8432,6 @@ data_8.3.2.2 <- left_join(data_8.3.2.0, data_8.3.2.1, by = c("Country" = "Countr
   mutate(order = 1:n())%>%
   mutate(interest = ifelse(order < 20,1,0))%>%
   mutate(interest2 = ifelse(interest == 1 & cluster == "B",1,0))
-
 
 # 8.4     Figure 4: Country-level feature importance and clusters ####
 
@@ -9482,7 +9481,7 @@ kbl(data_8.4.1, format = "latex", caption = "Feature importance across countries
   footnote(general = "This table shows feature importance in percent (based on absolute average SHAP-values per feature) across all countries and per cluster. We adjust feature importance for model accuracy and impute missing information for feature importance based on average values per feature. Column 'Vertical distribution' shows average values.", threeparttable = T)%>%
   save_kable(., "2_Tables/Table_Countries_SHAP_Summary_Corrected_Imputed.tex")
 
-rm(data_8.4.1)
+rm(data_8.4.1, data_8.4.1.1)
 
 # 8.5     Figure 5: Joint-figures for paper and Appendix ####
 
