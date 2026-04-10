@@ -11389,7 +11389,7 @@ rm(data_8.6.1.1, data_8.6.1.2, Country.Set.8.6.1)
 
 # 8.6.2   Maps with country clusters ####
 
-data_8.6.2 <- read_csv("../0_Data/9_Supplementary Data/BRT-Tracking/Clusters_Normalized_Corrected_B.csv", show_col_types = FALSE)%>%
+data_8.6.2 <- read_csv("../0_Data/9_Supplementary Data/BRT-Tracking/Clusters_Normalized_Corrected_C.csv", show_col_types = FALSE)%>%
   # it is in fact not normalized
   select(cluster, Country, order, best_fit, largest_country, everything())%>%
   left_join(select(Country.Set, Country, Country_long))%>%
@@ -11405,7 +11405,7 @@ data_8.6.2.2 <- data_8.6.2 %>%
   dplyr::slice(which.max(imp))%>%
   ungroup()
 
-data_8.6.2.3 <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_SHAP_Evaluation_VFOLD_2017B.xlsx")%>%
+data_8.6.2.3 <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_SHAP_Evaluation_VFOLD_2017C.xlsx")%>%
   filter(.metric == "rsq")%>%
   group_by(Country, fold)%>%
   mutate(number = 1:n())%>%
@@ -11432,7 +11432,7 @@ world_map <- map_data("world")%>%
 P_8.6.2.1 <- ggplot(world_map, aes(x = long, y = lat, group = group)) +
   geom_polygon(fill = "lightgrey", size = 0.2)+
   geom_polygon(aes(fill = cluster), colour = "black", size = 0.2)+
-  scale_fill_nejm(na.value="lightgrey", na.translate = FALSE)+
+  scale_fill_jco(na.value="lightgrey", na.translate = FALSE)+
   theme_bw()+
   labs(fill = "Cluster")+
   guides(fill = guide_legend(nrow = 1))+
