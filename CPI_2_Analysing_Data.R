@@ -9367,14 +9367,14 @@ rm(P_8.4.4, P_8.4.3, P_8.4.2, P_8.4.1,
 
 # First horizontal and vertical indicators - scaling not necessary
 
-data_8.4.1 <- read_csv("../0_Data/9_Supplementary Data/BRT-Tracking/Clusters_Normalized_Uncorrected_B.csv", show_col_types = FALSE)%>%
+data_8.4.1 <- read_csv("../0_Data/9_Supplementary Data/BRT-Tracking/Clusters_Normalized_Uncorrected_C.csv", show_col_types = FALSE)%>%
   # it is in fact not normalized
   select(cluster, Country, order, best_fit, largest_country, everything())%>%
   mutate_at(vars("Appliance own.":"Sociodemographic"), ~ ifelse(. == 0, NA, .))%>%
   rename("Horizontal inequality" = "dif_95_05_1_5", 
          "Mean carbon intensity" = "mean_carbon_intensity",
-         "Vertical distribution"   = "median_1_5",
-         "Silhouette width" = "silhouette_5_means")%>%
+         "Vertical distribution" = "median_1_5",
+         "Silhouette width"      = "silhouette_6_means")%>%
   select(cluster, Country, "Silhouette width", "Horizontal inequality", "Vertical distribution", "Mean carbon intensity", 
          "HH expenditures", "Sociodemographic",
          "Spatial", "Electricity access", "Cooking fuel",
@@ -9408,14 +9408,14 @@ kbl(data_8.4.1, format = "latex", caption = "Feature importance across countries
   footnote(general = "This table shows feature importance in percent (based on absolute average SHAP-values per feature) across all countries and per cluster. Feature importance is unadjusted for model accuracy. Column 'Vertical distribution' shows average values.", threeparttable = T)%>%
   save_kable(., "2_Tables/Table_Countries_SHAP_Summary_Uncorrected.tex")
 
-data_8.4.1 <- read_csv("../0_Data/9_Supplementary Data/BRT-Tracking/Clusters_Normalized_Corrected_B.csv", show_col_types = FALSE)%>%
+data_8.4.1 <- read_csv("../0_Data/9_Supplementary Data/BRT-Tracking/Clusters_Normalized_Corrected_C.csv", show_col_types = FALSE)%>%
   # it is in fact not normalized
   select(cluster, Country, order, best_fit, largest_country, everything())%>%
   mutate_at(vars("Appliance own.":"Sociodemographic"), ~ ifelse(. == 0, NA, .))%>%
   rename("Horizontal inequality" = "dif_95_05_1_5", 
          "Mean carbon intensity" = "mean_carbon_intensity",
-         "Vertical distribution"   = "median_1_5",
-         "Silhouette width" = "silhouette_6_means")%>%
+         "Vertical distribution" = "median_1_5",
+         "Silhouette width"      = "silhouette_10_means")%>%
   select(cluster, Country, "Silhouette width", "Horizontal inequality", "Vertical distribution", "Mean carbon intensity",
          "HH expenditures", "Sociodemographic",
          "Spatial", "Electricity access", "Cooking fuel",
@@ -9446,14 +9446,14 @@ kbl(data_8.4.1, format = "latex", caption = "Feature importance across countries
 
 # Imputed
 
-data_8.4.1 <- read_csv("../0_Data/9_Supplementary Data/BRT-Tracking/Clusters_Normalized_Corrected_Imputed_B.csv", show_col_types = FALSE)%>%
+data_8.4.1 <- read_csv("../0_Data/9_Supplementary Data/BRT-Tracking/Clusters_Normalized_Corrected_Imputed_C.csv", show_col_types = FALSE)%>%
   # it is in fact not normalized
   select(cluster, Country, order, best_fit, largest_country, everything())%>%
   mutate_at(vars("Appliance own.":"Sociodemographic"), ~ ifelse(. == 0, NA, .))%>%
   rename("Horizontal inequality" = "dif_95_05_1_5", 
          "Mean carbon intensity" = "mean_carbon_intensity",
-         "Vertical distribution"   = "median_1_5",
-         "Silhouette width" = "silhouette_9_means")%>%
+         "Vertical distribution" = "median_1_5",
+         "Silhouette width"      = "silhouette_11_means")%>%
   select(cluster, Country, "Silhouette width", "Horizontal inequality", "Vertical distribution", "Mean carbon intensity",
          "HH expenditures", "Sociodemographic",
          "Spatial", "Electricity access", "Cooking fuel",
@@ -11496,6 +11496,8 @@ dev.off()
 pdf("1_Figures/Figures_Appendix/Figure_Maps_3.pdf", width = 6.1, height = 4.33)
 print(P_8.6.2.3)
 dev.off()
+
+rm(P_8.6.2.1, P_8.6.2.2, P_8.6.2.3, data_8.6.2, data_8.6.2.1, data_8.6.2.2, data_8.6.2.3)
 
 # 8.7     Table/Figure: Contribution of various consumption items to carbon intensity ####
 
