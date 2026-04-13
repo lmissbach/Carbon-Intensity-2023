@@ -6842,11 +6842,57 @@ data_8.1.2 <- data_2 %>%
          share_2_a = within_2/total_2,
          share_2_b = between_2/total_2)
 
-data_8.1.3 <- data_8.1.1%>%
+# With one hundred income groups
+data_8.1.3 <- data_2 %>%
+  group_by(Country)%>%
+  mutate(Income_Group_100  = as.numeric(binning(hh_expenditures_pc, bins = 100,  method = c("wtd.quantile"), weights = hh_weights)))%>%
+  ungroup()%>%
+  group_by(Country)%>%
+  group_modify(~ {
+    
+    data_8.1.3.1 <- .x %>%
+      mutate(mean_CI = mean(carbon_intensity_kg_per_USD_national),
+             SQ_DEV  = ((carbon_intensity_kg_per_USD_national/mean_CI)-1)^2)%>%
+      summarise(mean_CI = first(mean_CI),
+                GE_1    = mean((carbon_intensity_kg_per_USD_national/mean_CI)*log(carbon_intensity_kg_per_USD_national/mean_CI)),
+                GE_2    = mean(SQ_DEV)/2)
+    
+    data_8.1.3.2 <- .x %>%
+      group_by(Income_Group_100)%>%
+      summarise(number = n(),
+                mean_CI = mean(carbon_intensity_kg_per_USD_national),
+                GE_1 = mean((carbon_intensity_kg_per_USD_national/mean_CI)*log(carbon_intensity_kg_per_USD_national/mean_CI)),
+                GE_2 = mean(((carbon_intensity_kg_per_USD_national/mean_CI)-1)^2)/2)%>%
+      ungroup()%>%
+      mutate(weight = number/sum(number),
+             mean_CI_0 = as.numeric(data_8.1.3.1$mean_CI))
+    
+    data_8.1.3.3 <- data_8.1.3.2 %>%
+      summarise(within_1  = sum(weight*(mean_CI/mean_CI_0)*GE_1),
+                within_2  = sum(weight*(mean_CI/mean_CI_0)^2*GE_2),
+                between_1 = sum(weight*(mean_CI/mean_CI_0)*log(mean_CI/mean_CI_0)),
+                between_2 = sum(weight*((mean_CI/mean_CI_0)-1)^2)/2)%>%
+      mutate(total_1 = data_8.1.3.1$GE_1,
+             total_2 = data_8.1.3.1$GE_2)
+    
+    return(data_8.1.3.3)
+    
+  })%>%
+  ungroup()%>%
+  mutate(test_1 = within_1 + between_1 - total_1,
+         test_2 = within_2 + between_2 - total_2)%>%
+  mutate(share_1_a = within_1/total_1,
+         share_1_b = between_1/total_1,
+         share_2_a = within_2/total_2,
+         share_2_b = between_2/total_2)
+
+data_8.1.4 <- data_8.1.1 %>%
   select(Country, share_1_a, share_2_a)%>%
   rename("(I)" = share_1_a, "(II)" = share_2_a)%>%
   left_join(select(data_8.1.2, Country, share_1_a))%>%
   rename("(III)" = share_1_a)%>%
+  left_join(select(data_8.1.3, Country, share_1_a))%>%
+  rename("(IV)" = share_1_a)%>%
   left_join(select(Country.Set, Country, Country_long))%>%
   arrange(Country_long)%>%
   select(Country_long, everything())%>%
@@ -6854,15 +6900,15 @@ data_8.1.3 <- data_8.1.1%>%
   mutate_at(vars(starts_with("(")), ~ paste0(round(.*100,0), "%"))%>%
   rename(Country = Country_long)
 
-kbl(data_8.1.3, format = "latex", caption = "Within-group heterogeneity as a share of heterogeneity in carbon intensity of consumption", booktabs = T, align = "l|ccc", vline = "", linesep = c(""),
+kbl(data_8.1.4, format = "latex", caption = "Within-group heterogeneity as a share of heterogeneity in carbon intensity of consumption", booktabs = T, align = "l|ccc", vline = "", linesep = c(""),
     longtable = T, label = "ATBD2")%>%
   kable_styling(position = "center", latex_options = c("HOLD_position", "repeat_header"), font_size = 9)%>%
   # column_spec(1, width = "3.15 cm")%>%
   # column_spec(2:7, width = "2.1 cm")%>%
-  footnote(general = "This table shows the share of heterogeneity in carbon intensity of consumption that can be explained with heterogeneity within expenditure groups in comparison to heterogeneity between expenditure groups in \\\\%. Column (I) uses the Theil index ($\\\\alpha = 1$) with expenditure quintiles. Column (II) uses the Theil index ($\\\\alpha = 2$) with expenditure quintiles which accounts for greater overall heterogeneity and longer right tails. Column (I) uses the Theil index ($\\\\alpha = 1$) with expenditure deciles.", threeparttable = T, escape = FALSE)%>%
+  footnote(general = "This table shows the share of heterogeneity in carbon intensity of consumption that can be explained with heterogeneity within expenditure groups in comparison to heterogeneity between expenditure groups in \\\\%. Column (I) uses the Theil index ($\\\\alpha = 1$) with expenditure quintiles. Column (II) uses the Theil index ($\\\\alpha = 2$) with expenditure quintiles which accounts for greater overall heterogeneity and longer right tails. Column (III) uses the Theil index ($\\\\alpha = 1$) with expenditure deciles. Column (IV) uses the Theil index ($\\\\alpha = 1$) with expenditure percentiles.", threeparttable = T, escape = FALSE)%>%
   save_kable(., "2_Tables/Table_Summary_A9_Theil_Index.tex")
 
-rm(data_8.1.3, data_8.1.1, data_8.1.2)
+rm(data_8.1.3, data_8.1.1, data_8.1.2, data_8.1.4)
 
 # 8.2     Figure 2: Horizontal vs. vertical differences ####
 
@@ -9401,9 +9447,10 @@ kbl(data_8.4.1, format = "latex", caption = "Feature importance across countries
   row_spec(1:88, font_size = 8)%>%
   column_spec(1, width = "0.35 cm")%>%
   column_spec(2, width = "3 cm")%>%
-  column_spec(3, width = "0.8 cm")%>%
-  column_spec(4:14, width = "0.35 cm")%>%
-  row_spec(c(40,67,81,85), hline_after = TRUE)%>%
+  column_spec(3, width = "0.35 cm")%>%
+  column_spec(4, width = "0.5 cm")%>%
+  column_spec(5:14, width = "0.35 cm")%>%
+  row_spec(c(38,50,58,65,71,77,82,84,86), hline_after = TRUE)%>%
   #collapse_rows(columns = 3:4, valign = "middle")%>%
   footnote(general = "This table shows feature importance in percent (based on absolute average SHAP-values per feature) across all countries and per cluster. Feature importance is unadjusted for model accuracy. Column 'Vertical distribution' shows average values.", threeparttable = T)%>%
   save_kable(., "2_Tables/Table_Countries_SHAP_Summary_Uncorrected.tex")
