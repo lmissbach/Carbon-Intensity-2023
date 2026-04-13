@@ -47,7 +47,8 @@ Water.Codes.Aggregate       <- read_csv("0_Data/9_Supplementary Information/2_Co
 Toilet.Codes.Aggregate      <- read_csv("0_Data/9_Supplementary Information/2_Codes/Toilet.Code.All.csv", show_col_types = FALSE)
 Province.Codes.Aggregate    <- read_csv("0_Data/9_Supplementary Information/2_Codes/Province.Code.All.csv", show_col_types = FALSE)%>%
   mutate(Province = ifelse(validUTF8(Province), Province, iconv(Province, from = "latin1", to = "UTF-8")))
-District.Codes.Aggregate    <- read_csv("0_Data/9_Supplementary Information/2_Codes/District.Code.All.csv", show_col_types = FALSE)
+District.Codes.Aggregate    <- read_csv("0_Data/9_Supplementary Information/2_Codes/District.Code.All.csv", show_col_types = FALSE)%>%
+  mutate(District = ifelse(Country %in% c("POL", "SWE"), district, District))
 Nationality.Codes.Aggregate <- read_csv("0_Data/9_Supplementary Information/2_Codes/Nationality.Code.All.csv", show_col_types = FALSE)
 Ethnicity.Codes.Aggregate   <- read_csv("0_Data/9_Supplementary Information/2_Codes/Ethnicity.Code.All.csv", show_col_types = FALSE)
 Language.Codes.Aggregate    <- read_csv("0_Data/9_Supplementary Information/2_Codes/Language.Code.All.csv", show_col_types = FALSE)
@@ -2435,7 +2436,7 @@ rm(track)
 Country.Set.Test.2 <- Country.Set %>%
   filter(!Country %in% c("MEX", "IDN", "IND"))
 
-Country.Set.Test.3 <- c("SWE")
+Country.Set.Test.3 <- c("SWE", "CHL")
 
 # eval_0 <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_SHAP_Evaluation.xlsx")
 # eval_0 <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_SHAP_Evaluation_VFOLD_2017B.xlsx")
@@ -2789,7 +2790,7 @@ for (i in Country.Set.Test.3){
         group_by(Var_0)%>%
         summarise_at(vars(share_SHAP), ~ sum(.))%>%
         ungroup()%>%
-        mutate(help_0 = ifelse(share_SHAP < 0.03,1,0))%>%
+        mutate(help_0 = ifelse(share_SHAP < 0.03 & (i != "CHL" | Var_0 != "Gender HHH"),1,0))%>%
         arrange(share_SHAP)
       
       shap_6.1.2.3.1 <- shap_6.1.2.3 %>%
@@ -9587,7 +9588,7 @@ data_8.5.2.B <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_
   ungroup()%>%
   arrange(Country, desc(share_SHAP))
 
-data_8.5.2.C <- read_csv("../0_Data/9_Supplementary Data/BRT-Tracking/Clusters_Normalized_Corrected_B.csv", show_col_types = FALSE)%>%
+data_8.5.2.C <- read_csv("../0_Data/9_Supplementary Data/BRT-Tracking/Clusters_Normalized_Corrected_C.csv", show_col_types = FALSE)%>%
   left_join(ungroup(summarise(group_by(mutate(data_2, pop = hh_size*hh_weights), Country), pop = sum(pop))))%>%
   group_by(cluster)%>%
   mutate(most_pop = ifelse(pop == max(pop),1,0))%>%
@@ -9612,7 +9613,8 @@ for (i in c(data_8.5.2.C$Country)){
     data_8.5.2 <- data_8.5.1 %>%
       filter(Country == i)%>%
       mutate(help_0 = ifelse(!"HH expenditures" %in% filter(data_8.5.2.A, Country == i)$Var_0 & order_new == 4,0,
-                             ifelse(!"HH expenditures" %in% filter(data_8.5.2.A, Country == i)$Var_0 & Var_0 == "HH expenditures",1,help_0)))
+                             ifelse(!"HH expenditures" %in% filter(data_8.5.2.A, Country == i)$Var_0 & Var_0 == "HH expenditures",1,help_0)))%>%
+      mutate(help_0 = factor(help_0, levels = c(0,1)))
     
     title_0 <- paste0("Cluster ", data_8.5.2.C$cluster[data_8.5.2.C$Country == i],": ",
                       Country.Set$Country_long[Country.Set$Country == i], " (")
@@ -9622,13 +9624,18 @@ for (i in c(data_8.5.2.C$Country)){
                         "Dom. Republic", " (")
     }
     
+    if(i == "SWE"){
+      data_8.5.2 <- data_8.5.2 %>%
+        mutate(help_0 = factor(help_0, levels = c(0,1)))
+    }
+    
     title_1 <- paste0("=", format(eval_8.5.2$Sample_Testing[eval_8.5.2$Country == i], nsmall = 2),")")
     
     P_8.5 <- ggplot(data_8.5.2)+
-      geom_col(aes(x = share_SHAP, y = reorder(Var_0, desc(order)), fill = factor(help_0)), width = 0.7, colour = "black", linewidth = 0.3)+
+      geom_col(aes(x = share_SHAP, y = reorder(Var_0, desc(order)), fill = help_0), width = 0.7, colour = "black", linewidth = 0.3)+
       theme_bw()+
       coord_cartesian(xlim = c(0,max(signif(max(data_8.5.2$share_SHAP) + 0.1,1),0.3000001)))+
-      scale_fill_manual(values = c("#E64B35FF","#6F99ADFF"))+
+      scale_fill_manual(values = c("#E64B35FF","#6F99ADFF"), drop = FALSE)+
       scale_x_continuous(labels = scales::percent_format(accuracy = 1), expand = c(0,0))+
       guides(fill = "none")+
       xlab("Feature importance (SHAP)")+
@@ -9727,7 +9734,9 @@ for (i in c(data_8.5.2.C$Country)){
     
     data_8.5.2.1 <- data_8.5.2.0 %>%
       select(SHAP_hh_expenditures_USD_2014, hh_expenditures_USD_2014, z_score_exp)%>%
-      filter(z_score_exp < 3)
+      filter(z_score_exp < 3)%>%
+      mutate(SHAP_z_score = (SHAP_hh_expenditures_USD_2014 - mean(SHAP_hh_expenditures_USD_2014))/sd(SHAP_hh_expenditures_USD_2014))%>%
+      filter(SHAP_z_score < 5)
     
     P_8.5.2.1 <- ggplot(data_8.5.2.1)+
       geom_hline(aes(yintercept = 0))+
@@ -9751,7 +9760,7 @@ for (i in c(data_8.5.2.C$Country)){
       ggtitle(paste0(labels_dataframe$title[labels_dataframe$Var_1 == "HH expenditures"]))+
       coord_cartesian(xlim = c(0,max(data_8.5.2.1$hh_expenditures_USD_2014)))+ # TBA
       scale_x_continuous(labels = scales::dollar_format(), expand = c(0,0), n.breaks = 4)+
-      xlab("Household expenditures in US-$ (2014)")+
+      xlab("Household expenditures in US-$ (2017)")+
       ylab("SHAP value for household expenditures")+
       theme(axis.text.y = element_text(size = 6), 
             axis.text.x = element_text(size = 6),
@@ -9779,7 +9788,7 @@ for (i in c(data_8.5.2.C$Country)){
     
     for(j in c("car.01", "electricity.access", "hh_size", "motorcycle.01", "sex_hhh", 
                "CF", "HF", "LF", "urban_01")){
-      if(j %in% data_8.5.2.D.1$Var_1 | (j == "sex_hhh" & "Gender" %in% data_8.5.2.D.1$Var_1)){
+      if(j %in% data_8.5.2.D.1$Var_1 | (j == "sex_hhh" & "Gender HHH" %in% data_8.5.2.D.1$Var_1)){
         data_8.5.2.2 <- data_8.5.2.0 %>%
           rename_if(str_detect(names(.), "SHAP_HH size"), ~paste0("SHAP_hh_size"))%>%
           rename_if(str_detect(names(.), "SHAP_Car own."), ~paste0("SHAP_car.01"))%>%
@@ -10164,150 +10173,150 @@ for (i in c(data_8.5.2.C$Country)){
 
 }
 
-P_8.5.0.I   <- ggarrange(list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "A"],"_A")[1]]],
-                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "A"],"_B_0")[1]]],
-                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "A"],"_B_1")[1]]],
-                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "A"],"_B_2")[1]]],
-                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "A"],"_B_3")[1]]],
-                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "B"],"_A")[1]]],
-                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "B"],"_B_0")[1]]],
-                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "B"],"_B_1")[1]]],
-                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "B"],"_B_2")[1]]],
-                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "B"],"_B_3")[1]]],
-                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "C"],"_A")[1]]],
-                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "C"],"_B_0")[1]]],
-                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "C"],"_B_1")[1]]],
-                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "C"],"_B_2")[1]]],
-                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "C"],"_B_3")[1]]],
-                         
-                         ncol = 5, nrow = 3, align = "h")
-P_8.5.0.II  <- ggarrange(list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "D"],"_A")[1]]],
-                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "D"],"_B_0")[1]]],
-                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "D"],"_B_1")[1]]],
-                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "D"],"_B_2")[1]]],
-                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "D"],"_B_3")[1]]],
-                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "E"],"_A")[1]]],
-                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "E"],"_B_0")[1]]],
-                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "E"],"_B_1")[1]]],
-                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "E"],"_B_2")[1]]],
-                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "E"],"_B_3")[1]]],
-                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "F"],"_A")[1]]],
-                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "F"],"_B_0")[1]]],
-                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "F"],"_B_1")[1]]],
-                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "F"],"_B_2")[1]]],
-                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "F"],"_B_3")[1]]],
-                         
-                         ncol = 5, nrow = 3, align = "h")
-P_8.5.0.III <- ggarrange(list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "G"],"_A")[1]]],
-                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "G"],"_B_0")[1]]],
-                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "G"],"_B_1")[1]]],
-                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "G"],"_B_2")[1]]],
-                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "G"],"_B_3")[1]]],
-                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "H"],"_A")[1]]],
-                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "H"],"_B_0")[1]]],
-                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "H"],"_B_1")[1]]],
-                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "H"],"_B_2")[1]]],
-                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "H"],"_B_3")[1]]],
-                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "I"],"_A")[1]]],
-                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "I"],"_B_0")[1]]],
-                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "I"],"_B_1")[1]]],
-                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "I"],"_B_2")[1]]],
-                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "I"],"_B_3")[1]]],
-                         # list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "J"],"_A")[1]]],
-                         # list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "J"],"_B_0")[1]]],
-                         # list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "J"],"_B_1")[1]]],
-                         # list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "J"],"_B_2")[1]]],
-                         # list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "J"],"_B_3")[1]]],
-                         # list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "K"],"_A")[1]]],
-                         # list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "K"],"_B_0")[1]]],
-                         # list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "K"],"_B_1")[1]]],
-                         # list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "K"],"_B_2")[1]]],
-                         # list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "K"],"_B_3")[1]]],
-                         # list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "L"],"_A")[1]]],
-                         # list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "L"],"_B_0")[1]]],
-                         # list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "L"],"_B_1")[1]]],
-                         # list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "L"],"_B_2")[1]]],
-                         # list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "L"],"_B_3")[1]]],
-                         # list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "M"],"_A")[1]]],
-                         # list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "M"],"_B_0")[1]]],
-                         # list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "M"],"_B_1")[1]]],
-                         # list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "M"],"_B_2")[1]]],
-                         # list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "M"],"_B_3")[1]]],
-                         # list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "N"],"_A")[1]]],
-                         # list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "N"],"_B_0")[1]]],
-                         # list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "N"],"_B_1")[1]]],
-                         # list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "N"],"_B_2")[1]]],
-                         # list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "N"],"_B_3")[1]]],
-                         # list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "O"],"_A")[1]]],
-                         # list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "O"],"_B_0")[1]]],
-                         # list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "O"],"_B_1")[1]]],
-                         # list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "O"],"_B_2")[1]]],
-                         # list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "O"],"_B_3")[1]]],
-                         ncol = 5, nrow = 3, align = "h")
-
-P_8.5.0.L   <- ggarrange(list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$largest_country == 1 & data_8.5.2.C$cluster == "A"],"_A")[1]]],
-                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$largest_country == 1 & data_8.5.2.C$cluster == "A"],"_B_0")[1]]],
-                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$largest_country == 1 & data_8.5.2.C$cluster == "A"],"_B_1")[1]]],
-                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$largest_country == 1 & data_8.5.2.C$cluster == "A"],"_B_2")[1]]],
-                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$largest_country == 1 & data_8.5.2.C$cluster == "A"],"_B_3")[1]]],
-                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$largest_country == 1 & data_8.5.2.C$cluster == "B"],"_A")[1]]],
-                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$largest_country == 1 & data_8.5.2.C$cluster == "B"],"_B_0")[1]]],
-                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$largest_country == 1 & data_8.5.2.C$cluster == "B"],"_B_1")[1]]],
-                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$largest_country == 1 & data_8.5.2.C$cluster == "B"],"_B_2")[1]]],
-                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$largest_country == 1 & data_8.5.2.C$cluster == "B"],"_B_3")[1]]],
-                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$largest_country == 1 & data_8.5.2.C$cluster == "C"],"_A")[1]]],
-                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$largest_country == 1 & data_8.5.2.C$cluster == "C"],"_B_0")[1]]],
-                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$largest_country == 1 & data_8.5.2.C$cluster == "C"],"_B_1")[1]]],
-                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$largest_country == 1 & data_8.5.2.C$cluster == "C"],"_B_2")[1]]],
-                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$largest_country == 1 & data_8.5.2.C$cluster == "C"],"_B_3")[1]]],
-                         
-                         ncol = 5, nrow = 3, align = "h")
-P_8.5.0.L2  <- ggarrange(list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$largest_country == 1 & data_8.5.2.C$cluster == "D"],"_A")[1]]],
-                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$largest_country == 1 & data_8.5.2.C$cluster == "D"],"_B_0")[1]]],
-                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$largest_country == 1 & data_8.5.2.C$cluster == "D"],"_B_1")[1]]],
-                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$largest_country == 1 & data_8.5.2.C$cluster == "D"],"_B_2")[1]]],
-                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$largest_country == 1 & data_8.5.2.C$cluster == "D"],"_B_3")[1]]],
-                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$largest_country == 1 & data_8.5.2.C$cluster == "E"],"_A")[1]]],
-                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$largest_country == 1 & data_8.5.2.C$cluster == "E"],"_B_0")[1]]],
-                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$largest_country == 1 & data_8.5.2.C$cluster == "E"],"_B_1")[1]]],
-                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$largest_country == 1 & data_8.5.2.C$cluster == "E"],"_B_2")[1]]],
-                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$largest_country == 1 & data_8.5.2.C$cluster == "E"],"_B_3")[1]]],
-                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$largest_country == 1 & data_8.5.2.C$cluster == "F"],"_A")[1]]],
-                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$largest_country == 1 & data_8.5.2.C$cluster == "F"],"_B_0")[1]]],
-                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$largest_country == 1 & data_8.5.2.C$cluster == "F"],"_B_1")[1]]],
-                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$largest_country == 1 & data_8.5.2.C$cluster == "F"],"_B_2")[1]]],
-                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$largest_country == 1 & data_8.5.2.C$cluster == "F"],"_B_3")[1]]],
-                         
-                         ncol = 5, nrow = 3, align = "h")
-P_8.5.0.L3 <- ggarrange(list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$largest_country == 1 & data_8.5.2.C$cluster == "G"],"_A")[1]]],
-                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$largest_country == 1 & data_8.5.2.C$cluster == "G"],"_B_0")[1]]],
-                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$largest_country == 1 & data_8.5.2.C$cluster == "G"],"_B_1")[1]]],
-                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$largest_country == 1 & data_8.5.2.C$cluster == "G"],"_B_2")[1]]],
-                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$largest_country == 1 & data_8.5.2.C$cluster == "G"],"_B_3")[1]]],
-                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$largest_country == 1 & data_8.5.2.C$cluster == "H"],"_A")[1]]],
-                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$largest_country == 1 & data_8.5.2.C$cluster == "H"],"_B_0")[1]]],
-                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$largest_country == 1 & data_8.5.2.C$cluster == "H"],"_B_1")[1]]],
-                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$largest_country == 1 & data_8.5.2.C$cluster == "H"],"_B_2")[1]]],
-                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$largest_country == 1 & data_8.5.2.C$cluster == "H"],"_B_3")[1]]],
-                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$largest_country == 1 & data_8.5.2.C$cluster == "I"],"_A")[1]]],
-                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$largest_country == 1 & data_8.5.2.C$cluster == "I"],"_B_0")[1]]],
-                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$largest_country == 1 & data_8.5.2.C$cluster == "I"],"_B_1")[1]]],
-                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$largest_country == 1 & data_8.5.2.C$cluster == "I"],"_B_2")[1]]],
-                         list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$largest_country == 1 & data_8.5.2.C$cluster == "I"],"_B_3")[1]]],
-                         
-                         ncol = 5, nrow = 3, align = "h")
-
-jpeg("1_Figures/Figure 5/Figures_joint_%d.jpg", width = 30, height = 28, unit = "cm", res = 400)
-print(P_8.5.0.I)
-print(P_8.5.0.II)
-print(P_8.5.0.III)
-dev.off()
-
-jpeg("1_Figures/Figure 5/Figures_joint_large_%d.jpg", width = 30, height = 28, unit = "cm", res = 400)
-print(P_8.5.0.L)
-print(P_8.5.0.L2)
-print(P_8.5.0.L3)
-dev.off()
+# P_8.5.0.I   <- ggarrange(list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "A"],"_A")[1]]],
+#                          list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "A"],"_B_0")[1]]],
+#                          list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "A"],"_B_1")[1]]],
+#                          list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "A"],"_B_2")[1]]],
+#                          list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "A"],"_B_3")[1]]],
+#                          list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "B"],"_A")[1]]],
+#                          list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "B"],"_B_0")[1]]],
+#                          list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "B"],"_B_1")[1]]],
+#                          list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "B"],"_B_2")[1]]],
+#                          list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "B"],"_B_3")[1]]],
+#                          list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "C"],"_A")[1]]],
+#                          list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "C"],"_B_0")[1]]],
+#                          list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "C"],"_B_1")[1]]],
+#                          list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "C"],"_B_2")[1]]],
+#                          list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "C"],"_B_3")[1]]],
+#                          
+#                          ncol = 5, nrow = 3, align = "h")
+# P_8.5.0.II  <- ggarrange(list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "D"],"_A")[1]]],
+#                          list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "D"],"_B_0")[1]]],
+#                          list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "D"],"_B_1")[1]]],
+#                          list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "D"],"_B_2")[1]]],
+#                          list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "D"],"_B_3")[1]]],
+#                          list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "E"],"_A")[1]]],
+#                          list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "E"],"_B_0")[1]]],
+#                          list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "E"],"_B_1")[1]]],
+#                          list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "E"],"_B_2")[1]]],
+#                          list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "E"],"_B_3")[1]]],
+#                          list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "F"],"_A")[1]]],
+#                          list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "F"],"_B_0")[1]]],
+#                          list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "F"],"_B_1")[1]]],
+#                          list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "F"],"_B_2")[1]]],
+#                          list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "F"],"_B_3")[1]]],
+#                          
+#                          ncol = 5, nrow = 3, align = "h")
+# P_8.5.0.III <- ggarrange(list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "G"],"_A")[1]]],
+#                          list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "G"],"_B_0")[1]]],
+#                          list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "G"],"_B_1")[1]]],
+#                          list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "G"],"_B_2")[1]]],
+#                          list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "G"],"_B_3")[1]]],
+#                          list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "H"],"_A")[1]]],
+#                          list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "H"],"_B_0")[1]]],
+#                          list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "H"],"_B_1")[1]]],
+#                          list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "H"],"_B_2")[1]]],
+#                          list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "H"],"_B_3")[1]]],
+#                          list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "I"],"_A")[1]]],
+#                          list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "I"],"_B_0")[1]]],
+#                          list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "I"],"_B_1")[1]]],
+#                          list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "I"],"_B_2")[1]]],
+#                          list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "I"],"_B_3")[1]]],
+#                          # list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "J"],"_A")[1]]],
+#                          # list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "J"],"_B_0")[1]]],
+#                          # list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "J"],"_B_1")[1]]],
+#                          # list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "J"],"_B_2")[1]]],
+#                          # list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "J"],"_B_3")[1]]],
+#                          # list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "K"],"_A")[1]]],
+#                          # list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "K"],"_B_0")[1]]],
+#                          # list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "K"],"_B_1")[1]]],
+#                          # list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "K"],"_B_2")[1]]],
+#                          # list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "K"],"_B_3")[1]]],
+#                          # list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "L"],"_A")[1]]],
+#                          # list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "L"],"_B_0")[1]]],
+#                          # list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "L"],"_B_1")[1]]],
+#                          # list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "L"],"_B_2")[1]]],
+#                          # list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "L"],"_B_3")[1]]],
+#                          # list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "M"],"_A")[1]]],
+#                          # list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "M"],"_B_0")[1]]],
+#                          # list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "M"],"_B_1")[1]]],
+#                          # list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "M"],"_B_2")[1]]],
+#                          # list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "M"],"_B_3")[1]]],
+#                          # list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "N"],"_A")[1]]],
+#                          # list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "N"],"_B_0")[1]]],
+#                          # list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "N"],"_B_1")[1]]],
+#                          # list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "N"],"_B_2")[1]]],
+#                          # list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "N"],"_B_3")[1]]],
+#                          # list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "O"],"_A")[1]]],
+#                          # list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "O"],"_B_0")[1]]],
+#                          # list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "O"],"_B_1")[1]]],
+#                          # list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "O"],"_B_2")[1]]],
+#                          # list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$best_fit == 1 & data_8.5.2.C$cluster == "O"],"_B_3")[1]]],
+#                          ncol = 5, nrow = 3, align = "h")
+# 
+# P_8.5.0.L   <- ggarrange(list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$largest_country == 1 & data_8.5.2.C$cluster == "A"],"_A")[1]]],
+#                          list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$largest_country == 1 & data_8.5.2.C$cluster == "A"],"_B_0")[1]]],
+#                          list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$largest_country == 1 & data_8.5.2.C$cluster == "A"],"_B_1")[1]]],
+#                          list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$largest_country == 1 & data_8.5.2.C$cluster == "A"],"_B_2")[1]]],
+#                          list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$largest_country == 1 & data_8.5.2.C$cluster == "A"],"_B_3")[1]]],
+#                          list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$largest_country == 1 & data_8.5.2.C$cluster == "B"],"_A")[1]]],
+#                          list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$largest_country == 1 & data_8.5.2.C$cluster == "B"],"_B_0")[1]]],
+#                          list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$largest_country == 1 & data_8.5.2.C$cluster == "B"],"_B_1")[1]]],
+#                          list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$largest_country == 1 & data_8.5.2.C$cluster == "B"],"_B_2")[1]]],
+#                          list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$largest_country == 1 & data_8.5.2.C$cluster == "B"],"_B_3")[1]]],
+#                          list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$largest_country == 1 & data_8.5.2.C$cluster == "C"],"_A")[1]]],
+#                          list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$largest_country == 1 & data_8.5.2.C$cluster == "C"],"_B_0")[1]]],
+#                          list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$largest_country == 1 & data_8.5.2.C$cluster == "C"],"_B_1")[1]]],
+#                          list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$largest_country == 1 & data_8.5.2.C$cluster == "C"],"_B_2")[1]]],
+#                          list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$largest_country == 1 & data_8.5.2.C$cluster == "C"],"_B_3")[1]]],
+#                          
+#                          ncol = 5, nrow = 3, align = "h")
+# P_8.5.0.L2  <- ggarrange(list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$largest_country == 1 & data_8.5.2.C$cluster == "D"],"_A")[1]]],
+#                          list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$largest_country == 1 & data_8.5.2.C$cluster == "D"],"_B_0")[1]]],
+#                          list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$largest_country == 1 & data_8.5.2.C$cluster == "D"],"_B_1")[1]]],
+#                          list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$largest_country == 1 & data_8.5.2.C$cluster == "D"],"_B_2")[1]]],
+#                          list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$largest_country == 1 & data_8.5.2.C$cluster == "D"],"_B_3")[1]]],
+#                          list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$largest_country == 1 & data_8.5.2.C$cluster == "E"],"_A")[1]]],
+#                          list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$largest_country == 1 & data_8.5.2.C$cluster == "E"],"_B_0")[1]]],
+#                          list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$largest_country == 1 & data_8.5.2.C$cluster == "E"],"_B_1")[1]]],
+#                          list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$largest_country == 1 & data_8.5.2.C$cluster == "E"],"_B_2")[1]]],
+#                          list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$largest_country == 1 & data_8.5.2.C$cluster == "E"],"_B_3")[1]]],
+#                          list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$largest_country == 1 & data_8.5.2.C$cluster == "F"],"_A")[1]]],
+#                          list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$largest_country == 1 & data_8.5.2.C$cluster == "F"],"_B_0")[1]]],
+#                          list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$largest_country == 1 & data_8.5.2.C$cluster == "F"],"_B_1")[1]]],
+#                          list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$largest_country == 1 & data_8.5.2.C$cluster == "F"],"_B_2")[1]]],
+#                          list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$largest_country == 1 & data_8.5.2.C$cluster == "F"],"_B_3")[1]]],
+#                          
+#                          ncol = 5, nrow = 3, align = "h")
+# P_8.5.0.L3 <- ggarrange(list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$largest_country == 1 & data_8.5.2.C$cluster == "G"],"_A")[1]]],
+#                          list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$largest_country == 1 & data_8.5.2.C$cluster == "G"],"_B_0")[1]]],
+#                          list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$largest_country == 1 & data_8.5.2.C$cluster == "G"],"_B_1")[1]]],
+#                          list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$largest_country == 1 & data_8.5.2.C$cluster == "G"],"_B_2")[1]]],
+#                          list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$largest_country == 1 & data_8.5.2.C$cluster == "G"],"_B_3")[1]]],
+#                          list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$largest_country == 1 & data_8.5.2.C$cluster == "H"],"_A")[1]]],
+#                          list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$largest_country == 1 & data_8.5.2.C$cluster == "H"],"_B_0")[1]]],
+#                          list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$largest_country == 1 & data_8.5.2.C$cluster == "H"],"_B_1")[1]]],
+#                          list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$largest_country == 1 & data_8.5.2.C$cluster == "H"],"_B_2")[1]]],
+#                          list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$largest_country == 1 & data_8.5.2.C$cluster == "H"],"_B_3")[1]]],
+#                          list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$largest_country == 1 & data_8.5.2.C$cluster == "I"],"_A")[1]]],
+#                          list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$largest_country == 1 & data_8.5.2.C$cluster == "I"],"_B_0")[1]]],
+#                          list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$largest_country == 1 & data_8.5.2.C$cluster == "I"],"_B_1")[1]]],
+#                          list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$largest_country == 1 & data_8.5.2.C$cluster == "I"],"_B_2")[1]]],
+#                          list_C[[paste0(data_8.5.2.C$Country[data_8.5.2.C$largest_country == 1 & data_8.5.2.C$cluster == "I"],"_B_3")[1]]],
+#                          
+#                          ncol = 5, nrow = 3, align = "h")
+# 
+# jpeg("1_Figures/Figure 5/Figures_joint_%d.jpg", width = 30, height = 28, unit = "cm", res = 400)
+# print(P_8.5.0.I)
+# print(P_8.5.0.II)
+# print(P_8.5.0.III)
+# dev.off()
+# 
+# jpeg("1_Figures/Figure 5/Figures_joint_large_%d.jpg", width = 30, height = 28, unit = "cm", res = 400)
+# print(P_8.5.0.L)
+# print(P_8.5.0.L2)
+# print(P_8.5.0.L3)
+# dev.off()
 
 # jpeg("1_Figures/Figure 5/Figures_joint_3.jpg", width = 30, height = 30, unit = "cm", res = 300)
 # print(P_8.5.0.III)
