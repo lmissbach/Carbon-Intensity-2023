@@ -727,11 +727,19 @@ We have added the explanation of the acronym as follows:
 \end{commentbox}
 
 \begin{response}
+    Thank you for this suggestion. The horizontal distribution coefficient indicates whether horizontal heterogeneity is larger among poorer and richer households and serves mainly a descriptive purpose. Even though two countries appear in the same of four different cells in Figure 2, it does not necessarily follow that effective compensation would like similar in both places. 
+    
+    To better describe heterogeneity between and within expenditure groups -- and in response to two comments from Reviewer 1 -- we have decided to include a more precise measure based on the Theil index. This novel analysis corroborates that heterogeneity between expenditure quintiles is generally insufficient for explaining overall heterogeneity -- an argument that is also supported by Figure 2, but not yet sufficiently clear.
+
+    We conduct the clustering exercise primarily to indicate options for more effective compensation design. Including measures such as our horizontal distribution coefficient or the theil-index-based component indicating heterogeneity within expenditure quintiles is not helpful here, as this information is already covered by including the corrected average SHAP values for household expenditures. Countries with high corrected average SHAP values for household expenditures can be more likely to compensate effectively using transfers differentiated by income. Our theil-index-based component would do not much more than giving higher weight to the variation in the carbon intensity of consumption that can be explained by variation in total household expenditures.
+
+    Including the vertical distribution coefficient, however, is informative, as it indicates whether such transfers would generally need to be progressive (such as the oft-proposed lump-sum transfers) or regressive (e.g., through a labour taxa adjustment). In contrast, the corrected average SHAP value of total household expenditures indicates to what extent transfers differentiated by household expenditures can reduce heterogeneous effects altogether.
+
+    Including all other features describing household characteristics is thus important to identify the most promising options for the design of effective compensation policies.
+
     \begin{itemize}
         \item I think I have a comment or footnote on this issue somewhere -- possibly, because horizontal heterogeneity is precisely what we wish to explain here. Need to think about it. Potentially, include overall heterogeneity as an additional feature.
         \item This comment shows, however, that R2 did not fully understand the difference of the descriptive analysis and the clustering exercise. 
-        \item Need to think about it.
-        \item A: Horizontal coefficient is not really useful here to identify similar countries - use Theil Index instead that expresses horizontal heterogeneity.
         \item What explains heterogeneity overall (including income - can we use income as an identifier)? Is it progressive or regressive? Theil index: Re-explains contribution of variation in income. Defensible or not. This is why we exclude it, as it would rate again the influence of expenditures on variation. In Figure 4, this does also not need to be reflected, as this information is captured by importance of household expenditures
     \end{itemize}
 \end{response}
