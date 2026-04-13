@@ -6900,9 +6900,9 @@ data_8.1.4 <- data_8.1.1 %>%
   mutate_at(vars(starts_with("(")), ~ paste0(round(.*100,0), "%"))%>%
   rename(Country = Country_long)
 
-kbl(data_8.1.4, format = "latex", caption = "Within-group heterogeneity as a share of heterogeneity in carbon intensity of consumption", booktabs = T, align = "l|ccc", vline = "", linesep = c(""),
+kbl(data_8.1.4, format = "latex", caption = "Within-group heterogeneity as a share of heterogeneity in carbon intensity of consumption", booktabs = T, align = "l|cccc", vline = "", linesep = c(""),
     longtable = T, label = "ATBD2")%>%
-  kable_styling(position = "center", latex_options = c("HOLD_position", "repeat_header"), font_size = 9)%>%
+  kable_styling(position = "center", latex_options = c("HOLD_position", "repeat_header"), font_size = 11)%>%
   # column_spec(1, width = "3.15 cm")%>%
   # column_spec(2:7, width = "2.1 cm")%>%
   footnote(general = "This table shows the share of heterogeneity in carbon intensity of consumption that can be explained with heterogeneity within expenditure groups in comparison to heterogeneity between expenditure groups in \\\\%. Column (I) uses the Theil index ($\\\\alpha = 1$) with expenditure quintiles. Column (II) uses the Theil index ($\\\\alpha = 2$) with expenditure quintiles which accounts for greater overall heterogeneity and longer right tails. Column (III) uses the Theil index ($\\\\alpha = 1$) with expenditure deciles. Column (IV) uses the Theil index ($\\\\alpha = 1$) with expenditure percentiles.", threeparttable = T, escape = FALSE)%>%
@@ -9446,9 +9446,9 @@ kbl(data_8.4.1, format = "latex", caption = "Feature importance across countries
   row_spec(0, angle = 90)%>%
   row_spec(1:88, font_size = 8)%>%
   column_spec(1, width = "0.35 cm")%>%
-  column_spec(2, width = "3 cm")%>%
+  column_spec(2, width = "2.8 cm")%>%
   column_spec(3, width = "0.35 cm")%>%
-  column_spec(4, width = "0.5 cm")%>%
+  column_spec(4, width = "0.6 cm")%>%
   column_spec(5:14, width = "0.35 cm")%>%
   row_spec(c(38,50,58,65,71,77,82,84,86), hline_after = TRUE)%>%
   #collapse_rows(columns = 3:4, valign = "middle")%>%
