@@ -6887,7 +6887,7 @@ data_8.1.3 <- data_2 %>%
          share_2_b = between_2/total_2)
 
 data_8.1.4 <- data_8.1.1 %>%
-  select(Country, share_1_a, share_2_a)%>%
+  select(Country, total_1,share_1_a, share_2_a)%>%
   rename("(I)" = share_1_a, "(II)" = share_2_a)%>%
   left_join(select(data_8.1.2, Country, share_1_a))%>%
   rename("(III)" = share_1_a)%>%
@@ -6897,8 +6897,9 @@ data_8.1.4 <- data_8.1.1 %>%
   arrange(Country_long)%>%
   select(Country_long, everything())%>%
   select(-Country)%>%
+  mutate(total_1 = round(total_1, 2))%>%
   mutate_at(vars(starts_with("(")), ~ paste0(round(.*100,0), "%"))%>%
-  rename(Country = Country_long)
+  rename(Country = Country_long, "GE(1)" = total_1)
 
 kbl(data_8.1.4, format = "latex", caption = "Within-group heterogeneity as a share of heterogeneity in carbon intensity of consumption", booktabs = T, align = "l|cccc", vline = "", linesep = c(""),
     longtable = T, label = "ATBD2")%>%
@@ -9447,10 +9448,9 @@ kbl(data_8.4.1, format = "latex", caption = "Feature importance across countries
   row_spec(1:88, font_size = 8)%>%
   column_spec(1, width = "0.35 cm")%>%
   column_spec(2, width = "2.8 cm")%>%
-  column_spec(3, width = "0.35 cm")%>%
-  column_spec(4, width = "0.6 cm")%>%
+  column_spec(3:4, width = "0.8 cm")%>%
   column_spec(5:14, width = "0.35 cm")%>%
-  row_spec(c(38,50,58,65,71,77,82,84,86), hline_after = TRUE)%>%
+  row_spec(c(38,65,74,81,85), hline_after = TRUE)%>%
   #collapse_rows(columns = 3:4, valign = "middle")%>%
   footnote(general = "This table shows feature importance in percent (based on absolute average SHAP-values per feature) across all countries and per cluster. Feature importance is unadjusted for model accuracy. Column 'Vertical distribution' shows average values.", threeparttable = T)%>%
   save_kable(., "2_Tables/Table_Countries_SHAP_Summary_Uncorrected.tex")
@@ -9483,10 +9483,10 @@ kbl(data_8.4.1, format = "latex", caption = "Feature importance across countries
   row_spec(0, angle = 90)%>%
   row_spec(1:88, font_size = 8)%>%
   column_spec(1, width = "0.35 cm")%>%
-  column_spec(2, width = "3 cm")%>%
-  column_spec(3, width = "0.8 cm")%>%
-  column_spec(4:14, width = "0.35 cm")%>%
-  row_spec(c(50,66,77,84,86), hline_after = TRUE)%>%
+  column_spec(2, width = "2.8 cm")%>%
+  column_spec(3:4, width = "0.8 cm")%>%
+  column_spec(5:14, width = "0.35 cm")%>%
+  row_spec(c(38,50,58,65,71,77,82,84,86), hline_after = TRUE)%>%
   #collapse_rows(columns = 3:4, valign = "middle")%>%
   footnote(general = "This table shows feature importance in percent (based on absolute average SHAP-values per feature) across all countries and per cluster. We adjust feature importance for model accuracy. Column 'Vertical distribution' shows average values.", threeparttable = T)%>%
   save_kable(., "2_Tables/Table_Countries_SHAP_Summary_Corrected.tex")
@@ -9521,10 +9521,10 @@ kbl(data_8.4.1, format = "latex", caption = "Feature importance across countries
   row_spec(0, angle = 90)%>%
   row_spec(1:88, font_size = 8)%>%
   column_spec(1, width = "0.35 cm")%>%
-  column_spec(2, width = "3 cm")%>%
-  column_spec(3, width = "0.8 cm")%>%
-  column_spec(4:14, width = "0.35 cm")%>%
-  row_spec(c(42,59,69,75,81,83,85,87), hline_after = TRUE)%>%
+  column_spec(2, width = "2.8 cm")%>%
+  column_spec(3:4, width = "0.8 cm")%>%
+  column_spec(5:14, width = "0.35 cm")%>%
+  row_spec(c(40,53,59,65,70,75,79,83,85,87), hline_after = TRUE)%>%
   #collapse_rows(columns = 3:4, valign = "middle")%>%
   footnote(general = "This table shows feature importance in percent (based on absolute average SHAP-values per feature) across all countries and per cluster. We adjust feature importance for model accuracy and impute missing information for feature importance based on average values per feature. Column 'Vertical distribution' shows average values.", threeparttable = T)%>%
   save_kable(., "2_Tables/Table_Countries_SHAP_Summary_Corrected_Imputed.tex")
@@ -11165,7 +11165,7 @@ test <- data_8.4.1 %>%
 
 # 8.5.4   Information 5d: How many countries have each feature (Table 1)? ####
 
-data_8.5.4 <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_SHAP_Detail_VFOLD_2017B.xlsx")
+data_8.5.4 <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_SHAP_Detail_VFOLD_2017C.xlsx")
 
 data_8.5.4.1 <- data_8.5.4 %>%
   group_by(Country, Var_0)%>%
