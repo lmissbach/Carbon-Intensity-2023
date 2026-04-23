@@ -75,7 +75,7 @@ bottom=6pt
 % Title
 % ------------------------------------------------
 
-\title{Response to Editor and Referees\\
+\title{Response to the Referees\\
 \textbf{JEEM-D-25-01276} \\ 
 The heterogeneous effects of climate policy on households: Evidence from 88 countries\footnote{Initially submitted as "Compensation design for carbon pricing with horizontal heterogeneity: Evidence from 88 countries".}
 }
@@ -88,142 +88,11 @@ The heterogeneous effects of climate policy on households: Evidence from 88 coun
 
 \maketitle
 
-Dear Erica Myers,
-
-thank you very much for the opportunity to revise our work. We think that all comments and suggestions for revisions have helped us to strengthen our manuscript. Please note that we have changed the title of our study in response to some of the comments. 
-
-Below, we reply in detail to all of your and the reviewers' comments below. As a brief summary: 
-
-\begin{itemize}
-\item We have trimmed our manuscript to focus on key results that corroborate our main arguments.
-\item We included a novel analysis building on the Theil index to describe overall heterogeneity and decompose it into heterogeneity between and within expenditure groups.
-\item We included several novel datasets at higher resolutions (e.g., for India, France, Germany, Spain, Romania) and reran all analyses including more fine-grained hyperparameter tuning and survey weights.
-\end{itemize}
-
-We are looking forward to hearing from you.
-
-Thank you again,
-
-Leonard Missbach and Jan Christoph Steckel
-
-\newpage
+\clearpage
 
 % =================================================
 % EDITOR
 % =================================================
-
-\section*{Response to the Editor}
-
-\subsection*{General comment}\label{comment_E_0}
-
-\begin{commentbox}
-    Thank you for submitting your manuscript to the Journal of Environmental Economics and Management (JEEM).
-
-    I have now received two referee reports and have read the paper carefully myself. The referees differ in their overall recommendations -- Reviewer 2 recommends a revise-and-resubmit, while Reviewer 1 recommends rejection -- but both engage seriously with the paper and identify overlapping concerns. Taking these comments together, I am inviting you to revise and resubmit the manuscript.
-
-    The paper is long and could benefit from some trimming.  I flag a few specific areas below, but encourage broader editing for clarity and focus throughout. While it is important to respond thoroughly to all of the reviewers’ concerns, I will offer some guidance. 
-\end{commentbox}
-
-\begin{response}
-    Thank you for your recommendations and the opportunity to revise this work. We appreciate your and the reviewers' comments, which have helped us to think even more fundamentally about our methods and results. We have responded thoroughly to all comments, mostly through changes in the text and in every case through written answers. The most important changes include trimming and shortening, most importantly concerning the clustering approach and associated robustness checks, as suggested by you and both reviewers. As a result, our main text has shortened by 97 lines (10\%). We have also included a novel analysis building on the Theil index that addresses important concerns raised by Reviewer 1; In addition, we have included novel data at higher resolution and more fine-grained hyperparameter tuning including survey weights, which also addresses suggestions raised by Reviewer 1. 
-
-    In general, we have noticed that both reviewers appear to differ sometimes in their recommendations and overall assessment of our work. Reviewer 1, for example, raises concerns about the value of the clustering exercise, while Reviewer 2 proposes extensions and changes. In contrast, Reviewer 1 does not appear to be convinced of our theoretical framework, which Reviewer 2 endorses explicitly. We took all recommendations into our consideration about resulting changes and explained carefully to both reviewers which arguments led us to opt for one way or the other.
-
-    We acknowledge that our manuscript remains long and we have tried our best to shorten where possible. Specifically, we have discussed alternative approaches for our Section 2 in great detail. For example, we discussed to shorten this section by removing all formalization and the stylized modeling, alternatively organizing the section along written propositions. We believe that our approach provides a clear analytical framework that includes the most relevant aspects of the problem and helps guide our thinking and selection of our research question. Taking into consideration that Reviewer 2 appears to be fond of this Section -- and that Reviewer 1 has criticized a disconnection to our analysis, which we have addressed -- we decided to keep the this Section including the formalization. Should this be insufficient for your taste, we would be willing to remove all formal elements.
-
-    Also, the number of footnotes may be higher than usual, even though we believe that all of they convey information helpful for the reader.
-
-    Below, we briefly summarize our changes in response to your suggestions.
-    
-    % Thank editor for opportunity to revise this work.
-    % Confirm that all comments and suggestions have been addressed.
-    % Agree with editor that the paper is extensive. Acknowledge that it has been shortened substantially.
-    % Stress that some novel data was acquired in the meantime (India, Germany, France, Romania, Spain), some previous analyses have been refined (Mongolia, ...)
-    % Stress that reviewers do not really agree on many issues (clustering, here we follow R1, theoretical model, here we follow R2). Resulting changes do partially circumvent proposals by other reviewer.
-\end{response}
-
-\subsection*{Comment 1}\label{comment_E_1}
-\begin{commentbox}
-    1. Both referees would like more details on the output variable construction (see Reviewer 2’s Comment 1 and Reviewer 1’s specific item A). I agree that more needs to be done to inform readers about how these measures are calculated and their limitations.
-\end{commentbox}
-
-\begin{response}
-    Both reviewers ask for more information about our variable of interest, the carbon intensity of consumption, which follows from a combination of household-level microdata and input-output data. In response, we have expanded on our description of our outcome variable, its shortcomings and how such shortcomings may affect the interpretation of our results. We have refrained from describing the input-output modeling approach in even more detail, given that we follow methodological standards that are common in the literature, which we have referenced appropriately in the manuscript.     
-    % Doable. I do not think that this will be a critical point. Highlight the needs and wishes of R1 and R2, explain where they are substantiated and not and how we addressed the substantiated points in the text.
-\end{response}
-
-\subsection*{Comment 2}\label{comment_E_2}
-\begin{commentbox}
-    2. Reviewer 1’s overarching Comment 1 raises an important conceptual issue. In particular, the reviewer questions whether the current definition of horizontal heterogeneity may reflect income variation measured at finer resolution. Engaging with this concern—potentially through alternative income definitions or additional discussion—will be important for clarity.
-\end{commentbox}
-
-\begin{response}
-
-Reviewer 1 raised several important points in both their Comment 1 and Comment E, which helped us thinking more carefully about the distinction of vertical and horizontal heterogeneity. In response, we have added a novel analysis starting in line 380 that uses the Theil index as a measure of within-country heterogeneity. As a desirable property, this Theil index can be decomposed in two additive terms that express the contribution of both the variation within and between expenditure groups to overall variation. From our point of view, this analysis -- in combination with several robustness checks -- has improved our line of argumentation in Section 3 and lends more credibility to our analysis in general.
-
-In addition, our approach to use a \textit{sparse} boosted regression tree model with total household expenditures as a single predictor for variation in carbon intensity of consumption (starting in line 443 and 615, respectively) demonstrates that even the finest resolution of household expenditures available does not help to explain a large fraction of the observed heterogeneity. Rather, explanatory power increases substantially when adding further explanatory features.
-
-We thus believe that our analysis is sufficiently robust to rule out that variation in household expenditures is a sufficient predictor for variation in the carbon intensity of consumption.
-
-    % \item Agree with the statement. Show how we addressed it (in brevity).
-    % \item I think that the editor has not really understood the referee's comment or puts too much weight on it. Interestingly, the R1 even mentions to not have command of the literature. Let's discuss whether to address this comment with explanations only or changes in the text.
-    % \item I tend towards adding a footnote in the text, answering extensively to R1 and in brevity to the Editor. Adding measure of total heterogeneity is an excellent point, though.
-    % \item See whether computation of clusters and inclusion of variables will still play a role in the remaining manuscript.
-\end{response}
-
-\subsection*{Comment 3}\label{comment_E_3}
-\begin{commentbox}
-    3. I thought Reviewer 2 made several helpful points regarding the machine-learning approach (Comment 2). In particular, the suggestion to pool countries while allowing for country-specific indicators merits careful consideration, unless there is a compelling reason to prefer the current approach.
-\end{commentbox}
-
-\begin{response}
-    We are grateful for Reviewer 2's comments and suggestions as they demonstrate a thorough interest in our work, our methods and our results. In this case, however, and after careful deliberation of their suggestions, we have decided to stick with our selected approach. Let us elaborate: In essence, the Reviewer's suggestions would imply that there was one uniform relationship between the carbon intensity of consumption and household characteristics across countries. One core contribution of this analysis is to show that this is not the case, i.e., that such relationships can differ substantially between countries. We have worked on integrating the conceptual framing of the paper and the respective analyses to make this point clearer. 
-    
-    Additionally, we also think that identifying cross-country relationships would go hand in hand with several methodological challenges. For example, household-level microdata is not perfectly comparable across countries.  The analysis would also offer less important insights for policy design and would lead to primarily descriptive results, as compensation for additional costs of climate policy is and will likely remain the task of national governments.
-
-   Our approach leads to results that inform directly about available or unavailable options for national governments to address heterogeneity in relative additional costs of climate policy, building on existing information for each country. This approach follows from our motivation and research question. One challenge of our work is to synthesize many novel country-level findings, which we hope to have achieved comparing important indicators across countries (Figure 1, Figure 2, Figure B.7 in Appendix, Figure 3) and our descriptive clustering approach (Figure 3, Figure B.10). Nevertheless, our efforts to synthesize findings should not mask country-level insights, which are as well informative. This is why we propose to include country-level figures (such as Figure B.4 and specifically Figure B.9) in the supplementary materials to this manuscript. 
-    
-    % I think that we have some very compelling reasons to prefer the current approach (see below). Suggest to answer extensively to R2 and in brevity to the Editor.
-    % Reject this suggestion and explain carefully.
-
-\end{response}
-
-\subsection*{Comment 4}\label{comment_E_4}
-\begin{commentbox}
-    4. Both referees and I found the clustering exercise less convincing than the supervised ML analysis earlier in the paper. Reviewer 2 suggests including the horizontal distribution coefficient, which would be interesting to explore, while Reviewer 1 is more skeptical of the exercise overall. This may be a place to trim the paper and reconsider how this material is framed.
-\end{commentbox}
-
-\begin{response}
-    Thank you for the suggestion, which we agree with. We have decided to give less weight to the clustering exercise and have shortened the corresponding analysis. Also, we have marked this analysis as mainly descriptive. We respond on the consequences of including the horizontal distribution coefficient below.
-    % Calls for cutting the clustering exercise OR shifting it to the Appendix and referring to it only briefly. Section in paper should focus more on discussing the results rather than extensively describing the clusters.
-    % I also think that we can cut a lot when describing countries and features, focusing indeed on the main messages.
-\end{response}
-
-\subsection*{Comment 5}\label{comment_E_5}
-\begin{commentbox}
-    5. Both referees flag a disconnect between the theory section and the empirical analysis. This also seems like a natural place where the presentation could be tightened or some material moved to the appendix.
-\end{commentbox}
-
-\begin{response}
-    We were aiming at identifying material to trim in our theoretical section and have done so, where appropriate. In general, our manuscript has shortened substantially after the review process, even though less in the theory section rather than in the results and discussion section. Given that Reviewer 2 explicitly highlights sympathy for our Section 2 and that we believe it combines our motivation and review of the existing literature on the subject, we propose to keep it in general. Nevertheless, we have made several changes to connect this section more closely with our discussion. 
-    % R1 wants to cut the model, btu R2 actually appreciates it. We decide to keep it, but improve coherency throughout the paper.
-    % Calls for cutting the model or strengthen relationship later in the paper. I would tighten the model section -- which I like in general --, but connect the discussion section more closely to this model. Then the discussion could be cut as well, potentially supplemented by a table or so.
-\end{response}
-
-\subsection*{Comment 6}\label{comment_E_6}
-\begin{commentbox}
-    6. I agree with Reviewer 2’s Minor Point 4 that the paper does not directly quantify the impact of different compensation designs, and you may therefore wish to reconsider the title.
-\end{commentbox}
-
-\begin{response}
-    That is correct, even though quantifying the impact of different (stylized) compensation designs would certainly exceed the limit for this manuscript. (Please note that we offer a complementing online tool (referenced in Footnote 44) that allows the reader to quantify various compensation designs for all countries included in the paper.)
-
-    In response, we have changed our paper title into "The heterogeneous effects of climate policy on households: Evidence from 88 countries". It captures both our focus on explaining heterogeneity overall (including the distinction between vertical and horizontal heterogeneity) and our inclusion of data from various countries.
-    % There will not be a quantification of different compensation designs, thus, changing the title may be necessary or, alternatively, it would need to be argued why the title does matter.
-    % Interesting point, given that we decided to include compensation in fear that editors would not understand why our analysis is useful.
-\end{response}
-
-\clearpage
 
 \section*{Response to Referee 1}
 
