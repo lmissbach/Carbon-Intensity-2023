@@ -4557,7 +4557,1044 @@ kbl(track_1, format = "latex", caption = "Hyperparameters for boosted regression
 
 rm(track_0, track_1)
 
-# 6.X     TBA: BRT on hardship cases (classification model) ####
+# 6.4     Boosted Regression trees on carbon intensity of consumption (EU) ####
+
+track <- data.frame()
+track <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_BRT_2017.xlsx")
+
+set.seed(2023)
+
+options(warn = 1)
+
+track_0 <- data.frame(date = date())
+    
+print(paste0("Start ", i, ": ", run_ID))
+    
+# Filter only observations for country of interest  
+data_6.4 <- filter(data_2, Country %in% c("AUT", "BEL", "BGR", "CYP", "CZE", "DEU", "DNK", "ESP", "EST", "FIN",
+                                          "FRA", "GBR", "GRC", "HRV", "HUN", "IRL", "ITA", "LTU", "LUX", "LVA", 
+                                          "NLD", "NOR", "POL", "PRT", "ROU", "SVK", "SWE"))%>%
+  group_by(Country)%>%
+  # NEW: include hh_weights
+  mutate(hh_weights_scaled        = hh_weights/mean(hh_weights),
+         hh_weights_scaled_cap    = quantile(hh_weights_scaled, 0.99),
+         hh_weights_scaled_capped = pmin(hh_weights_scaled, hh_weights_scaled_cap))%>%
+  ungroup()%>%
+  select(-hh_weights_scaled, -hh_weights_scaled_cap)
+
+track_0$observations_sample = nrow(data_6.4)
+
+# Feature engineering - Step 1 (with dplyr)
+
+data_6.4.1 <- data_6.4 %>%
+  # select relevant variables
+  select(Country, hh_id, hh_weights, hh_size,
+         Province, urban_01, District,
+         sex_hhh, ISCED, Nationality, 
+         HF, CF, 
+         hh_expenditures_USD_2014, 
+         car.01, motorcycle.01, refrigerator.01, ac.01, tv.01, washing_machine.01, 
+         carbon_intensity_kg_per_USD_national,
+         hh_weights_scaled_capped)%>%
+  mutate_at(vars(Province, District, Nationality:CF), ~ ifelse(is.na(.), "Missing",.))%>%
+  # remove redundant variables
+  select(-hh_id, -hh_weights)%>%
+  # can be included for "sanity check"
+  # mutate(noise = rnorm(n(),0,1))%>%
+  # include hh_weights later in the process
+  # factors instead of characters
+  mutate_if(vars(is.character(.)), list(~ as.factor(.)))%>%
+  mutate_at(vars(Country, sex_hhh, ISCED, urban_01, ends_with(".01")), list(~ as.factor(.)))%>%
+  mutate(across(where(is.factor), ~ fct_na_value_to_level(., level = "MISSING")))
+
+rm(data_6.4)
+
+# Splitting the sample, but no strata
+
+# prop_0 = 0.80
+
+# data_6.1.2 <- data_6.1.1 %>%
+#   initial_split(prop = prop_0)
+
+# Update: Use entire sample for training.
+data_6.4.2.train <- data_6.4.1%>%
+  mutate(hh_weights_scaled_capped = hardhat::importance_weights(hh_weights_scaled_capped))
+
+# Data for training
+# data_6.1.2.train <- data_6.1.2 %>%
+#   training()
+
+# Data for testing
+# data_6.1.2.test <- data_6.1.2 %>%
+#   testing()
+
+rm(data_6.4.1)
+
+# Feature engineering - Step 2 (with recipe)
+
+recipe_6.4.0 <- recipe(carbon_intensity_kg_per_USD_national ~ .,
+                       data = data_6.4.2.train)%>%
+  # Deletes all columns with all NA
+  step_zv(all_predictors(),-all_outcomes())%>%
+  # Remove minimum number of columns such that correlations are less than 0.9
+  # step_corr(all_numeric(), -all_outcomes(), -hh_weights_scaled_capped, threshold = 0.9)%>%
+  # should have very few unique observations for factors
+  step_other(all_nominal(), -Country, -ends_with(".01"), -ends_with("urban_01"), -ends_with("District"), -ends_with("Province"), threshold = 0.05)%>%
+  step_dummy(all_nominal(), -all_outcomes(), sparse = "no")
+
+mtry_max <- recipe_6.4.0%>%
+  prep(training = data_6.4.2.train)%>%
+  bake(new_data = NULL)%>%
+  select(-carbon_intensity_kg_per_USD_national, -hh_weights_scaled_capped)%>%
+  ncol()
+
+# data_6.1.2.training <- recipe_6.1.0 %>%
+#   prep(training = data_6.1.2.train)%>%
+#   bake(new_data = NULL)
+
+# data_6.1.2.testing <- recipe_6.1.0 %>%
+#   prep(training = data_6.1.2.test)%>%
+#   bake(new_data = NULL) 
+
+# Five-fold cross-validation
+
+folds_6.4 <- vfold_cv(data_6.4.2.train, v = 5)
+
+# Setup model to be tuned
+
+model_brt <- boost_tree(
+  trees         = 1000,
+  tree_depth    = tune(), # maximum depth of tree
+  learn_rate    = tune(), # the higher the learning rate the faster - default 0.3
+  # min_n       = tune(),
+  mtry          = tune(), # fraction of features to be selected for each tree (0.5/0.7/1)
+  stop_iter     = 15
+  # stop_iter   = tune(),
+  # sample_size = tune()
+)%>%
+  set_mode("regression")%>%
+  set_engine("xgboost")
+
+# Workflow with case weights
+workflow_0 <- workflow()%>%
+  add_recipe(recipe_6.4.0)%>%
+  add_model(model_brt)%>%
+  add_case_weights(hh_weights_scaled_capped)
+
+# Create a tuning grid - 16 different models for the tuning space
+
+grid_0 <- grid_space_filling(
+  tree_depth(c(3,15)),
+  learn_rate(c(-3,-1)),# tuning parameters
+  mtry(c(round((mtry_max)/2,0), mtry_max)),
+  size = 99)%>%
+  # default parameters
+  bind_rows(data.frame(tree_depth = 6, learn_rate = 0.3, mtry = mtry_max))
+
+# Tune the model - cover the entire parameter space without running every combination
+
+doParallel::registerDoParallel()
+
+time_1 <- Sys.time()
+
+model_brt_1 <- tune_grid(workflow_0,
+                         resamples = folds_6.4,
+                         grid      = grid_0,
+                         metrics   = metric_set(mae, rmse, rsq))
+
+time_2 <- Sys.time()
+
+doParallel::stopImplicitCluster()
+
+track_0$tuning_time <- as.integer(difftime(time_1, time_2, units = "min"))
+
+# Collect metrics of tuned models
+
+metrics_1 <- collect_metrics(model_brt_1)
+
+model_brt_1.1 <- select_best(model_brt_1, metric = "mae")
+
+metrics_1.1 <- metrics_1 %>%
+  filter(.config == model_brt_1.1$.config[1])
+
+# Output: best model after tuning
+track_0 <- bind_cols(track_0, model_brt_1.1)%>%
+  rename(tree_depth_best = tree_depth, learn_rate_best = learn_rate, mtry_best = mtry)%>%
+  select(-.config)%>%
+  mutate(mae_mean_cv_5_train  = metrics_1.1$mean[metrics_1.1$.metric == "mae"],
+         rmse_mean_cv_5_train = metrics_1.1$mean[metrics_1.1$.metric == "rmse"],
+         rsq_mean_cv_5_train  = metrics_1.1$mean[metrics_1.1$.metric == "rsq"])
+
+track <- track %>%
+  bind_rows(track_0)
+
+rm(track_0, run_ID, time_1, time_2, grid_0,
+   model_brt, model_brt_1, model_brt_1.1, metrics_1.1, metrics_1,
+   data_6.4.2.train, folds_6.4, recipe_6.4.0)
+
+gc()
+
+print(paste0("End: ", i, " ", Sys.time()))
+
+
+track_1 <- track %>%
+  write.xlsx(., "../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_BRT_2017_EU.xlsx")
+
+rm(track)
+
+# 6.4.1   Calculate model evaluation and SHAP-values (EU) ####
+
+# SHAP expresses feature importance based on the marginal contribution of each predictor for each observation. Has local explanation and consistency.
+
+eval_0 <- data.frame()
+shap_0 <- data.frame()
+shap_1 <- data.frame()
+
+track_0 <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_BRT_2017_EU.xlsx")
+
+track <- track_0
+
+data_6.4 <- filter(data_2, Country %in% c("AUT", "BEL", "BGR", "CYP", "CZE", "DEU", "DNK", "ESP", "EST", "FIN",
+                                          "FRA", "GBR", "GRC", "HRV", "HUN", "IRL", "ITA", "LTU", "LUX", "LVA", 
+                                          "NLD", "NOR", "POL", "PRT", "ROU", "SVK", "SWE"))%>%
+  group_by(Country)%>%
+  # NEW: include hh_weights
+  mutate(hh_weights_scaled = hh_weights/mean(hh_weights),
+         hh_weights_scaled_cap = quantile(hh_weights_scaled, 0.99),
+         hh_weights_scaled_capped = pmin(hh_weights_scaled, hh_weights_scaled_cap))%>%
+  ungroup()%>%
+  select(-hh_weights_scaled, -hh_weights_scaled_cap)
+# data_6.1 <- read_csv("C:/Users/misl/Desktop/Israel_Test_Set.csv")
+
+# Feature engineering - Part I
+
+data_6.4.1 <- data_6.4 %>%
+  # select relevant variables
+  select(Country, hh_id, hh_weights, hh_size,
+         Province, urban_01, District,
+         sex_hhh, ISCED, Nationality, 
+         HF, CF, 
+         hh_expenditures_USD_2014, 
+         car.01, motorcycle.01, refrigerator.01, ac.01, tv.01, washing_machine.01, 
+         carbon_intensity_kg_per_USD_national,
+         hh_weights_scaled_capped)%>%
+  mutate_at(vars(Province, District, Nationality:CF), ~ ifelse(is.na(.), "Missing",.))%>%
+  # remove redundant variables
+  select(-hh_id, -hh_weights)%>%
+  # can be included for "sanity check"
+  # mutate(noise = rnorm(n(),0,1))%>%
+  # include hh_weights later in the process
+  # factors instead of characters
+  mutate_if(vars(is.character(.)), list(~ as.factor(.)))%>%
+  mutate_at(vars(Country, sex_hhh, ISCED, urban_01, ends_with(".01")), list(~ as.factor(.)))%>%
+  mutate(across(where(is.factor), ~ fct_na_value_to_level(., level = "MISSING")))
+
+rm(data_6.4)
+
+# Feature engineering - Step 2 (with recipe) - with dummification
+
+recipe_6.4.0 <- recipe(carbon_intensity_kg_per_USD_national ~ .,
+                       data = data_6.4.1)%>%
+  # Deletes all columns with all NA
+  step_zv(all_predictors(),-all_outcomes())%>%
+  # Remove minimum number of columns such that correlations are less than 0.9
+  # step_corr(all_numeric(), -all_outcomes(), -hh_weights_scaled_capped, threshold = 0.9)%>%
+  # should have very few unique observations for factors
+  step_other(all_nominal(), -Country, -ends_with(".01"), -ends_with("urban_01"), -ends_with("District"), -ends_with("Province"), threshold = 0.05)%>%
+  step_dummy(all_nominal(), -all_outcomes(), sparse = "no")
+
+data_6.4.2 <- data_6.4.1 %>%
+  # for cross-validation
+  mutate(id = 1:n())
+
+# data_6.1.2 <- recipe_6.1.0 %>%
+#   prep(training = data_6.1.1)%>%
+#   bake(new_data = NULL)%>%
+#   # for cross-validation
+#   mutate(id = 1:n())
+
+folds_6.4.2 <- vfold_cv(data_6.4.2, v = 5)
+
+data_6.4.3 <- data_6.4.2 %>%
+  left_join(mutate(data.frame(id = folds_6.4.2$splits[[1]]$in_id), in1 = 1), by = c("id"))%>%
+  left_join(mutate(data.frame(id = folds_6.4.2$splits[[2]]$in_id), in2 = 1), by = c("id"))%>%
+  left_join(mutate(data.frame(id = folds_6.4.2$splits[[3]]$in_id), in3 = 1), by = c("id"))%>%
+  left_join(mutate(data.frame(id = folds_6.4.2$splits[[4]]$in_id), in4 = 1), by = c("id"))%>%
+  left_join(mutate(data.frame(id = folds_6.4.2$splits[[5]]$in_id), in5 = 1), by = c("id"))%>%
+  mutate_at(vars(in1:in5), ~ ifelse(is.na(.),0,.))%>%
+  mutate(fold_test = ifelse(in1 == 0, 1,
+                            ifelse(in2 == 0, 2,
+                                   ifelse(in3 == 0, 3,
+                                          ifelse(in4 == 0, 4,
+                                                 ifelse(in5 == 0, 5, NA))))))%>%
+  select(-in1, -in2, -in3, -in4, -in5, -id)
+
+data_6.4.2.raw <- data_6.4.1 %>%
+  mutate(id = 1:n())%>%
+  left_join(mutate(data.frame(id = folds_6.4.2$splits[[1]]$in_id), in1 = 1), by = c("id"))%>%
+  left_join(mutate(data.frame(id = folds_6.4.2$splits[[2]]$in_id), in2 = 1), by = c("id"))%>%
+  left_join(mutate(data.frame(id = folds_6.4.2$splits[[3]]$in_id), in3 = 1), by = c("id"))%>%
+  left_join(mutate(data.frame(id = folds_6.4.2$splits[[4]]$in_id), in4 = 1), by = c("id"))%>%
+  left_join(mutate(data.frame(id = folds_6.4.2$splits[[5]]$in_id), in5 = 1), by = c("id"))%>%
+  mutate_at(vars(in1:in5), ~ ifelse(is.na(.),0,.))%>%
+  mutate(fold_test = ifelse(in1 == 0, 1,
+                            ifelse(in2 == 0, 2,
+                                   ifelse(in3 == 0, 3,
+                                          ifelse(in4 == 0, 4,
+                                                 ifelse(in5 == 0, 5, NA))))))%>%
+  select(-in1, -in2, -in3, -in4, -in5, -id)
+
+# Model to be tuned
+model_brt <- boost_tree(
+  trees         = 1000,
+  tree_depth    = track$tree_depth_best[1],
+  learn_rate    = track$learn_rate_best[1], # the higher the learning rate the faster - default 0.3
+  mtry          = track$mtry_best[1],
+  stop_iter     = 15  
+)%>%
+  set_mode("regression")%>%
+  set_engine("xgboost")
+
+shap_6.4.2.0 <- data.frame()
+
+for(v in c(1:5)){
+  print(v)
+  
+  data_6.4.3.1 <- data_6.4.3 %>%
+    select(-Province, -Nationality, -CF, -sex_hhh, -motorcycle.01)
+  
+  recipe_6.4.0 <- recipe(carbon_intensity_kg_per_USD_national ~ .,
+                         data = data_6.4.3.1)%>%
+    # Deletes all columns with all NA
+    step_zv(all_predictors(),-all_outcomes())%>%
+    # Remove minimum number of columns such that correlations are less than 0.9
+    # step_corr(all_numeric(), -all_outcomes(), -hh_weights_scaled_capped, threshold = 0.9)%>%
+    # should have very few unique observations for factors
+    step_other(all_nominal(), -Country, -ends_with(".01"), -ends_with("urban_01"), -ends_with("District"), -ends_with("Province"), threshold = 0.05)%>%
+    step_dummy(all_nominal(), -all_outcomes(), sparse = "no")
+  
+  # Training dataset
+  data_6.4.2.training <- data_6.4.3 %>%
+    filter(fold_test != v)
+  
+  # Testing dataset
+  data_6.4.2.testing <- data_6.4.3 %>%
+    filter(fold_test == v)
+  
+  # Preparation training dataset
+  prep_0 <- prep(recipe_6.4.0, training = data_6.4.2.training)
+  
+  data_6.4.2.training <- bake(prep_0, new_data = NULL)
+  
+  # Preparation weights 
+  training_weights <- importance_weights(data_6.4.2.training$hh_weights_scaled_capped)
+  
+  data_6.4.2.training <- data_6.4.2.training %>%
+    select(-hh_weights_scaled_capped)
+  
+  # Preparation testing dataset
+  data_6.4.2.testing <- bake(prep_0, new_data = data_6.4.2.testing)
+  
+  # Raw data
+  data_6.4.2.test <- data_6.4.2.raw %>%
+    filter(fold_test == v)%>%
+    select(-fold_test)
+  
+  # Entire dataset
+  # data_6.1.2.all <- recipe_6.1.0 %>%
+  #   prep(training = data_6.1.2.train)%>%
+  #   bake(new_data = data_6.1.1)
+  
+  doParallel::registerDoParallel()
+  
+  time_1 <- Sys.time()
+  
+  # Fit model on training dataset
+  model_brt_1 <- model_brt %>%
+    fit(carbon_intensity_kg_per_USD_national ~ .,
+        data = data_6.4.2.training,
+        case_weights = training_weights)
+  
+  time_2 <- Sys.time()
+  
+  doParallel::stopImplicitCluster()
+  
+  print(difftime(time_1, time_2, units = "min"))
+  
+  # # Evaluation on training dataset 
+  # predictions_6.1.1 <- augment(model_brt_1, new_data = data_6.1.2.training)
+  # mae_6.1.1  <- mae(predictions_6.1.1,  truth = carbon_intensity_kg_per_USD_national, estimate = .pred)
+  # rmse_6.1.1 <- rmse(predictions_6.1.1, truth = carbon_intensity_kg_per_USD_national, estimate = .pred)
+  # rsq_6.1.1  <- rsq(predictions_6.1.1,  truth = carbon_intensity_kg_per_USD_national, estimate = .pred)
+  # eval_6.1.1 <- bind_rows(mae_6.1.1, rmse_6.1.1, rsq_6.1.1)%>%
+  #   mutate(Type = "Training")
+  
+  # Evalutation on testing dataset
+  predictions_6.4.2 <- augment(model_brt_1, new_data = data_6.4.2.testing)
+  
+  # Weighted
+  mae_6.4.2_w  <- mae(predictions_6.4.2,  truth = carbon_intensity_kg_per_USD_national, estimate = .pred, case_weights = hh_weights_scaled_capped)
+  rmse_6.4.2_w <- rmse(predictions_6.4.2, truth = carbon_intensity_kg_per_USD_national, estimate = .pred, case_weights = hh_weights_scaled_capped)
+  rsq_6.4.2_w  <- rsq(predictions_6.4.2,  truth = carbon_intensity_kg_per_USD_national, estimate = .pred, case_weights = hh_weights_scaled_capped)
+  
+  # Unweighted
+  mae_6.4.2  <- mae(predictions_6.4.2,  truth = carbon_intensity_kg_per_USD_national, estimate = .pred)
+  rmse_6.4.2 <- rmse(predictions_6.4.2, truth = carbon_intensity_kg_per_USD_national, estimate = .pred)
+  rsq_6.4.2  <- rsq(predictions_6.4.2,  truth = carbon_intensity_kg_per_USD_national, estimate = .pred)
+  
+  eval_6.4.2 <- bind_rows(mae_6.4.2_w, rmse_6.4.2_w, rsq_6.4.2_w)%>%
+    mutate(Type = "Testing")%>%
+    mutate(fold = v)%>%
+    mutate(number_ob = track$number_ob[1])%>%
+    select(-.estimator)%>%
+    pivot_wider(names_from = "Type", values_from = ".estimate", names_prefix = "Sample_")%>%
+    select(.metric, fold, Sample_Testing)
+  
+  eval_0 <- eval_0 %>%
+    bind_rows(eval_6.4.2)
+  
+  rm(predictions_6.4.2, mae_6.4.2, rmse_6.4.2, rsq_6.4.2, eval_6.4.2, mae_6.4.2_w, rmse_6.4.2_w, rsq_6.4.2_w)
+  
+  # SHAP - use testing data for evaluation
+  
+  data_6.4.2.testing_matrix <- data_6.4.2.testing %>%
+    #sample_n(fraction)%>%
+    select(-carbon_intensity_kg_per_USD_national, -hh_weights_scaled_capped)%>%
+    as.matrix()
+  
+  # data_6.1.2.all_matrix <- data_6.1.2.all %>%
+  #   select(-carbon_intensity_kg_per_USD_national)%>%
+  #   as.matrix()
+  
+  doParallel::registerDoParallel()
+  
+  time_1 <- Sys.time()
+  
+  shap_6.4.2 <- predict(extract_fit_engine(model_brt_1),
+                        data_6.4.2.testing_matrix,
+                        predcontrib = TRUE,
+                        approxcontrib = FALSE)
+  
+  time_2 <- Sys.time()
+  
+  doParallel::stopImplicitCluster()
+  
+  print(difftime(time_1, time_2, units = "min"))
+  
+  shap_6.4.2.1 <- shap_6.4.2 %>%
+    as_tibble()%>%
+    summarise_all(~ mean(abs(.)))%>%
+    select(-"(Intercept)")%>%
+    pivot_longer(everything(), names_to = "variable", values_to = "SHAP_contribution")%>%
+    arrange(desc(SHAP_contribution))%>%
+    mutate(tot_contribution = sum(SHAP_contribution))%>%
+    mutate(share_SHAP       = SHAP_contribution/tot_contribution)%>%
+    select(-tot_contribution)
+  
+  # Edit variable names 
+  
+  shap_6.4.2.2 <- shap_6.4.2.1 %>%
+    mutate(var_1 = ifelse(variable %in% c("hh_size", "hh_expenditures_USD_2014"), NA, str_remove(variable, "^[^_]*")))%>%
+    mutate(var_1 = str_remove(var_1, "_X"))%>%
+    mutate(var_1 = str_remove(var_1, "_"))%>%
+    mutate(var_1 = str_replace_all(var_1, "\\.", " "))%>%
+    mutate(var_0 = ifelse(variable %in% c("hh_size", "hh_expenditures_USD_2014"), str_remove(variable, "_X."), str_remove(variable, "_.*")))%>%
+    select(var_0, var_1, everything(), -variable)%>%
+    rename(Variable = var_0)%>%
+    mutate(Var_0 = ifelse(grepl("District", Variable), "District", 
+                          ifelse(grepl("Province", Variable), "Province", 
+                                 ifelse(grepl("ISCED", Variable), "ISCED", 
+                                        ifelse(grepl("Ethnicity", Variable), "Ethnicity", 
+                                               ifelse(grepl("Religion", Variable), "Religion", 
+                                                      ifelse(Variable == "hh_expenditures_USD_2014", "HH expenditures",
+                                                             ifelse(Variable == "hh_size", "HH size",
+                                                                    ifelse(grepl("car.01", Variable), "Car own.",
+                                                                           ifelse(grepl("urban", Variable), "Urban",
+                                                                                  ifelse(grepl("sex", Variable), "Gender HHH",
+                                                                                         ifelse(grepl("CF_", Variable), "Cooking", 
+                                                                                                ifelse(grepl("HF_", Variable), "Heating", 
+                                                                                                       ifelse(grepl("LF_", Variable), "Lighting", 
+                                                                                                              ifelse(Variable == "electricity.access", "Electricity access", Variable)))))))))))))))%>%
+    mutate(Var_0 = ifelse(Var_0 == "religiosity", "Religiosity",
+                          ifelse(Var_0 %in% c("refrigerator.01", "ac.01", "tv.01", "washing"), "Appliance own.", 
+                                 ifelse(Var_0 == "motorcycle.01", "Motorcycle own.", Var_0))))%>%
+    mutate(order_number = 1:n())%>%
+    group_by(Var_0)%>%
+    mutate(order_number_2 = min(order_number))%>%
+    ungroup()%>%
+    arrange(order_number_2, order_number)%>%
+    rename(Var_1 = var_1)%>%
+    select(Var_0, Var_1, everything(), - Variable)%>%
+    select(-order_number, -order_number_2)%>%
+    mutate(fold = v)
+  
+  shap_0 <- shap_0 %>%
+    bind_rows(shap_6.4.2.2)
+  
+  # Sum up and aggregate for output
+  
+  shap_6.4.2.3 <- shap_6.4.2.2 %>%
+    group_by(Var_0)%>%
+    summarise_at(vars(share_SHAP), ~ sum(.))%>%
+    ungroup()%>%
+    mutate(help_0 = ifelse(share_SHAP < 0.03,1,0))%>%
+    arrange(share_SHAP)
+  
+  shap_6.4.2.3.1 <- shap_6.4.2.3 %>%
+    filter(help_0 == 1)%>%
+    summarise(share_SHAP = sum(share_SHAP))%>%
+    mutate(Var_0 = "Other features (Sum)")
+  
+  shap_6.4.2.3.2 <- shap_6.4.2.3 %>%
+    filter(help_0 == 0)%>%
+    arrange(desc(share_SHAP))%>%
+    bind_rows(shap_6.4.2.3.1)%>%
+    select(-help_0)%>%
+    mutate(fold = v)
+  
+  shap_1 <- shap_1 %>%
+    bind_rows(shap_6.4.2.3.2)
+  
+  # SHAP hh_expenditures_USD_2014
+  
+  shap_6.4.2.4 <- shap_6.4.2 %>% 
+    as_tibble()%>%
+    select(hh_expenditures_USD_2014)%>%
+    rename(SHAP_hh_expenditures_USD_2014 = hh_expenditures_USD_2014)%>%
+    bind_cols(select(data_6.4.2.testing, hh_expenditures_USD_2014))%>%
+    # mutate(Country = i)%>%
+    mutate(id = 1:n())%>%
+    select(id, everything())
+  
+  VOI <- shap_6.4.2.3.2 %>%
+    slice_head(n = 8)%>%
+    filter(Var_0 != "HH expenditures")
+  
+  shap_6.4.2.5 <- shap_6.4.2 %>%
+    as_tibble()%>%
+    pivot_longer(everything(), names_to = "variable", values_to = "SHAP")%>%
+    mutate(var_1 = ifelse(variable %in% c("hh_size", "hh_expenditures_USD_2014"), NA, str_remove(variable, "^[^_]*")))%>%
+    mutate(var_1 = str_remove(var_1, "_X"))%>%
+    mutate(var_1 = str_remove(var_1, "_"))%>%
+    mutate(var_1 = str_replace_all(var_1, "\\.", " "))%>%
+    mutate(var_0 = ifelse(variable %in% c("hh_size", "hh_expenditures_USD_2014"), str_remove(variable, "_X."), str_remove(variable, "_.*")))%>%
+    select(var_0, var_1, everything(), -variable)%>%
+    rename(Variable = var_0)%>%
+    mutate(Var_0 = ifelse(grepl("District", Variable), "District", 
+                          ifelse(grepl("Province", Variable), "Province", 
+                                 ifelse(grepl("ISCED", Variable), "ISCED", 
+                                        ifelse(grepl("Ethnicity", Variable), "Ethnicity", 
+                                               ifelse(grepl("Religion", Variable), "Religion", 
+                                                      ifelse(Variable == "hh_expenditures_USD_2014", "HH expenditures",
+                                                             ifelse(Variable == "hh_size", "HH size",
+                                                                    ifelse(grepl("car.01", Variable), "Car own.",
+                                                                           ifelse(grepl("urban", Variable), "Urban",
+                                                                                  ifelse(grepl("sex", Variable), "Gender HHH",
+                                                                                         ifelse(grepl("CF_", Variable), "Cooking", 
+                                                                                                ifelse(grepl("HF_", Variable), "Heating", 
+                                                                                                       ifelse(grepl("LF_", Variable), "Lighting", 
+                                                                                                              ifelse(Variable == "electricity.access", "Electricity access", Variable)))))))))))))))%>%
+    mutate(Var_0 = ifelse(Var_0 == "religiosity", "Religiosity",
+                          ifelse(Var_0 %in% c("refrigerator.01", "ac.01", "tv.01", "washing_machine.01"), "Appliance own.", 
+                                 ifelse(Var_0 == "motorcycle.01", "Motorcycle own.", Var_0))))%>%
+    rename(Var_1 = var_1)%>%
+    select(Var_0, Var_1, everything(), - Variable)%>%
+    filter(Var_0 %in% VOI$Var_0)
+  
+  shap_6.4.2.6 <- data.frame(id = 1:nrow(data_6.4.2.testing))
+  
+  # Binaere bzw. numerische Variablen
+  
+  for(j in c("HH size", "Electricity access")){
+    
+    if(j %in% VOI$Var_0){
+      shap_6.4.2.5.1 <- shap_6.4.2.5 %>%
+        filter(Var_0 == j)%>%
+        select(-Var_1)%>%
+        mutate(id      = 1:n())%>%
+        pivot_wider(names_from = "Var_0", values_from = "SHAP", names_prefix = "SHAP_")
+      
+      if(j == "HH size"){
+        shap_6.4.2.5.1 <- bind_cols(shap_6.4.2.5.1, select(data_6.4.2.testing, hh_size))
+      }
+      
+      if(j == "Electricity access"){
+        shap_6.4.2.5.1 <- bind_cols(shap_6.4.2.5.1, select(data_6.4.2.testing, electricity.access_X1))%>%
+          rename(electricity.access = electricity.access_X1)
+      }
+      
+      shap_6.4.2.6 <- left_join(shap_6.4.2.6, shap_6.4.2.5.1, by = "id")
+    }
+  }
+  
+  # Kategorische Variablen / Faktorvariablen
+  
+  shap_6.4.2.7 <- data.frame(id = 1:nrow(data_6.4.2.testing))
+  
+  for(k in c("Province", "CF", "District", "ISCED", "Gender HHH", "HF", "Nationality", "Country")){
+    if(k %in% VOI$Var_0){
+      shap_6.4.2.5.2 <- shap_6.4.2.5 %>%
+        filter(Var_0 == k)%>%
+        mutate(id = rep(1:nrow(data_6.4.2.testing), each = n()/nrow(data_6.4.2.testing), length.out = nrow(.)))
+      
+      if(k == "Province"){
+        
+        shap_6.4.2.5.3 <- select(data_6.4.2.test, starts_with(k))%>%
+          mutate(id = 1:n())%>%
+          left_join(shap_6.4.2.5.2, by = "id")%>%
+          filter(Province == Var_1)%>%
+          select(-Var_0, -Var_1)%>%
+          rename(SHAP_Province = SHAP)%>%
+          select(id, everything())%>%
+          mutate(Province = as.character(Province))
+        
+        # shap_6.4.2.5.4 <- select(data_6.4.2.test, starts_with(k))%>%
+        #   mutate(id = 1:n())%>%
+        #   filter(!id %in% shap_6.4.2.5.3$id)%>%
+        #   distinct(Province)%>%
+        #   mutate(Province = as.character(Province))
+        
+        shap_6.4.2.5.5 <- left_join(data.frame(id = 1:nrow(data_6.4.2.testing)), shap_6.4.2.5.3, by = "id") %>%
+          bind_cols(transmute(select(data_6.4.2.test, Province), Province_0 = as.character(Province)))%>%
+          mutate(Province = ifelse(is.na(Province), Province_0, Province))%>%
+          select(-Province_0)
+      }
+      
+      if(k == "Country"){
+        
+        shap_6.4.2.5.3 <- select(data_6.4.2.test, starts_with(k))%>%
+          mutate(id = 1:n())%>%
+          left_join(shap_6.4.2.5.2, by = "id")%>%
+          filter(Country == Var_1)%>%
+          select(-Var_0, -Var_1)%>%
+          rename(SHAP_Country = SHAP)%>%
+          select(id, everything())%>%
+          mutate(Country = as.character(Country))
+        
+        # shap_6.4.2.5.4 <- select(data_6.4.2.test, starts_with(k))%>%
+        #   mutate(id = 1:n())%>%
+        #   filter(!id %in% shap_6.4.2.5.3$id)%>%
+        #   distinct(Province)%>%
+        #   mutate(Province = as.character(Province))
+        
+        shap_6.4.2.5.5 <- left_join(data.frame(id = 1:nrow(data_6.4.2.testing)), shap_6.4.2.5.3, by = "id") %>%
+          bind_cols(transmute(select(data_6.4.2.test, Country), Country_0 = as.character(Country)))%>%
+          mutate(Country = ifelse(is.na(Country), Country_0, Country))%>%
+          select(-Country_0)
+      }
+      
+      if(k == "CF"){
+        
+        shap_6.4.2.5.3 <- select(data_6.4.2.test, starts_with(k))%>%
+          mutate(id = 1:n())%>%
+          left_join(shap_6.4.2.5.2, by = "id")%>%
+          mutate(rows = n())%>%
+          mutate(CF = as.character(CF))%>%
+          group_by(CF)%>%
+          mutate(share_CF = n()/rows)%>%
+          ungroup()%>%
+          mutate(CF = ifelse(share_CF < 0.05, "other", CF))%>%
+          filter(CF == Var_1)%>%
+          select(-CF, -Var_0)%>%
+          rename(SHAP_CF = SHAP, CF = Var_1)%>%
+          select(id, everything())%>%
+          mutate(CF = as.character(CF))
+        
+        # shap_6.4.2.5.4 <- select(data_6.4.2.test, starts_with(k))%>%
+        #   mutate(id = 1:n())%>%
+        #   filter(!id %in% shap_6.4.2.5.3$id)%>%
+        #   distinct(CF)%>%
+        #   mutate(CF = as.character(CF))
+        
+        shap_6.4.2.5.5 <- left_join(data.frame(id = 1:nrow(data_6.4.2.testing)), shap_6.4.2.5.3, by = "id") %>%
+          bind_cols(transmute(select(data_6.4.2.test, CF), CF_0 = as.character(CF)))%>%
+          mutate(CF = ifelse(is.na(CF), CF_0, CF))%>%
+          select(-CF_0, - share_CF, -rows)
+      }
+      
+      if(k == "HF"){
+        
+        shap_6.4.2.5.3 <- select(data_6.4.2.test, starts_with(k))%>%
+          mutate(id = 1:n())%>%
+          left_join(shap_6.4.2.5.2, by = "id")%>%
+          mutate(rows = n())%>%
+          mutate(HF = as.character(HF))%>%
+          group_by(HF)%>%
+          mutate(share_HF = n()/rows)%>%
+          ungroup()%>%
+          mutate(HF = ifelse(share_HF < 0.05, "other", HF))%>%
+          filter(HF == Var_1)%>%
+          select(-HF, -Var_0)%>%
+          rename(SHAP_HF = SHAP, HF = Var_1)%>%
+          select(id, everything())%>%
+          mutate(HF = as.character(HF))
+        
+        shap_6.4.2.5.5 <- left_join(data.frame(id = 1:nrow(data_6.4.2.testing)), shap_6.4.2.5.3, by = "id") %>%
+          bind_cols(transmute(select(data_6.4.2.test, HF), HF_0 = as.character(HF)))%>%
+          mutate(HF = ifelse(is.na(HF), HF_0, HF))%>%
+          select(-HF_0, - share_HF, -rows)
+      }
+      
+      # if(k == "Appliance own."){
+      #   shap_6.4.2.5.3 <- select(data_6.4.2.test, ends_with("refrigerator.01"), ends_with("ac.01"), ends_with("tv.01"), ends_with("washing_machine.01"))%>%
+      #     mutate(id = 1:n())%>%
+      #     select_if(function(x) any(!is.na(x)))%>%
+      #     left_join(shap_6.4.2.5.2, by = "id")%>%
+      #     mutate(Var_1 = ifelse(Var_1 == "Washing machine", "Washing_machine", Var_1))%>%
+      #     pivot_wider(names_from = "Var_1", values_from = "SHAP", names_prefix = "SHAP_")%>%
+      #     select(-Var_0)%>%
+      #     select(id, everything())
+      #   
+      #   shap_6.4.2.5.5 <- shap_6.4.2.5.3
+      # }
+      
+      if(k == "District"){
+        
+        #if(){
+        #  shap_6.4.2.5.3 <- select(data_6.4.2.test, starts_with(k))%>%
+        #    mutate(id = 1:n())%>%
+        #    left_join(shap_6.4.2.5.2, by = "id")%>%
+        #    pivot_longer(starts_with("District_"), names_to = "District", values_to = "values", names_prefix = "District_")%>%
+        #    filter(values == 1)%>%
+        #    filter(District == Var_1)%>%
+        #    select(-Var_0, -Var_1, - values)%>%
+        #    rename(SHAP_District = SHAP)%>%
+        #    select(id, everything())%>%
+        #    mutate(District = as.character(District))
+        #  
+        #  # shap_6.4.2.5.4 <- select(data_6.4.2.test, starts_with(k))%>%
+        #  #   mutate(id = 1:n())%>%
+        #  #   filter(!id %in% shap_6.4.2.5.3$id)%>%
+        #  #   distinct(District)%>%
+        #  #   mutate(District = as.character(District))
+        #  
+        #  shap_6.4.2.5.5 <- left_join(data.frame(id = 1:nrow(data_6.4.2.testing)), shap_6.4.2.5.3, by = "id") %>%
+        #    bind_cols(transmute(select(data_6.4.2.test, District), District_0 = as.character(District)))%>%
+        #    mutate(District = ifelse(is.na(District), District_0, District))%>%
+        #    select(-District_0)
+        #}
+        
+        if(k == "District"){
+          data_6.4.2.test <- data_6.4.2.test %>%
+            mutate(District = str_replace(District, "\\.", " "))%>%
+            mutate(District = str_replace_all(District, "-", " "))
+          
+          shap_6.4.2.5.3 <- select(data_6.4.2.test, starts_with(k))%>%
+            mutate(id = 1:n())%>%
+            left_join(shap_6.4.2.5.2, by = "id")%>%
+            filter(District == Var_1)%>%
+            select(-Var_0, -Var_1)%>%
+            rename(SHAP_District = SHAP)%>%
+            select(id, everything())%>%
+            mutate(District = as.character(District))
+          
+          shap_6.4.2.5.5 <- left_join(data.frame(id = 1:nrow(data_6.4.2.testing)), shap_6.4.2.5.3, by = "id") %>%
+            bind_cols(transmute(select(data_6.4.2.test, District), District_0 = as.character(District)))%>%
+            mutate(District = ifelse(is.na(District), District_0, District))%>%
+            select(-District_0)
+          
+        }
+        
+        
+      }
+      
+      if(k == "ISCED"){
+        
+        shap_6.4.2.5.3 <- select(data_6.4.2.testing, starts_with(k))%>%
+          mutate(id = 1:n())%>%
+          left_join(shap_6.4.2.5.2, by = "id")%>%
+          pivot_longer(starts_with("ISCED_"), names_to = "ISCED", values_to = "values", names_prefix = "ISCED_")%>%
+          mutate(ISCED = str_remove(ISCED, "X"))%>%
+          filter(values == 1)%>%
+          filter(ISCED == Var_1)%>%
+          select(-Var_0, -Var_1, -values)%>%
+          rename(SHAP_ISCED = SHAP)%>%
+          select(id, everything())
+        
+        # shap_6.4.2.5.4 <- select(data_6.4.2.test, starts_with(k))%>%
+        #   mutate(id = 1:n())%>%
+        #   filter(!id %in% shap_6.4.2.5.3$id)%>%
+        #   distinct(ISCED)
+        
+        shap_6.4.2.5.5 <- left_join(data.frame(id = 1:nrow(data_6.4.2.testing)), shap_6.4.2.5.3, by = "id") %>%
+          bind_cols(transmute(select(data_6.4.2.test, ISCED), ISCED_0 = as.character(ISCED)))%>%
+          mutate(ISCED = ifelse(is.na(ISCED), ISCED_0, ISCED))%>%
+          select(-ISCED_0)
+      }
+      
+      if(k == "Nationality"){
+        
+        shap_6.4.2.5.3 <- select(data_6.4.2.testing, starts_with(k))%>%
+          mutate(id = 1:n())%>%
+          left_join(shap_6.4.2.5.2, by = "id")%>%
+          pivot_longer(starts_with("Nationality_"), names_to = "Nationality", values_to = "values", names_prefix = "Nationality_")%>%
+          filter(values == 1)%>%
+          filter(Nationality == Var_1)%>%
+          select(-Nationality, -Var_0, -values)%>%
+          rename(SHAP_Nationality = SHAP, Nationality = Var_1)%>%
+          select(id, everything())%>%
+          mutate(Nationality = as.character(Nationality))
+        
+        shap_6.4.2.5.5 <- left_join(data.frame(id = 1:nrow(data_6.4.2.testing)), shap_6.4.2.5.3, by = "id") %>%
+          bind_cols(transmute(select(data_6.4.2.test, Nationality), Nationality_0 = as.character(Nationality)))%>%
+          mutate(Nationality = ifelse(is.na(Nationality), Nationality_0, Nationality))%>%
+          select(-Nationality_0)
+        
+      }
+      
+      if(k == "Gender HHH"){
+        
+        shap_6.4.2.5.3 <- select(data_6.4.2.test, "sex_hhh")%>%
+          mutate(id = 1:n())%>%
+          left_join(shap_6.4.2.5.2, by = "id")%>%
+          mutate(sex_hhh = as.numeric(sex_hhh))%>%
+          filter(sex_hhh == max(sex_hhh))%>%
+          select(-sex_hhh, -Var_0)%>%
+          rename(SHAP_Gender = SHAP, Gender = Var_1)%>%
+          select(id, everything())
+        
+        # shap_6.4.2.5.4 <- select(data_6.4.2.test, sex_hhh)%>%
+        #   mutate(id = 1:n())%>%
+        #   filter(!id %in% shap_6.4.2.5.3$id)%>%
+        #   distinct(sex_hhh)
+        
+        shap_6.4.2.5.5 <- left_join(data.frame(id = 1:nrow(data_6.4.2.testing)), shap_6.4.2.5.3, by = "id") %>%
+          mutate(Gender = ifelse(is.na(Gender), "Male HHH", Gender)) # some bugs here, can be improved
+      }
+      
+      
+      shap_6.4.2.7 <- left_join(shap_6.4.2.7, shap_6.4.2.5.5, by = "id")
+    }
+  }
+  
+  shap_6.4.2.8 <- shap_6.4.2.4 %>%
+    select(id, ends_with("hh_expenditures_USD_2014"))%>%
+    mutate(sd_exp   = sd(hh_expenditures_USD_2014),
+           mean_exp = mean(hh_expenditures_USD_2014))%>%
+    mutate(z_score_exp = (hh_expenditures_USD_2014-mean_exp)/sd_exp)%>%
+    select(-mean_exp, -sd_exp)
+  
+  # Working with the following dataframe
+  
+  shap_6.4.2.9 <- shap_6.4.2.6 %>%
+    left_join(shap_6.4.2.7, by = "id")%>%
+    left_join(shap_6.4.2.8, by = "id")%>%
+    mutate(fold = v)
+  
+  shap_6.4.2.0 <- bind_rows(shap_6.4.2.0, shap_6.4.2.9)
+}
+
+# to be exported
+
+write_rds(shap_6.4.2.0, "../0_Data/9_Supplementary Data/BRT-Tracking/SHAP-Values en detail/2017_C/SHAP_wide_EU.rds")
+
+# Output Evaluation metrics to LaTeX
+
+eval_0.1 <- eval_0 %>%
+  distinct()%>%
+  write.xlsx(., "../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_SHAP_Evaluation_VFOLD_EU.xlsx")
+
+# Save shap_0 for classification exercise
+
+shap_0.1 <- shap_0 %>%
+  write.xlsx(., "../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_SHAP_Detail_VFOLD_EU.xlsx")
+
+# Save shap_1 as output
+
+shap_1.1 <- shap_1 %>%
+  write.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_SHAP_Classification_VFOLD_EU.xlsx")
+
+# Part b: Output of tables
+
+eval_1 <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_SHAP_Evaluation_VFOLD_EU.xlsx")
+# eval_1 <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_SHAP_Evaluation_VFOLD.xlsx")
+
+eval_1.1 <- eval_1 %>%
+  group_by(.metric)%>%
+  summarise(Sample_Testing = mean(Sample_Testing))%>%
+  ungroup()
+
+# 6.4.2   Export Figures (EU) ####
+
+eval_6.4.2 <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_SHAP_Evaluation_VFOLD_EU.xlsx")
+
+data_6.4.2 <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_SHAP_Classification_VFOLD_EU.xlsx")%>%
+  select(Var_0, share_SHAP, fold)%>%
+  pivot_wider(names_from = "Var_0", values_from = "share_SHAP", values_fill = 0)%>%
+  pivot_longer(c(-fold), names_to = "Var_0", values_to = "share_SHAP")%>%
+  group_by(Var_0)%>%
+  summarise(share_SHAP = mean(share_SHAP))%>%
+  ungroup()%>%
+  # Because of folds, some variables have values lower than 3%
+  mutate(Var_0 = ifelse(share_SHAP < 0.03 & share_SHAP > 0, "Other features (Sum)", Var_0))%>%
+  group_by(Var_0)%>%
+  summarise(share_SHAP = sum(share_SHAP))%>%
+  ungroup()%>%
+  mutate(order = ifelse(Var_0 == "Other features (Sum)", n(), 1))%>%
+  arrange(order, desc(share_SHAP))%>%
+  mutate(order = ifelse(order == 1, 1:n(),order))%>%
+  mutate(order_new = 1:n())%>%
+  mutate(help_0 = ifelse(order_new < 3,1,0))%>%
+  filter(share_SHAP > 0)%>%
+  mutate(Var_0 = ifelse(Var_0 == "ISCED", "Education",
+                        ifelse(Var_0 == "HF", "Heating fuel",
+                               ifelse(Var_0 == "LF", "Lighting fuel",
+                                      ifelse(Var_0 == "CF", "Cooking fuel", Var_0)))))
+
+data_6.4.2.B <- read.xlsx("../0_Data/9_Supplementary Data/BRT-Tracking/Tracking_SHAP_Detail_VFOLD_EU.xlsx")%>%
+  group_by(Var_0, Var_1)%>%
+  summarise(share_SHAP = mean(share_SHAP))%>%
+  ungroup()%>%
+  group_by(Var_0, Var_1)%>%
+  mutate(number = 1:n())%>%
+  ungroup()%>%
+  arrange(desc(share_SHAP))
+
+# for-Loop for all countries
+
+P_6.4 <- ggplot(data_6.4.2)+
+  geom_col(aes(x = share_SHAP, y = reorder(Var_0, desc(order)), fill = factor(help_0)), width = 0.7, colour = "black", linewidth = 0.3)+
+  theme_bw()+
+  coord_cartesian(xlim = c(0,max(signif(max(data_6.4.2$share_SHAP) + 0.1,1),0.3000001)))+
+  scale_fill_manual(values = c("#E64B35FF","#6F99ADFF"), drop = FALSE)+
+  scale_x_continuous(labels = scales::percent_format(accuracy = 1), expand = c(0,0))+
+  guides(fill = "none")+
+  xlab("Feature importance (SHAP)")+
+  ylab("Feature")+
+  ggtitle(bquote(.("Countries of the EU (") *R^2* .("=0.2)")))+
+  # ggtitle(paste0("Cluster ", data_8.5.2.C$cluster[data_8.5.2.C$Country == i],
+  #                ": ", Country.Set$Country_long[Country.Set$Country == i]), " (")+
+  theme(axis.text.y = element_text(size = 9), 
+        axis.text.x = element_text(size = 9),
+        axis.title  = element_text(size = 10),
+        plot.title = element_text(size = 11),
+        # strip.text = element_text(size = 7),
+        #strip.text.y = element_text(angle = 180),
+        #panel.grid.major = element_blank(),
+        panel.grid.minor.x = element_blank(),
+        panel.grid.major.y = element_blank(),
+        panel.grid.minor.y = element_blank(),
+        axis.ticks = element_line(size = 0.2),
+        plot.margin = unit(c(0.3,0.3,0.3,0.3), "cm"),
+        panel.border = element_rect(size = 0.3))
+
+data_6.4.2.0 <- read_rds("../0_Data/9_Supplementary Data/BRT-Tracking/SHAP-Values en detail/2017_C/SHAP_wide_EU.rds")
+
+alpha_0 <- 0.1
+
+# colnames(data_8.5.2.0)
+
+# Expenditures dataframe
+
+data_6.4.2.1 <- data_6.4.2.0 %>%
+  select(SHAP_hh_expenditures_USD_2014, hh_expenditures_USD_2014, z_score_exp)%>%
+  filter(z_score_exp < 3)%>%
+  mutate(SHAP_z_score = (SHAP_hh_expenditures_USD_2014 - mean(SHAP_hh_expenditures_USD_2014))/sd(SHAP_hh_expenditures_USD_2014))%>%
+  filter(SHAP_z_score < 5)%>%
+  sample_n(., 20000)
+
+P_6.4.2.1 <- ggplot(data_6.4.2.1)+
+  geom_hline(aes(yintercept = 0))+
+  geom_point(aes(x = hh_expenditures_USD_2014,
+                 y = SHAP_hh_expenditures_USD_2014,
+                 colour = z_score_exp),
+             size = 0.5, alpha = alpha_0)+
+  geom_smooth(aes(x     = hh_expenditures_USD_2014,
+                  y     = SHAP_hh_expenditures_USD_2014),
+              method = "loess", color = "black", linewidth = 0.4, se = FALSE,
+              formula = y ~ x)+
+  theme_bw()+
+  scale_colour_gradient(low = "#0072B5FF", high = "#BC3C29FF")+
+  scale_fill_gradient(low = "#0072B5FF",   high = "#BC3C29FF")+
+  # scale_fill_viridis_c()+
+  # scale_colour_viridis_c()+
+  #scale_color_gradientn(na.value = NA,
+  #                       colors = c("#0072B5FF", "white","#BC3C29FF", "#631879FF"),
+  #                       values = scales::rescale(c(0,0.3,0.5,1)))+
+  guides(colour = "none", fill = "none")+
+  ggtitle("HH expenditures (Importance: 19%)")+
+  coord_cartesian(xlim = c(0,70000))+ # TBA
+  scale_x_continuous(labels = scales::dollar_format(), expand = c(0,0), n.breaks = 4)+
+  xlab("Household expenditures in US-$ (2017)")+
+  ylab("SHAP value for household expenditures")+
+  theme(axis.text.y = element_text(size = 9), 
+        axis.text.x = element_text(size = 9),
+        axis.title  = element_text(size = 10),
+        plot.title = element_text(size = 11),
+        plot.subtitle = element_text(size = 6),
+        legend.position = "bottom",
+        # strip.text = element_text(size = 7),
+        #strip.text.y = element_text(angle = 180),
+        #panel.grid.major = element_blank(),
+        panel.grid.major.y = element_blank(),
+        panel.grid.minor = element_blank(),
+        axis.ticks = element_line(size = 0.2),
+        legend.text = element_text(size = 7),
+        legend.title = element_text(size = 7),
+        plot.margin = unit(c(0.3,0.4,0.3,0.3), "cm"),
+        panel.border = element_rect(size = 0.3))
+
+# Easily computable variables
+
+# Country
+
+data_6.4.2.2 <- data_6.4.2.0 %>%
+  select(id, Country, SHAP_Country, z_score_exp)%>%
+  filter(z_score_exp < 3)%>%
+  mutate(SHAP_Country = ifelse(is.na(SHAP_Country),0,SHAP_Country))%>%
+  mutate(SHAP_z_score = (SHAP_Country - mean(SHAP_Country))/sd(SHAP_Country))%>%
+  filter(SHAP_z_score < 4 & SHAP_z_score > -2)%>%
+  sample_n(., 20000)
+
+P_6.4.2.2 <- ggplot(data_6.4.2.2)+
+  geom_hline(aes(yintercept = 0))+
+  # geom_violin(aes(x = Variable,
+  #                 y = SHAP),
+  #             size = 0.1, fill = "grey", alpha = 0.1, scale = "count")+
+  #ggforce::geom_sina(aes(x = Variable,
+  #                       y = SHAP,
+  #                       colour = z_score_exp,
+  #                       fill = z_score_exp),
+  #                   size = 0.75, alpha = 0.75, scale = "count", shape = 21)+
+  geom_jitter(aes(x = as.factor(Country),
+                  y = SHAP_Country,
+                  colour = z_score_exp,
+                  fill = z_score_exp),
+              size = 1, alpha = alpha_0, height = 0, width = 0.25, shape = 21)+
+  theme_bw()+
+  scale_colour_gradient(low = "#0072B5FF", high = "#BC3C29FF")+
+  scale_fill_gradient(low = "#0072B5FF", high = "#BC3C29FF")+
+  # scale_colour_viridis_c()+
+  # scale_fill_viridis_c()+
+  guides(colour = "none", fill = "none")+
+  ggtitle("Country (Importance: 43%)")+
+  xlab("Country")+
+  ylab("SHAP value for Country")+
+  theme(axis.text.y = element_text(size = 9), 
+        axis.text.x = element_text(size = 9),
+        axis.title  = element_text(size = 10),
+        plot.title = element_text(size = 11),
+        plot.subtitle = element_text(size = 6),
+        legend.position = "bottom",
+        # strip.text = element_text(size = 7),
+        #strip.text.y = element_text(angle = 180),
+        #panel.grid.major = element_blank(),
+        panel.grid.major.y = element_blank(),
+        panel.grid.minor.y = element_blank(),
+        axis.ticks = element_line(size = 0.2),
+        legend.text = element_text(size = 7),
+        legend.title = element_text(size = 7),
+        plot.margin = unit(c(0.3,0.3,0.3,0.3), "cm"),
+        panel.border = element_rect(size = 0.3))
+
+P_6.4.0 <- ggarrange(ggarrange(P_6.4, P_6.4.2.1, ncol = 2),
+          ggarrange(P_6.4.2.2, ncol = 1),
+          nrow = 2)
+
+jpeg("1_Figures/Figure 5b/Figure_5b_EU.jpg", width = 30, height = 30, unit = "cm", res = 300)
+print(P_6.4.0)
+dev.off()
+
 # _______ ####
 # 7       Figures Presentation ####
 # 7.1     Figure 1: Scatterplot and friends ####
@@ -11010,7 +12047,7 @@ data_8.5.3.0 <- data.frame()
 
 for (i in c(Country.Set$Country)){
   
-  data_8.5.3.1 <- read_rds(sprintf("../0_Data/9_Supplementary Data/BRT-Tracking/SHAP-Values en detail/2017_B/SHAP_wide_%s.rds",i))%>%
+  data_8.5.3.1 <- read_rds(sprintf("../0_Data/9_Supplementary Data/BRT-Tracking/SHAP-Values en detail/2017_C/SHAP_wide_%s.rds",i))%>%
     mutate(Country = i)
   
   data_8.5.3.0 <- data_8.5.3.0 %>%
@@ -11205,14 +12242,14 @@ data_8.5.5 <- read_csv("../0_Data/9_Supplementary Data/WDI/P_Data_Extract_From_W
 
 # 8.5.6   Infomration 5f: Feature importance ####
 
-data_8.5.6 <- read_csv("../0_Data/9_Supplementary Data/BRT-Tracking/Clusters_Normalized_Uncorrected_B.csv", show_col_types = FALSE)%>%
+data_8.5.6 <- read_csv("../0_Data/9_Supplementary Data/BRT-Tracking/Clusters_Normalized_Uncorrected_C.csv", show_col_types = FALSE)%>%
   # it is in fact not normalized
   select(cluster, Country, order, best_fit, largest_country, everything())%>%
   mutate_at(vars("Appliance own.":"Sociodemographic"), ~ ifelse(. == 0, NA, .))%>%
   rename("Horizontal inequality" = "dif_95_05_1_5", 
          "Mean carbon intensity" = "mean_carbon_intensity",
          "Vertical distribution"   = "median_1_5",
-         "Silhouette width" = "silhouette_5_means")%>%
+         "Silhouette width" = "silhouette_6_means")%>%
   select(cluster, Country, "Silhouette width", "Horizontal inequality", "Vertical distribution", "Mean carbon intensity", 
          "HH expenditures", "Sociodemographic",
          "Spatial", "Electricity access", "Cooking fuel",
@@ -11235,16 +12272,23 @@ data_8.5.6.2 <- data_8.5.6 %>%
   mutate(Largest = ifelse(Value == max(Value, na.rm = TRUE),1,0))%>%
   ungroup()
 
-t <- count(data_8.5.6.2, Type, Largest)
+t <- data_8.5.6%>%
+  pivot_longer(c("HH expenditures":"Appliance own."), names_to = "Type", values_to = "Value")%>%
+  filter(!is.na(Value))%>%
+  group_by(Country)%>%
+  mutate(Largest = ifelse(Value == max(Value),1,0))%>%
+  ungroup()%>%
+  group_by(Type)%>%
+  summarise(Largest = sum(Largest))
 
-data_8.5.6.0 <- read_csv("../0_Data/9_Supplementary Data/BRT-Tracking/Clusters_Normalized_Corrected_B.csv", show_col_types = FALSE)%>%
+data_8.5.6.0 <- read_csv("../0_Data/9_Supplementary Data/BRT-Tracking/Clusters_Normalized_Corrected_C.csv", show_col_types = FALSE)%>%
   # it is in fact not normalized
   select(cluster, Country, order, best_fit, largest_country, everything())%>%
   mutate_at(vars("Appliance own.":"Sociodemographic"), ~ ifelse(. == 0, NA, .))%>%
   rename("Horizontal inequality" = "dif_95_05_1_5", 
          "Mean carbon intensity" = "mean_carbon_intensity",
          "Vertical distribution"   = "median_1_5",
-         "Silhouette width" = "silhouette_6_means")%>%
+         "Silhouette width" = "silhouette_10_means")%>%
   select(cluster, Country, "Silhouette width", "Horizontal inequality", "Vertical distribution", "Mean carbon intensity",
          "HH expenditures", "Sociodemographic",
          "Spatial", "Electricity access", "Cooking fuel",
@@ -11262,26 +12306,26 @@ data_8.5.6.3 <- data_8.5.6.0 %>%
 
 # 8.5.7   Information 5g: Information about clusters ####
 
-data_8.5.7 <- read_csv("../0_Data/9_Supplementary Data/BRT-Tracking/Clusters_Normalized_Corrected_B.csv", show_col_types = FALSE) %>%
+data_8.5.7 <- read_csv("../0_Data/9_Supplementary Data/BRT-Tracking/Clusters_Normalized_Corrected_C.csv", show_col_types = FALSE) %>%
   left_join(eval_3.1)
 
 # Average silhouette width
 
-mean(data_8.5.7$silhouette_6_means)
+mean(data_8.5.7$silhouette_10_means)
 
 # Negative silhouette widths
 
 data_8.5.7.1 <- data_8.5.7 %>%
-  select(Country, cluster, silhouette_6_means)
+  select(Country, cluster, silhouette_10_means)
 
 # Cluster-level averages
 
 data_8.5.7.2 <- data_8.5.7 %>%
   group_by(cluster)%>%
-  summarise_at(vars("Appliance own.":"Spatial","mean_carbon_intensity", "silhouette_6_means", "R2"), ~ mean(.))
+  summarise_at(vars("Appliance own.":"Spatial","mean_carbon_intensity", "silhouette_10_means", "R2"), ~ mean(.))
 
 data_8.5.7.3 <- data_8.5.7 %>%
-  mutate(low_10 = ifelse(R2 < 0.1,1,0))
+  mutate(low_10 = ifelse(rsq < 0.1,1,0))
 
 # Cluster A
 data_8.5.7.4 <- data_8.5.7 %>%
