@@ -88,7 +88,7 @@
 
 \begin{document}
 
-\maketitle
+%\maketitle
 
 \vspace{30mm}
 
@@ -607,7 +607,7 @@ Addressing the heterogeneous impacts of climate mitigation policy does not neces
 The interpretation of our findings is relatively straightforward for price-based policies. Nevertheless, our approach can also inform the design of standards, mandates, or subsidies, depending on how such policies affect the marginal cost of CO\textsubscript{2} emissions. However, distributional impacts may be less salient for such instruments, and potential compensation would also be more difficult to finance because of foregone revenues. %Non-pricing interventions can be helpful, in case they change preferences or address technological path-dependencies.
 
 % Methodological considerations
-Our analysis provides a foundation for more comprehensive analyses using more nuanced data\footnote{For example, fitting a model on observations from multiple countries including country as a feature can have its merits, if regulation affects the population across many countries. For illustrative purposes, we have fitted such a model to countries of the EU (see Figure \ref{}). Results show that heterogeneity could be reduced most effectively by transfers differentiated by country.}. Such additional research can explicitly address inaccuracies in our modeling approach, including uncertainties about the supply-side pass-through of cost increases, technological path dependencies, and information frictions. Admittedly, our work is also silent on the heterogeneous impacts of climate policy in terms of potential co-benefits \autocite[e.g.,][]{Holland.2019,Karlsson.2020}, co-costs \autocite[e.g.,][]{Fuje.2019,Greve.2022}, wealth \autocite[e.g.,][]{Fullerton.2011}, and labor \autocite[e.g.,][]{Castellanos.2024}. Instead, this study provides information on the first-order distributional impacts of climate policy on consumption costs, which may be useful for identifying potential demand for compensation and ultimately for increasing public acceptance. Our descriptive clustering of countries demonstrates that some compensation policies would work more effectively in some countries than in others, potentially limiting the scope for cross-country learning. % Labour may require additional compensation measures, such as subsidzing low-skilled labour in carbon-intensive sectors.
+Our analysis provides a foundation for more comprehensive analyses\footnote{For example, fitting a model on observations from multiple countries including country as a feature can have its merits, if regulation affects the population across many countries. For illustrative purposes, we have fitted such a model to countries of the EU (see Figure \ref{fig:A_EU}). Results show that heterogeneity could be reduced most effectively by transfers differentiated by country.} using more nuanced data. Such additional research can explicitly address inaccuracies in our modeling approach, including uncertainties about the supply-side pass-through of cost increases, technological path dependencies, and information frictions. Admittedly, our work is also silent on the heterogeneous impacts of climate policy in terms of potential co-benefits \autocite[e.g.,][]{Holland.2019,Karlsson.2020}, co-costs \autocite[e.g.,][]{Fuje.2019,Greve.2022}, wealth \autocite[e.g.,][]{Fullerton.2011}, and labor \autocite[e.g.,][]{Castellanos.2024}. Instead, this study provides information on the first-order distributional impacts of climate policy on consumption costs, which may be useful for identifying potential demand for compensation and ultimately for increasing public acceptance. Our descriptive clustering of countries demonstrates that some compensation policies would work more effectively in some countries than in others, potentially limiting the scope for cross-country learning. % Labour may require additional compensation measures, such as subsidzing low-skilled labour in carbon-intensive sectors.
 
 % Further research: Value chain of climate policy implementation. Welfare function of policymakers or winning coalition not clear.
 The distributional impacts of welfare-enhancing policy proposals are important not only for welfare analyses, but also for understanding the political economy of climate policy. While this study provides a comprehensive assessment of such distributional impacts for climate policy, it is less clear how the distribution of costs translates into public \textit{acceptance}. It is often argued that people prefer progressive outcomes because of equity reasons, but large horizontal heterogeneity, subjective beliefs \autocite{Douenne.2020}, and scattered perceptions of fairness \autocite{MaestreAndres.2019,Povitkina.2021} cast doubt on this assumption. Future research could contribute to a better understanding of how the (expected) distribution of costs and individual and government-level inequality aversion shapes public acceptance of climate policy. Similarly, some policy instruments and complementary compensation measures may be more acceptable to the public than others, but research providing theory and empirical evidence remains scarce \autocite[e.g.,][]{Sommer.2022,MohammadzadehValencia.2024}, at least compared to the literature quantifying distributional impacts. 
@@ -832,13 +832,19 @@ Supplementary Figure \ref{fig:comparison_policies} shows vertical and horizontal
 
 \begin{figure}[ht!]
     \centering
-    \includegraphics[width=1\linewidth]{}
-    \caption{Caption}
+    \includegraphics[width=0.95\linewidth]{1_Figures/Figure 5b/Figure_5b_EU.jpg}
+    \caption{Partial dependence plot (SHAP) for stylized analysis across 27 European countries}
     \label{fig:A_EU}
     \begin{subcaption2}
-        TBD
+    This figure shows SHAP-values for predicting carbon intensity over feature values for 27 European countries. We have pooled country-level observations and included a country indicator in the feature set. This analysis can inform about the heterogeneous effects of a hypothetical European-level, cross-sectoral carbon price signal. We have coded missing feature values as explicitly missing. We have conducted hyperparameter tuning using fivefold cross-validation. We also use fivefold cross-validation for model evaluation. We calculate SHAP values for all observations, but show only a fraction of 20,000 (randomly selected) observations to improve legibility. The total number of observations is 268,616.
+
+    The bar chart displays normalized average absolute SHAP-values for all features. Features with less than 3\% of normalized SHAP-values are subsumed as "Other features (Sum)". The right upper panel shows SHAP-values over total household expenditures over all countries. Colours represent household expenditures with blue (red) colors indicating lower (higher) household expenditures. The lower panel shows SHAP-values over household country. Colours represent household expenditures with blue(red) colors indicating lower (higher) household expenditures across all countries.
+
+    Following this analysis, reducing overall heterogeneity would require country-differentiated transfers with households living in Poland, Czech Republic, Hungary, Slovakia, and Germany receiving relatively higher transfers. The right upper panel shows that relatively poorer households -- with household expenditures compared across countries -- would require relatively higher transfers than richer households.
     \end{subcaption2}
 \end{figure}
+
+\clearpage
 
 %\setkeys{Gin}{draft=false}
 \section{Supplementary tables} \label{sec:tables}

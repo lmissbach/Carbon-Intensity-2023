@@ -178,17 +178,32 @@ The heterogeneous effects of climate policy on households: Evidence from 88 coun
 \end{commentbox}
 
 \begin{response}
-    Yes, it is correct that boosted regression trees can accommodate country-specific non-linear relationships. We also agree that this approach could yield insights that are informative following the arguments put forward in our manuscript. In response, we have decided to add a supplementary analysis including all countries of the European Union (plus Norway and United Kingdom). The resulting analysis informs about which features predict household carbon intensity of consumption across all countries. We have added the corresponding analysis to the Appendix (see Figure X) and refer to this analysis in the text in footnote 39 in line 845 as follows:
+    Yes, it is correct that boosted regression trees can accommodate country-specific non-linear relationships. We also agree that this approach could yield insights that are informative following the arguments put forward in our manuscript. In response, we have decided to add a supplementary analysis including all countries of the European Union (plus Norway and United Kingdom). The resulting analysis informs about which features predict household carbon intensity of consumption across all countries. We have added the corresponding analysis to the Appendix (see Figure A.11) and refer to this analysis in the text in footnote 39 in line 844 as follows:
 \end{response}
 
 \begin{revisionbox}
-    Our analysis provides a foundation for more comprehensive analyses using more nuanced data\footnote{For example, fitting a model on observations from multiple countries including country as a feature can have its merits, if regulation affects the population across many countries. For illustrative purposes, we have fitted such a model to countries of the EU (see Figure \ref{}). Results show that heterogeneity could be reduced most effectively by transfers differentiated by country.}.
+    Our analysis provides a foundation for more comprehensive analyses\footnote{For example, fitting a model on observations from multiple countries including country as a feature can have its merits, if regulation affects the population across many countries. For illustrative purposes, we have fitted such a model to countries of the EU (see Figure A.11). Results show that heterogeneity could be reduced most effectively by transfers differentiated by country.} using more nuanced data.
 \end{revisionbox}
 
 \begin{response}
-    We address the issue of missing features by coding missing information explicitly. Interactions with country-level features should address the issue of missing information. The resulting model performance is 0.2\% (R\textsuperscript{2}). The most important features are household country (43\%), household expenditures (19\%) and main heating fuel (8\%).   
+    We address the issue of missing features by coding missing information explicitly. Interactions with country-level features should address the issue of missing information. The resulting model performance is 0.2\% (R\textsuperscript{2}). The most important features are household country (43\%), household expenditures (19\%) and main heating fuel (8\%). We provide the corresponding information in the figure description of supplementary Figure A.11 (see below).  
 \end{response}
 
-\clearpage
+\setcounter{figure}{10}
+\renewcommand{\thefigure}{A.\arabic{figure}}
 
+\begin{figure}[ht!]
+    \centering
+    \includegraphics[width=0.95\linewidth]{1_Figures/Figure 5b/Figure_5b_EU.jpg}
+    \caption{Partial dependence plot (SHAP) for stylized analysis across 27 European countries}
+    \label{fig:A_EU}
+    \begin{subcaption2}
+    This figure shows SHAP-values for predicting carbon intensity over feature values for 27 European countries. We have pooled country-level observations and included a country indicator in the feature set. This analysis can inform about the heterogeneous effects of a hypothetical European-level, cross-sectoral carbon price signal. We have coded missing feature values as explicitly missing. We have conducted hyperparameter tuning using fivefold cross-validation. We also use fivefold cross-validation for model evaluation. We calculate SHAP values for all observations, but show only a fraction of 20,000 (randomly selected) observations to improve legibility. The total number of observations is 268,616.
+
+    The bar chart displays normalized average absolute SHAP-values for all features. Features with less than 3\% of normalized SHAP-values are subsumed as "Other features (Sum)". The right upper panel shows SHAP-values over total household expenditures over all countries. Colours represent household expenditures with blue (red) colors indicating lower (higher) household expenditures. The lower panel shows SHAP-values over household country. Colours represent household expenditures with blue(red) colors indicating lower (higher) household expenditures across all countries.
+
+    Following this analysis, reducing overall heterogeneity would require country-differentiated transfers with households living in Poland, Czech Republic, Hungary, Slovakia, and Germany receiving relatively higher transfers. The right upper panel shows that relatively poorer households -- with household expenditures compared across countries -- would require relatively higher transfers than richer households.
+    \end{subcaption2}
+\end{figure}
+    
 \end{document}
