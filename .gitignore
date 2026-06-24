@@ -16,7 +16,11 @@
 *.xlsx
 CPI_4_Exploration_BRT.R
 CPI_8_Output_Basel.R
+CPI_8_Output_GIZ.R
 CPI_8_Output_Mongolia.R
 CPI_9_Figures_Presentation.R
 9_Outdated/*
-
+6_Revision/*
+0_Codes.R
+renv.lock
+renv/*
